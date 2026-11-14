@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La meva fitxa de personatge",
-        "Open sheet": "Obre la fitxa"
+        "Open sheet": "Obre la fitxa",
+        "Check-in code": "Codi d'entrada",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "El codi que un steward escaneja o tecleja a la porta, fixat per larpinq quan s'accepta la inscripció. Es conserva quan la inscripció passa a un altre jugador.",
+        "Already checked in at {time} by {steward}": "Entrada ja registrada a les {time} per {steward}",
+        "Camera preview for scanning check-in codes": "Vista de la càmera per escanejar codis d'entrada",
+        "Check-in failed. Try again.": "No s'ha pogut registrar l'entrada. Torna-ho a provar.",
+        "Checked in: {name}, {character}": "Entrada registrada: {name}, {character}",
+        "Close scan": "Tanca l'escaneig",
+        "Only game masters can check participants in.": "Només els màsters poden registrar l'entrada dels participants.",
+        "QR code of your check-in code": "Codi QR del teu codi d'entrada",
+        "Scan": "Escaneja",
+        "This registration is not accepted. Nobody was checked in.": "Aquesta inscripció no està acceptada. No s'ha registrat cap entrada.",
+        "Too many attempts. Wait a moment and try again.": "Massa intents. Espera un moment i torna-ho a provar.",
+        "Type the code or use a handheld scanner, then press Enter.": "Escriu el codi o fes servir un lector de mà i prem Retorn.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Codi desconegut, o un codi d'un altre esdeveniment. No s'ha registrat cap entrada."
     },
     "nplurals=2; plural=(n != 1);"
 )

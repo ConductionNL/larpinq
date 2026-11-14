@@ -745,7 +745,19 @@ OC.L10N.register(
         "My character sheet": "My character sheet",
         "Open sheet": "Open sheet",
         "Check-in code": "Check-in code",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player."
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.",
+        "Already checked in at {time} by {steward}": "Already checked in at {time} by {steward}",
+        "Camera preview for scanning check-in codes": "Camera preview for scanning check-in codes",
+        "Check-in failed. Try again.": "Check-in failed. Try again.",
+        "Checked in: {name}, {character}": "Checked in: {name}, {character}",
+        "Close scan": "Close scan",
+        "Only game masters can check participants in.": "Only game masters can check participants in.",
+        "QR code of your check-in code": "QR code of your check-in code",
+        "Scan": "Scan",
+        "This registration is not accepted. Nobody was checked in.": "This registration is not accepted. Nobody was checked in.",
+        "Too many attempts. Wait a moment and try again.": "Too many attempts. Wait a moment and try again.",
+        "Type the code or use a handheld scanner, then press Enter.": "Type the code or use a handheld scanner, then press Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Unknown code, or a code for another event. Nobody was checked in."
     },
     "nplurals=2; plural=(n != 1);"
 )

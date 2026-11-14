@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "A minha ficha de personagem",
-        "Open sheet": "Abrir ficha"
+        "Open sheet": "Abrir ficha",
+        "Check-in code": "Código de entrada",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "O código que um steward digitaliza ou escreve à entrada, definido pelo larpinq quando a inscrição é aceite. Mantém-se quando a inscrição passa para outro jogador.",
+        "Already checked in at {time} by {steward}": "Entrada já registada às {time} por {steward}",
+        "Camera preview for scanning check-in codes": "Pré-visualização da câmara para ler códigos de entrada",
+        "Check-in failed. Try again.": "Não foi possível registar a entrada. Tenta de novo.",
+        "Checked in: {name}, {character}": "Entrada registada: {name}, {character}",
+        "Close scan": "Fechar leitura",
+        "Only game masters can check participants in.": "Só os mestres de jogo podem registar a entrada dos participantes.",
+        "QR code of your check-in code": "Código QR do teu código de entrada",
+        "Scan": "Ler código",
+        "This registration is not accepted. Nobody was checked in.": "Esta inscrição não está aceite. Não foi registada nenhuma entrada.",
+        "Too many attempts. Wait a moment and try again.": "Demasiadas tentativas. Espera um momento e tenta de novo.",
+        "Type the code or use a handheld scanner, then press Enter.": "Escreve o código ou usa um leitor portátil e prime Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Código desconhecido, ou um código de outro evento. Não foi registada nenhuma entrada."
     },
     "nplurals=2; plural=(n != 1);"
 )

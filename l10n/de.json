@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mein Charakterbogen",
-        "Open sheet": "Bogen öffnen"
+        "Open sheet": "Bogen öffnen",
+        "Check-in code": "Check-in-Code",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Der Code, den eine Ordnerin oder ein Ordner am Eingang scannt oder eintippt, von larpinq gesetzt, sobald die Anmeldung angenommen ist. Bleibt erhalten, wenn die Anmeldung an eine andere Person übergeht.",
+        "Already checked in at {time} by {steward}": "Bereits um {time} von {steward} eingecheckt",
+        "Camera preview for scanning check-in codes": "Kamerabild zum Scannen von Check-in-Codes",
+        "Check-in failed. Try again.": "Einchecken fehlgeschlagen. Versuche es erneut.",
+        "Checked in: {name}, {character}": "Eingecheckt: {name}, {character}",
+        "Close scan": "Scannen schließen",
+        "Only game masters can check participants in.": "Nur Spielleitungen können Teilnehmende einchecken.",
+        "QR code of your check-in code": "QR-Code deines Check-in-Codes",
+        "Scan": "Scannen",
+        "This registration is not accepted. Nobody was checked in.": "Diese Anmeldung ist nicht angenommen. Niemand wurde eingecheckt.",
+        "Too many attempts. Wait a moment and try again.": "Zu viele Versuche. Warte kurz und versuche es erneut.",
+        "Type the code or use a handheld scanner, then press Enter.": "Tippe den Code ein oder nutze einen Handscanner und drücke dann die Eingabetaste.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Unbekannter Code oder ein Code für eine andere Veranstaltung. Niemand wurde eingecheckt."
     },
     "plurals": {}
 }

@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mäi Personnageblat",
-        "Open sheet": "Blat opmaachen"
+        "Open sheet": "Blat opmaachen",
+        "Check-in code": "Umeldungscode",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "De Code, deen e Steward um Agang scannt oder antippt, vu larpinq gesat, soubal d'Umeldung ugeholl ass. Bleift gläich, wann d'Umeldung un en anere Spiller iwwergeet.",
+        "Already checked in at {time} by {steward}": "Scho ëm {time} vum {steward} ugemellt",
+        "Camera preview for scanning check-in codes": "Kamerabild fir Umeldungscodes ze scannen",
+        "Check-in failed. Try again.": "Umelle feelgeschloen. Prob et nach eng Kéier.",
+        "Checked in: {name}, {character}": "Ugemellt: {name}, {character}",
+        "Close scan": "Scannen zoumaachen",
+        "Only game masters can check participants in.": "Nëmme Spillleeder kënnen Deelhuelend umellen.",
+        "QR code of your check-in code": "QR-Code vun dengem Umeldungscode",
+        "Scan": "Scannen",
+        "This registration is not accepted. Nobody was checked in.": "Dës Umeldung ass net ugeholl. Keen ass ugemellt ginn.",
+        "Too many attempts. Wait a moment and try again.": "Ze vill Versich. Waart e Moment a prob et nach eng Kéier.",
+        "Type the code or use a handheld scanner, then press Enter.": "Tipp de Code an oder benotz en Handscanner an dréck dann op Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Onbekannte Code oder e Code fir en anert Evenement. Keen ass ugemellt ginn."
     },
     "nplurals=2; plural=(n != 1);"
 )

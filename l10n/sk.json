@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Môj denník postavy",
-        "Open sheet": "Otvoriť denník"
+        "Open sheet": "Otvoriť denník",
+        "Check-in code": "Kód príchodu",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kód, ktorý usporiadateľ pri vstupe naskenuje alebo zadá, nastavený larpinq pri prijatí prihlášky. Zostáva rovnaký, keď prihláška prejde na iného hráča.",
+        "Already checked in at {time} by {steward}": "Príchod už zaregistroval {steward} o {time}",
+        "Camera preview for scanning check-in codes": "Náhľad kamery na skenovanie kódov príchodu",
+        "Check-in failed. Try again.": "Registrácia príchodu zlyhala. Skús to znova.",
+        "Checked in: {name}, {character}": "Zaregistrované: {name}, {character}",
+        "Close scan": "Zavrieť skenovanie",
+        "Only game masters can check participants in.": "Príchod účastníkov môžu registrovať iba rozprávači.",
+        "QR code of your check-in code": "QR kód tvojho kódu príchodu",
+        "Scan": "Skenovať",
+        "This registration is not accepted. Nobody was checked in.": "Táto prihláška nie je prijatá. Nikto nebol zaregistrovaný.",
+        "Too many attempts. Wait a moment and try again.": "Príliš veľa pokusov. Chvíľu počkaj a skús to znova.",
+        "Type the code or use a handheld scanner, then press Enter.": "Zadaj kód alebo použi ručnú čítačku a potom stlač Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Neznámy kód alebo kód iného podujatia. Nikto nebol zaregistrovaný."
     },
     "plurals": {}
 }

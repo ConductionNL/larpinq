@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
-        "Open sheet": "Atidaryti lapą"
+        "Open sheet": "Atidaryti lapą",
+        "Check-in code": "Atvykimo kodas",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kodas, kurį tvarkdarys nuskenuoja arba įveda prie įėjimo. Jį nustato larpinq, kai registracija patvirtinama. Jis išlieka, kai registracija pereina kitam žaidėjui.",
+        "Already checked in at {time} by {steward}": "Atvykimas jau užregistruotas {time}, užregistravo {steward}",
+        "Camera preview for scanning check-in codes": "Kameros vaizdas atvykimo kodams nuskenuoti",
+        "Check-in failed. Try again.": "Nepavyko užregistruoti atvykimo. Bandyk dar kartą.",
+        "Checked in: {name}, {character}": "Užregistruota: {name}, {character}",
+        "Close scan": "Uždaryti skenavimą",
+        "Only game masters can check participants in.": "Dalyvių atvykimą gali registruoti tik žaidimo vedėjai.",
+        "QR code of your check-in code": "Tavo atvykimo kodo QR kodas",
+        "Scan": "Skenuoti",
+        "This registration is not accepted. Nobody was checked in.": "Ši registracija nepatvirtinta. Niekas nebuvo užregistruotas.",
+        "Too many attempts. Wait a moment and try again.": "Per daug bandymų. Palauk akimirką ir bandyk dar kartą.",
+        "Type the code or use a handheld scanner, then press Enter.": "Įvesk kodą arba naudok rankinį skaitytuvą, tada paspausk Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Nežinomas kodas arba kito renginio kodas. Niekas nebuvo užregistruotas."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Odpri list"
+        "Open sheet": "Odpri list",
+        "Check-in code": "Koda za prijavo prihoda",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Koda, ki jo redar pri vhodu skenira ali vtipka. Nastavi jo larpinq, ko je prijava sprejeta. Ostane enaka, ko prijava preide na drugega igralca.",
+        "Already checked in at {time} by {steward}": "Prihod je že prijavil {steward} ob {time}",
+        "Camera preview for scanning check-in codes": "Predogled kamere za skeniranje kod za prijavo prihoda",
+        "Check-in failed. Try again.": "Prijava prihoda ni uspela. Poskusi znova.",
+        "Checked in: {name}, {character}": "Prijavljen prihod: {name}, {character}",
+        "Close scan": "Zapri skeniranje",
+        "Only game masters can check participants in.": "Prihod udeležencev lahko prijavijo samo vodje igre.",
+        "QR code of your check-in code": "QR-koda tvoje kode za prijavo prihoda",
+        "Scan": "Skeniraj",
+        "This registration is not accepted. Nobody was checked in.": "Ta prijava ni sprejeta. Nihče ni bil prijavljen.",
+        "Too many attempts. Wait a moment and try again.": "Preveč poskusov. Malo počakaj in poskusi znova.",
+        "Type the code or use a handheld scanner, then press Enter.": "Vtipkaj kodo ali uporabi ročni čitalnik in nato pritisni Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Neznana koda ali koda drugega dogodka. Nihče ni bil prijavljen."
     },
     "nplurals=2; plural=(n != 1);"
 )

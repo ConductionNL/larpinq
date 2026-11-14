@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mia fegl da persunagi",
-        "Open sheet": "Avrir il fegl"
+        "Open sheet": "Avrir il fegl",
+        "Check-in code": "Code d'annunzia",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il code ch'in steward scannescha u tippa a l'entrada, fixà da larpinq cura che l'annunzia è acceptada. Resta il medem cura che l'annunzia passa ad in auter giugader.",
+        "Already checked in at {time} by {steward}": "L'arrivada è gia vegnida annunziada a las {time} da {steward}",
+        "Camera preview for scanning check-in codes": "Purschida da la camera per scannar codes d'annunzia",
+        "Check-in failed. Try again.": "L'annunzia da l'arrivada n'è betg reussida. Emprova anc ina giada.",
+        "Checked in: {name}, {character}": "Arrivada annunziada: {name}, {character}",
+        "Close scan": "Serrar la scannaziun",
+        "Only game masters can check participants in.": "Mo ils manaders dal gieu pon annunziar l'arrivada dals participants.",
+        "QR code of your check-in code": "Code QR da tes code d'annunzia",
+        "Scan": "Scannar",
+        "This registration is not accepted. Nobody was checked in.": "Questa annunzia n'è betg acceptada. Nagin n'è vegnì annunzià.",
+        "Too many attempts. Wait a moment and try again.": "Memia bleras emprovas. Spetga in mument ed emprova anc ina giada.",
+        "Type the code or use a handheld scanner, then press Enter.": "Tippa il code u dovra in scanner a maun e smatga lura Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Code nunenconuschent u in code d'in auter eveniment. Nagin n'è vegnì annunzià."
     },
     "nplurals=2; plural=(n != 1);"
 )

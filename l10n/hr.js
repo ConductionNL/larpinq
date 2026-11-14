@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Otvori list"
+        "Open sheet": "Otvori list",
+        "Check-in code": "Kôd za prijavu dolaska",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kôd koji redar na ulazu skenira ili upiše, a postavlja ga larpinq kada je prijava prihvaćena. Ostaje isti kada prijava prijeđe na drugog igrača.",
+        "Already checked in at {time} by {steward}": "Dolazak je već prijavio {steward} u {time}",
+        "Camera preview for scanning check-in codes": "Pregled kamere za skeniranje kodova za prijavu dolaska",
+        "Check-in failed. Try again.": "Prijava dolaska nije uspjela. Pokušaj ponovno.",
+        "Checked in: {name}, {character}": "Prijavljen dolazak: {name}, {character}",
+        "Close scan": "Zatvori skeniranje",
+        "Only game masters can check participants in.": "Dolazak sudionika mogu prijaviti samo voditelji igre.",
+        "QR code of your check-in code": "QR kôd tvog kôda za prijavu dolaska",
+        "Scan": "Skeniraj",
+        "This registration is not accepted. Nobody was checked in.": "Ova prijava nije prihvaćena. Nitko nije prijavljen.",
+        "Too many attempts. Wait a moment and try again.": "Previše pokušaja. Pričekaj trenutak i pokušaj ponovno.",
+        "Type the code or use a handheld scanner, then press Enter.": "Upiši kôd ili upotrijebi ručni skener, a zatim pritisni Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Nepoznat kôd ili kôd drugog događaja. Nitko nije prijavljen."
     },
     "nplurals=2; plural=(n != 1);"
 )

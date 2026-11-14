@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой аркуш персанажа",
-        "Open sheet": "Адкрыць аркуш"
+        "Open sheet": "Адкрыць аркуш",
+        "Check-in code": "Код рэгістрацыі прыбыцця",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Код, які распарадчык скануе або ўводзіць на ўваходзе. larpinq задае яго, калі заяўка прынятая. Захоўваецца, калі заяўка пераходзіць да іншага гульца.",
+        "Already checked in at {time} by {steward}": "Прыбыццё ўжо зарэгістравана ў {time}, рэгістраваў {steward}",
+        "Camera preview for scanning check-in codes": "Выява з камеры для сканавання кодаў прыбыцця",
+        "Check-in failed. Try again.": "Не ўдалося зарэгістраваць прыбыццё. Паспрабуй яшчэ раз.",
+        "Checked in: {name}, {character}": "Прыбыццё зарэгістравана: {name}, {character}",
+        "Close scan": "Закрыць сканаванне",
+        "Only game masters can check participants in.": "Рэгістраваць прыбыццё ўдзельнікаў могуць толькі майстры гульні.",
+        "QR code of your check-in code": "QR-код твайго кода прыбыцця",
+        "Scan": "Сканаваць",
+        "This registration is not accepted. Nobody was checked in.": "Гэтая заяўка не прынятая. Нікога не зарэгістравана.",
+        "Too many attempts. Wait a moment and try again.": "Занадта шмат спроб. Пачакай крыху і паспрабуй яшчэ раз.",
+        "Type the code or use a handheld scanner, then press Enter.": "Увядзі код або скарыстайся ручным сканерам, потым націсні Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Невядомы код або код іншага мерапрыемства. Нікога не зарэгістравана."
     },
     "nplurals=2; plural=(n != 1);"
 )

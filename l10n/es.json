@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mi hoja de personaje",
-        "Open sheet": "Abrir hoja"
+        "Open sheet": "Abrir hoja",
+        "Check-in code": "Código de entrada",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "El código que un steward escanea o teclea en la puerta, fijado por larpinq cuando se acepta la inscripción. Se conserva cuando la inscripción pasa a otro jugador.",
+        "Already checked in at {time} by {steward}": "Entrada ya registrada a las {time} por {steward}",
+        "Camera preview for scanning check-in codes": "Vista de la cámara para escanear códigos de entrada",
+        "Check-in failed. Try again.": "No se pudo registrar la entrada. Inténtalo de nuevo.",
+        "Checked in: {name}, {character}": "Entrada registrada: {name}, {character}",
+        "Close scan": "Cerrar escaneo",
+        "Only game masters can check participants in.": "Solo los máster pueden registrar la entrada de los participantes.",
+        "QR code of your check-in code": "Código QR de tu código de entrada",
+        "Scan": "Escanear",
+        "This registration is not accepted. Nobody was checked in.": "Esta inscripción no está aceptada. No se registró ninguna entrada.",
+        "Too many attempts. Wait a moment and try again.": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+        "Type the code or use a handheld scanner, then press Enter.": "Escribe el código o usa un lector de mano y pulsa Intro.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Código desconocido, o un código de otro evento. No se registró ninguna entrada."
     },
     "plurals": {}
 }

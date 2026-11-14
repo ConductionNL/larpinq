@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Моят лист на персонажа",
-        "Open sheet": "Отвори листа"
+        "Open sheet": "Отвори листа",
+        "Check-in code": "Код за регистриране",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Кодът, който разпоредителят сканира или въвежда на входа, зададен от larpinq, когато записването бъде прието. Запазва се, когато записването премине към друг играч.",
+        "Already checked in at {time} by {steward}": "Вече регистриран в {time} от {steward}",
+        "Camera preview for scanning check-in codes": "Преглед от камерата за сканиране на кодове за регистриране",
+        "Check-in failed. Try again.": "Регистрирането не бе успешно. Опитай отново.",
+        "Checked in: {name}, {character}": "Регистриран: {name}, {character}",
+        "Close scan": "Затвори сканирането",
+        "Only game masters can check participants in.": "Само водещите на играта могат да регистрират участниците.",
+        "QR code of your check-in code": "QR код на твоя код за регистриране",
+        "Scan": "Сканирай",
+        "This registration is not accepted. Nobody was checked in.": "Това записване не е прието. Никой не е регистриран.",
+        "Too many attempts. Wait a moment and try again.": "Твърде много опити. Изчакай малко и опитай отново.",
+        "Type the code or use a handheld scanner, then press Enter.": "Въведи кода или използвай ръчен скенер, след което натисни Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Непознат код или код за друго събитие. Никой не е регистриран."
     },
     "plurals": {}
 }

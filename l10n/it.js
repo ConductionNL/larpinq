@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La mia scheda personaggio",
-        "Open sheet": "Apri scheda"
+        "Open sheet": "Apri scheda",
+        "Check-in code": "Codice di check-in",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il codice che uno steward scansiona o digita all'ingresso, impostato da larpinq quando l'iscrizione viene accettata. Resta invariato quando l'iscrizione passa a un altro giocatore.",
+        "Already checked in at {time} by {steward}": "Presenza già registrata alle {time} da {steward}",
+        "Camera preview for scanning check-in codes": "Anteprima della fotocamera per scansionare i codici di check-in",
+        "Check-in failed. Try again.": "Registrazione della presenza non riuscita. Riprova.",
+        "Checked in: {name}, {character}": "Presenza registrata: {name}, {character}",
+        "Close scan": "Chiudi scansione",
+        "Only game masters can check participants in.": "Solo i master possono registrare la presenza dei partecipanti.",
+        "QR code of your check-in code": "Codice QR del tuo codice di check-in",
+        "Scan": "Scansiona",
+        "This registration is not accepted. Nobody was checked in.": "Questa iscrizione non è accettata. Nessuna presenza è stata registrata.",
+        "Too many attempts. Wait a moment and try again.": "Troppi tentativi. Attendi un momento e riprova.",
+        "Type the code or use a handheld scanner, then press Enter.": "Digita il codice o usa uno scanner portatile, poi premi Invio.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Codice sconosciuto, o codice di un altro evento. Nessuna presenza è stata registrata."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakterlapom",
-        "Open sheet": "Lap megnyitása"
+        "Open sheet": "Lap megnyitása",
+        "Check-in code": "Beléptetési kód",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "A kód, amelyet a rendező a bejáratnál beolvas vagy begépel. A larpinq állítja be, amikor a jelentkezést elfogadják. Megmarad, ha a jelentkezés másik játékoshoz kerül.",
+        "Already checked in at {time} by {steward}": "Már belépett {time}-kor, rögzítette: {steward}",
+        "Camera preview for scanning check-in codes": "Kamera előnézete a beléptetési kódok beolvasásához",
+        "Check-in failed. Try again.": "A belépés rögzítése sikertelen. Próbáld újra.",
+        "Checked in: {name}, {character}": "Belépett: {name}, {character}",
+        "Close scan": "Beolvasás bezárása",
+        "Only game masters can check participants in.": "A résztvevők belépését csak a mesélők rögzíthetik.",
+        "QR code of your check-in code": "A beléptetési kódod QR-kódja",
+        "Scan": "Beolvasás",
+        "This registration is not accepted. Nobody was checked in.": "Ez a jelentkezés nincs elfogadva. Senki sem lépett be.",
+        "Too many attempts. Wait a moment and try again.": "Túl sok próbálkozás. Várj egy kicsit, és próbáld újra.",
+        "Type the code or use a handheld scanner, then press Enter.": "Írd be a kódot, vagy használj kézi olvasót, majd nyomd meg az Entert.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Ismeretlen kód, vagy egy másik esemény kódja. Senki sem lépett be."
     },
     "plurals": {}
 }

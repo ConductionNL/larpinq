@@ -772,7 +772,21 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mana tēla lapa",
-        "Open sheet": "Atvērt lapu"
+        "Open sheet": "Atvērt lapu",
+        "Check-in code": "Ierašanās kods",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kods, ko kārtības uzraugs pie ieejas noskenē vai ieraksta. To iestata larpinq, kad pieteikums ir apstiprināts. Tas paliek nemainīgs, ja pieteikums pāriet citam spēlētājam.",
+        "Already checked in at {time} by {steward}": "Ierašanās jau reģistrēta {time}, reģistrēja {steward}",
+        "Camera preview for scanning check-in codes": "Kameras skats ierašanās kodu skenēšanai",
+        "Check-in failed. Try again.": "Ierašanos neizdevās reģistrēt. Mēģini vēlreiz.",
+        "Checked in: {name}, {character}": "Reģistrēts: {name}, {character}",
+        "Close scan": "Aizvērt skenēšanu",
+        "Only game masters can check participants in.": "Dalībnieku ierašanos var reģistrēt tikai spēles vadītāji.",
+        "QR code of your check-in code": "Tava ierašanās koda QR kods",
+        "Scan": "Skenēt",
+        "This registration is not accepted. Nobody was checked in.": "Šis pieteikums nav apstiprināts. Neviens netika reģistrēts.",
+        "Too many attempts. Wait a moment and try again.": "Pārāk daudz mēģinājumu. Uzgaidi brīdi un mēģini vēlreiz.",
+        "Type the code or use a handheld scanner, then press Enter.": "Ieraksti kodu vai izmanto rokas skeneri un pēc tam nospied Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Nezināms kods vai cita pasākuma kods. Neviens netika reģistrēts."
     },
     "plurals": {}
 }

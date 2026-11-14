@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой лист персонажа",
-        "Open sheet": "Открыть лист"
+        "Open sheet": "Открыть лист",
+        "Check-in code": "Код регистрации прибытия",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Код, который распорядитель сканирует или вводит на входе. larpinq задаёт его, когда заявка принята. Сохраняется, когда заявка переходит к другому игроку.",
+        "Already checked in at {time} by {steward}": "Прибытие уже зарегистрировано в {time}, регистрировал {steward}",
+        "Camera preview for scanning check-in codes": "Изображение с камеры для сканирования кодов прибытия",
+        "Check-in failed. Try again.": "Не удалось зарегистрировать прибытие. Попробуй ещё раз.",
+        "Checked in: {name}, {character}": "Прибытие зарегистрировано: {name}, {character}",
+        "Close scan": "Закрыть сканирование",
+        "Only game masters can check participants in.": "Регистрировать прибытие участников могут только мастера.",
+        "QR code of your check-in code": "QR-код твоего кода прибытия",
+        "Scan": "Сканировать",
+        "This registration is not accepted. Nobody was checked in.": "Эта заявка не принята. Никто не зарегистрирован.",
+        "Too many attempts. Wait a moment and try again.": "Слишком много попыток. Подожди немного и попробуй ещё раз.",
+        "Type the code or use a handheld scanner, then press Enter.": "Введи код или воспользуйся ручным сканером, затем нажми Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Неизвестный код или код другого мероприятия. Никто не зарегистрирован."
     },
     "nplurals=2; plural=(n != 1);"
 )

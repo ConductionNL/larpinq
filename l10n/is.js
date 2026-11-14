@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Persónublaðið mitt",
-        "Open sheet": "Opna blað"
+        "Open sheet": "Opna blað",
+        "Check-in code": "Innritunarkóði",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kóðinn sem gæslumaður skannar eða slær inn við innganginn, settur af larpinq þegar skráningin er samþykkt. Helst óbreyttur þegar skráningin færist til annars leikmanns.",
+        "Already checked in at {time} by {steward}": "Þegar mætt kl. {time}, skráð af {steward}",
+        "Camera preview for scanning check-in codes": "Myndavélarsýn til að skanna innritunarkóða",
+        "Check-in failed. Try again.": "Ekki tókst að skrá mætingu. Reyndu aftur.",
+        "Checked in: {name}, {character}": "Mæting skráð: {name}, {character}",
+        "Close scan": "Loka skönnun",
+        "Only game masters can check participants in.": "Aðeins stjórnendur leiksins geta skráð mætingu þátttakenda.",
+        "QR code of your check-in code": "QR-kóði innritunarkóðans þíns",
+        "Scan": "Skanna",
+        "This registration is not accepted. Nobody was checked in.": "Þessi skráning er ekki samþykkt. Enginn var skráður inn.",
+        "Too many attempts. Wait a moment and try again.": "Of margar tilraunir. Bíddu aðeins og reyndu aftur.",
+        "Type the code or use a handheld scanner, then press Enter.": "Sláðu inn kóðann eða notaðu handskanna og ýttu svo á Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Óþekktur kóði, eða kóði fyrir annan viðburð. Enginn var skráður inn."
     },
     "nplurals=2; plural=(n != 1);"
 )

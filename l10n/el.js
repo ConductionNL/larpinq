@@ -777,7 +777,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
-        "Open sheet": "Άνοιγμα φύλλου"
+        "Open sheet": "Άνοιγμα φύλλου",
+        "Check-in code": "Κωδικός προσέλευσης",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Ο κωδικός που σαρώνει ή πληκτρολογεί ο υπεύθυνος στην είσοδο, που ορίζεται από το larpinq όταν γίνεται δεκτή η εγγραφή. Παραμένει ίδιος όταν η εγγραφή περνά σε άλλον παίκτη.",
+        "Already checked in at {time} by {steward}": "Η προσέλευση έχει ήδη δηλωθεί στις {time} από {steward}",
+        "Camera preview for scanning check-in codes": "Προεπισκόπηση κάμερας για σάρωση κωδικών προσέλευσης",
+        "Check-in failed. Try again.": "Η δήλωση προσέλευσης απέτυχε. Δοκίμασε ξανά.",
+        "Checked in: {name}, {character}": "Δηλώθηκε προσέλευση: {name}, {character}",
+        "Close scan": "Κλείσιμο σάρωσης",
+        "Only game masters can check participants in.": "Μόνο οι αφηγητές μπορούν να δηλώνουν την προσέλευση των συμμετεχόντων.",
+        "QR code of your check-in code": "Κωδικός QR του κωδικού προσέλευσής σου",
+        "Scan": "Σάρωση",
+        "This registration is not accepted. Nobody was checked in.": "Αυτή η εγγραφή δεν έχει γίνει δεκτή. Δεν δηλώθηκε κανείς.",
+        "Too many attempts. Wait a moment and try again.": "Πάρα πολλές προσπάθειες. Περίμενε λίγο και δοκίμασε ξανά.",
+        "Type the code or use a handheld scanner, then press Enter.": "Πληκτρολόγησε τον κωδικό ή χρησιμοποίησε φορητό σαρωτή και πάτησε Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Άγνωστος κωδικός ή κωδικός άλλης εκδήλωσης. Δεν δηλώθηκε κανείς."
     },
     "nplurals=2; plural=(n != 1);"
 )
