@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Two curated MCP tools for Hermiq agents: `awardXpToAttendees` awards the same XP, with a reason, to every character checked in at one event (the server picks the recipients; a write with honest hints, so Hermiq asks a game master first, and OpenRegister's `gamemasters` rule on `xpAward` still decides each write), and `getCharacterSheet` reads a character's calculated sheet without the game master's private notes. `LarpinqScannableServices` opts exactly these two in; `xpAward` gains `awardedVia` (`mcp` on agent awards). Register 1.4.0.
+
 ## [0.3.0] - 2026-09-06
 
 ### Added
