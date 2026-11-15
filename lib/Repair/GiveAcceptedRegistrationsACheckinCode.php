@@ -92,26 +92,42 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 			return;
 		}
 
-		$missing = array_filter(
-			$accepted,
-			static fn (mixed $registration): bool => is_array($registration) === true
-				&& (string)($registration['checkinCode'] ?? '') === ''
-				&& (string)($registration['id'] ?? '') !== ''
-		);
-
-		$done = 0;
-		foreach ($missing as $registration) {
-			$uuid = (string)$registration['id'];
-			unset($registration['@self']);
-			$registration['checkinCode'] = CheckinCode::generate();
-			try {
-				$this->objectFetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $registration, uuid: $uuid);
-				$done++;
-			} catch (Throwable $e) {
-				$this->logger->warning('Larpinq: could not give registration {id} a check-in code', ['id' => $uuid, 'exception' => $e->getMessage()]);
-			}
-		}
+		$missing = array_filter($accepted, [self::class, 'lacksCode']);
+		$done    = count(array_filter(array_map([$this, 'giveCode'], $missing)));
 
 		$output->info($done . ' of ' . count($missing) . ' accepted registrations without a check-in code now have one.');
 	}//end run()
+
+	/**
+	 * Whether a stored registration has an id but no check-in code.
+	 *
+	 * @param mixed $registration The registration as the register returned it.
+	 *
+	 * @return bool True when it needs a code.
+	 */
+	private static function lacksCode(mixed $registration): bool {
+		return is_array($registration) === true
+			&& (string)($registration['checkinCode'] ?? '') === ''
+			&& (string)($registration['id'] ?? '') !== '';
+	}//end lacksCode()
+
+	/**
+	 * Give one registration a fresh check-in code.
+	 *
+	 * @param array<string, mixed> $registration The registration, with an id.
+	 *
+	 * @return bool True when it was saved.
+	 */
+	private function giveCode(array $registration): bool {
+		$uuid = (string)$registration['id'];
+		unset($registration['@self']);
+		$registration['checkinCode'] = CheckinCode::generate();
+		try {
+			$this->objectFetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $registration, uuid: $uuid);
+			return true;
+		} catch (Throwable $e) {
+			$this->logger->warning('Larpinq: could not give registration {id} a check-in code', ['id' => $uuid, 'exception' => $e->getMessage()]);
+			return false;
+		}
+	}//end giveCode()
 }//end class

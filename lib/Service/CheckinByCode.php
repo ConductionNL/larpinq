@@ -76,41 +76,109 @@ class CheckinByCode {
 	 */
 	public function checkIn(string $eventId, string $code, string $actingUid): array {
 		$registration = $this->registrationFor(code: CheckinCode::normalise(code: $code));
-		if ($registration === null || (string)($registration['event'] ?? '') !== $eventId) {
+		$refusal      = $this->refusal(registration: $registration, eventId: $eventId);
+		if ($refusal !== null) {
+			return $refusal;
+		}
+
+		return $this->admit(registration: $registration, actingUid: $actingUid);
+	}//end checkIn()
+
+	/**
+	 * Why a registration cannot be checked in at an event, or null when it can.
+	 *
+	 * @param array<string, mixed>|null $registration The registration holding the code.
+	 * @param string                    $eventId      The event at whose door the code is used.
+	 *
+	 * @return array{0: int, 1: array<string, mixed>}|null The HTTP status and the answer.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 */
+	private function refusal(array|null $registration, string $eventId): array|null {
+		if ($registration === null || self::text(row: $registration, key: 'event') !== $eventId) {
 			return [404, ['status' => 'unknown']];
 		}
 
-		if ((string)($registration['status'] ?? '') !== RegistrationService::ACCEPTED) {
+		if (self::text(row: $registration, key: 'status') !== RegistrationService::ACCEPTED) {
 			return [409, ['status' => 'not-accepted']];
 		}
 
-		$characterId = (string)($registration['character'] ?? '');
-		$earlier = $this->checkedIn(eventId: $eventId, characterId: $characterId);
+		return null;
+	}//end refusal()
+
+	/**
+	 * Check in the character of an accepted registration, once.
+	 *
+	 * @param array<string, mixed> $registration The accepted registration of this event.
+	 * @param string               $actingUid    The game master checking in.
+	 *
+	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 */
+	private function admit(array $registration, string $actingUid): array {
+		$eventId     = self::text(row: $registration, key: 'event');
+		$characterId = self::text(row: $registration, key: 'character');
+		$earlier     = $this->checkedIn(eventId: $eventId, characterId: $characterId);
 		if ($earlier !== null) {
-			return [
-				200,
-				[
-					'status' => 'already',
-					'at' => (string)($earlier['checkedInAt'] ?? ''),
-					'by' => $this->displayName(uid: (string)($earlier['checkedInBy'] ?? '')),
-				],
-			];
+			return [200, $this->alreadyAnswer(earlier: $earlier)];
 		}
 
-		$saved = $this->roster->recordAttendance(eventId: $eventId, characterId: $characterId, status: self::CHECKED_IN, actingUid: $actingUid);
+		return $this->record(registration: $registration, actingUid: $actingUid);
+	}//end admit()
+
+	/**
+	 * Record the check-in and answer with who was checked in.
+	 *
+	 * @param array<string, mixed> $registration The accepted registration of this event.
+	 * @param string               $actingUid    The game master checking in.
+	 *
+	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
+	 */
+	private function record(array $registration, string $actingUid): array {
+		$characterId = self::text(row: $registration, key: 'character');
+		$saved       = $this->roster->recordAttendance(
+			eventId: self::text(row: $registration, key: 'event'),
+			characterId: $characterId,
+			status: self::CHECKED_IN,
+			actingUid: $actingUid
+		);
 		if ($saved === null) {
 			return [424, ['status' => 'unavailable']];
 		}
 
+		return [200, $this->checkedInAnswer(registration: $registration)];
+	}//end record()
+
+	/**
+	 * The answer for a participant who was just checked in: player and character.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return array<string, mixed> The answer.
+	 */
+	private function checkedInAnswer(array $registration): array {
 		return [
-			200,
-			[
-				'status' => self::CHECKED_IN,
-				'name' => $this->displayName(uid: (string)($registration['playerUid'] ?? '')),
-				'character' => $this->characterName(characterId: $characterId),
-			],
+			'status' => self::CHECKED_IN,
+			'name' => $this->displayName(uid: self::text(row: $registration, key: 'playerUid')),
+			'character' => $this->characterName(characterId: self::text(row: $registration, key: 'character')),
 		];
-	}//end checkIn()
+	}//end checkedInAnswer()
+
+	/**
+	 * The answer for a character that was already checked in.
+	 *
+	 * @param array<string, mixed> $earlier The earlier attendance record.
+	 *
+	 * @return array<string, mixed> The answer: when and by whom.
+	 */
+	private function alreadyAnswer(array $earlier): array {
+		return [
+			'status' => 'already',
+			'at' => self::text(row: $earlier, key: 'checkedInAt'),
+			'by' => $this->displayName(uid: self::text(row: $earlier, key: 'checkedInBy')),
+		];
+	}//end alreadyAnswer()
 
 	/**
 	 * The registration holding a code, or null.
@@ -119,7 +187,7 @@ class CheckinByCode {
 	 *
 	 * @return array<string, mixed>|null The registration.
 	 */
-	private function registrationFor(string $code): ?array {
+	private function registrationFor(string $code): array|null {
 		if ($code === '') {
 			return null;
 		}
@@ -131,7 +199,7 @@ class CheckinByCode {
 		}
 
 		$first = ($found[0] ?? null);
-		if (is_array($first) === false || (string)($first['checkinCode'] ?? '') !== $code) {
+		if (is_array($first) === false || self::text(row: $first, key: 'checkinCode') !== $code) {
 			return null;
 		}
 
@@ -146,7 +214,7 @@ class CheckinByCode {
 	 *
 	 * @return array<string, mixed>|null The attendance record.
 	 */
-	private function checkedIn(string $eventId, string $characterId): ?array {
+	private function checkedIn(string $eventId, string $characterId): array|null {
 		try {
 			$records = $this->fetcher->getObjects(objectType: 'attendance', limit: 1, offset: 0, filters: ['event' => $eventId, 'character' => $characterId]);
 		} catch (Throwable $e) {
@@ -154,16 +222,39 @@ class CheckinByCode {
 		}
 
 		foreach ($records as $record) {
-			if (is_array($record) === true
-				&& (string)($record['character'] ?? '') === $characterId
-				&& (string)($record['status'] ?? '') === self::CHECKED_IN
-			) {
+			if ($this->isCheckIn(record: $record, characterId: $characterId) === true) {
 				return $record;
 			}
 		}
 
 		return null;
 	}//end checkedIn()
+
+	/**
+	 * Whether an attendance record is a check-in of the character.
+	 *
+	 * @param mixed  $record      The record as the register returned it.
+	 * @param string $characterId The character.
+	 *
+	 * @return bool True for a checked-in record of that character.
+	 */
+	private function isCheckIn(mixed $record, string $characterId): bool {
+		return is_array($record) === true
+			&& self::text(row: $record, key: 'character') === $characterId
+			&& self::text(row: $record, key: 'status') === self::CHECKED_IN;
+	}//end isCheckIn()
+
+	/**
+	 * A field of a register row as a string, '' when absent.
+	 *
+	 * @param array<string, mixed> $row The row.
+	 * @param string               $key The field.
+	 *
+	 * @return string The value.
+	 */
+	private static function text(array $row, string $key): string {
+		return (string)($row[$key] ?? '');
+	}//end text()
 
 	/**
 	 * A user's display name, else the uid.

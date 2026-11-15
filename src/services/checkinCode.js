@@ -51,19 +51,25 @@ export async function fetchCheckinCode(registrationId) {
 		return ''
 	}
 	try {
-		const response = await fetch(
-			generateUrl(`${REGISTRATION}/${encodeURIComponent(registrationId)}`)
-				+ '?_reveal=checkinCode',
-			{ headers: jsonHeaders() },
-		)
-		if (!response.ok) {
-			return ''
-		}
-		const body = await response.json()
-		return normaliseCode(body?.checkinCode)
+		return normaliseCode((await readRevealed(registrationId))?.checkinCode)
 	} catch {
 		return ''
 	}
+}
+
+/**
+ * One registration read with its check-in code revealed.
+ *
+ * @param {string} registrationId The registration UUID.
+ * @return {Promise<object|null>} The registration, or null when the read is refused.
+ */
+async function readRevealed(registrationId) {
+	const response = await fetch(
+		generateUrl(`${REGISTRATION}/${encodeURIComponent(registrationId)}`)
+			+ '?_reveal=checkinCode',
+		{ headers: jsonHeaders() },
+	)
+	return response.ok ? response.json() : null
 }
 
 /**
@@ -84,13 +90,26 @@ export function qrDrawing(code) {
 	const { modules } = QRCode.create(valid, { errorCorrectionLevel: 'M' })
 	const parts = []
 	for (let row = 0; row < modules.size; row++) {
-		for (let col = 0; col < modules.size; col++) {
-			if (modules.get(row, col)) {
-				parts.push(`M${col} ${row}h1v1h-1z`)
-			}
-		}
+		parts.push(rowPath(modules, row))
 	}
 	return { size: modules.size, path: parts.join('') }
+}
+
+/**
+ * The path of the dark modules of one QR code row.
+ *
+ * @param {{size: number, get: (row: number, col: number) => boolean}} modules The QR code's module matrix.
+ * @param {number} row The row.
+ * @return {string} The row's path segments.
+ */
+function rowPath(modules, row) {
+	let path = ''
+	for (let col = 0; col < modules.size; col++) {
+		if (modules.get(row, col)) {
+			path += `M${col} ${row}h1v1h-1z`
+		}
+	}
+	return path
 }
 
 /**
@@ -110,31 +129,54 @@ export async function checkInByCode(eventId, code) {
 		return { status: 'unknown' }
 	}
 	try {
-		const response = await fetch(
-			generateUrl(
-				`/apps/larpinq/api/events/${encodeURIComponent(eventId)}/checkin-code`,
-			),
-			{
-				method: 'POST',
-				headers: ocsJsonHeaders(),
-				body: JSON.stringify({ code: valid }),
-			},
-		)
-		if (response.status === 403) {
-			return { status: 'refused' }
-		}
-		if (response.status === 429) {
-			return { status: 'busy' }
-		}
-		const body = await response.json().catch(() => ({}))
-		const known = ['checked-in', 'already', 'not-accepted', 'unknown']
-		if (known.includes(body?.status)) {
-			return body
-		}
-		return { status: 'failed' }
+		return await answerOf(await postCode(eventId, valid))
 	} catch {
 		return { status: 'failed' }
 	}
+}
+
+/**
+ * The statuses the check-in endpoint answers with in its body.
+ */
+const KNOWN_STATUSES = ['checked-in', 'already', 'not-accepted', 'unknown']
+
+/**
+ * The statuses an HTTP refusal maps to, before any body is read.
+ */
+const HTTP_STATUSES = { 403: 'refused', 429: 'busy' }
+
+/**
+ * Post a valid code to the check-in endpoint of an event.
+ *
+ * @param {string} eventId The event UUID.
+ * @param {string} code The normalised code.
+ * @return {Promise<Response>} The response.
+ */
+function postCode(eventId, code) {
+	return fetch(
+		generateUrl(
+			`/apps/larpinq/api/events/${encodeURIComponent(eventId)}/checkin-code`,
+		),
+		{
+			method: 'POST',
+			headers: ocsJsonHeaders(),
+			body: JSON.stringify({ code }),
+		},
+	)
+}
+
+/**
+ * larpinq's answer to a check-in, from the endpoint's response.
+ *
+ * @param {Response} response The response.
+ * @return {Promise<object>} The answer, `{status: 'failed'}` for anything unexpected.
+ */
+async function answerOf(response) {
+	if (HTTP_STATUSES[response.status]) {
+		return { status: HTTP_STATUSES[response.status] }
+	}
+	const body = await response.json().catch(() => ({}))
+	return KNOWN_STATUSES.includes(body?.status) ? body : { status: 'failed' }
 }
 
 /**
@@ -152,6 +194,50 @@ function clockTime(at) {
 }
 
 /**
+ * The scan panel's line per answer status. Each entry calls t() with its
+ * literal source string, so the extractor still finds every one.
+ */
+const RESULT_MESSAGES = {
+	'checked-in': (t, result) => ({
+		ok: true,
+		text: t('larpinq', 'Checked in: {name}, {character}', {
+			name: result.name ?? '',
+			character: result.character ?? '',
+		}),
+	}),
+	already: (t, result) => ({
+		ok: false,
+		text: t('larpinq', 'Already checked in at {time} by {steward}', {
+			time: clockTime(result.at),
+			steward: result.by ?? '',
+		}),
+	}),
+	'not-accepted': (t) => ({
+		ok: false,
+		text: t(
+			'larpinq',
+			'This registration is not accepted. Nobody was checked in.',
+		),
+	}),
+	unknown: (t) => ({
+		ok: false,
+		text: t(
+			'larpinq',
+			'Unknown code, or a code for another event. Nobody was checked in.',
+		),
+	}),
+	refused: (t) => ({
+		ok: false,
+		text: t('larpinq', 'Only game masters can check participants in.'),
+	}),
+	busy: (t) => ({
+		ok: false,
+		text: t('larpinq', 'Too many attempts. Wait a moment and try again.'),
+	}),
+	failed: (t) => ({ ok: false, text: t('larpinq', 'Check-in failed. Try again.') }),
+}
+
+/**
  * The line the scan panel shows for an answer, and whether it is good news.
  *
  * @param {(app: string, text: string, vars?: object) => string} t The translate function.
@@ -161,53 +247,6 @@ function clockTime(at) {
  * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
 export function resultMessage(t, result) {
-	switch (result?.status) {
-		case 'checked-in':
-			return {
-				ok: true,
-				text: t('larpinq', 'Checked in: {name}, {character}', {
-					name: result.name ?? '',
-					character: result.character ?? '',
-				}),
-			}
-		case 'already':
-			return {
-				ok: false,
-				text: t('larpinq', 'Already checked in at {time} by {steward}', {
-					time: clockTime(result.at),
-					steward: result.by ?? '',
-				}),
-			}
-		case 'not-accepted':
-			return {
-				ok: false,
-				text: t(
-					'larpinq',
-					'This registration is not accepted. Nobody was checked in.',
-				),
-			}
-		case 'unknown':
-			return {
-				ok: false,
-				text: t(
-					'larpinq',
-					'Unknown code, or a code for another event. Nobody was checked in.',
-				),
-			}
-		case 'refused':
-			return {
-				ok: false,
-				text: t('larpinq', 'Only game masters can check participants in.'),
-			}
-		case 'busy':
-			return {
-				ok: false,
-				text: t(
-					'larpinq',
-					'Too many attempts. Wait a moment and try again.',
-				),
-			}
-		default:
-			return { ok: false, text: t('larpinq', 'Check-in failed. Try again.') }
-	}
+	const message = RESULT_MESSAGES[result?.status] ?? RESULT_MESSAGES.failed
+	return message(t, result)
 }

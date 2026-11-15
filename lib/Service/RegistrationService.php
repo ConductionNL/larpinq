@@ -142,16 +142,13 @@ class RegistrationService {
 			return array_merge($changes, ['status' => self::PENDING]);
 		}
 
-		$changes = array_merge(
-			$changes,
-			[
-				'status' => $this->placeOutcome(event: $event, registration: $registration, excludeId: ''),
-				'decidedAt' => $this->now(),
-				'decidedBy' => self::AUTOMATIC,
-			]
-		);
+		$placement = $this->placement(event: $event, registration: $registration);
 
-		return array_merge($changes, self::checkinCodeFor(registration: $registration, status: $changes['status']));
+		return array_merge(
+			$changes,
+			['status' => $placement['status'], 'decidedAt' => $this->now(), 'decidedBy' => self::AUTOMATIC],
+			$placement
+		);
 	}//end beforeCreate()
 
 	/**
@@ -174,28 +171,71 @@ class RegistrationService {
 			return [];
 		}
 
-		$stamp = ['decidedAt' => $this->now(), 'decidedBy' => $actingUid];
-		if ($this->promoting === true || $actingUid === '') {
-			$stamp['decidedBy'] = self::AUTOMATIC;
-		}
-
+		$stamp = $this->stamp(actingUid: $actingUid);
 		if ($status !== self::ACCEPTED) {
 			return $stamp;
 		}
 
+		return array_merge($stamp, $this->acceptance(new: $new, old: $old));
+	}//end beforeUpdate()
+
+	/**
+	 * Who and when a status change is decided: the acting user, or automatic
+	 * for a promotion or a change without a user.
+	 *
+	 * @param string $actingUid Who asked for the change.
+	 *
+	 * @return array<string, string> `decidedAt` and `decidedBy`.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	private function stamp(string $actingUid): array {
+		$decidedBy = $actingUid;
+		if ($this->promoting === true || $actingUid === '') {
+			$decidedBy = self::AUTOMATIC;
+		}
+
+		return ['decidedAt' => $this->now(), 'decidedBy' => $decidedBy];
+	}//end stamp()
+
+	/**
+	 * What an accept gets: a place or the waiting list, and a check-in code
+	 * when it is placed. Nothing when the event is gone.
+	 *
+	 * @param array<string, mixed> $new The registration as it will be.
+	 * @param array<string, mixed> $old The registration as stored.
+	 *
+	 * @return array<string, mixed> The fields to set.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 */
+	private function acceptance(array $new, array $old): array {
 		$event = $this->event(eventId: (string)($new['event'] ?? ''));
 		if ($event === null) {
-			return $stamp;
+			return [];
 		}
 
 		$outcome = $this->placeOutcome(event: $event, registration: $new, excludeId: (string)($new['id'] ?? ''));
 
-		return array_merge(
-			$stamp,
-			['status' => $outcome],
-			self::checkinCodeFor(registration: array_merge($old, $new), status: $outcome)
-		);
-	}//end beforeUpdate()
+		return array_merge(['status' => $outcome], self::checkinCodeFor(registration: array_merge($old, $new), status: $outcome));
+	}//end acceptance()
+
+	/**
+	 * The status a new registration gets at an event without approval, and
+	 * its check-in code when that status is accepted.
+	 *
+	 * @param array<string, mixed> $event        The event.
+	 * @param array<string, mixed> $registration The registration as submitted.
+	 *
+	 * @return array<string, mixed> `status`, and `checkinCode` when accepted.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 */
+	private function placement(array $event, array $registration): array {
+		$outcome = $this->placeOutcome(event: $event, registration: $registration, excludeId: '');
+
+		return array_merge(['status' => $outcome], self::checkinCodeFor(registration: $registration, status: $outcome));
+	}//end placement()
 
 	/**
 	 * A check-in code for a registration that becomes accepted and has none (REQ-EQC-001).
