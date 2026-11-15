@@ -86,17 +86,37 @@ function byOrderThenName(a, b) {
  */
 export function skillCosts(skill, effects, abilities) {
 	const costs = []
-	for (const effectId of Array.isArray(skill?.effects) ? skill.effects : []) {
+	for (const effectId of asList(skill?.effects)) {
 		const effect = effects.get(String(effectId))
-		if (!effect || effect.modification !== 'negative') continue
-		const amount = Math.abs(Number(effect.modifier) || 0)
+		const amount = effectCost(effect)
 		if (amount === 0) continue
-		for (const abilityId of Array.isArray(effect.abilities) ? effect.abilities : []) {
+		for (const abilityId of asList(effect.abilities)) {
 			const ability = abilities.get(String(abilityId))
 			if (ability) costs.push({ amount, ability: ability.name || '' })
 		}
 	}
 	return costs
+}
+
+/**
+ * The value when it is an array, else an empty list.
+ *
+ * @param {Array|undefined} value The value.
+ * @return {Array}
+ */
+function asList(value) {
+	return Array.isArray(value) ? value : []
+}
+
+/**
+ * How much an effect lowers its abilities: 0 for a missing or non-lowering effect.
+ *
+ * @param {object|undefined} effect The effect.
+ * @return {number}
+ */
+function effectCost(effect) {
+	if (!effect || effect.modification !== 'negative') return 0
+	return Math.abs(Number(effect.modifier) || 0)
 }
 
 /**
