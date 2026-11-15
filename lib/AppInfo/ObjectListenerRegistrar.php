@@ -80,6 +80,9 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
 		}
 
+		// A player's changed care details follow into the event copies (players-care-details-and-erasure).
+		$this->registerCareListeners(context: $context);
+
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
@@ -88,8 +91,6 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
 		}
 
-		// A player's changed care details follow into the event copies (players-care-details-and-erasure).
-		$this->registerCareListeners(context: $context);
 		$this->registerRegistrationListeners(context: $context);
 	}//end register()
 

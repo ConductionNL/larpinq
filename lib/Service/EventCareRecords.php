@@ -162,8 +162,11 @@ class EventCareRecords {
 	private function existingCopyId(string $registrationId): ?string {
 		$existing = $this->fetcher->getObjectsWithAppAuthority(objectType: 'eventcarerecord', filters: ['registration' => $registrationId], limit: 1);
 		$uuid = (string)($existing[0]['id'] ?? '');
+		if ($uuid === '') {
+			return null;
+		}
 
-		return $uuid === '' ? null : $uuid;
+		return $uuid;
 	}//end existingCopyId()
 
 	/**

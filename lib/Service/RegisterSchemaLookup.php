@@ -88,6 +88,8 @@ class RegisterSchemaLookup {
 	 * @return array{0: string, 1: string} A [registerId, schemaId] tuple.
 	 *
 	 * @throws Exception If the register or schema is not configured.
+	 *
+	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
 	 */
 	public function resolve(string $objectTypeLower): array {
 		$resolver = $this->getRegisterResolver();
