@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -809,7 +805,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Môj denník postavy",
-        "Open sheet": "Otvoriť denník"
+        "Open sheet": "Otvoriť denník",
+        "History entry": "Záznam histórie",
+        "How the date is told in the world": "Ako sa dátum hovorí vo svete",
+        "In-game date": "Dátum v hre",
+        "The story of this moment": "Príbeh tejto chvíle",
+        "The world this moment belongs to": "Svet, ku ktorému táto chvíľa patrí",
+        "What happened, in a few words": "Čo sa stalo, v niekoľkých slovách",
+        "When it happened, used to sort the timeline": "Kedy sa to stalo, na zoradenie časovej osi",
+        "Who may read the entry: game masters only, or players too": "Kto smie záznam čítať: len rozprávači, alebo aj hráči",
+        "Price": "Cena",
+        "Gold pieces the item costs": "Zlaté mince, ktoré predmet stojí",
+        "Silver pieces the item costs": "Strieborné mince, ktoré predmet stojí",
+        "Copper pieces the item costs": "Medené mince, ktoré predmet stojí",
+        "What the item costs in in-game money; a character buys it from the character page": "Koľko predmet stojí v herných peniazoch; postava ho kupuje na stránke postavy"
     },
     "nplurals=2; plural=(n != 1);"
 )

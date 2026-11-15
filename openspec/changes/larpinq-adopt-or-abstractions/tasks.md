@@ -1,6 +1,6 @@
 # Tasks — larpinq-adopt-or-abstractions
 
-> Archive pass 2026-10-07: not archived. Phase 3 is still unbuilt in larpinq: nextcloud-vue now ships `languageGetter` (`src/store/useObjectStore.js`) and `CnTranslatedBadge`, but larpinq wires neither (`grep -rn languageGetter src/` is empty). Open: 3.2, 3.3, 3.5 (wiring).
+> Archive pass 2026-10-07: not archived. Phase 3 is still unbuilt in larpinq: nextcloud-vue now ships `languageGetter` (`src/store/useObjectStore.js`) and `CnTranslatedBadge`, but larpinq wires neither (`grep -rn languageGetter src/` is empty). 3.2, 3.3 and 3.5 built 2026-11-14; still open here: nothing in code (e2e and screenshots stay with the gate-19 program).
 
 > Spec-only change. No PR / merge / archive tasks here.
 
@@ -188,8 +188,8 @@ Larpinq. During the build the app's actual state was reconciled:
   `src/store/modules/object.js`. When 3.2 / 3.3 ship upstream in
   nc-vue, every consumer call site picks them up automatically with
   zero per-store touch.
-- [ ] 3.5 "(translated from {lang})"
-  badge. **Partly built 2026-11-14**: detail pages get `CnTranslatedBadge` from the library (`CnDetailPage` / `CnDetailGrid`); the Characters list shows it beside the name through the `translatedName` cell widget (`src/components/cells/TranslatedNameCell.vue`, registered as `cellWidgets` in `src/App.vue`). Left: the Events and Items lists render schema-derived columns, and an index page cannot set a widget on a derived column without declaring all its columns, which would change those lists. Historical notes: **OR source-of-truth shipped**
+- [x] 3.5 "(translated from {lang})"
+  badge. **Built 2026-11-14**: detail pages get `CnTranslatedBadge` from the library (`CnDetailPage` / `CnDetailGrid`); the Characters list shows it beside the name through the `translatedName` cell widget (`src/components/cells/TranslatedNameCell.vue`, registered as `cellWidgets` in `src/App.vue`). The Events and Items lists keep their schema-derived columns and set the widget on `name` only, with `config.columnOverrides: { "name": { "widget": "translatedName" } }`, which `CnIndexPage` merges into the column `columnsFromSchema()` derives; covered in `tests/vitest/translatedListColumns.spec.js`. Historical notes: **OR source-of-truth shipped**
   (`openregister/.../i18n-source-of-truth` archived-or-merged on
   development — `Translation` entity carries `sourceLanguage` +
   `isSource` in `jsonSerialize()`, `TranslationProjectionService`

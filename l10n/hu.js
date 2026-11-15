@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -809,7 +805,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakterlapom",
-        "Open sheet": "Lap megnyitása"
+        "Open sheet": "Lap megnyitása",
+        "History entry": "Történeti bejegyzés",
+        "How the date is told in the world": "Hogyan mondják a dátumot a világban",
+        "In-game date": "Játékbeli dátum",
+        "The story of this moment": "Ennek a pillanatnak a története",
+        "The world this moment belongs to": "A világ, amelyhez ez a pillanat tartozik",
+        "What happened, in a few words": "Mi történt, néhány szóban",
+        "When it happened, used to sort the timeline": "Mikor történt, az idővonal rendezéséhez",
+        "Who may read the entry: game masters only, or players too": "Ki olvashatja a bejegyzést: csak a mesélők vagy a játékosok is",
+        "Price": "Ár",
+        "Gold pieces the item costs": "Aranyérmék, amennyibe a tárgy kerül",
+        "Silver pieces the item costs": "Ezüstérmék, amennyibe a tárgy kerül",
+        "Copper pieces the item costs": "Rézérmék, amennyibe a tárgy kerül",
+        "What the item costs in in-game money; a character buys it from the character page": "Mennyibe kerül a tárgy játékbeli pénzben; a karakter a karakteroldalon veszi meg"
     },
     "nplurals=2; plural=(n != 1);"
 )

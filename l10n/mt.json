@@ -804,7 +804,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Il-folja tal-karattru tiegħi",
-        "Open sheet": "Iftaħ il-folja"
+        "Open sheet": "Iftaħ il-folja",
+        "History entry": "Daħla tal-istorja",
+        "How the date is told in the world": "Kif tingħad id-data fid-dinja",
+        "In-game date": "Data fil-logħba",
+        "The story of this moment": "L-istorja ta' dan il-mument",
+        "The world this moment belongs to": "Id-dinja li dan il-mument jappartjeni għaliha",
+        "What happened, in a few words": "X'ġara, fi ftit kliem",
+        "When it happened, used to sort the timeline": "Meta ġara, biex tissortja l-kronoloġija",
+        "Who may read the entry: game masters only, or players too": "Min jista' jaqra d-daħla: il-kaptani tal-logħba biss, jew il-plejers ukoll",
+        "Price": "Prezz",
+        "Gold pieces the item costs": "Biċċiet tad-deheb li jiswa l-oġġett",
+        "Silver pieces the item costs": "Biċċiet tal-fidda li jiswa l-oġġett",
+        "Copper pieces the item costs": "Biċċiet tar-ram li jiswa l-oġġett",
+        "What the item costs in in-game money; a character buys it from the character page": "Kemm jiswa l-oġġett fi flus tal-logħba; karattru jixtrih mill-paġna tal-karattru"
     },
     "plurals": {}
 }

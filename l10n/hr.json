@@ -804,7 +804,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
-        "Open sheet": "Otvori list"
+        "Open sheet": "Otvori list",
+        "History entry": "Povijesni zapis",
+        "How the date is told in the world": "Kako se datum zove u svijetu",
+        "In-game date": "Datum u igri",
+        "The story of this moment": "Priča ovog trenutka",
+        "The world this moment belongs to": "Svijet kojem ovaj trenutak pripada",
+        "What happened, in a few words": "Što se dogodilo, u nekoliko riječi",
+        "When it happened, used to sort the timeline": "Kada se dogodilo, za razvrstavanje vremenske crte",
+        "Who may read the entry: game masters only, or players too": "Tko smije čitati zapis: samo voditelji igre ili i igrači",
+        "Price": "Cijena",
+        "Gold pieces the item costs": "Zlatnici koje predmet košta",
+        "Silver pieces the item costs": "Srebrnjaci koje predmet košta",
+        "Copper pieces the item costs": "Bakrenjaci koje predmet košta",
+        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet košta u novcu igre; lik ga kupuje na stranici lika"
     },
     "plurals": {}
 }

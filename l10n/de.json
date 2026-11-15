@@ -804,7 +804,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mein Charakterbogen",
-        "Open sheet": "Bogen öffnen"
+        "Open sheet": "Bogen öffnen",
+        "History entry": "Geschichtseintrag",
+        "How the date is told in the world": "Wie das Datum in der Spielwelt genannt wird",
+        "In-game date": "Datum im Spiel",
+        "The story of this moment": "Die Geschichte dieses Moments",
+        "The world this moment belongs to": "Die Spielwelt, zu der dieser Moment gehört",
+        "What happened, in a few words": "Was geschah, in wenigen Worten",
+        "When it happened, used to sort the timeline": "Wann es geschah, zum Sortieren der Zeitleiste",
+        "Who may read the entry: game masters only, or players too": "Wer den Eintrag lesen darf: nur Spielleitungen oder auch Spielende",
+        "Price": "Preis",
+        "Gold pieces the item costs": "Goldstücke, die der Gegenstand kostet",
+        "Silver pieces the item costs": "Silberstücke, die der Gegenstand kostet",
+        "Copper pieces the item costs": "Kupferstücke, die der Gegenstand kostet",
+        "What the item costs in in-game money; a character buys it from the character page": "Was der Gegenstand in Spielgeld kostet; ein Charakter kauft ihn auf der Charakterseite"
     },
     "plurals": {}
 }

@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -809,7 +805,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Minu tegelaskaart",
-        "Open sheet": "Ava kaart"
+        "Open sheet": "Ava kaart",
+        "History entry": "Ajaloo kirje",
+        "How the date is told in the world": "Kuidas kuupäeva maailmas öeldakse",
+        "In-game date": "Mängusisene kuupäev",
+        "The story of this moment": "Selle hetke lugu",
+        "The world this moment belongs to": "Maailm, kuhu see hetk kuulub",
+        "What happened, in a few words": "Mis juhtus, mõne sõnaga",
+        "When it happened, used to sort the timeline": "Millal see juhtus, ajajoone sorteerimiseks",
+        "Who may read the entry: game masters only, or players too": "Kes tohib kirjet lugeda: ainult mängujuhid või ka mängijad",
+        "Price": "Hind",
+        "Gold pieces the item costs": "Kuldmündid, mida ese maksab",
+        "Silver pieces the item costs": "Hõbemündid, mida ese maksab",
+        "Copper pieces the item costs": "Vaskmündid, mida ese maksab",
+        "What the item costs in in-game money; a character buys it from the character page": "Kui palju ese mänguraha maksab; tegelane ostab selle tegelase lehelt"
     },
     "nplurals=2; plural=(n != 1);"
 )

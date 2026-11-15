@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -809,7 +805,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Oma hahmolomake",
-        "Open sheet": "Avaa lomake"
+        "Open sheet": "Avaa lomake",
+        "History entry": "Historiamerkintä",
+        "How the date is told in the world": "Miten päivämäärä sanotaan maailmassa",
+        "In-game date": "Pelinsisäinen päivämäärä",
+        "The story of this moment": "Tämän hetken tarina",
+        "The world this moment belongs to": "Maailma, johon tämä hetki kuuluu",
+        "What happened, in a few words": "Mitä tapahtui, muutamalla sanalla",
+        "When it happened, used to sort the timeline": "Milloin se tapahtui, aikajanan järjestämistä varten",
+        "Who may read the entry: game masters only, or players too": "Kuka saa lukea merkinnän: vain pelinjohtajat vai myös pelaajat",
+        "Price": "Hinta",
+        "Gold pieces the item costs": "Kultarahat, jotka esine maksaa",
+        "Silver pieces the item costs": "Hoperahat, jotka esine maksaa",
+        "Copper pieces the item costs": "Kuparirahat, jotka esine maksaa",
+        "What the item costs in in-game money; a character buys it from the character page": "Mitä esine maksaa pelirahassa; hahmo ostaa sen hahmosivulta"
     },
     "nplurals=2; plural=(n != 1);"
 )

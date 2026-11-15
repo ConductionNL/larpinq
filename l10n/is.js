@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -809,7 +805,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Persónublaðið mitt",
-        "Open sheet": "Opna blað"
+        "Open sheet": "Opna blað",
+        "History entry": "Söguleg færsla",
+        "How the date is told in the world": "Hvernig dagsetningin er sögð í heiminum",
+        "In-game date": "Dagsetning í leiknum",
+        "The story of this moment": "Saga þessa augnabliks",
+        "The world this moment belongs to": "Heimurinn sem þetta augnablik tilheyrir",
+        "What happened, in a few words": "Hvað gerðist, í fáum orðum",
+        "When it happened, used to sort the timeline": "Hvenær það gerðist, notað til að raða tímalínunni",
+        "Who may read the entry: game masters only, or players too": "Hver má lesa færsluna: aðeins spilastjórar eða líka leikmenn",
+        "Price": "Verð",
+        "Gold pieces the item costs": "Gullpeningar sem hluturinn kostar",
+        "Silver pieces the item costs": "Silfurpeningar sem hluturinn kostar",
+        "Copper pieces the item costs": "Koparpeningar sem hluturinn kostar",
+        "What the item costs in in-game money; a character buys it from the character page": "Hvað hluturinn kostar í leikpeningum; persóna kaupir hann á persónusíðunni"
     },
     "nplurals=2; plural=(n != 1);"
 )
