@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Aðeins eigandinn og stjórnendur leiksins kaupa fyrir þessa persónu.",
         "Nothing was bought: {reason}": "Ekkert var keypt: {reason}",
         "Download run sheet": "Sækja keyrsluáætlun",
-        "There is no run sheet template yet. Add one in the document app.": "Enn er ekkert sniðmát fyrir keyrsluáætlun. Bættu við einu í skjalaforritinu."
+        "There is no run sheet template yet. Add one in the document app.": "Enn er ekkert sniðmát fyrir keyrsluáætlun. Bættu við einu í skjalaforritinu.",
+        "Override a requirement": "Víkja frá skilyrði",
+        "Loading the skills": "Hleð færni",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Veittu {character} færni sem skilyrðin eru ekki uppfyllt fyrir. Ástæðan er geymd með undanþágunni.",
+        "The character already has every skill of this world.": "Persónan hefur þegar alla færni þessa heims.",
+        "Reason": "Ástæða",
+        "Required. For example: plot reward from the summer finale.": "Nauðsynlegt. Til dæmis: söguverðlaun úr sumarlokunum.",
+        "Grant with override": "Veita með undanþágu",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} hefur nú {skill}. Undanþágan og ástæða hennar eru í endurskoðunarslóðinni.",
+        "The override was not saved: {reason}": "Undanþágan var ekki vistuð: {reason}"
     },
     "plurals": {}
 }

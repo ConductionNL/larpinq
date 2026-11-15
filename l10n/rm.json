@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Mo il possessur ed ils manaders dal gieu cumpran per quest persunaj.",
         "Nothing was bought: {reason}": "Nagut n'è vegnì cumprà: {reason}",
         "Download run sheet": "Telechargiar il plan da la partida",
-        "There is no run sheet template yet. Add one in the document app.": "I na dat anc nagin model per il plan da la partida. Agiuntai in en l'applicaziun da documents."
+        "There is no run sheet template yet. Add one in the document app.": "I na dat anc nagin model per il plan da la partida. Agiuntai in en l'applicaziun da documents.",
+        "Override a requirement": "Surpassar ina premissa",
+        "Loading the skills": "Chargiar las abilitads",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Dai a {character} in'abilitad, da la quala las premissas n'èn betg ademplidas. Il motiv vegn memorisà cun l'excepziun.",
+        "The character already has every skill of this world.": "Il persunaj ha gia tut las abilitads da quest mund.",
+        "Reason": "Motiv",
+        "Required. For example: plot reward from the summer finale.": "Obligatori. Per exempel: premi da l'istorgia dal final da stad.",
+        "Grant with override": "Dar cun excepziun",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ha ussa {skill}. L'excepziun ed ses motiv èn en il protocol da revisiun.",
+        "The override was not saved: {reason}": "L'excepziun n'è betg vegnida memorisada: {reason}"
     },
     "plurals": {}
 }

@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Для гэтага персанажа купляюць толькі ўладальнік і майстры гульні.",
         "Nothing was bought: {reason}": "Нічога не куплена: {reason}",
         "Download run sheet": "Спампаваць сцэнарны ліст",
-        "There is no run sheet template yet. Add one in the document app.": "Шаблону сцэнарнага ліста пакуль няма. Дадайце яго ў праграме дакументаў."
+        "There is no run sheet template yet. Add one in the document app.": "Шаблону сцэнарнага ліста пакуль няма. Дадайце яго ў праграме дакументаў.",
+        "Override a requirement": "Абысці патрабаванне",
+        "Loading the skills": "Загрузка навыкаў",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Дайце персанажу {character} навык, патрабаванням якога ён не адпавядае. Прычына захоўваецца разам з выключэннем.",
+        "The character already has every skill of this world.": "Персанаж ужо мае ўсе навыкі гэтага свету.",
+        "Reason": "Прычына",
+        "Required. For example: plot reward from the summer finale.": "Абавязкова. Напрыклад: узнагарода за сюжэт з летняга фіналу.",
+        "Grant with override": "Надаць з выключэннем",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} цяпер мае навык: {skill}. Выключэнне і яго прычына ёсць у журнале аўдыту.",
+        "The override was not saved: {reason}": "Выключэнне не захавана: {reason}"
     },
     "plurals": {}
 }

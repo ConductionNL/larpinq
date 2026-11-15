@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Selle tegelase eest ostavad ainult omanik ja mängujuhid.",
         "Nothing was bought: {reason}": "Midagi ei ostetud: {reason}",
         "Download run sheet": "Laadi alla mänguplaan",
-        "There is no run sheet template yet. Add one in the document app.": "Mänguplaani malli veel pole. Lisa see dokumendirakenduses."
+        "There is no run sheet template yet. Add one in the document app.": "Mänguplaani malli veel pole. Lisa see dokumendirakenduses.",
+        "Override a requirement": "Möödu nõudest",
+        "Loading the skills": "Oskuste laadimine",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Anna tegelasele {character} oskus, mille nõudeid ta ei täida. Põhjus säilitatakse koos erandiga.",
+        "The character already has every skill of this world.": "Tegelasel on juba kõik selle maailma oskused.",
+        "Reason": "Põhjus",
+        "Required. For example: plot reward from the summer finale.": "Kohustuslik. Näiteks: süžeepreemia suvefinaalist.",
+        "Grant with override": "Anna erandiga",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: nüüd on oskus {skill}. Erand ja selle põhjus on auditilogis.",
+        "The override was not saved: {reason}": "Erandit ei salvestatud: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

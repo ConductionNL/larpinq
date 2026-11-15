@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Samo vlasnik i voditelji igre kupuju za ovaj lik.",
         "Nothing was bought: {reason}": "Ništa nije kupljeno: {reason}",
         "Download run sheet": "Preuzmi raspored igre",
-        "There is no run sheet template yet. Add one in the document app.": "Još nema predloška za raspored igre. Dodajte ga u aplikaciji za dokumente."
+        "There is no run sheet template yet. Add one in the document app.": "Još nema predloška za raspored igre. Dodajte ga u aplikaciji za dokumente.",
+        "Override a requirement": "Zaobiđi uvjet",
+        "Loading the skills": "Učitavanje vještina",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Dodijelite liku {character} vještinu čije uvjete ne ispunjava. Razlog se čuva uz iznimku.",
+        "The character already has every skill of this world.": "Lik već ima sve vještine ovog svijeta.",
+        "Reason": "Razlog",
+        "Required. For example: plot reward from the summer finale.": "Obavezno. Na primjer: nagrada iz zapleta ljetnog finala.",
+        "Grant with override": "Dodijeli uz iznimku",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} sada ima vještinu {skill}. Iznimka i njezin razlog su u revizijskom tragu.",
+        "The override was not saved: {reason}": "Iznimka nije spremljena: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

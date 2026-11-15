@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Is-sid u l-kaptani tal-logħba biss jixtru għal dan il-karattru.",
         "Nothing was bought: {reason}": "Ma nxtara xejn: {reason}",
         "Download run sheet": "Niżżel il-pjan tal-avveniment",
-        "There is no run sheet template yet. Add one in the document app.": "Għad m'hemmx mudell għall-pjan tal-avveniment. Żid wieħed fl-app tad-dokumenti."
+        "There is no run sheet template yet. Add one in the document app.": "Għad m'hemmx mudell għall-pjan tal-avveniment. Żid wieħed fl-app tad-dokumenti.",
+        "Override a requirement": "Aqbeż rekwiżit",
+        "Loading the skills": "Qed jitgħabbew il-ħiliet",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Agħti lil {character} ħila li r-rekwiżiti tagħha mhumiex sodisfatti. Ir-raġuni tinżamm mal-eċċezzjoni.",
+        "The character already has every skill of this world.": "Il-karattru diġà għandu kull ħila ta' din id-dinja.",
+        "Reason": "Raġuni",
+        "Required. For example: plot reward from the summer finale.": "Meħtieġ. Pereżempju: premju tal-plott mill-finali tas-sajf.",
+        "Grant with override": "Agħti b'eċċezzjoni",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} issa għandu {skill}. L-eċċezzjoni u r-raġuni tagħha jinsabu fir-rekord tal-verifika.",
+        "The override was not saved: {reason}": "L-eċċezzjoni ma ġietx salvata: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

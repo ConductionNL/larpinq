@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Само собственикът и водещите на играта купуват за този герой.",
         "Nothing was bought: {reason}": "Нищо не е купено: {reason}",
         "Download run sheet": "Изтегляне на сценария",
-        "There is no run sheet template yet. Add one in the document app.": "Все още няма шаблон за сценарий. Добавете такъв в приложението за документи."
+        "There is no run sheet template yet. Add one in the document app.": "Все още няма шаблон за сценарий. Добавете такъв в приложението за документи.",
+        "Override a requirement": "Заобикаляне на изискване",
+        "Loading the skills": "Зареждане на уменията",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Дайте на {character} умение, чиито изисквания не са изпълнени. Причината се пази заедно с изключението.",
+        "The character already has every skill of this world.": "Героят вече има всички умения на този свят.",
+        "Reason": "Причина",
+        "Required. For example: plot reward from the summer finale.": "Задължително. Например: награда от сюжета на летния финал.",
+        "Grant with override": "Даване с изключение",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} вече има умението {skill}. Изключението и причината му са в одитната следа.",
+        "The override was not saved: {reason}": "Изключението не е запазено: {reason}"
     },
     "plurals": {}
 }

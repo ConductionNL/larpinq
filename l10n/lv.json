@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Šim tēlam pērk tikai īpašnieks un spēles vadītāji.",
         "Nothing was bought: {reason}": "Nekas netika nopirkts: {reason}",
         "Download run sheet": "Lejupielādēt norises plānu",
-        "There is no run sheet template yet. Add one in the document app.": "Norises plāna veidnes vēl nav. Pievienojiet to dokumentu lietotnē."
+        "There is no run sheet template yet. Add one in the document app.": "Norises plāna veidnes vēl nav. Pievienojiet to dokumentu lietotnē.",
+        "Override a requirement": "Apiet prasību",
+        "Loading the skills": "Ielādē prasmes",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Piešķiriet tēlam {character} prasmi, kuras prasības netiek izpildītas. Iemesls tiek saglabāts kopā ar izņēmumu.",
+        "The character already has every skill of this world.": "Tēlam jau ir visas šīs pasaules prasmes.",
+        "Reason": "Iemesls",
+        "Required. For example: plot reward from the summer finale.": "Obligāti. Piemēram: sižeta balva no vasaras fināla.",
+        "Grant with override": "Piešķirt ar izņēmumu",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} tagad ir prasme {skill}. Izņēmums un tā iemesls ir audita žurnālā.",
+        "The override was not saved: {reason}": "Izņēmums netika saglabāts: {reason}"
     },
     "plurals": {}
 }

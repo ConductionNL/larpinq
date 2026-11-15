@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Nëmmen de Besëtzer an d'Spillleedung kafe fir dëse Personnage.",
         "Nothing was bought: {reason}": "Et gouf näischt kaf: {reason}",
         "Download run sheet": "Oflafplang eroflueden",
-        "There is no run sheet template yet. Add one in the document app.": "Et gëtt nach keng Virlag fir den Oflafplang. Füügt eng an der Dokumenter-App derbäi."
+        "There is no run sheet template yet. Add one in the document app.": "Et gëtt nach keng Virlag fir den Oflafplang. Füügt eng an der Dokumenter-App derbäi.",
+        "Override a requirement": "Eng Viraussetzung iwwergoen",
+        "Loading the skills": "D'Fäegkeete gi gelueden",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Gitt {character} eng Fäegkeet, där hir Viraussetzungen net erfëllt sinn. De Grond gëtt mat der Ausnam gespäichert.",
+        "The character already has every skill of this world.": "De Personnage huet schonn all d'Fäegkeete vun dëser Welt.",
+        "Reason": "Grond",
+        "Required. For example: plot reward from the summer finale.": "Obligatoresch. Zum Beispill: Plot-Belounung aus dem Summerfinal.",
+        "Grant with override": "Mat Ausnam ginn",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} huet elo {skill}. D'Ausnam an hire Grond stinn am Audit-Protokoll.",
+        "The override was not saved: {reason}": "D'Ausnam gouf net gespäichert: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

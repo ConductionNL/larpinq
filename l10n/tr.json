@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Bu karakter için yalnızca sahibi ve oyun yöneticileri satın alır.",
         "Nothing was bought: {reason}": "Hiçbir şey satın alınmadı: {reason}",
         "Download run sheet": "Etkinlik akışını indir",
-        "There is no run sheet template yet. Add one in the document app.": "Henüz etkinlik akışı şablonu yok. Belge uygulamasında bir tane ekleyin."
+        "There is no run sheet template yet. Add one in the document app.": "Henüz etkinlik akışı şablonu yok. Belge uygulamasında bir tane ekleyin.",
+        "Override a requirement": "Bir gereksinimi geçersiz kıl",
+        "Loading the skills": "Yetenekler yükleniyor",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "{character} karakterine gereksinimlerini karşılamadığı bir yetenek verin. Gerekçe istisnayla birlikte saklanır.",
+        "The character already has every skill of this world.": "Karakter bu dünyanın tüm yeteneklerine zaten sahip.",
+        "Reason": "Gerekçe",
+        "Required. For example: plot reward from the summer finale.": "Zorunlu. Örneğin: yaz finalinden olay örgüsü ödülü.",
+        "Grant with override": "İstisnayla ver",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} artık {skill} yeteneğine sahip. İstisna ve gerekçesi denetim kaydında.",
+        "The override was not saved: {reason}": "İstisna kaydedilmedi: {reason}"
     },
     "plurals": {}
 }

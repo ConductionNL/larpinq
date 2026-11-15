@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Šiam personažui perka tik savininkas ir žaidimo vedėjai.",
         "Nothing was bought: {reason}": "Nieko nenupirkta: {reason}",
         "Download run sheet": "Atsisiųsti renginio planą",
-        "There is no run sheet template yet. Add one in the document app.": "Renginio plano šablono dar nėra. Pridėkite jį dokumentų programoje."
+        "There is no run sheet template yet. Add one in the document app.": "Renginio plano šablono dar nėra. Pridėkite jį dokumentų programoje.",
+        "Override a requirement": "Apeiti reikalavimą",
+        "Loading the skills": "Įkeliami įgūdžiai",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Suteikite personažui {character} įgūdį, kurio reikalavimų jis neatitinka. Priežastis saugoma kartu su išimtimi.",
+        "The character already has every skill of this world.": "Personažas jau turi visus šio pasaulio įgūdžius.",
+        "Reason": "Priežastis",
+        "Required. For example: plot reward from the summer finale.": "Privaloma. Pavyzdžiui: siužeto apdovanojimas iš vasaros finalo.",
+        "Grant with override": "Suteikti su išimtimi",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} dabar turi įgūdį {skill}. Išimtis ir jos priežastis yra audito žurnale.",
+        "The override was not saved: {reason}": "Išimtis neišsaugota: {reason}"
     },
     "plurals": {}
 }

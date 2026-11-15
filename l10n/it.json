@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Solo il proprietario e i master acquistano per questo personaggio.",
         "Nothing was bought: {reason}": "Non è stato acquistato nulla: {reason}",
         "Download run sheet": "Scarica la scaletta",
-        "There is no run sheet template yet. Add one in the document app.": "Non c'è ancora un modello di scaletta. Aggiungine uno nell'app dei documenti."
+        "There is no run sheet template yet. Add one in the document app.": "Non c'è ancora un modello di scaletta. Aggiungine uno nell'app dei documenti.",
+        "Override a requirement": "Ignora un requisito",
+        "Loading the skills": "Caricamento delle abilità",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Concedi a {character} un'abilità di cui non soddisfa i requisiti. Il motivo viene conservato con l'eccezione.",
+        "The character already has every skill of this world.": "Il personaggio ha già tutte le abilità di questo mondo.",
+        "Reason": "Motivo",
+        "Required. For example: plot reward from the summer finale.": "Obbligatorio. Per esempio: ricompensa di trama dal finale estivo.",
+        "Grant with override": "Concedi con eccezione",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ora ha {skill}. L'eccezione e il suo motivo sono nel registro di controllo.",
+        "The override was not saved: {reason}": "L'eccezione non è stata salvata: {reason}"
     },
     "plurals": {}
 }

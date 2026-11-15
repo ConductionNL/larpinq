@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Doar proprietarul și maeștrii de joc cumpără pentru acest personaj.",
         "Nothing was bought: {reason}": "Nu s-a cumpărat nimic: {reason}",
         "Download run sheet": "Descarcă foaia de desfășurare",
-        "There is no run sheet template yet. Add one in the document app.": "Nu există încă un șablon pentru foaia de desfășurare. Adăugați unul în aplicația de documente."
+        "There is no run sheet template yet. Add one in the document app.": "Nu există încă un șablon pentru foaia de desfășurare. Adăugați unul în aplicația de documente.",
+        "Override a requirement": "Ignoră o cerință",
+        "Loading the skills": "Se încarcă abilitățile",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Acordați lui {character} o abilitate ale cărei cerințe nu sunt îndeplinite. Motivul este păstrat împreună cu excepția.",
+        "The character already has every skill of this world.": "Personajul are deja toate abilitățile acestei lumi.",
+        "Reason": "Motiv",
+        "Required. For example: plot reward from the summer finale.": "Obligatoriu. De exemplu: recompensă din intriga finalei de vară.",
+        "Grant with override": "Acordă cu excepție",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} are acum {skill}. Excepția și motivul ei sunt în jurnalul de audit.",
+        "The override was not saved: {reason}": "Excepția nu a fost salvată: {reason}"
     },
     "plurals": {}
 }

@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Ní cheannaíonn ach an t-úinéir agus máistrí an chluiche don charachtar seo.",
         "Nothing was bought: {reason}": "Níor ceannaíodh aon rud: {reason}",
         "Download run sheet": "Íoslódáil an bhileog reatha",
-        "There is no run sheet template yet. Add one in the document app.": "Níl aon teimpléad bileoige reatha ann fós. Cuir ceann leis san aip doiciméad."
+        "There is no run sheet template yet. Add one in the document app.": "Níl aon teimpléad bileoige reatha ann fós. Cuir ceann leis san aip doiciméad.",
+        "Override a requirement": "Sáraigh riachtanas",
+        "Loading the skills": "Scileanna á lódáil",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Tabhair do {character} scil nach gcomhlíontar a riachtanais. Coinnítear an chúis leis an sárú.",
+        "The character already has every skill of this world.": "Tá gach scil den domhan seo ag an gcarachtar cheana.",
+        "Reason": "Cúis",
+        "Required. For example: plot reward from the summer finale.": "Riachtanach. Mar shampla: duais phlota ó chluiche ceannais an tsamhraidh.",
+        "Grant with override": "Tabhair le sárú",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "Tá {skill} ag {character} anois. Tá an sárú agus a chúis sa rian iniúchta.",
+        "The override was not saved: {reason}": "Níor sábháladh an sárú: {reason}"
     },
     "plurals": {}
 }

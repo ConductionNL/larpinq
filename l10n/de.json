@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Nur der Besitzer und die Spielleitung kaufen für diesen Charakter.",
         "Nothing was bought: {reason}": "Es wurde nichts gekauft: {reason}",
         "Download run sheet": "Ablaufplan herunterladen",
-        "There is no run sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für den Ablaufplan. Fügen Sie eine in der Dokumenten-App hinzu."
+        "There is no run sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für den Ablaufplan. Fügen Sie eine in der Dokumenten-App hinzu.",
+        "Override a requirement": "Eine Voraussetzung übergehen",
+        "Loading the skills": "Die Fertigkeiten werden geladen",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Geben Sie {character} eine Fertigkeit, deren Voraussetzungen nicht erfüllt sind. Der Grund wird mit der Ausnahme gespeichert.",
+        "The character already has every skill of this world.": "Der Charakter hat bereits alle Fertigkeiten dieser Welt.",
+        "Reason": "Grund",
+        "Required. For example: plot reward from the summer finale.": "Pflichtfeld. Zum Beispiel: Plotbelohnung aus dem Sommerfinale.",
+        "Grant with override": "Mit Ausnahme gewähren",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} hat jetzt {skill}. Die Ausnahme und ihr Grund stehen im Prüfprotokoll.",
+        "The override was not saved: {reason}": "Die Ausnahme wurde nicht gespeichert: {reason}"
     },
     "plurals": {}
 }

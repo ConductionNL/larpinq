@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Seuls le propriétaire et les meneurs de jeu achètent pour ce personnage.",
         "Nothing was bought: {reason}": "Rien n'a été acheté : {reason}",
         "Download run sheet": "Télécharger la feuille de route",
-        "There is no run sheet template yet. Add one in the document app.": "Il n'y a pas encore de modèle de feuille de route. Ajoutez-en un dans l'application de documents."
+        "There is no run sheet template yet. Add one in the document app.": "Il n'y a pas encore de modèle de feuille de route. Ajoutez-en un dans l'application de documents.",
+        "Override a requirement": "Passer outre un prérequis",
+        "Loading the skills": "Chargement des compétences",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Accordez à {character} une compétence dont les prérequis ne sont pas remplis. La raison est conservée avec l'exception.",
+        "The character already has every skill of this world.": "Le personnage a déjà toutes les compétences de ce monde.",
+        "Reason": "Raison",
+        "Required. For example: plot reward from the summer finale.": "Obligatoire. Par exemple : récompense d'intrigue de la finale d'été.",
+        "Grant with override": "Accorder avec exception",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} possède maintenant {skill}. L'exception et sa raison figurent dans la piste d'audit.",
+        "The override was not saved: {reason}": "L'exception n'a pas été enregistrée : {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

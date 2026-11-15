@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Μόνο ο κάτοχος και οι αφηγητές αγοράζουν για αυτόν τον χαρακτήρα.",
         "Nothing was bought: {reason}": "Δεν αγοράστηκε τίποτα: {reason}",
         "Download run sheet": "Λήψη φύλλου ροής",
-        "There is no run sheet template yet. Add one in the document app.": "Δεν υπάρχει ακόμη πρότυπο φύλλου ροής. Προσθέστε ένα στην εφαρμογή εγγράφων."
+        "There is no run sheet template yet. Add one in the document app.": "Δεν υπάρχει ακόμη πρότυπο φύλλου ροής. Προσθέστε ένα στην εφαρμογή εγγράφων.",
+        "Override a requirement": "Παράκαμψη προϋπόθεσης",
+        "Loading the skills": "Φόρτωση δεξιοτήτων",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Δώστε στον χαρακτήρα {character} μια δεξιότητα της οποίας τις προϋποθέσεις δεν πληροί. Ο λόγος φυλάσσεται μαζί με την παράκαμψη.",
+        "The character already has every skill of this world.": "Ο χαρακτήρας έχει ήδη όλες τις δεξιότητες αυτού του κόσμου.",
+        "Reason": "Λόγος",
+        "Required. For example: plot reward from the summer finale.": "Υποχρεωτικό. Για παράδειγμα: ανταμοιβή πλοκής από το καλοκαιρινό φινάλε.",
+        "Grant with override": "Παραχώρηση με παράκαμψη",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: έχει πλέον τη δεξιότητα {skill}. Η παράκαμψη και ο λόγος της βρίσκονται στο αρχείο ελέγχου.",
+        "The override was not saved: {reason}": "Η παράκαμψη δεν αποθηκεύτηκε: {reason}"
     },
     "plurals": {}
 }

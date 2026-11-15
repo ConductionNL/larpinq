@@ -252,6 +252,25 @@ class CharactersController extends Controller {
 	}//end characterSheetFile()
 
 	/**
+	 * Whether the caller may record a requirement override, so the character
+	 * page shows its Override a requirement action to game masters only.
+	 *
+	 * The write itself is checked by CharacterRequirementListener, which
+	 * refuses an override from anyone but a game master and one without a
+	 * reason; this answer only decides whether the page offers the action.
+	 *
+	 * @return JSONResponse `{allowed: bool}`, or 401 when nobody is signed in.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	 */
+	#[NoAdminRequired]
+	public function overrideAccess(): JSONResponse {
+		return $this->callerAccess->gameMasterAnswer();
+	}//end overrideAccess()
+
+	/**
 	 * The character-sheet templates for the Download as PDF dialog.
 	 *
 	 * Administrator only, like downloadPdf(): the header action reads this

@@ -808,7 +808,16 @@
         "Only the owner and game masters buy for this character.": "Bare eieren og spillederne kjøper for denne karakteren.",
         "Nothing was bought: {reason}": "Ingenting ble kjøpt: {reason}",
         "Download run sheet": "Last ned kjøreplan",
-        "There is no run sheet template yet. Add one in the document app.": "Det finnes ingen mal for kjøreplanen ennå. Legg til en i dokumentappen."
+        "There is no run sheet template yet. Add one in the document app.": "Det finnes ingen mal for kjøreplanen ennå. Legg til en i dokumentappen.",
+        "Override a requirement": "Overstyr et krav",
+        "Loading the skills": "Laster ferdigheter",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Gi {character} en ferdighet der kravene ikke er oppfylt. Begrunnelsen lagres med overstyringen.",
+        "The character already has every skill of this world.": "Karakteren har allerede alle ferdighetene i denne verdenen.",
+        "Reason": "Begrunnelse",
+        "Required. For example: plot reward from the summer finale.": "Påkrevd. For eksempel: plotbelønning fra sommerfinalen.",
+        "Grant with override": "Gi med overstyring",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} har nå {skill}. Overstyringen og begrunnelsen står i revisjonssporet.",
+        "The override was not saved: {reason}": "Overstyringen ble ikke lagret: {reason}"
     },
     "plurals": {}
 }

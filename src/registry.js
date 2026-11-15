@@ -28,6 +28,7 @@ import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import OverrideRequirementDialog from './dialogs/OverrideRequirementDialog.vue'
 import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
@@ -78,6 +79,15 @@ export default {
 	BuyItemDialog: {
 		kind: 'modal',
 		component: BuyItemDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Override a requirement" header action, game masters
+	// only: a skill and a reason, written with its requirementOverrides[]
+	// entry in one save so the server check and the audit trail apply.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	OverrideRequirementDialog: {
+		kind: 'modal',
+		component: OverrideRequirementDialog,
 		propsSchema: {},
 	},
 	CopyWorldDialog: {

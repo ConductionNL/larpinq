@@ -600,6 +600,19 @@
 						"icon": "CartOutline"
 					},
 					{
+						"id": "override-requirement",
+						"type": "open-modal",
+						"target": "OverrideRequirementDialog",
+						"label": "Override a requirement",
+						"icon": "ShieldAccountOutline",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/characters/override-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
+					{
 						"id": "download-pdf",
 						"type": "open-modal",
 						"target": "CharacterPdfDownloadDialog",

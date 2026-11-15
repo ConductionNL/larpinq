@@ -167,6 +167,37 @@
                 ]
             }
         },
+        "/characters/override-access": {
+            "get": {
+                "operationId": "characters-override-access",
+                "summary": "Whether the signed-in user may record a requirement override; the character page shows its override action on this answer",
+                "description": "Whether the signed-in user may record a requirement override: game masters and admins. The character page shows its override action on this answer; the write itself is checked by the requirement listener.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
+        },
         "/characters/{id}/requirement-report": {
             "get": {
                 "operationId": "characters-requirement-report",

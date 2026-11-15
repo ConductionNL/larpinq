@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Pro tuto postavu nakupuje jen vlastník a vypravěči.",
         "Nothing was bought: {reason}": "Nic nebylo koupeno: {reason}",
         "Download run sheet": "Stáhnout scénář akce",
-        "There is no run sheet template yet. Add one in the document app.": "Zatím neexistuje šablona scénáře akce. Přidejte ji v aplikaci pro dokumenty."
+        "There is no run sheet template yet. Add one in the document app.": "Zatím neexistuje šablona scénáře akce. Přidejte ji v aplikaci pro dokumenty.",
+        "Override a requirement": "Obejít požadavek",
+        "Loading the skills": "Načítání dovedností",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Udělte postavě {character} dovednost, jejíž požadavky nesplňuje. Důvod se uloží spolu s výjimkou.",
+        "The character already has every skill of this world.": "Postava už má všechny dovednosti tohoto světa.",
+        "Reason": "Důvod",
+        "Required. For example: plot reward from the summer finale.": "Povinné. Například: odměna z příběhu letního finále.",
+        "Grant with override": "Udělit s výjimkou",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} teď má dovednost {skill}. Výjimka a její důvod jsou v auditním záznamu.",
+        "The override was not saved: {reason}": "Výjimka nebyla uložena: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

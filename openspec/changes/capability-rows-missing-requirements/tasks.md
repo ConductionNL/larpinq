@@ -20,7 +20,7 @@
 
 ## 5. Game master override from the character page
 
-- [ ] 5.1 An override action on the character page in `src/manifest.json`, shown to the game master group only, that asks for a reason and sends the skill with a `requirementOverrides[]` entry in one write (REQ-SRE-001). Verify: `npm run check:manifest`; Playwright: a game master grants "Dragon Speech" with a reason and the audit trail shows it; a player gets no override action.
+- [x] 5.1 An override action on the character page in `src/manifest.json`, shown to the game master group only, that asks for a reason and sends the skill with a `requirementOverrides[]` entry in one write (REQ-SRE-001). Verify: `npm run check:manifest`; Playwright: a game master grants "Dragon Speech" with a reason and the audit trail shows it; a player gets no override action.
 
 ## 6. Rejecting a character
 

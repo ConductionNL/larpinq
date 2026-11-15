@@ -775,7 +775,16 @@
         "Only the owner and game masters buy for this character.": "Only the owner and game masters buy for this character.",
         "Nothing was bought: {reason}": "Nothing was bought: {reason}",
         "Download run sheet": "Download run sheet",
-        "There is no run sheet template yet. Add one in the document app.": "There is no run sheet template yet. Add one in the document app."
+        "There is no run sheet template yet. Add one in the document app.": "There is no run sheet template yet. Add one in the document app.",
+        "Override a requirement": "Override a requirement",
+        "Loading the skills": "Loading the skills",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.",
+        "The character already has every skill of this world.": "The character already has every skill of this world.",
+        "Reason": "Reason",
+        "Required. For example: plot reward from the summer finale.": "Required. For example: plot reward from the summer finale.",
+        "Grant with override": "Grant with override",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} now has {skill}. The override and its reason are in the audit trail.",
+        "The override was not saved: {reason}": "The override was not saved: {reason}"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

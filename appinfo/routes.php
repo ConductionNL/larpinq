@@ -41,6 +41,7 @@ $extra = [
 	['name' => 'xpAwards#access', 'url' => '/api/xp-awards/access', 'verb' => 'GET'],
 	['name' => 'xpAwards#roster', 'url' => '/api/events/{id}/xp-award-roster', 'verb' => 'GET'],
 	['name' => 'xpAwards#award', 'url' => '/api/events/{id}/xp-awards', 'verb' => 'POST'],
+	['name' => 'characters#overrideAccess', 'url' => '/api/characters/override-access', 'verb' => 'GET'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
 	['name' => 'characterPurchases#buy', 'url' => '/api/characters/{id}/purchases', 'verb' => 'POST'],
 	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],

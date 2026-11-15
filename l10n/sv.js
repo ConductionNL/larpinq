@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Bara ägaren och spelledarna köper åt den här karaktären.",
         "Nothing was bought: {reason}": "Inget köptes: {reason}",
         "Download run sheet": "Ladda ner körschema",
-        "There is no run sheet template yet. Add one in the document app.": "Det finns ingen mall för körschemat än. Lägg till en i dokumentappen."
+        "There is no run sheet template yet. Add one in the document app.": "Det finns ingen mall för körschemat än. Lägg till en i dokumentappen.",
+        "Override a requirement": "Åsidosätt ett krav",
+        "Loading the skills": "Läser in färdigheter",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Ge {character} en färdighet vars krav inte är uppfyllda. Skälet sparas med åsidosättandet.",
+        "The character already has every skill of this world.": "Karaktären har redan alla färdigheter i den här världen.",
+        "Reason": "Skäl",
+        "Required. For example: plot reward from the summer finale.": "Obligatoriskt. Till exempel: intrigbelöning från sommarfinalen.",
+        "Grant with override": "Ge med åsidosättande",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} har nu {skill}. Åsidosättandet och skälet finns i granskningsloggen.",
+        "The override was not saved: {reason}": "Åsidosättandet sparades inte: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

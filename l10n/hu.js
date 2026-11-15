@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Ennek a karakternek csak a tulajdonos és a mesélők vásárolhatnak.",
         "Nothing was bought: {reason}": "Semmi sem lett megvásárolva: {reason}",
         "Download run sheet": "Forgatókönyv letöltése",
-        "There is no run sheet template yet. Add one in the document app.": "Még nincs forgatókönyv-sablon. Adjon hozzá egyet a dokumentumalkalmazásban."
+        "There is no run sheet template yet. Add one in the document app.": "Még nincs forgatókönyv-sablon. Adjon hozzá egyet a dokumentumalkalmazásban.",
+        "Override a requirement": "Követelmény felülbírálása",
+        "Loading the skills": "Képességek betöltése",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Adjon {character} karakternek egy képességet, amelynek követelményeit nem teljesíti. Az indoklás a felülbírálással együtt marad meg.",
+        "The character already has every skill of this world.": "A karakter már rendelkezik e világ összes képességével.",
+        "Reason": "Indoklás",
+        "Required. For example: plot reward from the summer finale.": "Kötelező. Például: cselekményjutalom a nyári fináléból.",
+        "Grant with override": "Megadás felülbírálással",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} mostantól rendelkezik ezzel: {skill}. A felülbírálás és indoklása a naplóban szerepel.",
+        "The override was not saved: {reason}": "A felülbírálás nem lett mentve: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

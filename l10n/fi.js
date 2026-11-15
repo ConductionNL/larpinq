@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Vain omistaja ja pelinjohtajat ostavat tälle hahmolle.",
         "Nothing was bought: {reason}": "Mitään ei ostettu: {reason}",
         "Download run sheet": "Lataa pelin ajolista",
-        "There is no run sheet template yet. Add one in the document app.": "Ajolistan pohjaa ei vielä ole. Lisää sellainen asiakirjasovelluksessa."
+        "There is no run sheet template yet. Add one in the document app.": "Ajolistan pohjaa ei vielä ole. Lisää sellainen asiakirjasovelluksessa.",
+        "Override a requirement": "Ohita vaatimus",
+        "Loading the skills": "Ladataan taitoja",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Anna hahmolle {character} taito, jonka vaatimukset eivät täyty. Syy tallennetaan ohituksen kanssa.",
+        "The character already has every skill of this world.": "Hahmolla on jo kaikki tämän maailman taidot.",
+        "Reason": "Syy",
+        "Required. For example: plot reward from the summer finale.": "Pakollinen. Esimerkiksi: juonipalkinto kesän finaalista.",
+        "Grant with override": "Anna ohituksella",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: nyt taito {skill}. Ohitus ja sen syy ovat tarkastuslokissa.",
+        "The override was not saved: {reason}": "Ohitusta ei tallennettu: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

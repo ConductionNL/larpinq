@@ -809,7 +809,16 @@ OC.L10N.register(
         "Only the owner and game masters buy for this character.": "Для этого персонажа покупают только владелец и мастера игры.",
         "Nothing was bought: {reason}": "Ничего не куплено: {reason}",
         "Download run sheet": "Скачать сценарный лист",
-        "There is no run sheet template yet. Add one in the document app.": "Шаблона сценарного листа пока нет. Добавьте его в приложении документов."
+        "There is no run sheet template yet. Add one in the document app.": "Шаблона сценарного листа пока нет. Добавьте его в приложении документов.",
+        "Override a requirement": "Обойти требование",
+        "Loading the skills": "Загрузка навыков",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Дайте персонажу {character} навык, требованиям которого он не соответствует. Причина сохраняется вместе с исключением.",
+        "The character already has every skill of this world.": "У персонажа уже есть все навыки этого мира.",
+        "Reason": "Причина",
+        "Required. For example: plot reward from the summer finale.": "Обязательно. Например: сюжетная награда за летний финал.",
+        "Grant with override": "Выдать с исключением",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} теперь имеет навык {skill}. Исключение и его причина записаны в журнале аудита.",
+        "The override was not saved: {reason}": "Исключение не сохранено: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

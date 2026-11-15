@@ -899,7 +899,15 @@
         "Only the owner and game masters buy for this character.": "Alleen de eigenaar en spelleiders kopen voor dit karakter.",
         "Nothing was bought: {reason}": "Er is niets gekocht: {reason}",
         "Download run sheet": "Draaiboek downloaden",
-        "There is no run sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor het draaiboek. Voeg er een toe in de documenten-app."
+        "There is no run sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor het draaiboek. Voeg er een toe in de documenten-app.",
+        "Override a requirement": "Een vereiste overslaan",
+        "Loading the skills": "Vaardigheden laden",
+        "Grant {character} a skill whose requirements they do not meet. The reason is kept with the override.": "Geef {character} een vaardigheid waarvan de vereisten niet worden gehaald. De reden wordt bij de uitzondering bewaard.",
+        "The character already has every skill of this world.": "Het karakter heeft al elke vaardigheid van deze wereld.",
+        "Required. For example: plot reward from the summer finale.": "Verplicht. Bijvoorbeeld: plotbeloning uit de zomerfinale.",
+        "Grant with override": "Toekennen met uitzondering",
+        "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} heeft nu {skill}. De uitzondering en de reden staan in het auditlogboek.",
+        "The override was not saved: {reason}": "De uitzondering is niet opgeslagen: {reason}"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"
