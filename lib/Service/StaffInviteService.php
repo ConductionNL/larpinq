@@ -138,22 +138,33 @@ class StaffInviteService {
 		self::assertDays(days: $days);
 		self::assertMaxUses(maxUses: $maxUses);
 
+		return $this->issue(invite: ['role' => $role, 'maxUses' => $maxUses, 'createdBy' => $actingUid], days: $days);
+	}//end create()
+
+	/**
+	 * Store a new invite with a fresh token that ends after `$days`.
+	 *
+	 * @param array{role: string, maxUses: int, createdBy: string} $invite What the invite grants and who made it.
+	 * @param int                                                  $days   How many days it is valid.
+	 *
+	 * @return array{invite: array<string, mixed>, token: string} The invite, and its token shown once.
+	 */
+	private function issue(array $invite, int $days): array {
 		$token = bin2hex(random_bytes(16));
-		$now = $this->now();
 		$saved = $this->objectFetcher->saveObjectWithAppAuthority(
 			objectType: self::OBJECT_TYPE,
 			data: [
-				'role' => $role,
+				'role' => $invite['role'],
 				'tokenHash' => self::hashToken(token: $token),
-				'expiresAt' => $now->modify('+' . $days . ' days')->format(DateTimeInterface::ATOM),
-				'maxUses' => $maxUses,
+				'expiresAt' => $this->now()->modify('+' . $days . ' days')->format(DateTimeInterface::ATOM),
+				'maxUses' => $invite['maxUses'],
 				'uses' => [],
-				'createdBy' => $actingUid,
+				'createdBy' => $invite['createdBy'],
 			]
 		);
 
 		return ['invite' => self::withoutHash(invite: $saved), 'token' => $token];
-	}//end create()
+	}//end issue()
 
 	/**
 	 * The role and state of the invite a token opens, for the landing page.
@@ -342,6 +353,18 @@ class StaffInviteService {
 			throw new DomainException('You cannot remove yourself from the game masters');
 		}
 
+		return $this->removeFrom(role: $role, uid: $uid);
+	}//end removeMember()
+
+	/**
+	 * Take a user out of a role's group; false when either is gone or they are not in it.
+	 *
+	 * @param string $role The group id.
+	 * @param string $uid  The user.
+	 *
+	 * @return bool
+	 */
+	private function removeFrom(string $role, string $uid): bool {
 		$group = $this->groupManager->get($role);
 		$user  = $this->userManager->get($uid);
 		if ($group === null || $user === null) {
@@ -354,7 +377,7 @@ class StaffInviteService {
 
 		$group->removeUser($user);
 		return true;
-	}//end removeMember()
+	}//end removeFrom()
 
 	/**
 	 * Whether an invite still adds people: revoked first, then expired, then used up.
