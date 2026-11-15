@@ -18,6 +18,7 @@ const tenantUuid = vi.hoisted(() => ({ value: 'org-7' }))
 vi.mock('@conduction/nextcloud-vue', () => ({
 	CnAppRoot: {},
 	CnObjectSidebar: {},
+	CnTranslatedBadge: {},
 	useTenantContext: () => ({ activeOrganisationUuid: tenantUuid }),
 }))
 vi.mock('@nextcloud/initial-state', () => ({

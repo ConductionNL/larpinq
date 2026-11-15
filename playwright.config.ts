@@ -64,7 +64,7 @@ export default defineConfig({
 		// PR pipelines don't reshoot screenshots on every push.
 		{
 			name: 'chromium',
-			testIgnore: ['**/docs-screenshots.spec.ts', '**/visual/**'],
+			testIgnore: ['**/docs-screenshots.spec.ts', '**/visual/**', '**/phone/**'],
 			use: {
 				...devices['Desktop Chrome'],
 				// Pick up the authenticated storage state globalSetup wrote.
@@ -100,6 +100,24 @@ export default defineConfig({
 			use: {
 				...devices['Desktop Chrome'],
 				viewport: { width: 1280, height: 800 },
+				storageState: 'tests/e2e/.auth/admin.json',
+			},
+			timeout: 90_000,
+		},
+		// Phone-width project (admin-phone-friendly-pages). Opt-in:
+		//   npx playwright test --project phone
+		// Fails when an event-day page scrolls sideways at 360 pixels and when
+		// a check-in action is smaller than 44 by 44; saves the screenshots
+		// docs/features/phone-use.md uses.
+		{
+			name: 'phone',
+			testMatch: /phone\/.*\.spec\.ts$/,
+			use: {
+				...devices['Desktop Chrome'],
+				viewport: { width: 360, height: 740 },
+				deviceScaleFactor: 2,
+				isMobile: true,
+				hasTouch: true,
 				storageState: 'tests/e2e/.auth/admin.json',
 			},
 			timeout: 90_000,

@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -777,7 +773,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakter sayfam",
-        "Open sheet": "Sayfayı aç"
+        "Open sheet": "Sayfayı aç",
+        "History entry": "Tarih kaydı",
+        "How the date is told in the world": "Tarihin dünyada nasıl söylendiği",
+        "In-game date": "Oyun içi tarih",
+        "The story of this moment": "Bu anın hikâyesi",
+        "The world this moment belongs to": "Bu anın ait olduğu dünya",
+        "What happened, in a few words": "Ne oldu, birkaç kelimeyle",
+        "When it happened, used to sort the timeline": "Ne zaman oldu, zaman çizelgesini sıralamak için",
+        "Who may read the entry: game masters only, or players too": "Kaydı kim okuyabilir: yalnızca oyun yöneticileri mi, oyuncular da mı",
+        "Price": "Fiyat",
+        "Gold pieces the item costs": "Eşyanın tuttuğu altın",
+        "Silver pieces the item costs": "Eşyanın tuttuğu gümüş",
+        "Copper pieces the item costs": "Eşyanın tuttuğu bakır",
+        "What the item costs in in-game money; a character buys it from the character page": "Eşyanın oyun parasıyla fiyatı; karakter onu karakter sayfasından satın alır"
     },
     "nplurals=2; plural=(n != 1);"
 )
