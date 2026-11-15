@@ -28,6 +28,7 @@
 		:registry="registry"
 		:customComponents="customComponents"
 		:pageTypes="pageTypes"
+		:cellWidgets="cellWidgets"
 		appId="larpinq"
 		:translate="translateForApp"
 		:permissions="permissions">
@@ -87,6 +88,8 @@ import { loadState } from '@nextcloud/initial-state'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
 import { provide, reactive } from 'vue'
+import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
+import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import { startActiveWorld } from './services/activeWorld.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
@@ -102,6 +105,45 @@ function hasFilledParam(params) {
 	return Object.keys(params).some(
 		(k) => params[k] !== undefined && params[k] !== null && params[k] !== '',
 	)
+}
+
+/**
+ * The parent index path of a detail route (one with a non-empty route param),
+ * or null for any other route.
+ *
+ * @param {object|undefined} route The current route.
+ * @return {string|null} The index path, `/` at the root.
+ */
+function detailRouteParent(route) {
+	if (!isDetailRoute(route)) {
+		return null
+	}
+	return parentIndexPath(route) || '/'
+}
+
+/**
+ * Whether a route is a detail route: it has a path with a separator and at
+ * least one filled route param.
+ *
+ * @param {object|undefined} route The current route.
+ * @return {boolean} True for a detail route.
+ */
+function isDetailRoute(route) {
+	return Boolean(route) && /:|\//.test(route.path) && hasFilledParam(route.params || {})
+}
+
+/**
+ * The route's path without its trailing `/:id` segment: taken from the
+ * matched route record when there is one, otherwise from the path itself.
+ *
+ * @param {object} route The current route.
+ * @return {string} The index path, possibly empty.
+ */
+function parentIndexPath(route) {
+	const matched = route.matched && route.matched[0]
+	return matched
+		? matched.path.replace(/\/:[^/]+$/, '')
+		: route.path.replace(/\/[^/]+\/?$/, '')
 }
 
 export default {
@@ -210,6 +252,11 @@ export default {
 
 	data() {
 		return {
+			// Cell widgets an index column names with `widget`. `translatedName`
+			// shows the value with the "(translated from …)" badge
+			// (larpinq-adopt-or-abstractions, Phase 3). `checkinQr` shows an
+			// accepted registration's check-in code as a QR code (events-qr-checkin).
+			cellWidgets: { translatedName: TranslatedNameCell, checkinQr: RegistrationQrCode },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,
@@ -371,19 +418,10 @@ export default {
 		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md
 		 */
 		leaveDetailRoute() {
-			if (!this.$route || !/:|\//.test(this.$route.path)) {
+			const target = detailRouteParent(this.$route)
+			if (target === null) {
 				return
 			}
-			if (!hasFilledParam(this.$route.params || {})) {
-				return
-			}
-			// Find the parent index route by stripping the
-			// trailing `/:id` segment from the matched path.
-			const matched = this.$route.matched && this.$route.matched[0]
-			const indexPath = matched
-				? matched.path.replace(/\/:[^/]+$/, '')
-				: this.$route.path.replace(/\/[^/]+\/?$/, '')
-			const target = indexPath || '/'
 			if (this.$router && target !== this.$route.path) {
 				this.$router.push(target).catch(() => {})
 			}

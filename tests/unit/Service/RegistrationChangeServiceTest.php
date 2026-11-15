@@ -291,4 +291,36 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->assertFalse(condition: $late['canCancel']);
 		$this->assertTrue(condition: $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'gm')['canCancel']);
 	}//end testWhatMayChangeFollowsTheCaller()
+	/**
+	 * An unknown registration is refused with 404 by every change and
+	 * transfer entry point; an event that cannot be read counts as an event
+	 * without a policy.
+	 *
+	 * @return void
+	 */
+	public function testAnUnknownRegistrationAndAnUnreadableEvent(): void {
+		$missing = 'e0000000-0000-4000-8000-0000000000ff';
+		$calls = [
+			fn () => $this->world->changes()->cancel(registrationId: $missing, actingUid: 'anna'),
+			fn () => $this->world->changes()->addParticipant(registrationId: $missing, actingUid: 'anna', name: 'Mila'),
+			fn () => $this->world->changes()->whatMayChange(registrationId: $missing, actingUid: 'anna'),
+			fn () => $this->world->transfers()->offer(registrationId: $missing, actingUid: 'anna', recipientUid: 'pieter'),
+			fn () => $this->world->transfers()->accept(registrationId: $missing, actingUid: 'anna'),
+			fn () => $this->world->transfers()->withdraw(registrationId: $missing, actingUid: 'anna'),
+		];
+		foreach ($calls as $index => $call) {
+			try {
+				$call();
+				$this->fail(message: "step {$index} must be refused");
+			} catch (RegistrationChangeRefusedException $e) {
+				$this->assertSame(expected: ['Registration not found.', 404], actual: [$e->getMessage(), $e->getStatus()], message: "step {$index}");
+			}
+		}
+
+		$this->world->seedRegistration(id: self::ANNA_REG, player: PaymentWorld::ANNA, status: 'accepted', more: ['paymentState' => 'paid']);
+		unset($this->world->store->objects['event'][PaymentWorld::EVENT]);
+		$anna = $this->world->changes()->whatMayChange(registrationId: self::ANNA_REG, actingUid: 'anna');
+		$this->assertNull(actual: $anna['cancelBy']);
+		$this->assertTrue(condition: $anna['canCancel']);
+	}//end testAnUnknownRegistrationAndAnUnreadableEvent()
 }//end class

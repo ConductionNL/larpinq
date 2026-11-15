@@ -22,7 +22,6 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
-use Throwable;
 
 /**
  * Cancelling one registration and adding participants to a booking
@@ -74,8 +73,8 @@ class RegistrationChangeService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function cancel(string $registrationId, string $actingUid, string $choice = ''): array {
-		$registration = $this->registration(registrationId: $registrationId);
-		$event = $this->event(registration: $registration);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
+		$event = RegistrationReads::event(fetcher: $this->fetcher, registration: $registration);
 		$gameMaster = $this->policy->isGameMaster(uid: $actingUid);
 		if ($gameMaster === false && $this->isOwn(registration: $registration, uid: $actingUid) === false) {
 			throw new RegistrationChangeRefusedException('Only the player, the person who booked or a game master can cancel this registration.', 403);
@@ -100,7 +99,7 @@ class RegistrationChangeService {
 		}
 
 		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $fields, uuid: $registrationId);
-		return $this->registration(registrationId: $registrationId);
+		return RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
 	}//end cancel()
 
 	/**
@@ -120,7 +119,7 @@ class RegistrationChangeService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function addParticipant(string $registrationId, string $actingUid, string $name, string $playerId = ''): array {
-		$registration = $this->registration(registrationId: $registrationId);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
 		$participant = $this->policy->isParticipant(registration: $registration, uid: $actingUid);
 		if ($participant === false || (string)($registration['status'] ?? '') === 'cancelled') {
 			throw new RegistrationChangeRefusedException('Only the person who signed up can add participants to this booking.', 403);
@@ -163,8 +162,8 @@ class RegistrationChangeService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function whatMayChange(string $registrationId, string $actingUid): array {
-		$registration = $this->registration(registrationId: $registrationId);
-		$event = $this->event(registration: $registration);
+		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
+		$event = RegistrationReads::event(fetcher: $this->fetcher, registration: $registration);
 		$gameMaster = $this->policy->isGameMaster(uid: $actingUid);
 		$open = $this->policy->isOpen(event: $event, now: $this->time->now());
 		$live = in_array((string)($registration['status'] ?? ''), self::CANCELLABLE, true);
@@ -247,38 +246,6 @@ class RegistrationChangeService {
 		return $this->policy->isParticipant(registration: $registration, uid: $uid) === true
 			|| $this->policy->isBooker(registration: $registration, uid: $uid) === true;
 	}//end isOwn()
-
-	/**
-	 * A registration, read by larpinq (the caller's rights are checked here).
-	 *
-	 * @param string $registrationId The registration.
-	 *
-	 * @return array<string, mixed> The registration.
-	 *
-	 * @throws RegistrationChangeRefusedException When it does not exist.
-	 */
-	private function registration(string $registrationId): array {
-		try {
-			return $this->fetcher->getObject(objectType: 'registration', id: $registrationId);
-		} catch (Throwable $e) {
-			throw new RegistrationChangeRefusedException('Registration not found.', 404);
-		}
-	}//end registration()
-
-	/**
-	 * The registration's event, or an empty event when it cannot be read.
-	 *
-	 * @param array<string, mixed> $registration The registration.
-	 *
-	 * @return array<string, mixed> The event.
-	 */
-	private function event(array $registration): array {
-		try {
-			return $this->fetcher->getObject(objectType: 'event', id: (string)($registration['event'] ?? ''));
-		} catch (Throwable $e) {
-			return [];
-		}
-	}//end event()
 
 	/**
 	 * A new booking group id.

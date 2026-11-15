@@ -1,3 +1,5 @@
+<!-- SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl> -->
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
 <template>
 	<!-- Board LrBeheerinstellingen: the shell in the board look draws the
 	     title, the path line and the Documentatie button; the version card and

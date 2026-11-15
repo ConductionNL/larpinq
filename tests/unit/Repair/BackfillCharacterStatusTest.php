@@ -85,4 +85,17 @@ class BackfillCharacterStatusTest extends TestCase {
 		$output->expects($this->once())->method('warning');
 		(new BackfillCharacterStatus(objectFetcher: $broken, logger: $this->createMock(originalClassName: LoggerInterface::class)))->run($output);
 	}//end testFailuresNeverStopTheUpgrade()
+	/**
+	 * The step names what it does.
+	 *
+	 * @return void
+	 */
+	public function testName(): void {
+		$step = new BackfillCharacterStatus(
+			objectFetcher: $this->createMock(originalClassName: RegisterObjectFetcher::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
+
+		$this->assertSame(expected: 'Give Larpinq characters without a status the status active', actual: $step->getName());
+	}//end testName()
 }//end class

@@ -3,6 +3,9 @@
 /**
  * Installs this app's demo dataset on request (ADR-111).
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * An app installed from the App Store opens on an empty list, and the only
  * question its first reader has is whether they can see it work. Answering it
  * requires data they cannot author, against a schema they do not know yet.
@@ -29,9 +32,6 @@
  * @author    Conduction Development Team <info@conduction.nl>
  * @copyright 2026 Conduction B.V.
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
- *
- * SPDX-License-Identifier: EUPL-1.2
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
  * @link https://conduction.nl
  */

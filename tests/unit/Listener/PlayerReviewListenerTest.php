@@ -19,6 +19,7 @@ namespace OCA\Larpinq\Tests\Unit\Listener;
 
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\OpenRegister\Db\ObjectEntity;
+use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\IAppConfig;
 use OCP\IUser;
@@ -143,4 +144,50 @@ class PlayerReviewListenerTest extends TestCase {
 		$this->listener()->handle($system);
 		$this->assertSame(expected: [], actual: $system->getModifiedData());
 	}//end testSystemWritesAndOtherObjectsAreLeftAlone()
+
+	/**
+	 * An update without a stored stamp, or one still awaiting review, leaves
+	 * what other listeners changed untouched; a blank stored value is not kept.
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateWithoutAStoredStampChangesNothing(): void {
+		$old = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => true, 'reviewedBy' => '', 'reviewedAt' => null]);
+		$new = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => true, 'reviewedBy' => 'anna']);
+		$event = new ObjectUpdatingEvent($new, $old);
+		$event->setModifiedData(['kept' => 1]);
+
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: ['kept' => 1], actual: $event->getModifiedData());
+	}//end testAnUpdateWithoutAStoredStampChangesNothing()
+
+	/**
+	 * A blank stored value is dropped while a filled one is merged in.
+	 *
+	 * @return void
+	 */
+	public function testOnlyFilledStoredValuesAreKept(): void {
+		$old = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'reviewedBy' => 'joris', 'reviewedAt' => '']);
+		$new = new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false, 'reviewedAt' => '2020-01-01T00:00:00+00:00']);
+		$event = new ObjectUpdatingEvent($new, $old);
+		$event->setModifiedData(['kept' => 1]);
+
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: ['kept' => 1, 'reviewedBy' => 'joris'], actual: $event->getModifiedData());
+	}//end testOnlyFilledStoredValuesAreKept()
+
+	/**
+	 * Any event other than a pre-update is ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$event = new ObjectCreatingEvent(new ReviewObjectEntity(self::PLAYER_SCHEMA, ['awaitingReview' => false]));
+
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
+	}//end testOtherEventsAreIgnored()
 }//end class

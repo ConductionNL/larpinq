@@ -3,6 +3,9 @@
 /**
  * Effect-chain integration test for the Larpinq game-mechanics engine.
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * Satisfies TEST-031 of the game-mechanics spec ("effect chain integrity must
  * be verified end-to-end"). Where {@see \OCA\Larpinq\Tests\Unit\Service\GameMechanicsTest}
  * exercises one mechanic at a time, this test drives the WHOLE chain in a

@@ -65,36 +65,9 @@ on:
   # be redder than a PR — that is the honest answer, not a regression.
   workflow_dispatch:
 
-# Permission CEILING for the called quality pipeline, NOT a grant. Copied
-# verbatim from openconnector, where this exact block is live on `development`
-# with all ~30 quality jobs green — so it is a measured ceiling, not a guess.
-#
-# ⚠️ Most jobs in the callee declare NO permissions of their own (only
-# journeydoc-capture and features-extract do), which means they inherit THIS
-# ceiling exactly. Every entry below is load-bearing:
-#
-#   contents: write        journeydoc-capture and update-baseline `git push`
-#                          the regenerated screenshots / coverage baseline
-#   actions: write         journeydoc-capture re-dispatches downstream work
-#                          (a GITHUB_TOKEN push does not fire workflow_run)
-#   issues / pull-requests: write
-#                          the Quality Report comment — `github.rest.issues
-#                          .createComment`, which 403s under contents+packages
-#                          read alone (quality.yml notes this at its own step)
-#   packages: read         pulling org images for the Nextcloud test matrix
-#
-# ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
-# called workflow's DECLARED job permissions against this grant — including for
-# jobs an `if:` will skip — so capping one makes the whole call fail to START:
-# zero jobs, no annotations, and a Code Quality run that is absent rather than
-# red. That is the same shape as the org-rename outage described below, which
-# also produced zero jobs and no red test.
+# Read-only by default; the write grants sit on the job that needs them.
 permissions:
-  contents: write
-  actions: write
-  issues: write
-  pull-requests: write
-  packages: read
+  contents: read
 
 jobs:
   quality:
@@ -105,6 +78,36 @@ jobs:
     # produced ZERO jobs and failed instantly, taking ESLint, PHPCS, PHPMD,
     # PHPStan, the license/security scan and the 4-way PHPUnit matrix offline
     # without a single red test to show for it.
+    # Permission CEILING for the called quality pipeline, NOT a grant. Copied
+    # verbatim from openconnector, where this exact block is live on `development`
+    # with all ~30 quality jobs green, so it is a measured ceiling, not a guess.
+    #
+    # ⚠️ Most jobs in the callee declare NO permissions of their own (only
+    # journeydoc-capture and features-extract do), which means they inherit THIS
+    # ceiling exactly. Every entry below is load-bearing:
+    #
+    #   contents: write        journeydoc-capture and update-baseline `git push`
+    #                          the regenerated screenshots / coverage baseline
+    #   actions: write         journeydoc-capture re-dispatches downstream work
+    #                          (a GITHUB_TOKEN push does not fire workflow_run)
+    #   issues / pull-requests: write
+    #                          the Quality Report comment, `github.rest.issues
+    #                          .createComment`, which 403s under contents+packages
+    #                          read alone (quality.yml notes this at its own step)
+    #   packages: read         pulling org images for the Nextcloud test matrix
+    #
+    # ⚠️ Do NOT "tighten" any of these to `read`. GitHub statically validates the
+    # called workflow's DECLARED job permissions against this grant, including for
+    # jobs an `if:` will skip, so capping one makes the whole call fail to START:
+    # zero jobs, no annotations, and a Code Quality run that is absent rather than
+    # red. That is the same shape as the org-rename outage described below, which
+    # also produced zero jobs and no red test.
+    permissions:
+      contents: write
+      actions: write
+      issues: write
+      pull-requests: write
+      packages: read
     uses: ConductionNL/.github/.github/workflows/quality.yml@main
     with:
       app-name: larpinq
@@ -161,7 +164,7 @@ jobs:
       # Pinned to `development`, NOT `main`: this app tracks `development`, and
       # pinning the foundation to `main` is what makes a CI instance behave
       # unlike any environment the app is actually developed against.
-      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"development"}]'
+      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"main"}]'
 
       # ── E2E browser tests ────────────────────────────────────────────────
       # Previously OFF, which made the shared workflow report
@@ -263,6 +266,10 @@ jobs:
       # new duplicated fragment of 6+ lines fails. Units the change does not
       # touch, or touches without making worse, are inherited and do not count.
       hydra-gates-sig-blocking: true
+      # Maintainability floor: no rating in .maintainability-floor.json may drop
+      # more than 0.01 against the merge base (pull request) or below the
+      # committed floor (push). The floor is raised after improving merges.
+      enable-maintainability-floor: true
       # No `hydra-gates-ref` here on purpose. The shared workflow defaults it
       # to @main, and this workflow is itself consumed at @main, so the two
       # sides move together and a gate fix reaches this repo without a commit

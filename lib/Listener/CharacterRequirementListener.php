@@ -20,6 +20,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -146,11 +149,7 @@ class CharacterRequirementListener implements IEventListener {
 		// Who may author overrides is decided first and fails closed; only the
 		// game rules after it degrade to allowing the write.
 		$errors = ($this->overrideVeto(event: $event) ?? $this->gameRuleVeto(event: $event));
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**

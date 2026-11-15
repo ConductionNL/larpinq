@@ -33,6 +33,7 @@ use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
 use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
+use OCP\EventDispatcher\Event;
 use OCP\IAppConfig;
 use OCP\IUserManager;
 use PHPUnit\Framework\TestCase;
@@ -173,6 +174,59 @@ class FormSubmissionListenerTest extends TestCase {
 	}//end testASecondSubmissionKeepsTheFirstRegistration()
 
 	/**
+	 * Events other than a Forms submission are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$this->listener()->handle(new Event());
+
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
+		$this->assertSame(expected: [], actual: $this->logged);
+	}//end testOtherEventsAreIgnored()
+
+	/**
+	 * A submission without a form id asks the register nothing.
+	 *
+	 * @return void
+	 */
+	public function testASubmissionWithoutAFormIdIsIgnored(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->expects(self::never())->method('getObjectsWithAppAuthority');
+		$fetcher->expects(self::never())->method('saveObjectWithAppAuthority');
+		$listener = new FormSubmissionListener(
+			fetcher: $fetcher,
+			users: $this->createMock(originalClassName: IUserManager::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
+
+		$listener->handle($this->submitted(form: 0, uid: 'anna'));
+	}//end testASubmissionWithoutAFormIdIsIgnored()
+
+	/**
+	 * A failing intake is logged with the form, and never breaks the submission.
+	 *
+	 * @return void
+	 */
+	public function testAFailingIntakeIsLoggedNotThrown(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->method('getObjectsWithAppAuthority')->willThrowException(new \RuntimeException('register offline'));
+		$fetcher->expects(self::never())->method('saveObjectWithAppAuthority');
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->expects(self::once())->method('error')->with(
+			'Larpinq: a sign-up on form {form} did not become a registration.',
+			self::callback(static fn (array $context): bool => $context['form'] === 12 && $context['exception'] instanceof \RuntimeException)
+		);
+		$listener = new FormSubmissionListener(
+			fetcher: $fetcher,
+			users: $this->createMock(originalClassName: IUserManager::class),
+			logger: $logger
+		);
+
+		$listener->handle($this->submitted(form: 12, uid: 'anna'));
+	}//end testAFailingIntakeIsLoggedNotThrown()
+
+	/**
 	 * A form no event takes sign-ups from is not larpinq's business.
 	 *
 	 * @return void
@@ -182,4 +236,26 @@ class FormSubmissionListenerTest extends TestCase {
 
 		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
 	}//end testAFormOfNoEventIsIgnored()
+	/**
+	 * A uid that is no account here, or no uid at all, creates nothing and
+	 * logs the anonymous sign-up; a repeat logs which registration stands.
+	 *
+	 * @return void
+	 */
+	public function testUnknownAccountsCreateNothingAndTheLogNamesWhy(): void {
+		$this->listener()->handle($this->submitted(form: 12, uid: 'ghost'));
+		$this->listener()->handle($this->submitted(form: 12, uid: ''));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 502));
+
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['registration']);
+		$this->assertSame(
+			expected: [
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: {user} signed up for event {event} again; the first registration stands.',
+			],
+			actual: $this->logged
+		);
+	}//end testUnknownAccountsCreateNothingAndTheLogNamesWhy()
 }//end class

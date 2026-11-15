@@ -11,6 +11,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/pdf-export/spec.md
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -19,11 +22,13 @@ namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
+use OCA\Larpinq\Service\CheckinByCode;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
+use OCP\AppFramework\Http\Attribute\UserRateLimit;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
@@ -67,12 +72,14 @@ class EventsController extends Controller {
 	 * @param EventRosterService $rosterService The event participation domain service.
 	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF helper.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
+	 * @param CheckinByCode|null $checkinByCode Check-in by a registration's code (events-qr-checkin).
 	 */
 	public function __construct(
 		IRequest $request,
 		private readonly EventRosterService $rosterService,
 		private readonly DocuDeskPdfRenderer $pdfRenderer,
 		private readonly CallerAccess $callerAccess,
+		private readonly ?CheckinByCode $checkinByCode = null,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
@@ -99,7 +106,7 @@ class EventsController extends Controller {
 	#[NoCSRFRequired]
 	public function downloadRunsheet(string $id, string $template): DataDownloadResponse|JSONResponse {
 		// GM-only: the run-sheet exposes approval status and GM-private notes.
-		[, $denied] = $this->resolveGameMaster();
+		[, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -200,6 +207,7 @@ class EventsController extends Controller {
 
 		$roster = $this->rosterService->buildRoster(eventId: $id);
 		$roster['isGm'] = $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID());
+		$roster['canCheckIn'] = $this->callerAccess->mayCheckIn(uid: $user->getUID());
 
 		return new JSONResponse(data: $roster);
 	}//end roster()
@@ -226,8 +234,9 @@ class EventsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function recordAttendance(string $id): JSONResponse {
-		// GM-only: recording attendance is a game-master act at the door.
-		[$actingUid, $denied] = $this->resolveGameMaster();
+		// Game masters, admins and stewards record attendance at the door
+		// (admin-staff-roles-and-invites REQ-ASR-003); the run sheet stays game master only.
+		[$actingUid, $denied] = $this->callerAccess->resolveCheckIn();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -244,6 +253,44 @@ class EventsController extends Controller {
 
 		return $this->attendanceResponse(saved: $saved);
 	}//end recordAttendance()
+
+	/**
+	 * Check a participant in by the code of their registration (GM-only).
+	 *
+	 * The game master check runs first; then the code, and only the code, is
+	 * read from the body. `200 {status: checked-in, name, character}` on a
+	 * first use, `200 {status: already, at, by}` on a second, `409
+	 * {status: not-accepted}` for a registration that is not accepted, and
+	 * `404 {status: unknown}` for an unknown code or one of another event.
+	 *
+	 * @param string $id The event UUID.
+	 *
+	 * @return JSONResponse The result.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+	 */
+	#[NoAdminRequired]
+	#[UserRateLimit(limit: 120, period: 60)]
+	public function checkinByCode(string $id): JSONResponse {
+		[$actingUid, $denied] = $this->callerAccess->resolveGameMaster();
+		if ($denied !== null) {
+			return $denied;
+		}
+
+		if ($this->checkinByCode === null) {
+			return new JSONResponse(data: ['status' => 'unavailable'], statusCode: Http::STATUS_SERVICE_UNAVAILABLE);
+		}
+
+		[$status, $answer] = $this->checkinByCode->checkIn(
+			eventId: $id,
+			code: (string)$this->request->getParam('code', ''),
+			actingUid: $actingUid
+		);
+
+		return new JSONResponse(data: $answer, statusCode: $status);
+	}//end checkinByCode()
 
 	/**
 	 * The character and status of an attendance request; nothing else is read from the body.
@@ -304,31 +351,6 @@ class EventsController extends Controller {
 
 		return new JSONResponse(data: $saved);
 	}//end attendanceResponse()
-
-	/**
-	 * Resolve the acting game master, or the refusal response to return.
-	 *
-	 * Collapses the authenticate-then-authorize pair into one decision so the
-	 * endpoints carry a single guard branch and receive a non-empty uid.
-	 *
-	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
-	 *                                                the uid is empty when refused.
-	 *
-	 * @spec openspec/specs/event-checkin-roster/spec.md
-	 */
-	private function resolveGameMaster(): array {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
-		}
-
-		$uid = $user->getUID();
-		if ($this->callerAccess->isGameMasterOrAdmin(uid: $uid) === false) {
-			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
-		}
-
-		return [$uid, null];
-	}//end resolveGameMaster()
 
 	/**
 	 * Validate the attendance request body, or null when it is acceptable.

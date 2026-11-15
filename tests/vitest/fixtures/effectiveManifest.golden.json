@@ -181,7 +181,7 @@
 		},
 		{
 			"id": "StoreMenu",
-			"label": "Store",
+			"label": "Marketplace",
 			"icon": "StoreOutline",
 			"route": "Store",
 			"section": "footer",
@@ -250,7 +250,7 @@
 	"pages": [
 		[
 			"Store",
-			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
 		],
 		[
 			"Dashboard",
@@ -258,7 +258,7 @@
 		],
 		[
 			"Characters",
-			"293623a82d2787d0206bbab2586751bc4ae4861717bf75bf052f87302361bdf1"
+			"58abe4843d3e3eacbd2c7d2fe501e60bc1cb16ff69c7e4bbd3373be8b817b795"
 		],
 		[
 			"CharacterDetail",
@@ -294,7 +294,7 @@
 		],
 		[
 			"Items",
-			"b59d60bb65ec944b116e372abc55adb48d3ce5568116d496d2c03ef37e6573c8"
+			"221da49f33af286e1565c8d10461810e9e1615536eb44b9099e599b1c391a005"
 		],
 		[
 			"ItemDetail",
@@ -318,11 +318,11 @@
 		],
 		[
 			"Events",
-			"31076f408e47da19ffcb18ce6580f59c5e0600d3356c1c028a0e84fd2889bc63"
+			"1f72b008b20b4913306bd728b959c2c3b657c021de101a45494ead361446d2d0"
 		],
 		[
 			"EventDetail",
-			"c20532fadae30453125018aa6fdb7eb5fb5c19f433d8c97192b0477ebb9f6727"
+			"64aefa8d67d51ad008353af44c366f1d380d5e6a6447fecc53a78b37c59f64ae"
 		],
 		[
 			"Settings",
@@ -418,7 +418,7 @@
 		],
 		[
 			"MyRegistrations",
-			"f326769feaabf627a97c2d783155e908ed9d170f2a1dee5f1f90e1a93015077e"
+			"f1ed2f43ab2a58e4cdfe012383f612f44c41259ac8d6c967a103a6bc0650ffab"
 		],
 		[
 			"RegistrationDetail",

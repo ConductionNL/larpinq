@@ -33,6 +33,23 @@ async function registerId() {
 }
 
 /**
+ * The larpinq register id, or null after showing the given message when
+ * none is configured.
+ *
+ * @param {string} noRegisterMessage The translated message for a missing register.
+ * @return {Promise<string|null>} The id, or null.
+ *
+ * @spec openspec/specs/data-portability/spec.md
+ */
+async function configuredRegisterId(noRegisterMessage) {
+	const id = await registerId()
+	if (id === null) {
+		showError(noRegisterMessage)
+	}
+	return id
+}
+
+/**
  * Let the user pick one Excel workbook.
  *
  * @return {Promise<File|null>} The file, or null when none was picked.
@@ -58,14 +75,13 @@ function pickWorkbook() {
  * @spec openspec/specs/data-portability/spec.md
  */
 export async function exportCampaignAction() {
-	const id = await registerId()
+	const id = await configuredRegisterId(
+		t(
+			'larpinq',
+			'The campaign could not be exported, because no register is configured.',
+		),
+	)
 	if (id === null) {
-		showError(
-			t(
-				'larpinq',
-				'The campaign could not be exported, because no register is configured.',
-			),
-		)
 		return
 	}
 	window.location.assign(campaignExportUrl(id))
@@ -79,34 +95,72 @@ export async function exportCampaignAction() {
  * @spec openspec/specs/data-portability/spec.md
  */
 export async function importCampaignAction() {
-	const id = await registerId()
+	const id = await configuredRegisterId(
+		t(
+			'larpinq',
+			'The campaign could not be imported, because no register is configured.',
+		),
+	)
 	if (id === null) {
-		showError(
-			t(
-				'larpinq',
-				'The campaign could not be imported, because no register is configured.',
-			),
-		)
 		return
 	}
 	const file = await pickWorkbook()
-	if (file === null) {
+	if (file !== null) {
+		await importAndReport(file, id)
+	}
+}
+
+/**
+ * Import one campaign workbook into the register and report the totals, or
+ * the reason it failed.
+ *
+ * @param {File} file The picked workbook.
+ * @param {string} id The register id.
+ * @return {Promise<void>}
+ *
+ * @spec openspec/specs/data-portability/spec.md
+ */
+async function importAndReport(file, id) {
+	let totals
+	try {
+		totals = await importCampaign(file, id)
+	} catch (error) {
+		reportImportFailed(error)
 		return
 	}
-	try {
-		const totals = await importCampaign(file, id)
-		showSuccess(
-			t(
-				'larpinq',
-				'Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed',
-				totals,
-			),
-		)
-	} catch (error) {
-		showError(
-			t('larpinq', 'The campaign could not be imported: {reason}', {
-				reason: error.message,
-			}),
-		)
-	}
+	reportImported(totals)
+}
+
+/**
+ * Tell the user what the import created, updated, left and failed.
+ *
+ * @param {object} totals The import totals.
+ * @return {void}
+ *
+ * @spec openspec/specs/data-portability/spec.md
+ */
+function reportImported(totals) {
+	showSuccess(
+		t(
+			'larpinq',
+			'Campaign imported: {created} created, {updated} updated, {unchanged} unchanged, {failed} failed',
+			totals,
+		),
+	)
+}
+
+/**
+ * Tell the user why the import failed.
+ *
+ * @param {Error} error What the import threw.
+ * @return {void}
+ *
+ * @spec openspec/specs/data-portability/spec.md
+ */
+function reportImportFailed(error) {
+	showError(
+		t('larpinq', 'The campaign could not be imported: {reason}', {
+			reason: error.message,
+		}),
+	)
 }

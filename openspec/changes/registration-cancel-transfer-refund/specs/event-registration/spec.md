@@ -58,6 +58,16 @@ registration. Larpinq MUST NOT hold a credit balance itself.
 - THEN larpinq requests a credit of EUR 85 for Mila's player from shillinq
 - AND the registration shows credit requested
 
+### Requirement: A credit pays towards the player's next registration (REQ-RCT-005)
+
+A credit that shillinq booked for a player SHALL be applied to the payment request of that player's next accepted registration, up to the amount of the request. The registration MUST show how much was paid from credit and what is still open. Larpinq MUST read the credit from shillinq and MUST NOT keep a balance of its own.
+
+#### Scenario: Mila's credit pays for the spring event
+
+- GIVEN Mila has EUR 85 credit in shillinq after cancelling "Winter Court 2026"
+- WHEN her registration for "Spring Moot 2027" is accepted with a line of EUR 95
+- THEN the registration shows EUR 85 paid from credit and EUR 10 still open
+
 ### Requirement: A registration can be transferred to another player (REQ-RCT-004)
 
 A participant SHALL be able to offer their registration to another player, and

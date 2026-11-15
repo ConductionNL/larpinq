@@ -251,4 +251,52 @@ class SetupControllerTest extends TestCase {
 		$this->assertTrue(condition: $data['success']);
 		$this->assertStringContainsString(needle: '3 schema', haystack: $data['message']);
 	}
+	/**
+	 * Skipping demo data records "none" as a decided skip, so the step closes.
+	 *
+	 * @return void
+	 */
+	public function testSkippingDemoDataRecordsNone(): void {
+		$this->demoData->expects($this->never())->method('install');
+
+		$data = $this->controller()->runAction('skip-demo-data')->getData();
+
+		$this->assertSame(expected: ['success' => true, 'message' => 'Demo data skipped.'], actual: $data);
+		$this->assertSame(expected: ['demo_dataset' => 'none', 'demo_data_decided' => 'skipped'], actual: $this->written);
+		$this->config = $this->written;
+		$this->assertTrue(condition: $this->controller()->status()->getData()['steps']['demo-data']['done']);
+	}
+
+	/**
+	 * Provisioning without OpenRegister is refused as a failed precondition, and nothing is imported.
+	 *
+	 * @return void
+	 */
+	public function testProvisioningWithoutOpenRegisterIsRefused(): void {
+		$this->appManager->method('isInstalled')->with('openregister')->willReturn(false);
+		$this->settings->expects($this->never())->method('loadSettings');
+
+		$response = $this->controller()->runAction('provision');
+
+		$this->assertSame(expected: 412, actual: $response->getStatus());
+		$this->assertSame(
+			expected: ['success' => false, 'message' => 'OpenRegister is not installed — install and enable it, then run this step.'],
+			actual: $response->getData()
+		);
+	}
+
+	/**
+	 * A failed import answers 500 with its reason.
+	 *
+	 * @return void
+	 */
+	public function testAFailedProvisioningAnswersWithItsReason(): void {
+		$this->appManager->method('isInstalled')->willReturn(true);
+		$this->settings->method('loadSettings')->willThrowException(new RuntimeException('schema invalid'));
+
+		$response = $this->controller()->runAction('provision');
+
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: ['success' => false, 'message' => 'Provisioning failed: schema invalid'], actual: $response->getData());
+	}
 }

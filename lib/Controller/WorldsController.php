@@ -11,6 +11,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/setting-management/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -73,12 +76,7 @@ class WorldsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
-		$user = $this->callerAccess->user();
-		if ($user === null) {
-			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-		}
-
-		return new JSONResponse(data: ['allowed' => $this->callerAccess->isGameMasterOrAdmin(uid: $user->getUID())]);
+		return $this->callerAccess->gameMasterAnswer();
 	}//end access()
 
 	/**

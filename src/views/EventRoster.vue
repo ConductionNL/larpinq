@@ -32,6 +32,51 @@
 				)
 			}}
 		</div>
+		<div v-if="canCheckIn" class="event-roster__scan" data-testid="event-roster-scan">
+			<NcButton
+				variant="primary"
+				:aria-expanded="scanOpen ? 'true' : 'false'"
+				data-testid="event-roster-scan-toggle"
+				@click="toggleScan">
+				{{ scanOpen ? t('larpinq', 'Close scan') : t('larpinq', 'Scan') }}
+			</NcButton>
+			<div v-if="scanOpen" class="event-roster__scan-panel">
+				<video
+					v-show="cameraOn"
+					ref="scanVideo"
+					class="event-roster__scan-video"
+					muted
+					playsinline
+					:aria-label="t('larpinq', 'Camera preview for scanning check-in codes')" />
+				<form
+					class="event-roster__scan-form"
+					data-testid="event-roster-scan-form"
+					@submit.prevent="submitCode(scanCode)">
+					<NcTextField
+						v-model="scanCode"
+						:label="t('larpinq', 'Check-in code')"
+						:helperText="t('larpinq', 'Type the code or use a handheld scanner, then press Enter.')"
+						autocomplete="off"
+						data-testid="event-roster-scan-code" />
+					<NcButton
+						type="submit"
+						variant="secondary"
+						:disabled="scanBusy || scanCode.trim() === ''"
+						data-testid="event-roster-scan-submit">
+						{{ t('larpinq', 'Check in') }}
+					</NcButton>
+				</form>
+				<p
+					v-if="scanResult"
+					class="event-roster__scan-result"
+					:class="{ 'event-roster__scan-result--ok': scanResult.ok }"
+					role="status"
+					aria-live="polite"
+					data-testid="event-roster-scan-result">
+					{{ scanResult.text }}
+				</p>
+			</div>
+		</div>
 		<CnDataTable
 			:columns="columns"
 			:rows="participants"
@@ -53,6 +98,7 @@
 				  `<button type="secondary">` with no warning and no lint error.
 				-->
 				<NcButton
+					class="event-roster__action"
 					variant="secondary"
 					:disabled="
 						saving === row.character || row.status === 'checked-in'
@@ -62,6 +108,7 @@
 					{{ t('larpinq', 'Check in') }}
 				</NcButton>
 				<NcButton
+					class="event-roster__action"
 					variant="tertiary"
 					:disabled="saving === row.character || row.status === 'no-show'"
 					data-testid="event-roster-noshow"
@@ -79,8 +126,41 @@ import { generateUrl } from '@nextcloud/router'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcButton from '@nextcloud/vue/components/NcButton'
+import NcTextField from '@nextcloud/vue/components/NcTextField'
 import { objectTabSource } from '../mixins/objectTab.js'
+import { checkInByCode, normaliseCode, resultMessage } from '../services/checkinCode.js'
 import { ocsHeaders, ocsJsonHeaders } from '../services/requestHeaders.js'
+
+/**
+ * How long a scan result stays on the panel, in milliseconds.
+ */
+const RESULT_MS = 3000
+
+/**
+ * How often the camera frame is read for a QR code, in milliseconds.
+ */
+const DETECT_MS = 300
+
+/**
+ * A QR code reader of the browser, when it has one that reads QR codes.
+ *
+ * @param {object} scope The global scope (window).
+ * @return {Promise<object|null>} A BarcodeDetector, or null.
+ */
+async function qrDetector(scope) {
+	const Detector = scope?.BarcodeDetector
+	if (typeof Detector !== 'function') {
+		return null
+	}
+	try {
+		const formats = typeof Detector.getSupportedFormats === 'function'
+			? await Detector.getSupportedFormats()
+			: []
+		return formats.includes('qr_code') ? new Detector({ formats: ['qr_code'] }) : null
+	} catch {
+		return null
+	}
+}
 
 /**
  * Human-readable label + badge variant per attendance status.
@@ -91,6 +171,83 @@ const STATUS_META = {
 	'no-show': { label: 'No-show', variant: 'error' },
 }
 
+/**
+ * Fetch the roster of an event from the OR-delegated endpoint.
+ *
+ * @param {string} eventId The event UUID.
+ * @return {Promise<object>} The roster body.
+ * @throws {Error} When the server answers with an error status.
+ */
+async function fetchRosterData(eventId) {
+	const response = await fetch(
+		generateUrl('/apps/larpinq/api/events/{id}/roster', {
+			id: eventId,
+		}),
+		{ headers: ocsHeaders() },
+	)
+	if (!response.ok) {
+		throw new Error(`roster fetch failed: ${response.status}`)
+	}
+	return await response.json()
+}
+
+/**
+ * Keep a fetched roster on the view.
+ *
+ * @param {object} view The roster view.
+ * @param {object} data The roster body.
+ * @return {void}
+ */
+function applyRoster(view, data) {
+	view.participants = Array.isArray(data.participants)
+		? data.participants
+		: []
+	view.attendanceAvailable = data.attendanceAvailable !== false
+	view.isGm = data.isGm === true
+	view.loadFailed = false
+}
+
+/**
+ * Record one participant's attendance status.
+ *
+ * @param {string} eventId The event UUID.
+ * @param {object} mark The `{character, status}` to record.
+ * @return {Promise<object>} The stored record.
+ * @throws {Error} When the server answers with an error status.
+ */
+async function postAttendance(eventId, mark) {
+	const response = await fetch(
+		generateUrl('/apps/larpinq/api/events/{id}/attendance', {
+			id: eventId,
+		}),
+		{
+			method: 'POST',
+			headers: ocsJsonHeaders(),
+			body: JSON.stringify(mark),
+		},
+	)
+	if (!response.ok) {
+		throw new Error(`attendance write failed: ${response.status}`)
+	}
+	return await response.json()
+}
+
+/**
+ * The row fields a recorded status sets: the stored status (or the one
+ * asked for) and the check-in stamps.
+ *
+ * @param {object} saved The stored record.
+ * @param {string} status The status asked for.
+ * @return {{status: string, checkedInAt: string, checkedInBy: string}} The fields.
+ */
+function savedRowFields(saved, status) {
+	return {
+		status: saved.status || status,
+		checkedInAt: saved.checkedInAt || '',
+		checkedInBy: saved.checkedInBy || '',
+	}
+}
+
 export default {
 	name: 'EventRoster',
 
@@ -98,6 +255,7 @@ export default {
 		CnDataTable,
 		CnStatusBadge,
 		NcButton,
+		NcTextField,
 	},
 
 	mixins: [objectTabSource],
@@ -122,6 +280,11 @@ export default {
 			loading: false,
 			saving: null,
 			loadFailed: false,
+			scanOpen: false,
+			scanCode: '',
+			scanBusy: false,
+			scanResult: null,
+			cameraOn: false,
 		}
 	},
 
@@ -182,6 +345,11 @@ export default {
 		await this.fetchRoster()
 	},
 
+	beforeUnmount() {
+		this.stopCamera()
+		clearTimeout(this.resultTimer)
+	},
+
 	methods: {
 		/**
 		 * Fetch the roster from the OR-delegated endpoint. Never throws — a
@@ -196,22 +364,7 @@ export default {
 			}
 			this.loading = true
 			try {
-				const response = await fetch(
-					generateUrl('/apps/larpinq/api/events/{id}/roster', {
-						id: this.eventId,
-					}),
-					{ headers: ocsHeaders() },
-				)
-				if (!response.ok) {
-					throw new Error(`roster fetch failed: ${response.status}`)
-				}
-				const data = await response.json()
-				this.participants = Array.isArray(data.participants)
-					? data.participants
-					: []
-				this.attendanceAvailable = data.attendanceAvailable !== false
-				this.isGm = data.isGm === true
-				this.loadFailed = false
+				applyRoster(this, await fetchRosterData(this.eventId))
 			} catch (error) {
 				// Graceful degradation — never break the event page.
 				this.participants = []
@@ -236,29 +389,152 @@ export default {
 		async setStatus(row, status) {
 			this.saving = row.character
 			try {
-				const response = await fetch(
-					generateUrl('/apps/larpinq/api/events/{id}/attendance', {
-						id: this.eventId,
-					}),
-					{
-						method: 'POST',
-						headers: ocsJsonHeaders(),
-						body: JSON.stringify({ character: row.character, status }),
-					},
-				)
-				if (!response.ok) {
-					throw new Error(`attendance write failed: ${response.status}`)
-				}
-				const saved = await response.json()
-				row.status = saved.status || status
-				row.checkedInAt = saved.checkedInAt || ''
-				row.checkedInBy = saved.checkedInBy || ''
+				const saved = await postAttendance(this.eventId, {
+					character: row.character,
+					status,
+				})
+				Object.assign(row, savedRowFields(saved, status))
 			} catch (error) {
 				// eslint-disable-next-line no-console
 				console.error('[larpinq] attendance write failed', error)
 			} finally {
 				this.saving = null
 			}
+		},
+
+		/**
+		 * Open or close the scan panel. Opening starts the camera where the
+		 * browser reads QR codes; the code field is there either way.
+		 *
+		 * @return {Promise<void>}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 */
+		async toggleScan() {
+			if (this.scanOpen) {
+				this.scanOpen = false
+				this.stopCamera()
+				return
+			}
+			this.scanOpen = true
+			await this.startCamera()
+		},
+
+		/**
+		 * Start the camera preview and read its frames for a QR code. Does
+		 * nothing where the browser has no QR reader or no camera, or the
+		 * steward refuses it.
+		 *
+		 * @return {Promise<void>}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 */
+		async startCamera() {
+			const scope = typeof window === 'undefined' ? globalThis : window
+			const detector = await qrDetector(scope)
+			const media = scope?.navigator?.mediaDevices
+			if (detector === null || typeof media?.getUserMedia !== 'function') {
+				return
+			}
+			try {
+				this.stream = await media.getUserMedia({
+					video: { facingMode: 'environment' },
+					audio: false,
+				})
+			} catch {
+				return
+			}
+			if (this.scanOpen === false) {
+				this.stopCamera()
+				return
+			}
+			this.cameraOn = true
+			await this.$nextTick()
+			const video = this.$refs.scanVideo
+			if (video) {
+				video.srcObject = this.stream
+				await video.play?.()
+			}
+			this.detectTimer = setInterval(() => this.detectFrame(detector), DETECT_MS)
+		},
+
+		/**
+		 * Read one camera frame and check in the first QR code on it.
+		 *
+		 * @param {object} detector The BarcodeDetector.
+		 * @return {Promise<void>}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 */
+		async detectFrame(detector) {
+			const video = this.$refs.scanVideo
+			if (this.scanBusy || !video) {
+				return
+			}
+			try {
+				const found = await detector.detect(video)
+				const raw = found?.[0]?.rawValue ?? ''
+				if (raw !== '') {
+					await this.submitCode(raw)
+				}
+			} catch {
+				// A frame that cannot be read yet; the next one is tried.
+			}
+		},
+
+		/**
+		 * Stop the camera and its frame reading.
+		 *
+		 * @return {void}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 */
+		stopCamera() {
+			clearInterval(this.detectTimer)
+			this.detectTimer = null
+			this.stream?.getTracks?.().forEach((track) => track.stop())
+			this.stream = null
+			this.cameraOn = false
+		},
+
+		/**
+		 * Check in the participant a scanned or typed code belongs to, show the
+		 * answer for three seconds and refresh the roster. The same code seen
+		 * again by the camera while its answer is still shown is not resent.
+		 *
+		 * @param {string} raw What was scanned or typed.
+		 * @return {Promise<void>}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+		 */
+		async submitCode(raw) {
+			const code = normaliseCode(raw)
+			if (this.scanBusy || (code !== '' && code === this.lastCode && this.scanResult !== null)) {
+				return
+			}
+			this.scanBusy = true
+			this.lastCode = code
+			try {
+				const result = await checkInByCode(this.eventId, code)
+				this.showResult(resultMessage(this.t, result))
+				this.scanCode = ''
+				if (result.status === 'checked-in') {
+					await this.fetchRoster()
+				}
+			} finally {
+				this.scanBusy = false
+			}
+		},
+
+		/**
+		 * Show a scan answer, and clear it after three seconds.
+		 *
+		 * @param {{text: string, ok: boolean}} message The answer.
+		 * @return {void}
+		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 */
+		showResult(message) {
+			clearTimeout(this.resultTimer)
+			this.scanResult = message
+			this.resultTimer = setTimeout(() => {
+				this.scanResult = null
+				this.lastCode = ''
+			}, RESULT_MS)
 		},
 
 		/**
@@ -288,6 +564,65 @@ export default {
 </script>
 
 <style scoped>
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-002): the roster sizes
+ * itself to the width it gets, so the check-in actions grow to a 44 pixel
+ * tap target with one hand at the gate. The table itself belongs to the
+ * shared CnDataTable and keeps its own narrow-width behaviour (hydra ADR-012).
+ */
+.event-roster {
+	container-type: inline-size;
+}
+
+@container (max-width: 600px) {
+	.event-roster__action {
+		min-width: 44px;
+		min-height: 44px;
+	}
+}
+
+.event-roster__scan {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.event-roster__scan-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 100%;
+	max-width: 480px;
+}
+
+.event-roster__scan-video {
+	width: 100%;
+	border-radius: var(--border-radius-large, 12px);
+	background-color: var(--color-background-dark);
+}
+
+.event-roster__scan-form {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+}
+
+.event-roster__scan-result {
+	margin: 0;
+	padding: 8px 12px;
+	border-radius: var(--border-radius, 8px);
+	background-color: var(--color-warning);
+	color: var(--color-warning-text, var(--color-main-text));
+	font-weight: bold;
+}
+
+.event-roster__scan-result--ok {
+	background-color: var(--color-success);
+	color: var(--color-success-text, var(--color-primary-element-text));
+}
+
 .event-roster__notice {
 	margin-bottom: 12px;
 	padding: 8px 12px;

@@ -1,4 +1,8 @@
 /**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+/**
  * GraphQL query utility for OpenRegister.
  *
  * Posts GraphQL queries to the OpenRegister API endpoint
