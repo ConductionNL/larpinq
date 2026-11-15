@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -799,7 +795,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
-        "Open sheet": "Atidaryti lapą"
+        "Open sheet": "Atidaryti lapą",
+        "History entry": "Istorijos įrašas",
+        "How the date is told in the world": "Kaip data vadinama pasaulyje",
+        "In-game date": "Data žaidime",
+        "The story of this moment": "Šios akimirkos istorija",
+        "The world this moment belongs to": "Pasaulis, kuriam priklauso ši akimirka",
+        "What happened, in a few words": "Kas nutiko, keliais žodžiais",
+        "When it happened, used to sort the timeline": "Kada tai nutiko, laiko juostai rikiuoti",
+        "Who may read the entry: game masters only, or players too": "Kas gali skaityti įrašą: tik žaidimo vedėjai ar ir žaidėjai",
+        "Price": "Kaina",
+        "Gold pieces the item costs": "Aukso monetos, kiek kainuoja daiktas",
+        "Silver pieces the item costs": "Sidabro monetos, kiek kainuoja daiktas",
+        "Copper pieces the item costs": "Vario monetos, kiek kainuoja daiktas",
+        "What the item costs in in-game money; a character buys it from the character page": "Kiek daiktas kainuoja žaidimo pinigais; veikėjas jį perka veikėjo puslapyje"
     },
     "nplurals=2; plural=(n != 1);"
 )

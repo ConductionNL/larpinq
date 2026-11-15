@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -765,7 +761,21 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "My character sheet",
-        "Open sheet": "Open sheet"
+        "Open sheet": "Open sheet",
+        "History entry": "History entry",
+        "How the date is told in the world": "How the date is told in the world",
+        "In-game date": "In-game date",
+        "The story of this moment": "The story of this moment",
+        "The world this moment belongs to": "The world this moment belongs to",
+        "What happened, in a few words": "What happened, in a few words",
+        "When it happened, used to sort the timeline": "When it happened, used to sort the timeline",
+        "Who may read the entry: game masters only, or players too": "Who may read the entry: game masters only, or players too",
+        "Date": "Date",
+        "Price": "Price",
+        "Gold pieces the item costs": "Gold pieces the item costs",
+        "Silver pieces the item costs": "Silver pieces the item costs",
+        "Copper pieces the item costs": "Copper pieces the item costs",
+        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page"
     },
     "nplurals=2; plural=(n != 1);"
 )
