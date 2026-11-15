@@ -785,7 +785,9 @@
         "Gold pieces the item costs": "Peces d'or que costa l'objecte",
         "Silver pieces the item costs": "Peces de plata que costa l'objecte",
         "Copper pieces the item costs": "Peces de coure que costa l'objecte",
-        "What the item costs in in-game money; a character buys it from the character page": "El que costa l'objecte en diners del joc; un personatge el compra des de la pàgina del personatge"
+        "What the item costs in in-game money; a character buys it from the character page": "El que costa l'objecte en diners del joc; un personatge el compra des de la pàgina del personatge",
+        "Timeline": "Cronologia",
+        "History": "Història"
     },
     "plurals": {}
 }

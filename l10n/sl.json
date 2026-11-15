@@ -785,7 +785,9 @@
         "Gold pieces the item costs": "Zlatniki, ki jih predmet stane",
         "Silver pieces the item costs": "Srebrniki, ki jih predmet stane",
         "Copper pieces the item costs": "Bakrenjaki, ki jih predmet stane",
-        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet stane v denarju igre; lik ga kupi na strani lika"
+        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet stane v denarju igre; lik ga kupi na strani lika",
+        "Timeline": "Časovnica",
+        "History": "Zgodovina"
     },
     "plurals": {}
 }

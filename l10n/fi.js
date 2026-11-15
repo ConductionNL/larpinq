@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Kultarahat, jotka esine maksaa",
         "Silver pieces the item costs": "Hoperahat, jotka esine maksaa",
         "Copper pieces the item costs": "Kuparirahat, jotka esine maksaa",
-        "What the item costs in in-game money; a character buys it from the character page": "Mitä esine maksaa pelirahassa; hahmo ostaa sen hahmosivulta"
+        "What the item costs in in-game money; a character buys it from the character page": "Mitä esine maksaa pelirahassa; hahmo ostaa sen hahmosivulta",
+        "Timeline": "Aikajana",
+        "History": "Historia"
     },
     "nplurals=2; plural=(n != 1);"
 )

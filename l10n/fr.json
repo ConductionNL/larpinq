@@ -785,7 +785,9 @@
         "Gold pieces the item costs": "Pièces d'or que coûte l'objet",
         "Silver pieces the item costs": "Pièces d'argent que coûte l'objet",
         "Copper pieces the item costs": "Pièces de cuivre que coûte l'objet",
-        "What the item costs in in-game money; a character buys it from the character page": "Ce que coûte l'objet en monnaie du jeu ; un personnage l'achète depuis la page du personnage"
+        "What the item costs in in-game money; a character buys it from the character page": "Ce que coûte l'objet en monnaie du jeu ; un personnage l'achète depuis la page du personnage",
+        "Timeline": "Chronologie",
+        "History": "Histoire"
     },
     "plurals": {}
 }

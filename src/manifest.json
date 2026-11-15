@@ -2432,6 +2432,20 @@
 						}
 					},
 					{
+						"id": "setting-timeline",
+						"type": "timeline",
+						"title": "Timeline",
+						"icon": "TimelineClockOutline",
+						"_note": "REQ-SMD-002: the world's history entries and its events in one list, oldest first. Each entry sorts on its date; the schema's read rule keeps game-master entries from players.",
+						"content": {
+							"title": "Timeline",
+							"related": [
+								{ "register": "larpinq", "schema": "larping_history_entry", "field": "setting", "dateField": "date", "titleField": "title", "label": "History" },
+								{ "register": "larpinq", "schema": "larping_event", "field": "setting", "dateField": "startDate", "titleField": "name", "label": "Event" }
+							]
+						}
+					},
+					{
 						"id": "setting-related",
 						"type": "related",
 						"title": "Related",
@@ -2492,6 +2506,14 @@
 						"widgetId": "setting-lore",
 						"gridX": 0,
 						"gridY": 11,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "8",
+						"widgetId": "setting-timeline",
+						"gridX": 0,
+						"gridY": 15,
 						"gridWidth": 12,
 						"gridHeight": 4
 					}

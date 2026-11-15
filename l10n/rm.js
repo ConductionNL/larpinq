@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Tocs d'aur che l'object custa",
         "Silver pieces the item costs": "Tocs d'argient che l'object custa",
         "Copper pieces the item costs": "Tocs d'arom che l'object custa",
-        "What the item costs in in-game money; a character buys it from the character page": "Quai che l'object custa en daners dal gieu; in persunagi al cumpra sin la pagina dal persunagi"
+        "What the item costs in in-game money; a character buys it from the character page": "Quai che l'object custa en daners dal gieu; in persunagi al cumpra sin la pagina dal persunagi",
+        "Timeline": "Cronologia",
+        "History": "Istorgia"
     },
     "nplurals=2; plural=(n != 1);"
 )

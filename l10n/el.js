@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Χρυσά νομίσματα που κοστίζει το αντικείμενο",
         "Silver pieces the item costs": "Ασημένια νομίσματα που κοστίζει το αντικείμενο",
         "Copper pieces the item costs": "Χάλκινα νομίσματα που κοστίζει το αντικείμενο",
-        "What the item costs in in-game money; a character buys it from the character page": "Πόσο κοστίζει το αντικείμενο σε χρήματα του παιχνιδιού· ένας χαρακτήρας το αγοράζει από τη σελίδα του χαρακτήρα"
+        "What the item costs in in-game money; a character buys it from the character page": "Πόσο κοστίζει το αντικείμενο σε χρήματα του παιχνιδιού· ένας χαρακτήρας το αγοράζει από τη σελίδα του χαρακτήρα",
+        "Timeline": "Χρονολόγιο",
+        "History": "Ιστορία"
     },
     "nplurals=2; plural=(n != 1);"
 )

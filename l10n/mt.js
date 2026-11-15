@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Biċċiet tad-deheb li jiswa l-oġġett",
         "Silver pieces the item costs": "Biċċiet tal-fidda li jiswa l-oġġett",
         "Copper pieces the item costs": "Biċċiet tar-ram li jiswa l-oġġett",
-        "What the item costs in in-game money; a character buys it from the character page": "Kemm jiswa l-oġġett fi flus tal-logħba; karattru jixtrih mill-paġna tal-karattru"
+        "What the item costs in in-game money; a character buys it from the character page": "Kemm jiswa l-oġġett fi flus tal-logħba; karattru jixtrih mill-paġna tal-karattru",
+        "Timeline": "Kronoloġija",
+        "History": "Storja"
     },
     "nplurals=2; plural=(n != 1);"
 )

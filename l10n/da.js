@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Guldstykker, som genstanden koster",
         "Silver pieces the item costs": "Sølvstykker, som genstanden koster",
         "Copper pieces the item costs": "Kobberstykker, som genstanden koster",
-        "What the item costs in in-game money; a character buys it from the character page": "Hvad genstanden koster i spilpenge; en karakter køber den på karaktersiden"
+        "What the item costs in in-game money; a character buys it from the character page": "Hvad genstanden koster i spilpenge; en karakter køber den på karaktersiden",
+        "Timeline": "Tidslinje",
+        "History": "Historie"
     },
     "nplurals=2; plural=(n != 1);"
 )

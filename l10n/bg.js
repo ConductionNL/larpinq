@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Златни монети, които струва предметът",
         "Silver pieces the item costs": "Сребърни монети, които струва предметът",
         "Copper pieces the item costs": "Медни монети, които струва предметът",
-        "What the item costs in in-game money; a character buys it from the character page": "Колко струва предметът в пари от играта; персонажът го купува от страницата на персонажа"
+        "What the item costs in in-game money; a character buys it from the character page": "Колко струва предметът в пари от играта; персонажът го купува от страницата на персонажа",
+        "Timeline": "Хронология",
+        "History": "История"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Goldstécker, déi de Géigestand kascht",
         "Silver pieces the item costs": "Sëlwerstécker, déi de Géigestand kascht",
         "Copper pieces the item costs": "Kofferstécker, déi de Géigestand kascht",
-        "What the item costs in in-game money; a character buys it from the character page": "Wat de Géigestand a Spillgeld kascht; e Charakter keeft en op der Charaktersäit"
+        "What the item costs in in-game money; a character buys it from the character page": "Wat de Géigestand a Spillgeld kascht; e Charakter keeft en op der Charaktersäit",
+        "Timeline": "Zäitlinn",
+        "History": "Geschicht"
     },
     "nplurals=2; plural=(n != 1);"
 )

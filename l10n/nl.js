@@ -878,7 +878,8 @@ OC.L10N.register(
         "Gold pieces the item costs": "Goudstukken die het item kost",
         "Silver pieces the item costs": "Zilverstukken die het item kost",
         "Copper pieces the item costs": "Koperstukken die het item kost",
-        "What the item costs in in-game money; a character buys it from the character page": "Wat het item kost in spelgeld; een personage koopt het op de personagepagina"
+        "What the item costs in in-game money; a character buys it from the character page": "Wat het item kost in spelgeld; een personage koopt het op de personagepagina",
+        "Timeline": "Tijdlijn"
     },
     "nplurals=2; plural=(n != 1);"
 )

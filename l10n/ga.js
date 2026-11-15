@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Píosaí óir a chosnaíonn an mhír",
         "Silver pieces the item costs": "Píosaí airgid a chosnaíonn an mhír",
         "Copper pieces the item costs": "Píosaí copair a chosnaíonn an mhír",
-        "What the item costs in in-game money; a character buys it from the character page": "Cad a chosnaíonn an mhír in airgead an chluiche; ceannaíonn carachtar í ó leathanach an charachtair"
+        "What the item costs in in-game money; a character buys it from the character page": "Cad a chosnaíonn an mhír in airgead an chluiche; ceannaíonn carachtar í ó leathanach an charachtair",
+        "Timeline": "Amlíne",
+        "History": "Stair"
     },
     "nplurals=2; plural=(n != 1);"
 )

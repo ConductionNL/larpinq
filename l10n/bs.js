@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Zlatnici koje predmet košta",
         "Silver pieces the item costs": "Srebrenjaci koje predmet košta",
         "Copper pieces the item costs": "Bakrenjaci koje predmet košta",
-        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet košta u novcu igre; lik ga kupuje na stranici lika"
+        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet košta u novcu igre; lik ga kupuje na stranici lika",
+        "Timeline": "Vremenska linija",
+        "History": "Historija"
     },
     "nplurals=2; plural=(n != 1);"
 )

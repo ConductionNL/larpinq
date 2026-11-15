@@ -785,7 +785,9 @@
         "Gold pieces the item costs": "Zlaté mince, které předmět stojí",
         "Silver pieces the item costs": "Stříbrné mince, které předmět stojí",
         "Copper pieces the item costs": "Měděné mince, které předmět stojí",
-        "What the item costs in in-game money; a character buys it from the character page": "Kolik předmět stojí v herních penězích; postava ho kupuje na stránce postavy"
+        "What the item costs in in-game money; a character buys it from the character page": "Kolik předmět stojí v herních penězích; postava ho kupuje na stránce postavy",
+        "Timeline": "Časová osa",
+        "History": "Historie"
     },
     "plurals": {}
 }

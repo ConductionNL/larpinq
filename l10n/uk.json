@@ -785,7 +785,9 @@
         "Gold pieces the item costs": "Золоті монети, які коштує предмет",
         "Silver pieces the item costs": "Срібні монети, які коштує предмет",
         "Copper pieces the item costs": "Мідні монети, які коштує предмет",
-        "What the item costs in in-game money; a character buys it from the character page": "Скільки коштує предмет в ігрових грошах; персонаж купує його на сторінці персонажа"
+        "What the item costs in in-game money; a character buys it from the character page": "Скільки коштує предмет в ігрових грошах; персонаж купує його на сторінці персонажа",
+        "Timeline": "Хронологія",
+        "History": "Історія"
     },
     "plurals": {}
 }

@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Eşyanın tuttuğu altın",
         "Silver pieces the item costs": "Eşyanın tuttuğu gümüş",
         "Copper pieces the item costs": "Eşyanın tuttuğu bakır",
-        "What the item costs in in-game money; a character buys it from the character page": "Eşyanın oyun parasıyla fiyatı; karakter onu karakter sayfasından satın alır"
+        "What the item costs in in-game money; a character buys it from the character page": "Eşyanın oyun parasıyla fiyatı; karakter onu karakter sayfasından satın alır",
+        "Timeline": "Zaman çizelgesi",
+        "History": "Tarih"
     },
     "nplurals=2; plural=(n != 1);"
 )

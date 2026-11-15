@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Zlaté mince, ktoré predmet stojí",
         "Silver pieces the item costs": "Strieborné mince, ktoré predmet stojí",
         "Copper pieces the item costs": "Medené mince, ktoré predmet stojí",
-        "What the item costs in in-game money; a character buys it from the character page": "Koľko predmet stojí v herných peniazoch; postava ho kupuje na stránke postavy"
+        "What the item costs in in-game money; a character buys it from the character page": "Koľko predmet stojí v herných peniazoch; postava ho kupuje na stránke postavy",
+        "Timeline": "Časová os",
+        "History": "História"
     },
     "nplurals=2; plural=(n != 1);"
 )

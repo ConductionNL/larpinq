@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Aukso monetos, kiek kainuoja daiktas",
         "Silver pieces the item costs": "Sidabro monetos, kiek kainuoja daiktas",
         "Copper pieces the item costs": "Vario monetos, kiek kainuoja daiktas",
-        "What the item costs in in-game money; a character buys it from the character page": "Kiek daiktas kainuoja žaidimo pinigais; veikėjas jį perka veikėjo puslapyje"
+        "What the item costs in in-game money; a character buys it from the character page": "Kiek daiktas kainuoja žaidimo pinigais; veikėjas jį perka veikėjo puslapyje",
+        "Timeline": "Laiko juosta",
+        "History": "Istorija"
     },
     "nplurals=2; plural=(n != 1);"
 )

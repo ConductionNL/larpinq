@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Zelta monētas, ko priekšmets maksā",
         "Silver pieces the item costs": "Sudraba monētas, ko priekšmets maksā",
         "Copper pieces the item costs": "Vara monētas, ko priekšmets maksā",
-        "What the item costs in in-game money; a character buys it from the character page": "Cik priekšmets maksā spēles naudā; tēls to pērk tēla lapā"
+        "What the item costs in in-game money; a character buys it from the character page": "Cik priekšmets maksā spēles naudā; tēls to pērk tēla lapā",
+        "Timeline": "Laika līnija",
+        "History": "Vēsture"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Aranyérmék, amennyibe a tárgy kerül",
         "Silver pieces the item costs": "Ezüstérmék, amennyibe a tárgy kerül",
         "Copper pieces the item costs": "Rézérmék, amennyibe a tárgy kerül",
-        "What the item costs in in-game money; a character buys it from the character page": "Mennyibe kerül a tárgy játékbeli pénzben; a karakter a karakteroldalon veszi meg"
+        "What the item costs in in-game money; a character buys it from the character page": "Mennyibe kerül a tárgy játékbeli pénzben; a karakter a karakteroldalon veszi meg",
+        "Timeline": "Idővonal",
+        "History": "Történelem"
     },
     "nplurals=2; plural=(n != 1);"
 )

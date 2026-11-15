@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Kuldmündid, mida ese maksab",
         "Silver pieces the item costs": "Hõbemündid, mida ese maksab",
         "Copper pieces the item costs": "Vaskmündid, mida ese maksab",
-        "What the item costs in in-game money; a character buys it from the character page": "Kui palju ese mänguraha maksab; tegelane ostab selle tegelase lehelt"
+        "What the item costs in in-game money; a character buys it from the character page": "Kui palju ese mänguraha maksab; tegelane ostab selle tegelase lehelt",
+        "Timeline": "Ajajoon",
+        "History": "Ajalugu"
     },
     "nplurals=2; plural=(n != 1);"
 )

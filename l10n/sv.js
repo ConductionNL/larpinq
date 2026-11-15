@@ -786,7 +786,9 @@ OC.L10N.register(
         "Gold pieces the item costs": "Guldmynt som föremålet kostar",
         "Silver pieces the item costs": "Silvermynt som föremålet kostar",
         "Copper pieces the item costs": "Kopparmynt som föremålet kostar",
-        "What the item costs in in-game money; a character buys it from the character page": "Vad föremålet kostar i spelpengar; en karaktär köper det på karaktärssidan"
+        "What the item costs in in-game money; a character buys it from the character page": "Vad föremålet kostar i spelpengar; en karaktär köper det på karaktärssidan",
+        "Timeline": "Tidslinje",
+        "History": "Historia"
     },
     "nplurals=2; plural=(n != 1);"
 )
