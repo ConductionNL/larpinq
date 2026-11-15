@@ -2275,6 +2275,12 @@
 							"component": "EventChoiceCounts"
 						},
 						{
+							"id": "feedback",
+							"label": "Feedback",
+							"icon": "ClipboardCheckOutline",
+							"component": "EventFeedback"
+						},
+						{
 							"id": "audit",
 							"label": "History",
 							"icon": "History",

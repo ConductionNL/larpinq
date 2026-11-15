@@ -136,6 +136,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
 	<background-jobs>
 		<job>OCA\Larpinq\BackgroundJob\RegistrationPaymentJob</job>
+		<job>OCA\Larpinq\BackgroundJob\EventFeedbackJob</job>
 	</background-jobs>
 
 	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
