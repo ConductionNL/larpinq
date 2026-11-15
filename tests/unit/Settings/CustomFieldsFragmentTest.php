@@ -40,7 +40,7 @@ class CustomFieldsFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -61,7 +61,7 @@ class CustomFieldsFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas, "the {$key} schema must be in the merged register");
+		$this->assertArrayHasKey(key: $key, array: $schemas, message: "the {$key} schema must be in the merged register");
 		return $schemas[$key];
 	}//end schema()
 
@@ -73,19 +73,19 @@ class CustomFieldsFragmentTest extends TestCase {
 	 */
 	public function testDefinitionsAreGameMasterObjects(): void {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
-		$this->assertContains('larping_character_field', $register['schemas']);
+		$this->assertContains(needle: 'larping_character_field', haystack: $register['schemas']);
 
 		$field = $this->schema(key: 'characterField');
-		$this->assertSame('larping_character_field', $field['slug']);
-		$this->assertSame(['text', 'number', 'choice', 'yes-no'], $field['properties']['fieldType']['enum']);
-		$this->assertSame(['gamemasters', 'owner'], $field['properties']['visibility']['enum']);
-		$this->assertSame('setting', $field['properties']['setting']['$ref']);
+		$this->assertSame(expected: 'larping_character_field', actual: $field['slug']);
+		$this->assertSame(expected: ['text', 'number', 'choice', 'yes-no'], actual: $field['properties']['fieldType']['enum']);
+		$this->assertSame(expected: ['gamemasters', 'owner'], actual: $field['properties']['visibility']['enum']);
+		$this->assertSame(expected: 'setting', actual: $field['properties']['setting']['$ref']);
 		$this->assertSame(
-			['gamemasters', ['group' => 'larpers', 'match' => ['visibility' => 'owner']]],
-			$field['authorization']['read']
+			expected: ['gamemasters', ['group' => 'larpers', 'match' => ['visibility' => 'owner']]],
+			actual: $field['authorization']['read']
 		);
 		foreach (['create', 'update', 'delete'] as $action) {
-			$this->assertSame(['gamemasters'], $field['authorization'][$action]);
+			$this->assertSame(expected: ['gamemasters'], actual: $field['authorization'][$action]);
 		}
 	}//end testDefinitionsAreGameMasterObjects()
 
@@ -98,14 +98,14 @@ class CustomFieldsFragmentTest extends TestCase {
 	public function testPrivateValuesStayWithGameMasters(): void {
 		$character = $this->schema(key: 'character');
 
-		$this->assertSame('object', $character['properties']['customFieldsPrivate']['type']);
-		$this->assertSame(['gamemasters'], $character['properties']['customFieldsPrivate']['authorization']['read']);
-		$this->assertSame(['gamemasters'], $character['properties']['customFieldsPrivate']['authorization']['update']);
+		$this->assertSame(expected: 'object', actual: $character['properties']['customFieldsPrivate']['type']);
+		$this->assertSame(expected: ['gamemasters'], actual: $character['properties']['customFieldsPrivate']['authorization']['read']);
+		$this->assertSame(expected: ['gamemasters'], actual: $character['properties']['customFieldsPrivate']['authorization']['update']);
 		$owner = ['gamemasters', ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]];
-		$this->assertSame($owner, $character['properties']['customFields']['authorization']['read']);
-		$this->assertSame($owner, $character['properties']['customFields']['authorization']['update']);
+		$this->assertSame(expected: $owner, actual: $character['properties']['customFields']['authorization']['read']);
+		$this->assertSame(expected: $owner, actual: $character['properties']['customFields']['authorization']['update']);
 		// The fragment adds properties; the character keeps its own.
-		$this->assertArrayHasKey('writingStep', $character['properties']);
+		$this->assertArrayHasKey(key: 'writingStep', array: $character['properties']);
 	}//end testPrivateValuesStayWithGameMasters()
 
 	/**
@@ -129,9 +129,9 @@ class CustomFieldsFragmentTest extends TestCase {
 			$schema = json_decode((string)json_encode($this->forOpis(schema: $this->schema(key: $bySlug[$slug]))));
 			unset($object['@self']);
 			$result = $validator->validate(json_decode((string)json_encode($object)), $schema);
-			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed {$slug} must validate");
 		}
-		$this->assertSame(4, $seen['larping_character_field'] ?? 0);
+		$this->assertSame(expected: 4, actual: $seen['larping_character_field'] ?? 0);
 	}//end testTheSeedObjectsValidate()
 
 	/**

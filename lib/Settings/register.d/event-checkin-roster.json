@@ -55,10 +55,12 @@
         },
         "authorization": {
           "create": [
-            "gamemasters"
+            "gamemasters",
+            "larpinq-stewards"
           ],
           "update": [
-            "gamemasters"
+            "gamemasters",
+            "larpinq-stewards"
           ],
           "delete": [
             "gamemasters"

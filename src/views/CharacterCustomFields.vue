@@ -92,6 +92,7 @@ import NcButton from '@nextcloud/vue/components/NcButton'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/components/NcCheckboxRadioSwitch'
 import NcSelect from '@nextcloud/vue/components/NcSelect'
 import NcTextField from '@nextcloud/vue/components/NcTextField'
+import { objectTab } from '../mixins/objectTab.js'
 import {
 	fetchCustomFields,
 	inputValue,
@@ -104,21 +105,7 @@ export default {
 
 	components: { NcButton, NcCheckboxRadioSwitch, NcSelect, NcTextField },
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The character UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/character-custom-fields/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('characterId')],
 
 	data() {
 		return {
@@ -129,23 +116,6 @@ export default {
 			saving: false,
 			saved: false,
 		}
-	},
-
-	computed: {
-		/**
-		 * The character id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/character-custom-fields/spec.md
-		 */
-		characterId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
 	},
 
 	/**

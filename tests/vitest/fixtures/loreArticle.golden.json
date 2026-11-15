@@ -1,0 +1,244 @@
+{
+	"null": {
+		"returned": []
+	},
+	"undefined": {
+		"returned": []
+	},
+	"empty": {
+		"returned": []
+	},
+	"flat, ordered by order then title": {
+		"returned": [
+			{
+				"id": "f",
+				"title": "Neg",
+				"children": []
+			},
+			{
+				"id": "e",
+				"title": "Alpha",
+				"children": []
+			},
+			{
+				"id": "d",
+				"title": "Zed",
+				"children": []
+			},
+			{
+				"id": "b",
+				"title": "Apples",
+				"children": []
+			},
+			{
+				"id": "a",
+				"title": "Beasts",
+				"children": []
+			},
+			{
+				"id": "g",
+				"title": "Str",
+				"children": []
+			},
+			{
+				"id": "c",
+				"title": "Cities",
+				"children": []
+			}
+		]
+	},
+	"deep nesting": {
+		"returned": [
+			{
+				"id": "r",
+				"title": "Root",
+				"children": [
+					{
+						"id": "k2",
+						"title": "Kid 1",
+						"children": []
+					},
+					{
+						"id": "k1",
+						"title": "Kid 2",
+						"children": [
+							{
+								"id": "g2",
+								"title": "Another",
+								"children": [
+									{
+										"id": "gg",
+										"title": "Great",
+										"children": []
+									}
+								]
+							},
+							{
+								"id": "g1",
+								"title": "Grandkid",
+								"children": []
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"orphan and hidden parent": {
+		"returned": [
+			{
+				"id": "o",
+				"title": "Orphan",
+				"children": [
+					{
+						"id": "q",
+						"title": "Under orphan",
+						"children": []
+					}
+				]
+			},
+			{
+				"id": "p",
+				"title": "Top",
+				"children": []
+			}
+		]
+	},
+	"self parent": {
+		"returned": [
+			{
+				"id": "s",
+				"title": "Self",
+				"children": []
+			}
+		]
+	},
+	"two cycle": {
+		"returned": [
+			{
+				"id": "x",
+				"title": "X",
+				"children": []
+			},
+			{
+				"id": "y",
+				"title": "Y",
+				"children": []
+			}
+		]
+	},
+	"three cycle with a tail": {
+		"returned": [
+			{
+				"id": "m",
+				"title": "M",
+				"children": []
+			},
+			{
+				"id": "n",
+				"title": "N",
+				"children": []
+			},
+			{
+				"id": "o",
+				"title": "O",
+				"children": []
+			},
+			{
+				"id": "u",
+				"title": "Root",
+				"children": [
+					{
+						"id": "v",
+						"title": "Child of root",
+						"children": []
+					}
+				]
+			},
+			{
+				"id": "t",
+				"title": "Tail",
+				"children": []
+			}
+		]
+	},
+	"ids in each shape": {
+		"returned": [
+			{
+				"id": "fallback",
+				"title": "Empty id",
+				"children": []
+			},
+			{
+				"id": "self-id",
+				"title": "From self",
+				"children": []
+			},
+			{
+				"id": "5",
+				"title": "Numeric",
+				"children": [
+					{
+						"id": "child",
+						"title": "Of numeric",
+						"children": []
+					}
+				]
+			},
+			{
+				"id": "child2",
+				"title": "Of numeric int",
+				"children": []
+			}
+		]
+	},
+	"missing fields": {
+		"returned": [
+			{
+				"id": "n1",
+				"title": "",
+				"children": [
+					{
+						"id": "n4",
+						"title": "Under n1",
+						"children": []
+					}
+				]
+			},
+			{
+				"id": "n2",
+				"title": "",
+				"children": []
+			},
+			{
+				"id": "n3",
+				"title": "T",
+				"children": []
+			}
+		]
+	},
+	"duplicate ids": {
+		"returned": [
+			{
+				"id": "d",
+				"title": "Second",
+				"children": [
+					{
+						"id": "e",
+						"title": "Under d",
+						"children": []
+					}
+				]
+			}
+		]
+	},
+	"null entries": {
+		"returned": [
+			{
+				"id": "z",
+				"title": "Z",
+				"children": []
+			}
+		]
+	}
+}

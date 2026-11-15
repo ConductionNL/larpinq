@@ -14,14 +14,16 @@ const objectStore = {
 	get objectTypes() {
 		return Object.keys(this.registry)
 	},
-	registerObjectType: vi.fn(function(slug, schema, register) {
+	registerObjectType: vi.fn(function (slug, schema, register) {
 		this.registry[slug] = { schema, register }
 	}),
 }
 const settingsStore = { fetchSettings: vi.fn() }
 
 vi.mock('../../src/store/modules/object.js', () => ({ useObjectStore: () => ({}) }))
-vi.mock('../../src/store/modules/settings.js', () => ({ useSettingsStore: () => settingsStore }))
+vi.mock('../../src/store/modules/settings.js', () => ({
+	useSettingsStore: () => settingsStore,
+}))
 
 const { ensureObjectTypes } = await import('../../src/store/store.js')
 
@@ -42,9 +44,17 @@ describe('ensureObjectTypes', () => {
 		await ensureObjectTypes(objectStore, ['skill', 'character'])
 
 		expect(settingsStore.fetchSettings).toHaveBeenCalledTimes(1)
-		expect(objectStore.objectTypes).toEqual(expect.arrayContaining(['skill', 'character']))
-		expect(objectStore.registry.skill).toEqual({ schema: '1250', register: '36' })
-		expect(objectStore.registry.character).toEqual({ schema: '1228', register: '36' })
+		expect(objectStore.objectTypes).toEqual(
+			expect.arrayContaining(['skill', 'character']),
+		)
+		expect(objectStore.registry.skill).toEqual({
+			schema: '1250',
+			register: '36',
+		})
+		expect(objectStore.registry.character).toEqual({
+			schema: '1228',
+			register: '36',
+		})
 	})
 
 	it('does not fetch the settings when every type is registered', async () => {

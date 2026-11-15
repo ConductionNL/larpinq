@@ -146,12 +146,13 @@ class TicketChoiceService {
 		}
 
 		$codeRow = $this->catalog->matchCode(eventId: $eventId, code: $code, registration: $new, keptCode: (string)($before['accessCode'] ?? ''));
+		$choice = (new TicketChoice(registration: $new, stored: $before))->withCode(codeRow: $codeRow);
 		$lines = [];
 		if ($ticketId !== '') {
-			$lines[] = $this->ticketLine(new: $new, old: $before, ticketId: $ticketId, codeRow: $codeRow);
+			$lines[] = $this->ticketLine(choice: $choice, ticketId: $ticketId);
 		}
 
-		return $this->changes(lines: array_merge($lines, $this->optionLines(new: $new, old: $before, optionIds: $optionIds)), codeRow: $codeRow);
+		return $this->changes(lines: array_merge($lines, $this->optionLines(choice: $choice, optionIds: $optionIds)), codeRow: $codeRow);
 	}//end choose()
 
 	/**
@@ -189,51 +190,115 @@ class TicketChoiceService {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function offer(array $registration, string $code): array {
-		$eventId = (string)($registration['event'] ?? '');
-		$state = 'none';
-		$codeRow = null;
-		if (trim($code) !== '') {
-			try {
-				$codeRow = $this->catalog->matchCode(
-					eventId: $eventId,
-					code: trim($code),
-					registration: $registration,
-					keptCode: (string)($registration['accessCode'] ?? '')
-				);
-				$state = 'valid';
-			} catch (TicketChoiceRefusedException $e) {
-				$state = 'invalid';
-			}
+		[$state, $codeRow] = $this->codeState(registration: $registration, code: $code);
+
+		return [
+			'ticketTypes' => $this->offeredTicketTypes(registration: $registration, codeRow: $codeRow),
+			'options' => $this->offeredOptions(registration: $registration),
+			'code' => $state,
+			'chosen' => [
+				'ticketType' => (string)($registration['ticketType'] ?? ''),
+				'options' => $this->catalog->ids(value: $registration['options'] ?? []),
+			],
+		];
+	}//end offer()
+
+	/**
+	 * Whether the code a player typed works for their registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $code The code the player typed, or empty.
+	 *
+	 * @return array{0: string, 1: array<string, mixed>|null} The state (none|valid|invalid) and the matched code.
+	 */
+	private function codeState(array $registration, string $code): array {
+		if (trim($code) === '') {
+			return ['none', null];
 		}
 
+		try {
+			return ['valid', $this->matchedCode(registration: $registration, code: trim($code))];
+		} catch (TicketChoiceRefusedException $e) {
+			return ['invalid', null];
+		}
+	}//end codeState()
+
+	/**
+	 * The code row a typed code matches for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string $code The trimmed code.
+	 *
+	 * @return array<string, mixed>|null The matched code.
+	 *
+	 * @throws TicketChoiceRefusedException When the code does not work.
+	 */
+	private function matchedCode(array $registration, string $code): ?array {
+		return $this->catalog->matchCode(
+			eventId: (string)($registration['event'] ?? ''),
+			code: $code,
+			registration: $registration,
+			keptCode: (string)($registration['accessCode'] ?? '')
+		);
+	}//end matchedCode()
+
+	/**
+	 * The ticket types on sale (hidden ones only with the code), plus the one
+	 * already chosen, in their order, each with whether it is full.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param array<string, mixed>|null $codeRow The matched code, or null.
+	 *
+	 * @return list<array<string, mixed>> The offered ticket types.
+	 */
+	private function offeredTicketTypes(array $registration, ?array $codeRow): array {
 		$chosen = (string)($registration['ticketType'] ?? '');
 		$ticketTypes = [];
-		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: $eventId) as $ticket) {
+		foreach ($this->catalog->rows(objectType: 'tickettype', eventId: (string)($registration['event'] ?? '')) as $ticket) {
 			$id = (string)($ticket['id'] ?? '');
 			if ($id !== $chosen && $this->catalog->offered(ticket: $ticket, codeRow: $codeRow) === false) {
 				continue;
 			}
 
-			$ticketTypes[] = array_merge(
-				$this->catalog->summary(row: $ticket, fields: ['role']),
-				['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
-			);
+			$ticketTypes[] = $this->ticketOffer(registration: $registration, ticket: $ticket);
 		}
 
 		usort($ticketTypes, static fn (array $one, array $two): int => ($one['order'] <=> $two['order']));
+		return $ticketTypes;
+	}//end offeredTicketTypes()
+
+	/**
+	 * One offered ticket type, with whether it is full for this registration.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param array<string, mixed> $ticket The ticket type.
+	 *
+	 * @return array<string, mixed> The ticket type summary.
+	 */
+	private function ticketOffer(array $registration, array $ticket): array {
+		$id = (string)($ticket['id'] ?? '');
+		return array_merge(
+			$this->catalog->summary(row: $ticket, fields: ['role']),
+			['full' => $this->places->ticketTypeFull(registration: array_merge($registration, ['ticketType' => $id]))]
+		);
+	}//end ticketOffer()
+
+	/**
+	 * Every option of the event, each with whether it is full.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return list<array<string, mixed>> The options.
+	 */
+	private function offeredOptions(array $registration): array {
 		$options = [];
-		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: $eventId) as $option) {
+		foreach ($this->catalog->rows(objectType: 'registrationoption', eventId: (string)($registration['event'] ?? '')) as $option) {
 			$full = $this->places->optionFull(option: $option, registration: $registration);
 			$options[] = array_merge($this->catalog->summary(row: $option, fields: ['category']), ['full' => $full]);
 		}
 
-		return [
-			'ticketTypes' => $ticketTypes,
-			'options' => $options,
-			'code' => $state,
-			'chosen' => ['ticketType' => $chosen, 'options' => $this->catalog->ids(value: $registration['options'] ?? [])],
-		];
-	}//end offer()
+		return $options;
+	}//end offeredOptions()
 
 	/**
 	 * The chosen ticket type, options (sorted) and code of a registration.
@@ -288,26 +353,24 @@ class TicketChoiceService {
 	/**
 	 * The price line of the chosen ticket type, checked.
 	 *
-	 * @param array<string, mixed> $new The registration as it will be.
-	 * @param array<string, mixed> $old The registration as stored.
+	 * @param TicketChoice $choice The choice under check.
 	 * @param string $ticketId The chosen ticket type.
-	 * @param array<string, mixed>|null $codeRow The matched code.
 	 *
 	 * @return array<string, mixed> The line.
 	 *
 	 * @throws TicketChoiceRefusedException When the ticket type may not be chosen.
 	 */
-	private function ticketLine(array $new, array $old, string $ticketId, ?array $codeRow): array {
-		$ticket = $this->catalog->find(objectType: 'tickettype', eventId: (string)($new['event'] ?? ''), id: $ticketId);
+	private function ticketLine(TicketChoice $choice, string $ticketId): array {
+		$ticket = $this->catalog->find(objectType: 'tickettype', eventId: $choice->eventId(), id: $ticketId);
 		if ($ticket === null) {
 			throw new TicketChoiceRefusedException('This ticket type is not offered for this event.');
 		}
 
-		if (($ticket['hidden'] ?? false) === true && $this->catalog->unlocks(codeRow: $codeRow, ticketId: $ticketId) === false) {
+		if (($ticket['hidden'] ?? false) === true && $this->catalog->unlocks(codeRow: $choice->codeRow(), ticketId: $ticketId) === false) {
 			throw new TicketChoiceRefusedException('This ticket type needs a code that unlocks it.');
 		}
 
-		$kept = $this->keptLine(old: $old, kind: 'ticket', ref: $ticketId);
+		$kept = $choice->keptLine(kind: 'ticket', ref: $ticketId);
 		if ($kept !== null) {
 			return $kept;
 		}
@@ -316,6 +379,7 @@ class TicketChoiceService {
 			throw new TicketChoiceRefusedException('This ticket type is not on sale now.');
 		}
 
+		$new = $choice->registration;
 		if ((string)($new['status'] ?? '') === RegistrationService::ACCEPTED && $this->places->ticketTypeFull(registration: $new) === true) {
 			throw new TicketChoiceRefusedException('This ticket type is full.');
 		}
@@ -326,29 +390,28 @@ class TicketChoiceService {
 	/**
 	 * The price lines of the chosen options, checked.
 	 *
-	 * @param array<string, mixed> $new The registration as it will be.
-	 * @param array<string, mixed> $old The registration as stored.
+	 * @param TicketChoice $choice The choice under check.
 	 * @param list<string> $optionIds The chosen options.
 	 *
 	 * @return list<array<string, mixed>> The lines.
 	 *
 	 * @throws TicketChoiceRefusedException When an option may not be chosen.
 	 */
-	private function optionLines(array $new, array $old, array $optionIds): array {
+	private function optionLines(TicketChoice $choice, array $optionIds): array {
 		$lines = [];
 		foreach ($optionIds as $optionId) {
-			$option = $this->catalog->find(objectType: 'registrationoption', eventId: (string)($new['event'] ?? ''), id: $optionId);
+			$option = $this->catalog->find(objectType: 'registrationoption', eventId: $choice->eventId(), id: $optionId);
 			if ($option === null) {
 				throw new TicketChoiceRefusedException('This option is not offered for this event.');
 			}
 
-			$kept = $this->keptLine(old: $old, kind: 'option', ref: $optionId);
+			$kept = $choice->keptLine(kind: 'option', ref: $optionId);
 			if ($kept !== null) {
 				$lines[] = $kept;
 				continue;
 			}
 
-			if ($this->places->optionFull(option: $option, registration: $new) === true) {
+			if ($this->places->optionFull(option: $option, registration: $choice->registration) === true) {
 				throw new TicketChoiceRefusedException('This option is full.');
 			}
 
@@ -358,25 +421,6 @@ class TicketChoiceService {
 		return $lines;
 	}//end optionLines()
 
-
-	/**
-	 * The stored line of an unchanged choice.
-	 *
-	 * @param array<string, mixed> $old The registration as stored.
-	 * @param string $kind ticket or option.
-	 * @param string $ref The chosen object.
-	 *
-	 * @return array<string, mixed>|null The line, or null when the choice is new.
-	 */
-	private function keptLine(array $old, string $kind, string $ref): ?array {
-		foreach ((array)($old['lines'] ?? []) as $line) {
-			if (is_array($line) === true && ($line['kind'] ?? '') === $kind && ($line['ref'] ?? '') === $ref) {
-				return $line;
-			}
-		}
-
-		return null;
-	}//end keptLine()
 
 	/**
 	 * A price line from a ticket type or option as listed now.

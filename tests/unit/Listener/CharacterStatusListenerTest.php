@@ -23,6 +23,7 @@ use OCA\Larpinq\Service\IdListNormaliser;
 use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
+use OCP\EventDispatcher\Event;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 
@@ -55,10 +56,10 @@ class CharacterStatusListenerTest extends TestCase {
 	 * @return CharacterStatusListener The listener.
 	 */
 	private function listener(): CharacterStatusListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturn(self::SCHEMA_ID);
 
-		return new CharacterStatusListener(new CharacterStatusGuard(new IdListNormaliser()), $config);
+		return new CharacterStatusListener(guard: new CharacterStatusGuard(idList: new IdListNormaliser()), config: $config);
 	}//end listener()
 
 	/**
@@ -88,14 +89,14 @@ class CharacterStatusListenerTest extends TestCase {
 			);
 			$this->listener()->handle($event);
 
-			$this->assertTrue($event->isPropagationStopped(), "a {$status} character is refused");
-			$this->assertSame('character_not_active', $event->getErrors()['code']);
-			$this->assertArrayHasKey('events', $event->getErrors()['fields']);
+			$this->assertTrue(condition: $event->isPropagationStopped(), message: "a {$status} character is refused");
+			$this->assertSame(expected: 'character_not_active', actual: $event->getErrors()['code']);
+			$this->assertArrayHasKey(key: 'events', array: $event->getErrors()['fields']);
 		}
 
 		$create = new ObjectCreatingEvent(new StatusObjectEntity(self::SCHEMA_ID, ['status' => 'dead', 'events' => ['ev-winter']]));
 		$this->listener()->handle($create);
-		$this->assertTrue($create->isPropagationStopped());
+		$this->assertTrue(condition: $create->isPropagationStopped());
 	}//end testANotActiveCharacterJoinsNoNewEvent()
 
 	/**
@@ -110,13 +111,30 @@ class CharacterStatusListenerTest extends TestCase {
 			'active joins' => [['status' => 'active', 'events' => []], ['status' => 'active', 'events' => ['ev-winter']], self::SCHEMA_ID],
 			'no status joins' => [['events' => []], ['events' => ['ev-winter']], self::SCHEMA_ID],
 			'dead leaves' => [['status' => 'dead', 'events' => ['ev-summer']], ['status' => 'dead', 'events' => []], self::SCHEMA_ID],
-			'dead renamed' => [['status' => 'dead', 'name' => 'Aldric', 'events' => ['ev-summer']], ['status' => 'dead', 'name' => 'Brother Aldric', 'events' => ['ev-summer']], self::SCHEMA_ID],
+			'dead renamed' => [
+				['status' => 'dead', 'name' => 'Aldric', 'events' => ['ev-summer']],
+				['status' => 'dead', 'name' => 'Brother Aldric', 'events' => ['ev-summer']],
+				self::SCHEMA_ID,
+			],
 			'other schema' => [['status' => 'dead', 'events' => []], ['status' => 'dead', 'events' => ['ev-winter']], 'other-schema'],
 		];
 		foreach ($cases as $label => [$before, $after, $schema]) {
 			$event = $this->update(before: $before, after: $after, schema: $schema);
 			$this->listener()->handle($event);
-			$this->assertFalse($event->isPropagationStopped(), $label);
+			$this->assertFalse(condition: $event->isPropagationStopped(), message: $label);
 		}
 	}//end testEverythingElsePasses()
+
+	/**
+	 * Events other than a create or update are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$event = new Event();
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse(condition: $event->isPropagationStopped());
+	}//end testOtherEventsAreIgnored()
 }//end class

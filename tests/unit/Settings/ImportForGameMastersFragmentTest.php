@@ -40,7 +40,7 @@ class ImportForGameMastersFragmentTest extends TestCase {
 	 */
 	private function monolith(): array {
 		$data = json_decode((string)file_get_contents(dirname(__DIR__, 3) . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($data);
+		$this->assertIsArray(actual: $data);
 		return $data;
 	}//end monolith()
 
@@ -68,8 +68,8 @@ class ImportForGameMastersFragmentTest extends TestCase {
 	public function testGameMastersManageTheRegister(): void {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
 
-		$this->assertSame([Application::GM_GROUP], $register['authorization']['manage'] ?? null);
-		$this->assertNotContains('larpers', $register['authorization']['manage']);
+		$this->assertSame(expected: [Application::GM_GROUP], actual: $register['authorization']['manage'] ?? null);
+		$this->assertNotContains(needle: 'larpers', haystack: $register['authorization']['manage']);
 	}//end testGameMastersManageTheRegister()
 
 	/**
@@ -83,7 +83,7 @@ class ImportForGameMastersFragmentTest extends TestCase {
 		$before = (string)$this->monolith()['components']['registers']['larpinq']['version'];
 		$after = (string)$this->mergedRegister()['components']['registers']['larpinq']['version'];
 
-		$this->assertTrue(version_compare($after, $before, '>'), "register version {$after} must be above {$before}");
+		$this->assertTrue(condition: version_compare($after, $before, '>'), message: "register version {$after} must be above {$before}");
 	}//end testTheRegisterVersionMovesUpSoExistingInstallsTakeTheRule()
 
 	/**
@@ -94,9 +94,9 @@ class ImportForGameMastersFragmentTest extends TestCase {
 	public function testTheRestOfTheRegisterIsKept(): void {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
 
-		$this->assertSame('larpinq', $register['slug']);
+		$this->assertSame(expected: 'larpinq', actual: $register['slug']);
 		foreach ($this->monolith()['components']['registers']['larpinq']['schemas'] as $schema) {
-			$this->assertContains($schema, $register['schemas']);
+			$this->assertContains(needle: $schema, haystack: $register['schemas']);
 		}
 	}//end testTheRestOfTheRegisterIsKept()
 }//end class

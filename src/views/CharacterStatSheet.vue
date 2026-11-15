@@ -71,6 +71,7 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { objectTab } from '../mixins/objectTab.js'
 import {
 	changeTone,
 	fetchCharacterStats,
@@ -81,21 +82,7 @@ import {
 export default {
 	name: 'CharacterStatSheet',
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The character UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/character-management/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('characterId')],
 
 	data() {
 		return {
@@ -104,23 +91,6 @@ export default {
 			sheet: { abilities: [], xp: null },
 			open: '',
 		}
-	},
-
-	computed: {
-		/**
-		 * The character id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/character-management/spec.md
-		 */
-		characterId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
 	},
 
 	/**
@@ -200,6 +170,10 @@ export default {
 </script>
 
 <style scoped>
+.character-stat-sheet {
+	container-type: inline-size;
+}
+
 .character-stat-sheet__list {
 	list-style: none;
 	padding: 0;
@@ -234,5 +208,26 @@ export default {
 
 .character-stat-sheet__change--positive {
 	color: var(--color-success-text, var(--color-success));
+}
+
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-001): each ability is one
+ * stacked row; long names wrap instead of pushing the page sideways, and a
+ * row is a full tap target.
+ */
+@container (max-width: 600px) {
+	.character-stat-sheet__row {
+		min-height: 44px;
+		align-items: center;
+	}
+
+	.character-stat-sheet__name {
+		overflow-wrap: anywhere;
+	}
+
+	.character-stat-sheet__modifiers {
+		padding-inline-start: calc(var(--default-grid-baseline, 4px) * 4);
+		overflow-wrap: anywhere;
+	}
 }
 </style>

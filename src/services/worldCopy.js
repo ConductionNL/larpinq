@@ -11,6 +11,13 @@
 
 import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { bodyOf } from './responseBody.js'
+
+/** The preview status of a refused preview, by HTTP status; any other is `failed`. */
+const PREVIEW_FAILURES = new Map([
+	[403, 'forbidden'],
+	[422, 'too-large'],
+])
 
 /**
  * The copy endpoint of one world.
@@ -27,23 +34,6 @@ function copyUrl(worldId) {
 }
 
 /**
- * Read a JSON body, or an empty object when there is none.
- *
- * @param {Response} response The fetch response.
- * @return {Promise<object>} The body.
- *
- * @spec openspec/specs/setting-management/spec.md
- */
-async function bodyOf(response) {
-	try {
-		const body = await response.json()
-		return body && typeof body === 'object' ? body : {}
-	} catch {
-		return {}
-	}
-}
-
-/**
  * What a copy of the world would create (REQ-WCR-001, REQ-WCR-003).
  *
  * @param {string} worldId The world UUID.
@@ -57,17 +47,26 @@ export async function fetchCopyPreview(worldId) {
 		headers: { requesttoken: getRequestToken(), Accept: 'application/json' },
 	})
 	const body = await bodyOf(response)
-	const error = typeof body.error === 'string' ? body.error : ''
 	if (!response.ok) {
-		let status = 'failed'
-		if (response.status === 403) {
-			status = 'forbidden'
-		} else if (response.status === 422) {
-			status = 'too-large'
+		return {
+			status: PREVIEW_FAILURES.get(response.status) ?? 'failed',
+			worldName: '',
+			counts: {},
+			error: typeof body.error === 'string' ? body.error : '',
 		}
-		return { status, worldName: '', counts: {}, error }
 	}
+	return previewOf(body)
+}
 
+/**
+ * The loaded copy preview.
+ *
+ * @param {object} body The response body.
+ * @return {{status: string, worldName: string, counts: object, error: string}} The preview.
+ *
+ * @spec openspec/specs/setting-management/spec.md
+ */
+function previewOf(body) {
 	return {
 		status: 'ready',
 		worldName: String(body.world?.name ?? ''),

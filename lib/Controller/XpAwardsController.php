@@ -11,26 +11,27 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/event-xp-awards/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\EventRosterService;
 use OCA\Larpinq\Service\XpAwardBatchService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\JSONResponse;
-use OCP\IGroupManager;
 use OCP\IRequest;
-use OCP\IUserSession;
 
 /**
  * Award XP to a whole event in one save (events-xp-batch-award). Every
- * method is for game masters (the `Application::GM_GROUP` group, or a
+ * method is for game masters (the `AppIdentity::GM_GROUP` group, or a
  * Nextcloud admin); the awards themselves are written through OpenRegister,
  * whose xpAward rules apply as well.
  *
@@ -43,22 +44,18 @@ class XpAwardsController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param XpAwardBatchService $batch The batch award.
 	 * @param EventRosterService $rosterService The event roster (event lookup).
-	 * @param IUserSession $userSession The user session.
-	 * @param IGroupManager $groupManager The group manager.
+	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
-		string $appName,
 		IRequest $request,
 		private readonly XpAwardBatchService $batch,
 		private readonly EventRosterService $rosterService,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly CallerAccess $callerAccess,
 	) {
-		parent::__construct(appName: $appName, request: $request);
+		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()
 
 	/**
@@ -73,12 +70,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function access(): JSONResponse {
-		$user = $this->userSession->getUser();
-		if ($user === null) {
-			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
-		}
-
-		return new JSONResponse(data: ['allowed' => $this->isGameMaster(uid: $user->getUID())]);
+		return $this->callerAccess->gameMasterAnswer();
 	}//end access()
 
 	/**
@@ -95,7 +87,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function roster(string $id): JSONResponse {
-		[, $denied] = $this->resolveGameMaster();
+		[, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -122,7 +114,7 @@ class XpAwardsController extends Controller {
 	 */
 	#[NoAdminRequired]
 	public function award(string $id, array $rows = []): JSONResponse {
-		[$actingUid, $denied] = $this->resolveGameMaster();
+		[$actingUid, $denied] = $this->callerAccess->resolveGameMaster();
 		if ($denied !== null) {
 			return $denied;
 		}
@@ -137,35 +129,4 @@ class XpAwardsController extends Controller {
 
 		return new JSONResponse(data: $this->batch->award(eventId: $id, rows: $rows, actingUid: $actingUid));
 	}//end award()
-
-	/**
-	 * Resolve the acting game master, or the refusal response to return.
-	 *
-	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair.
-	 */
-	private function resolveGameMaster(): array {
-		$user = $this->userSession->getUser();
-		if ($user === null) {
-			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
-		}
-
-		$uid = $user->getUID();
-		if ($this->isGameMaster(uid: $uid) === false) {
-			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
-		}
-
-		return [$uid, null];
-	}//end resolveGameMaster()
-
-	/**
-	 * Whether a user is a game master (the group, or a Nextcloud admin).
-	 *
-	 * @param string $uid The user id.
-	 *
-	 * @return bool True for a game master.
-	 */
-	private function isGameMaster(string $uid): bool {
-		return $this->groupManager->isInGroup($uid, Application::GM_GROUP) === true
-			|| $this->groupManager->isAdmin($uid) === true;
-	}//end isGameMaster()
 }//end class

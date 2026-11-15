@@ -15,6 +15,14 @@ declare(strict_types=1);
 namespace OCA\Forms\Db;
 
 class Submission {
+	/**
+	 * A Forms submission.
+	 *
+	 * @param int $id The id.
+	 * @param int $formId The form id.
+	 * @param string $userId The user id.
+	 * @param int $timestamp The timestamp.
+	 */
 	public function __construct(
 		private int $id,
 		private int $formId,
@@ -23,10 +31,20 @@ class Submission {
 	) {
 	}
 
+	/**
+	 * The user who submitted.
+	 *
+	 * @return string The user who submitted.
+	 */
 	public function getUserId(): string {
 		return $this->userId;
 	}
 
+	/**
+	 * The submission as Forms serialises it.
+	 *
+	 * @return array The submission as Forms serialises it.
+	 */
 	public function read(): array {
 		return [
 			'id' => $this->id,

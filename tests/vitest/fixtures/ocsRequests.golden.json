@@ -1,0 +1,68 @@
+{
+	"roster fetch ok": {
+		"calls": [
+			"[\"/apps/larpinq/api/events/{id}/roster {\\\"id\\\":\\\"e1\\\"}\",{\"headers\":{\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"}}]"
+		],
+		"result": null,
+		"state": "{\"eventId\":\"e1\",\"loading\":false,\"participants\":[{\"character\":\"c1\"}],\"attendanceAvailable\":true,\"isGm\":true,\"loadFailed\":false}"
+	},
+	"roster fetch failing": {
+		"calls": [
+			"[\"/apps/larpinq/api/events/{id}/roster {\\\"id\\\":\\\"e1\\\"}\",{\"headers\":{\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"}}]"
+		],
+		"result": null,
+		"state": "{\"eventId\":\"e1\",\"loading\":false,\"participants\":[],\"attendanceAvailable\":false,\"loadFailed\":true}"
+	},
+	"roster fetch without event": {
+		"calls": [],
+		"result": null,
+		"state": "{\"eventId\":\"\"}"
+	},
+	"attendance write ok": {
+		"calls": [
+			"[\"/apps/larpinq/api/events/{id}/attendance {\\\"id\\\":\\\"e1\\\"}\",{\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\",\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"},\"body\":\"{\\\"character\\\":\\\"c1\\\",\\\"status\\\":\\\"checked-in\\\"}\"}]"
+		],
+		"result": null,
+		"state": "{\"eventId\":\"e1\",\"saving\":null}"
+	},
+	"attendance write failing": {
+		"calls": [
+			"[\"/apps/larpinq/api/events/{id}/attendance {\\\"id\\\":\\\"e1\\\"}\",{\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\",\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"},\"body\":\"{\\\"character\\\":\\\"c1\\\",\\\"status\\\":\\\"no-show\\\"}\"}]"
+		],
+		"result": null,
+		"state": "{\"eventId\":\"e1\",\"saving\":null}"
+	},
+	"requirement report ok": {
+		"calls": [
+			"[\"/apps/larpinq/api/characters/{id}/requirement-report {\\\"id\\\":\\\"c9\\\"}\",{\"headers\":{\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"}}]"
+		],
+		"result": null,
+		"state": "{\"selectedCharacter\":{\"value\":\"c9\"},\"report\":{\"participants\":[{\"character\":\"c1\"}],\"isGm\":true,\"status\":\"checked-in\"}}"
+	},
+	"requirement report failing": {
+		"calls": [
+			"[\"/apps/larpinq/api/characters/{id}/requirement-report {\\\"id\\\":\\\"c9\\\"}\",{\"headers\":{\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"}}]"
+		],
+		"result": null,
+		"state": "{\"selectedCharacter\":{\"value\":\"c9\"},\"report\":null}"
+	},
+	"requirement report without character": {
+		"calls": [],
+		"result": null,
+		"state": "{\"selectedCharacter\":null,\"report\":null}"
+	},
+	"settings save ok": {
+		"calls": [
+			"[\"/index.php/apps/larpinq/api/settings\",{\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\",\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"},\"body\":\"{\\\"register_source\\\":\\\"internal\\\"}\"}]"
+		],
+		"result": null,
+		"state": "{\"configuration\":{\"register\":\"r1\"},\"saving\":false,\"message\":\"Settings saved successfully\",\"messageType\":\"success\"}"
+	},
+	"settings save failing": {
+		"calls": [
+			"[\"/index.php/apps/larpinq/api/settings\",{\"method\":\"POST\",\"headers\":{\"Content-Type\":\"application/json\",\"requesttoken\":\"token-1\",\"OCS-APIREQUEST\":\"true\"},\"body\":\"{\\\"register_source\\\":\\\"internal\\\"}\"}]"
+		],
+		"result": null,
+		"state": "{\"configuration\":{\"register\":\"r1\"},\"saving\":false,\"message\":\"Failed to save settings\",\"messageType\":\"error\"}"
+	}
+}

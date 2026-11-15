@@ -144,10 +144,10 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->userSession->method('getUser')->willReturn(null);
 		$this->config->expects($this->never())->method('getUserValue');
 
-		[$status, $data] = $this->wire($this->controller()->getPreference(key: 'support-seen'));
+		[$status, $data] = $this->wire(response: $this->controller()->getPreference(key: 'support-seen'));
 
-		$this->assertSame(Http::STATUS_UNAUTHORIZED, $status);
-		$this->assertSame(['message' => 'Not logged in'], $data);
+		$this->assertSame(expected: Http::STATUS_UNAUTHORIZED, actual: $status);
+		$this->assertSame(expected: ['message' => 'Not logged in'], actual: $data);
 
 	}//end testGetPreferenceRejectsAnonymousCallers()
 
@@ -160,10 +160,10 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->signIn();
 		$this->config->expects($this->never())->method('getUserValue');
 
-		[$status, $data] = $this->wire($this->controller()->getPreference(key: '///'));
+		[$status, $data] = $this->wire(response: $this->controller()->getPreference(key: '///'));
 
-		$this->assertSame(Http::STATUS_BAD_REQUEST, $status);
-		$this->assertSame(['message' => 'Invalid key'], $data);
+		$this->assertSame(expected: Http::STATUS_BAD_REQUEST, actual: $status);
+		$this->assertSame(expected: ['message' => 'Invalid key'], actual: $data);
 
 	}//end testGetPreferenceRejectsAKeyThatSanitisesToNothing()
 
@@ -180,10 +180,10 @@ class PreferencesControllerContractTest extends TestCase {
 			->with('alice', Application::APP_ID, 'pref_support-seen', '')
 			->willReturn('2026-08-09');
 
-		[$status, $data] = $this->wire($this->controller()->getPreference(key: 'support-seen'));
+		[$status, $data] = $this->wire(response: $this->controller()->getPreference(key: 'support-seen'));
 
-		$this->assertSame(Http::STATUS_OK, $status);
-		$this->assertSame(['value' => '2026-08-09'], $data);
+		$this->assertSame(expected: Http::STATUS_OK, actual: $status);
+		$this->assertSame(expected: ['value' => '2026-08-09'], actual: $data);
 
 	}//end testGetPreferenceReturnsTheStoredValueForThisUser()
 
@@ -197,10 +197,10 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->signIn();
 		$this->config->method('getUserValue')->willReturn('');
 
-		[$status, $data] = $this->wire($this->controller()->getPreference(key: 'support-seen'));
+		[$status, $data] = $this->wire(response: $this->controller()->getPreference(key: 'support-seen'));
 
-		$this->assertSame(Http::STATUS_OK, $status);
-		$this->assertSame(['value' => null], $data);
+		$this->assertSame(expected: Http::STATUS_OK, actual: $status);
+		$this->assertSame(expected: ['value' => null], actual: $data);
 
 	}//end testGetPreferenceReportsAnUnsetKeyAsNull()
 
@@ -232,11 +232,11 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->config->expects($this->never())->method('deleteUserValue');
 
 		[$status, $data] = $this->wire(
-			$this->controller()->setPreference(key: 'support-seen', value: 'x')
+			response: $this->controller()->setPreference(key: 'support-seen', value: 'x')
 		);
 
-		$this->assertSame(Http::STATUS_UNAUTHORIZED, $status);
-		$this->assertSame(['message' => 'Not logged in'], $data);
+		$this->assertSame(expected: Http::STATUS_UNAUTHORIZED, actual: $status);
+		$this->assertSame(expected: ['message' => 'Not logged in'], actual: $data);
 
 	}//end testSetPreferenceRejectsAnonymousCallers()
 
@@ -250,10 +250,10 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->config->expects($this->never())->method('setUserValue');
 		$this->config->expects($this->never())->method('deleteUserValue');
 
-		[$status, $data] = $this->wire($this->controller()->setPreference(key: '@@@', value: 'x'));
+		[$status, $data] = $this->wire(response: $this->controller()->setPreference(key: '@@@', value: 'x'));
 
-		$this->assertSame(Http::STATUS_BAD_REQUEST, $status);
-		$this->assertSame(['message' => 'Invalid key'], $data);
+		$this->assertSame(expected: Http::STATUS_BAD_REQUEST, actual: $status);
+		$this->assertSame(expected: ['message' => 'Invalid key'], actual: $data);
 
 	}//end testSetPreferenceRejectsAKeyThatSanitisesToNothing()
 
@@ -270,11 +270,11 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->config->expects($this->never())->method('deleteUserValue');
 
 		[$status, $data] = $this->wire(
-			$this->controller()->setPreference(key: 'support-seen', value: '2026-08-09')
+			response: $this->controller()->setPreference(key: 'support-seen', value: '2026-08-09')
 		);
 
-		$this->assertSame(Http::STATUS_OK, $status);
-		$this->assertSame(['value' => '2026-08-09'], $data);
+		$this->assertSame(expected: Http::STATUS_OK, actual: $status);
+		$this->assertSame(expected: ['value' => '2026-08-09'], actual: $data);
 
 	}//end testSetPreferenceStoresTheValueAndEchoesIt()
 
@@ -292,11 +292,11 @@ class PreferencesControllerContractTest extends TestCase {
 		$this->config->expects($this->never())->method('setUserValue');
 
 		[$status, $data] = $this->wire(
-			$this->controller()->setPreference(key: 'support-seen', value: '')
+			response: $this->controller()->setPreference(key: 'support-seen', value: '')
 		);
 
-		$this->assertSame(Http::STATUS_OK, $status);
-		$this->assertSame(['value' => null], $data);
+		$this->assertSame(expected: Http::STATUS_OK, actual: $status);
+		$this->assertSame(expected: ['value' => null], actual: $data);
 
 	}//end testSetPreferenceWithAnEmptyValueDeletesTheKey()
 

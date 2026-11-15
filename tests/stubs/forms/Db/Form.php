@@ -15,16 +15,32 @@ declare(strict_types=1);
 namespace OCA\Forms\Db;
 
 class Form {
+	/**
+	 * A Forms form with an id and a title.
+	 *
+	 * @param int $id The id.
+	 * @param string $title The title.
+	 */
 	public function __construct(
 		private int $id,
 		private string $title = '',
 	) {
 	}
 
+	/**
+	 * The form id.
+	 *
+	 * @return int The form id.
+	 */
 	public function getId(): int {
 		return $this->id;
 	}
 
+	/**
+	 * The form as Forms serialises it.
+	 *
+	 * @return array The form as Forms serialises it.
+	 */
 	public function read(): array {
 		return [
 			'id' => $this->id,

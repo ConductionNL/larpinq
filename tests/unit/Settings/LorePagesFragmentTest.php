@@ -39,7 +39,7 @@ class LorePagesFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -58,7 +58,7 @@ class LorePagesFragmentTest extends TestCase {
 	 */
 	private function lorePage(): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey('lorePage', $schemas, 'the lorePage schema must be in the merged register');
+		$this->assertArrayHasKey(key: 'lorePage', array: $schemas, message: 'the lorePage schema must be in the merged register');
 		return $schemas['lorePage'];
 	}//end lorePage()
 
@@ -71,16 +71,16 @@ class LorePagesFragmentTest extends TestCase {
 		$register = $this->mergedRegister()['components']['registers']['larpinq'];
 		$schema = $this->lorePage();
 
-		$this->assertSame('larping_lore_page', $schema['slug']);
-		$this->assertContains('larping_lore_page', $register['schemas']);
-		$this->assertContains('larping_skill', $register['schemas'], 'the fragment must add to the list, not replace it');
+		$this->assertSame(expected: 'larping_lore_page', actual: $schema['slug']);
+		$this->assertContains(needle: 'larping_lore_page', haystack: $register['schemas']);
+		$this->assertContains(needle: 'larping_skill', haystack: $register['schemas'], message: 'the fragment must add to the list, not replace it');
 		foreach (['title', 'body', 'setting', 'category', 'visibility', 'revealFrom', 'parent', 'order'] as $field) {
-			$this->assertArrayHasKey($field, $schema['properties'], "lorePage needs {$field}");
+			$this->assertArrayHasKey(key: $field, array: $schema['properties'], message: "lorePage needs {$field}");
 		}
-		$this->assertSame('markdown', $schema['properties']['body']['format']);
-		$this->assertSame('date-time', $schema['properties']['revealFrom']['format']);
-		$this->assertSame(['place', 'faction', 'history', 'rules', 'other'], $schema['properties']['category']['enum']);
-		$this->assertTrue($schema['configuration']['exportable'], 'every larpinq schema exports (admin-import-export)');
+		$this->assertSame(expected: 'markdown', actual: $schema['properties']['body']['format']);
+		$this->assertSame(expected: 'date-time', actual: $schema['properties']['revealFrom']['format']);
+		$this->assertSame(expected: ['place', 'faction', 'history', 'rules', 'other'], actual: $schema['properties']['category']['enum']);
+		$this->assertTrue(condition: $schema['configuration']['exportable'], message: 'every larpinq schema exports (admin-import-export)');
 	}//end testTheSchemaIsInTheRegister()
 
 	/**
@@ -92,14 +92,14 @@ class LorePagesFragmentTest extends TestCase {
 		$authorization = $this->lorePage()['authorization'];
 
 		$this->assertSame(
-			[
+			expected: [
 				['group' => 'gamemasters'],
 				['group' => 'larpers', 'match' => ['visibility' => 'players', 'revealFrom' => ['$lte' => '$now']]],
 			],
-			$authorization['read']
+			actual: $authorization['read']
 		);
 		foreach (['create', 'update', 'delete'] as $action) {
-			$this->assertSame(['gamemasters'], $authorization[$action], "only game masters may {$action}");
+			$this->assertSame(expected: ['gamemasters'], actual: $authorization[$action], message: "only game masters may {$action}");
 		}
 	}//end testPlayersReadOnlyRevealedPlayerPages()
 
@@ -110,8 +110,8 @@ class LorePagesFragmentTest extends TestCase {
 	 * @return void
 	 */
 	public function testTheRevealMomentIsRequired(): void {
-		$this->assertContains('revealFrom', $this->lorePage()['required']);
-		$this->assertContains('visibility', $this->lorePage()['required']);
+		$this->assertContains(needle: 'revealFrom', haystack: $this->lorePage()['required']);
+		$this->assertContains(needle: 'visibility', haystack: $this->lorePage()['required']);
 	}//end testTheRevealMomentIsRequired()
 
 	/**
@@ -128,18 +128,18 @@ class LorePagesFragmentTest extends TestCase {
 				static fn (array $object): bool => ($object['@self']['schema'] ?? '') === 'larping_lore_page'
 			)
 		);
-		$this->assertCount(4, $pages);
+		$this->assertCount(expectedCount: 4, haystack: $pages);
 
 		$validator = new Validator();
 		$schema = json_decode((string)json_encode($this->forOpis(schema: $this->lorePage())));
 		foreach ($pages as $page) {
 			unset($page['@self']);
 			$result = $validator->validate(json_decode((string)json_encode($page)), $schema);
-			$this->assertTrue($result->isValid(), 'seed page ' . $page['title'] . ' must validate');
+			$this->assertTrue(condition: $result->isValid(), message: 'seed page ' . $page['title'] . ' must validate');
 		}
 
 		$bad = json_decode((string)json_encode(['title' => 'No moment', 'visibility' => 'players']));
-		$this->assertFalse($validator->validate($bad, $schema)->isValid(), 'a page without a reveal moment is refused');
+		$this->assertFalse(condition: $validator->validate($bad, $schema)->isValid(), message: 'a page without a reveal moment is refused');
 	}//end testTheSeedPagesValidate()
 
 	/**

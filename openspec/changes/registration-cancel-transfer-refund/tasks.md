@@ -24,6 +24,6 @@
 
 ## 5. Shillinq (open)
 
-- [ ] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request, and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Task 2.3's dispatch half is built; its "payments listener sets refunded or credited" half waits for this.
+- [ ] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request (REQ-RCT-005), and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Larpinq then shows the part paid from credit on the registration (REQ-RCT-005). Task 2.3's dispatch half is built; its "payments listener sets refunded or credited" half waits for this.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.

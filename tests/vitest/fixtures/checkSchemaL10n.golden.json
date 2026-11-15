@@ -1,0 +1,189 @@
+{
+	"at the baseline": {
+		"status": 0,
+		"stdout": "14 schema string(s); 11 uncovered, baseline 11\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 11\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"--list": {
+		"status": 0,
+		"stdout": "lib/Settings/larpinq_register.json:status.x-enum-labels\n  Alive\nlib/Settings/register.d/event.json:days.title\n  Days\nlib/Settings/larpinq_register.json:status.x-enum-labels\n  Dead\nlib/Settings/register.d/deep/more.json:schema title\n  Deep\nlib/Settings/register.d/deep/more.json:a.title\n  Deep field\nlib/Settings/register.d/event.json:schema title\n  Event\nlib/Settings/larpinq_register.json:name.description\n  Full name\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Item label\nlib/Settings/larpinq_register.json:item.title\n  Item title\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Own label\nlib/Settings/larpinq_register.json:status.title\n  Status\n14 schema string(s); 11 uncovered, baseline 14\n3 fewer than the baseline — lower it with:\n  npm run check:schema-l10n -- --update\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 14\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"--update": {
+		"status": 0,
+		"stdout": "baseline written: 11 uncovered schema string(s)\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 11\n}\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"--update and --list": {
+		"status": 0,
+		"stdout": "lib/Settings/larpinq_register.json:status.x-enum-labels\n  Alive\nlib/Settings/register.d/event.json:days.title\n  Days\nlib/Settings/larpinq_register.json:status.x-enum-labels\n  Dead\nlib/Settings/register.d/deep/more.json:schema title\n  Deep\nlib/Settings/register.d/deep/more.json:a.title\n  Deep field\nlib/Settings/register.d/event.json:schema title\n  Event\nlib/Settings/larpinq_register.json:name.description\n  Full name\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Item label\nlib/Settings/larpinq_register.json:item.title\n  Item title\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Own label\nlib/Settings/larpinq_register.json:status.title\n  Status\nbaseline written: 11 uncovered schema string(s)\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 11\n}\n",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"no baseline": {
+		"status": 1,
+		"stdout": "",
+		"stderr": "No baseline. Run `npm run check:schema-l10n -- --update` and commit it.\n",
+		"files": {
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"--list without a baseline": {
+		"status": 1,
+		"stdout": "lib/Settings/larpinq_register.json:status.x-enum-labels\n  Alive\nlib/Settings/register.d/event.json:days.title\n  Days\nlib/Settings/larpinq_register.json:status.x-enum-labels\n  Dead\nlib/Settings/register.d/deep/more.json:schema title\n  Deep\nlib/Settings/register.d/deep/more.json:a.title\n  Deep field\nlib/Settings/register.d/event.json:schema title\n  Event\nlib/Settings/larpinq_register.json:name.description\n  Full name\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Item label\nlib/Settings/larpinq_register.json:item.title\n  Item title\nlib/Settings/larpinq_register.json:both.x-enum-labels\n  Own label\nlib/Settings/larpinq_register.json:status.title\n  Status\n",
+		"stderr": "No baseline. Run `npm run check:schema-l10n -- --update` and commit it.\n",
+		"files": {
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"grew past the baseline": {
+		"status": 1,
+		"stdout": "14 schema string(s); 11 uncovered, baseline 5\n",
+		"stderr": "\n6 schema string(s) added with no catalogue key — they will render\nin English inside an otherwise translated form.\n\nAdd them to l10n/en.json (identity) and l10n/nl.json (translated), then\nrun `npm run l10n:build`. See what is uncovered with:\n  node scripts/check-schema-l10n.js --list\n",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 5\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"grew by one": {
+		"status": 1,
+		"stdout": "14 schema string(s); 11 uncovered, baseline 10\n",
+		"stderr": "\n1 schema string(s) added with no catalogue key — they will render\nin English inside an otherwise translated form.\n\nAdd them to l10n/en.json (identity) and l10n/nl.json (translated), then\nrun `npm run l10n:build`. See what is uncovered with:\n  node scripts/check-schema-l10n.js --list\n",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 10\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"fell below the baseline": {
+		"status": 0,
+		"stdout": "14 schema string(s); 11 uncovered, baseline 20\n9 fewer than the baseline — lower it with:\n  npm run check:schema-l10n -- --update\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 20\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"no catalogue": {
+		"status": 0,
+		"stdout": "14 schema string(s); 14 uncovered, baseline 14\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 14\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"catalogue without translations": {
+		"status": 0,
+		"stdout": "14 schema string(s); 14 uncovered, baseline 17\n3 fewer than the baseline — lower it with:\n  npm run check:schema-l10n -- --update\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 17\n}",
+			"l10n/en.json": "{}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"unreadable catalogue": {
+		"status": 0,
+		"stdout": "14 schema string(s); 14 uncovered, baseline 17\n3 fewer than the baseline — lower it with:\n  npm run check:schema-l10n -- --update\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 17\n}",
+			"l10n/en.json": "{ nope",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	},
+	"no lib/Settings": {
+		"status": 0,
+		"stdout": "0 schema string(s); 0 uncovered, baseline 0\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 0\n}"
+		}
+	},
+	"unknown argument": {
+		"status": 0,
+		"stdout": "14 schema string(s); 11 uncovered, baseline 14\n3 fewer than the baseline — lower it with:\n  npm run check:schema-l10n -- --update\n",
+		"stderr": "",
+		"files": {
+			"l10n/.schema-l10n-baseline.json": "{\n  \"uncovered\": 14\n}",
+			"l10n/en.json": "{\n  \"translations\": {\n    \"Character\": \"Character\",\n    \"Name\": \"Name\",\n    \"Tag A\": \"Tag A\"\n  }\n}",
+			"lib/Settings/larpinq_register.json": "{\n  \"components\": {\n    \"schemas\": {\n      \"Character\": {\n        \"title\": \"Character\",\n        \"properties\": {\n          \"name\": {\n            \"title\": \"Name\",\n            \"description\": \"Full name\"\n          },\n          \"status\": {\n            \"title\": \"Status\",\n            \"description\": \"Full name\",\n            \"x-enum-labels\": {\n              \"alive\": \"Alive\",\n              \"dead\": \"Dead\"\n            }\n          },\n          \"tags\": {\n            \"items\": {\n              \"x-enum-labels\": {\n                \"a\": \"Tag A\",\n                \"b\": \" \"\n              }\n            }\n          },\n          \"both\": {\n            \"x-enum-labels\": {\n              \"x\": \"Own label\"\n            },\n            \"items\": {\n              \"x-enum-labels\": [\n                \"Item label\",\n                7\n              ]\n            }\n          },\n          \"nolabels\": {\n            \"x-enum-labels\": null,\n            \"items\": null\n          },\n          \"broken\": null,\n          \"count\": 3,\n          \"blank\": {\n            \"title\": \"\",\n            \"description\": 42\n          }\n        }\n      },\n      \"List\": [\n        {\n          \"properties\": {\n            \"item\": {\n              \"title\": \"Item title\"\n            }\n          }\n        },\n        \"text\"\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/bad.json": "{ broken",
+			"lib/Settings/register.d/deep/more.json": "[\n  {\n    \"title\": \"Deep\",\n    \"properties\": {\n      \"a\": {\n        \"title\": \"Deep field\"\n      }\n    }\n  }\n]",
+			"lib/Settings/register.d/event.json": "{\n  \"title\": \"Event\",\n  \"properties\": {\n    \"days\": {\n      \"title\": \"Days\",\n      \"description\": \"Name\"\n    }\n  },\n  \"nested\": {\n    \"properties\": \"not an object\",\n    \"other\": {\n      \"properties\": []\n    },\n    \"nulled\": {\n      \"properties\": null,\n      \"title\": \"Never seen\"\n    },\n    \"listed\": {\n      \"title\": \"Array props\",\n      \"properties\": [\n        {\n          \"title\": \"Array item\"\n        }\n      ]\n    }\n  }\n}",
+			"lib/Settings/register.d/notes.txt": "not json"
+		}
+	}
+}

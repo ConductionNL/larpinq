@@ -48,6 +48,7 @@ class XpAwardProvenanceListenerTest extends TestCase {
 
 	private const SCHEMA_ID = 'xp-award-schema-id';
 
+	/** @var ?string The signed in. */
 	private ?string $signedIn = 'joris';
 
 	/**
@@ -56,24 +57,27 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 * @return XpAwardProvenanceListener The listener.
 	 */
 	private function listener(): XpAwardProvenanceListener {
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => ($key === 'xpaward_schema' ? self::SCHEMA_ID : $default)
+			static fn (string $app, string $key, string $default = ''): string => match ($key) {
+				'xpaward_schema' => self::SCHEMA_ID,
+				default => $default,
+			}
 		);
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturnCallback(
 			function (): ?IUser {
 				if ($this->signedIn === null) {
 					return null;
 				}
 
-				$user = $this->createMock(IUser::class);
+				$user = $this->createMock(originalClassName: IUser::class);
 				$user->method('getUID')->willReturn($this->signedIn);
 				return $user;
 			}
 		);
 
-		return new XpAwardProvenanceListener($session, $config);
+		return new XpAwardProvenanceListener(userSession: $session, config: $config);
 	}//end listener()
 
 	/**
@@ -82,14 +86,16 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 * @return void
 	 */
 	public function testACreatedAwardGetsTheActingUserAndTheTime(): void {
-		$event = new ObjectCreatingEvent(new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 5, 'awardedBy' => 'anna', 'awardedAt' => '2020-01-01T00:00:00+00:00']));
+		$event = new ObjectCreatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 5, 'awardedBy' => 'anna', 'awardedAt' => '2020-01-01T00:00:00+00:00'])
+		);
 		$before = time();
 		$this->listener()->handle($event);
 
 		$modified = $event->getModifiedData();
-		$this->assertSame('joris', $modified['awardedBy']);
-		$this->assertGreaterThanOrEqual($before, strtotime($modified['awardedAt']));
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(expected: 'joris', actual: $modified['awardedBy']);
+		$this->assertGreaterThanOrEqual(expected: $before, actual: strtotime($modified['awardedAt']));
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}//end testACreatedAwardGetsTheActingUserAndTheTime()
 
 	/**
@@ -99,11 +105,14 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	 */
 	public function testAnUpdateKeepsTheOriginalProvenance(): void {
 		$old = new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00']);
-		$new = new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1, 'reason' => 'Day guest', 'awardedBy' => 'anna', 'awardedAt' => '2026-09-30T10:00:00+00:00']);
+		$new = new AwardObjectEntity(
+			self::SCHEMA_ID,
+			['amount' => 1, 'reason' => 'Day guest', 'awardedBy' => 'anna', 'awardedAt' => '2026-09-30T10:00:00+00:00']
+		);
 		$event = new ObjectUpdatingEvent($new, $old);
 		$this->listener()->handle($event);
 
-		$this->assertSame(['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], $event->getModifiedData());
+		$this->assertSame(expected: ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], actual: $event->getModifiedData());
 	}//end testAnUpdateKeepsTheOriginalProvenance()
 
 	/**
@@ -114,11 +123,67 @@ class XpAwardProvenanceListenerTest extends TestCase {
 	public function testOtherObjectsAndSystemWritesAreLeftAlone(): void {
 		$other = new ObjectCreatingEvent(new AwardObjectEntity('character-schema', ['awardedBy' => 'anna']));
 		$this->listener()->handle($other);
-		$this->assertSame([], $other->getModifiedData());
+		$this->assertSame(expected: [], actual: $other->getModifiedData());
 
 		$this->signedIn = null;
 		$seed = new ObjectCreatingEvent(new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'joris']));
 		$this->listener()->handle($seed);
-		$this->assertSame([], $seed->getModifiedData());
+		$this->assertSame(expected: [], actual: $seed->getModifiedData());
 	}//end testOtherObjectsAndSystemWritesAreLeftAlone()
+
+	/**
+	 * An update whose stored provenance is blank leaves the modified data as
+	 * it was; a filled value replaces it, a blank one is not kept.
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateKeepsOnlyFilledProvenance(): void {
+		$blank = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1, 'awardedBy' => 'anna']),
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => '', 'awardedAt' => null])
+		);
+		$blank->setModifiedData(['kept' => 1]);
+		$this->listener()->handle($blank);
+		$this->assertSame(expected: ['kept' => 1], actual: $blank->getModifiedData());
+
+		$partial = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1]),
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => 'joris', 'awardedAt' => ''])
+		);
+		$partial->setModifiedData(['kept' => 1]);
+		$this->listener()->handle($partial);
+		$this->assertSame(expected: ['awardedBy' => 'joris'], actual: $partial->getModifiedData());
+	}//end testAnUpdateKeepsOnlyFilledProvenance()
+
+	/**
+	 * An update of another schema is left alone, even with nobody signed in.
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateOfAnotherObjectIsLeftAlone(): void {
+		$this->signedIn = null;
+		$event = new ObjectUpdatingEvent(
+			new AwardObjectEntity('character-schema', ['awardedBy' => 'anna']),
+			new AwardObjectEntity('character-schema', ['awardedBy' => 'joris'])
+		);
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
+	}//end testAnUpdateOfAnotherObjectIsLeftAlone()
+
+	/**
+	 * With nobody signed in an update still keeps the stored provenance.
+	 *
+	 * @return void
+	 */
+	public function testASystemUpdateStillKeepsTheProvenance(): void {
+		$this->signedIn = null;
+		$event = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'anna']),
+			new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'])
+		);
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], actual: $event->getModifiedData());
+	}//end testASystemUpdateStillKeepsTheProvenance()
 }//end class

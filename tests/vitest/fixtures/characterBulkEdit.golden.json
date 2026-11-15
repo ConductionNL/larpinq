@@ -1,0 +1,4248 @@
+{
+	"three ids, names for one / ok": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"venn",
+				"to mas"
+			],
+			"refused": []
+		}
+	},
+	"three ids, names for one / ok / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"venn",
+				"to mas"
+			],
+			"refused": []
+		}
+	},
+	"three ids, names for one / nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "Locked"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Locked"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "Locked"
+				}
+			]
+		}
+	},
+	"three ids, names for one / nested errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Locked"
+				}
+			]
+		}
+	},
+	"three ids, names for one / errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "outer"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "outer"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "outer"
+				}
+			]
+		}
+	},
+	"three ids, names for one / errors without a message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "outer"
+				}
+			]
+		}
+	},
+	"three ids, names for one / errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "Top"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Top"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "Top"
+				}
+			]
+		}
+	},
+	"three ids, names for one / errors as a string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Top"
+				}
+			]
+		}
+	},
+	"three ids, names for one / null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "m"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "m"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "m"
+				}
+			]
+		}
+	},
+	"three ids, names for one / null errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "m"
+				}
+			]
+		}
+	},
+	"three ids, names for one / error only": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "Not yours"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Not yours"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "Not yours"
+				}
+			]
+		}
+	},
+	"three ids, names for one / error only / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Not yours"
+				}
+			]
+		}
+	},
+	"three ids, names for one / numeric message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "7"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "7"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "7"
+				}
+			]
+		}
+	},
+	"three ids, names for one / numeric message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "7"
+				}
+			]
+		}
+	},
+	"three ids, names for one / zero message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 409"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 409"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"three ids, names for one / zero message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"three ids, names for one / empty message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 409"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 409"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"three ids, names for one / empty message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"three ids, names for one / null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 500"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 500"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 500"
+				}
+			]
+		}
+	},
+	"three ids, names for one / null body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 500"
+				}
+			]
+		}
+	},
+	"three ids, names for one / string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 400"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 400"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"three ids, names for one / string body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"three ids, names for one / array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 400"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 400"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"three ids, names for one / array body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"three ids, names for one / no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "HTTP 502"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 502"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "HTTP 502"
+				}
+			]
+		}
+	},
+	"three ids, names for one / no body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "HTTP 502"
+				}
+			]
+		}
+	},
+	"three ids, names for one / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "Error: offline"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Error: offline"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "Error: offline"
+				}
+			]
+		}
+	},
+	"three ids, names for one / network error / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "Error: offline"
+				}
+			]
+		}
+	},
+	"three ids, names for one / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "harrow",
+					"name": "harrow",
+					"reason": "down"
+				},
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "down"
+				},
+				{
+					"id": "to mas",
+					"name": "to mas",
+					"reason": "down"
+				}
+			]
+		}
+	},
+	"three ids, names for one / network string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/harrow",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/venn",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			},
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/to%20mas",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"status\":\"retired\"}"
+			}
+		],
+		"progress": [
+			1,
+			2,
+			3
+		],
+		"returned": {
+			"changed": [
+				"harrow",
+				"to mas"
+			],
+			"refused": [
+				{
+					"id": "venn",
+					"name": "Lady Venn",
+					"reason": "down"
+				}
+			]
+		}
+	},
+	"one id, no names / ok": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / ok / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "Locked"
+				}
+			]
+		}
+	},
+	"one id, no names / nested errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "outer"
+				}
+			]
+		}
+	},
+	"one id, no names / errors without a message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "Top"
+				}
+			]
+		}
+	},
+	"one id, no names / errors as a string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "m"
+				}
+			]
+		}
+	},
+	"one id, no names / null errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / error only": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "Not yours"
+				}
+			]
+		}
+	},
+	"one id, no names / error only / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / numeric message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "7"
+				}
+			]
+		}
+	},
+	"one id, no names / numeric message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / zero message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"one id, no names / zero message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / empty message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"one id, no names / empty message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 500"
+				}
+			]
+		}
+	},
+	"one id, no names / null body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"one id, no names / string body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"one id, no names / array body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "HTTP 502"
+				}
+			]
+		}
+	},
+	"one id, no names / no body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "Error: offline"
+				}
+			]
+		}
+	},
+	"one id, no names / network error / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"one id, no names / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "x",
+					"name": "x",
+					"reason": "down"
+				}
+			]
+		}
+	},
+	"one id, no names / network string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/x",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"type\":\"npc\"}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"x"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / ok": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / ok / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "Locked"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / nested errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "outer"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / errors without a message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "Top"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / errors as a string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "m"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / null errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / error only": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "Not yours"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / error only / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / numeric message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "7"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / numeric message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / zero message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / zero message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / empty message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / empty message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 500"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / null body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / string body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / array body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "HTTP 502"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / no body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "Error: offline"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / network error / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"empty name falls back to the id / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "a",
+					"name": "a",
+					"reason": "down"
+				}
+			]
+		}
+	},
+	"empty name falls back to the id / network string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/a",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{\"setting\":\"w1\"}"
+			}
+		],
+		"progress": [
+			1
+		],
+		"returned": {
+			"changed": [
+				"a"
+			],
+			"refused": []
+		}
+	},
+	"null ids / ok": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / ok / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / nested errors": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / nested errors / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / errors without a message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / errors without a message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / errors as a string": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / errors as a string / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / null errors": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / null errors / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / error only": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / error only / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / numeric message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / numeric message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / zero message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / zero message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / empty message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / empty message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / null body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / null body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / string body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / string body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / array body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / array body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / no body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / no body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / network error": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / network error / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / network string": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null ids / network string / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / ok": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / ok / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / nested errors": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / nested errors / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / errors without a message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / errors without a message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / errors as a string": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / errors as a string / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / null errors": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / null errors / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / error only": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / error only / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / numeric message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / numeric message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / zero message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / zero message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / empty message": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / empty message / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / null body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / null body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / string body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / string body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / array body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / array body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / no body": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / no body / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / network error": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / network error / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / network string": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"no ids / network string / alternating": {
+		"requests": [],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": []
+		}
+	},
+	"null choices / ok": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / ok / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / nested errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "Locked"
+				}
+			]
+		}
+	},
+	"null choices / nested errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / errors without a message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "outer"
+				}
+			]
+		}
+	},
+	"null choices / errors without a message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / errors as a string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "Top"
+				}
+			]
+		}
+	},
+	"null choices / errors as a string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / null errors": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "m"
+				}
+			]
+		}
+	},
+	"null choices / null errors / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / error only": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "Not yours"
+				}
+			]
+		}
+	},
+	"null choices / error only / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / numeric message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "7"
+				}
+			]
+		}
+	},
+	"null choices / numeric message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / zero message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"null choices / zero message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / empty message": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 409"
+				}
+			]
+		}
+	},
+	"null choices / empty message / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / null body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 500"
+				}
+			]
+		}
+	},
+	"null choices / null body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / string body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"null choices / string body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / array body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 400"
+				}
+			]
+		}
+	},
+	"null choices / array body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / no body": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "HTTP 502"
+				}
+			]
+		}
+	},
+	"null choices / no body / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / network error": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "Error: offline"
+				}
+			]
+		}
+	},
+	"null choices / network error / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	},
+	"null choices / network string": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [],
+			"refused": [
+				{
+					"id": "y",
+					"name": "y",
+					"reason": "down"
+				}
+			]
+		}
+	},
+	"null choices / network string / alternating": {
+		"requests": [
+			{
+				"url": "/index.php/apps/openregister/api/objects/larpinq/character/y",
+				"method": "PATCH",
+				"headers": {
+					"requesttoken": "test-token",
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				"body": "{}"
+			}
+		],
+		"progress": [],
+		"returned": {
+			"changed": [
+				"y"
+			],
+			"refused": []
+		}
+	}
+}

@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
+require_once __DIR__ . '/../Support/RegisterAnswers.php';
+
 require_once __DIR__ . '/../Support/InMemoryOpenRegister.php';
 
 use OCA\Forms\Db\Form;
@@ -29,7 +31,9 @@ use OCA\Forms\Events\FormSubmittedEvent;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
+use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
+use OCP\EventDispatcher\Event;
 use OCP\IAppConfig;
 use OCP\IUserManager;
 use PHPUnit\Framework\TestCase;
@@ -44,6 +48,7 @@ class FormSubmissionListenerTest extends TestCase {
 	private const EVENT = 'a0000000-0000-4000-8000-000000000001';
 	private const ANNA = 'c0000000-0000-4000-8000-000000000001';
 
+	/** @var InMemoryOpenRegister The store. */
 	private InMemoryOpenRegister $store;
 
 	/**
@@ -69,20 +74,20 @@ class FormSubmissionListenerTest extends TestCase {
 	 */
 	private function listener(): FormSubmissionListener {
 		$store = $this->store;
-		$container = $this->createMock(ContainerInterface::class);
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
-			static fn (string $id): object => ($id === 'OCA\OpenRegister\Service\ObjectService' ? $store : throw new \RuntimeException('not bound: ' . $id))
+			static fn (string $id): object => RegisterAnswers::onlyService(id: $id, bound: 'OCA\OpenRegister\Service\ObjectService', service: $store)
 		);
-		$apps = $this->createMock(IAppManager::class);
+		$apps = $this->createMock(originalClassName: IAppManager::class);
 		$apps->method('getInstalledApps')->willReturn(['openregister']);
-		$config = $this->createMock(IAppConfig::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => (str_ends_with($key, '_register') === true ? '3' : (str_ends_with($key, '_schema') === true ? substr($key, 0, -strlen('_schema')) : $default))
+			static fn (string $app, string $key, string $default = ''): string => RegisterAnswers::registerConfig(key: $key, default: $default)
 		);
-		$fetcher = new RegisterObjectFetcher($container, $apps, $config, new \Psr\Log\NullLogger());
-		$users = $this->createMock(IUserManager::class);
+		$fetcher = new RegisterObjectFetcher(container: $container, appManager: $apps, config: $config, logger: new \Psr\Log\NullLogger());
+		$users = $this->createMock(originalClassName: IUserManager::class);
 		$users->method('userExists')->willReturnCallback(static fn (string $uid): bool => in_array($uid, ['anna', 'nieuw'], true));
-		$logger = $this->createMock(LoggerInterface::class);
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
 		foreach (['info', 'warning'] as $level) {
 			$logger->method($level)->willReturnCallback(
 				function (string $message): void {
@@ -91,14 +96,14 @@ class FormSubmissionListenerTest extends TestCase {
 			);
 		}
 
-		return new FormSubmissionListener($fetcher, $users, $logger);
+		return new FormSubmissionListener(fetcher: $fetcher, users: $users, logger: $logger);
 	}//end listener()
 
 	/**
 	 * A submission event.
 	 *
 	 * @param int $form The form id.
-	 * @param string $uid The submitting user.
+	 * @param string $uid The user id.
 	 * @param int $submission The submission id.
 	 *
 	 * @return FormSubmittedEvent The event.
@@ -116,15 +121,15 @@ class FormSubmissionListenerTest extends TestCase {
 		$this->listener()->handle($this->submitted(form: 12, uid: 'anna'));
 
 		$rows = array_values($this->store->objects['registration'] ?? []);
-		$this->assertCount(1, $rows);
-		$this->assertSame(self::EVENT, $rows[0]['event']);
-		$this->assertSame(self::ANNA, $rows[0]['player']);
-		$this->assertSame('anna', $rows[0]['submitterUid']);
-		$this->assertSame(501, $rows[0]['submissionId']);
-		$this->assertSame('pending', $rows[0]['status']);
-		$this->assertNotEmpty($rows[0]['submittedAt']);
-		$this->assertArrayNotHasKey('answers', $rows[0], 'the answers stay in Forms');
-		$this->assertFalse($this->store->saves[0]['rbac'], 'a player may not create registrations; the intake writes as the app');
+		$this->assertCount(expectedCount: 1, haystack: $rows);
+		$this->assertSame(expected: self::EVENT, actual: $rows[0]['event']);
+		$this->assertSame(expected: self::ANNA, actual: $rows[0]['player']);
+		$this->assertSame(expected: 'anna', actual: $rows[0]['submitterUid']);
+		$this->assertSame(expected: 501, actual: $rows[0]['submissionId']);
+		$this->assertSame(expected: 'pending', actual: $rows[0]['status']);
+		$this->assertNotEmpty(actual: $rows[0]['submittedAt']);
+		$this->assertArrayNotHasKey(key: 'answers', array: $rows[0], message: 'the answers stay in Forms');
+		$this->assertFalse(condition: $this->store->saves[0]['rbac'], message: 'a player may not create registrations; the intake writes as the app');
 	}//end testAKnownUserSignsUp()
 
 	/**
@@ -136,9 +141,9 @@ class FormSubmissionListenerTest extends TestCase {
 		$this->listener()->handle($this->submitted(form: 12, uid: 'nieuw'));
 
 		$rows = array_values($this->store->objects['registration'] ?? []);
-		$this->assertCount(1, $rows);
-		$this->assertArrayNotHasKey('player', $rows[0], 'no player is linked yet');
-		$this->assertSame('nieuw', $rows[0]['submitterUid']);
+		$this->assertCount(expectedCount: 1, haystack: $rows);
+		$this->assertArrayNotHasKey(key: 'player', array: $rows[0], message: 'no player is linked yet');
+		$this->assertSame(expected: 'nieuw', actual: $rows[0]['submitterUid']);
 	}//end testAUserWithoutAPlayerGetsARegistrationWithoutOne()
 
 	/**
@@ -149,8 +154,8 @@ class FormSubmissionListenerTest extends TestCase {
 	public function testAnAnonymousSubmissionCreatesNothing(): void {
 		$this->listener()->handle($this->submitted(form: 12, uid: 'anon-user-5f2a9c'));
 
-		$this->assertArrayNotHasKey('registration', $this->store->objects);
-		$this->assertNotEmpty($this->logged);
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
+		$this->assertNotEmpty(actual: $this->logged);
 	}//end testAnAnonymousSubmissionCreatesNothing()
 
 	/**
@@ -163,10 +168,63 @@ class FormSubmissionListenerTest extends TestCase {
 		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 502));
 
 		$rows = array_values($this->store->objects['registration']);
-		$this->assertCount(1, $rows);
-		$this->assertSame(501, $rows[0]['submissionId']);
-		$this->assertNotEmpty($this->logged);
+		$this->assertCount(expectedCount: 1, haystack: $rows);
+		$this->assertSame(expected: 501, actual: $rows[0]['submissionId']);
+		$this->assertNotEmpty(actual: $this->logged);
 	}//end testASecondSubmissionKeepsTheFirstRegistration()
+
+	/**
+	 * Events other than a Forms submission are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$this->listener()->handle(new Event());
+
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
+		$this->assertSame(expected: [], actual: $this->logged);
+	}//end testOtherEventsAreIgnored()
+
+	/**
+	 * A submission without a form id asks the register nothing.
+	 *
+	 * @return void
+	 */
+	public function testASubmissionWithoutAFormIdIsIgnored(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->expects(self::never())->method('getObjectsWithAppAuthority');
+		$fetcher->expects(self::never())->method('saveObjectWithAppAuthority');
+		$listener = new FormSubmissionListener(
+			fetcher: $fetcher,
+			users: $this->createMock(originalClassName: IUserManager::class),
+			logger: $this->createMock(originalClassName: LoggerInterface::class)
+		);
+
+		$listener->handle($this->submitted(form: 0, uid: 'anna'));
+	}//end testASubmissionWithoutAFormIdIsIgnored()
+
+	/**
+	 * A failing intake is logged with the form, and never breaks the submission.
+	 *
+	 * @return void
+	 */
+	public function testAFailingIntakeIsLoggedNotThrown(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->method('getObjectsWithAppAuthority')->willThrowException(new \RuntimeException('register offline'));
+		$fetcher->expects(self::never())->method('saveObjectWithAppAuthority');
+		$logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$logger->expects(self::once())->method('error')->with(
+			'Larpinq: a sign-up on form {form} did not become a registration.',
+			self::callback(static fn (array $context): bool => $context['form'] === 12 && $context['exception'] instanceof \RuntimeException)
+		);
+		$listener = new FormSubmissionListener(
+			fetcher: $fetcher,
+			users: $this->createMock(originalClassName: IUserManager::class),
+			logger: $logger
+		);
+
+		$listener->handle($this->submitted(form: 12, uid: 'anna'));
+	}//end testAFailingIntakeIsLoggedNotThrown()
 
 	/**
 	 * A form no event takes sign-ups from is not larpinq's business.
@@ -176,6 +234,28 @@ class FormSubmissionListenerTest extends TestCase {
 	public function testAFormOfNoEventIsIgnored(): void {
 		$this->listener()->handle($this->submitted(form: 99, uid: 'anna'));
 
-		$this->assertArrayNotHasKey('registration', $this->store->objects);
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
 	}//end testAFormOfNoEventIsIgnored()
+	/**
+	 * A uid that is no account here, or no uid at all, creates nothing and
+	 * logs the anonymous sign-up; a repeat logs which registration stands.
+	 *
+	 * @return void
+	 */
+	public function testUnknownAccountsCreateNothingAndTheLogNamesWhy(): void {
+		$this->listener()->handle($this->submitted(form: 12, uid: 'ghost'));
+		$this->listener()->handle($this->submitted(form: 12, uid: ''));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+		$this->listener()->handle($this->submitted(form: 12, uid: 'anna', submission: 502));
+
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['registration']);
+		$this->assertSame(
+			expected: [
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: an anonymous sign-up for event {event} is not a registration.',
+				'Larpinq: {user} signed up for event {event} again; the first registration stands.',
+			],
+			actual: $this->logged
+		);
+	}//end testUnknownAccountsCreateNothingAndTheLogNamesWhy()
 }//end class

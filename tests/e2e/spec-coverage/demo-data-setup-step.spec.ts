@@ -1,4 +1,8 @@
 /**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+/**
  * ADR-111 — the demo-data setup step, exercised against a running instance.
  *
  * WHY THIS EXISTS. The programme that added demo data to this app shipped a

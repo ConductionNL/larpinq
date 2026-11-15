@@ -60,26 +60,13 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { objectTab } from '../mixins/objectTab.js'
 import { fetchChoiceCounts } from '../services/registrationChoices.js'
 
 export default {
 	name: 'EventChoiceCounts',
 
-	inject: {
-		cnObjectContext: { default: () => ({}) },
-	},
-
-	props: {
-		/**
-		 * The event UUID. Falls back to the injected object context or the route.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		objectId: {
-			type: String,
-			default: '',
-		},
-	},
+	mixins: [objectTab('eventId')],
 
 	data() {
 		return {
@@ -89,21 +76,6 @@ export default {
 	},
 
 	computed: {
-		/**
-		 * The event id from prop, injected context or route.
-		 *
-		 * @return {string} The id.
-		 *
-		 * @spec openspec/specs/event-registration/spec.md
-		 */
-		eventId() {
-			return (
-				this.objectId
-				|| this.cnObjectContext?.objectId
-				|| String(this.$route?.params?.id ?? '')
-			)
-		},
-
 		/**
 		 * Ticket types first, then options.
 		 *
@@ -138,6 +110,10 @@ export default {
 </script>
 
 <style scoped>
+.event-choice-counts {
+	container-type: inline-size;
+}
+
 .event-choice-counts__table {
 	width: 100%;
 	border-collapse: collapse;
@@ -148,5 +124,16 @@ export default {
 	text-align: start;
 	padding: calc(var(--default-grid-baseline, 4px) * 2) 0;
 	border-bottom: 1px solid var(--color-border);
+}
+
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-001): long option names
+ * wrap inside their cell instead of widening the page.
+ */
+@container (max-width: 600px) {
+	.event-choice-counts__table th,
+	.event-choice-counts__table td {
+		overflow-wrap: anywhere;
+	}
 }
 </style>

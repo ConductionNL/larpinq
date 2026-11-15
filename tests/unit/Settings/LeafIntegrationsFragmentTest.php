@@ -36,7 +36,7 @@ class LeafIntegrationsFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -68,10 +68,10 @@ class LeafIntegrationsFragmentTest extends TestCase {
 		$types = $this->linkedTypes(schema: 'event');
 
 		foreach (['calendar', 'maps', 'forms', 'talk', 'polls', 'deck'] as $leaf) {
-			$this->assertContains($leaf, $types, "event must link {$leaf}");
+			$this->assertContains(needle: $leaf, haystack: $types, message: "event must link {$leaf}");
 		}
 
-		$this->assertSame(count($types), count(array_unique($types)), 'no leaf may be declared twice');
+		$this->assertSame(expected: count($types), actual: count(array_unique($types)), message: 'no leaf may be declared twice');
 	}//end testEventCarriesAllSixLeaves()
 
 	/**
@@ -82,9 +82,9 @@ class LeafIntegrationsFragmentTest extends TestCase {
 	public function testSettingCarriesTalkAndPollsButNoDeck(): void {
 		$types = $this->linkedTypes(schema: 'setting');
 
-		$this->assertContains('talk', $types);
-		$this->assertContains('polls', $types);
-		$this->assertNotContains('deck', $types);
+		$this->assertContains(needle: 'talk', haystack: $types);
+		$this->assertContains(needle: 'polls', haystack: $types);
+		$this->assertNotContains(needle: 'deck', haystack: $types);
 	}//end testSettingCarriesTalkAndPollsButNoDeck()
 
 	/**
@@ -94,13 +94,13 @@ class LeafIntegrationsFragmentTest extends TestCase {
 	 */
 	public function testTheLeavesComeFromTheirOwnFragment(): void {
 		$path = dirname(__DIR__, 3) . '/lib/Settings/register.d/leaf-integrations.json';
-		$this->assertFileExists($path);
+		$this->assertFileExists(filename: $path);
 
 		$fragment = json_decode((string)file_get_contents($path), true);
 		// The whole fragment, so it cannot grow a property, a hook or a write
 		// path: the leaves link to the objects and change nothing on them (REQ-005).
 		$this->assertSame(
-			[
+			expected: [
 				'components' => [
 					'schemas' => [
 						'event'   => ['configuration' => ['linkedTypes' => ['talk', 'polls', 'deck']]],
@@ -108,7 +108,7 @@ class LeafIntegrationsFragmentTest extends TestCase {
 					],
 				],
 			],
-			$fragment
+			actual: $fragment
 		);
 	}//end testTheLeavesComeFromTheirOwnFragment()
 }//end class

@@ -10,6 +10,9 @@
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -17,6 +20,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Service;
 
 use RuntimeException;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectDeletion;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
 
 /**
  * In-memory objects per schema, with OpenRegister's equality filters.
@@ -132,7 +137,11 @@ class InMemoryObjectService {
 	 *
 	 * @return array<string, mixed> The saved object.
 	 */
-	public function saveObject(array $data, array $extend, $register, $schema, ?string $uuid = null): array {
+	public function saveObject(array $data, ObjectSaveOptions $options = new ObjectSaveOptions(), bool $_rbac = true, bool $_multitenancy = true): array {
+		$extend = $options->extend;
+		$register = $options->target->register;
+		$schema = $options->target->schema;
+		$uuid = $options->uuid;
 		$this->saves[] = [(string)$schema, $data, $uuid];
 		if ($this->failOnSave !== null && count($this->saves) === $this->failOnSave) {
 			throw new RuntimeException('Validation failed');
@@ -144,7 +153,7 @@ class InMemoryObjectService {
 		}
 
 		$data['id'] = $uuid;
-		$this->seed((string)$schema, $data);
+		$this->seed(schema: (string)$schema, data: $data);
 		return $this->objects[(string)$schema][$uuid];
 	}//end saveObject()
 
@@ -157,7 +166,10 @@ class InMemoryObjectService {
 	 *
 	 * @return bool True when deleted.
 	 */
-	public function deleteObject(string $uuid, $register = null, $schema = null): bool {
+	public function deleteObject(ObjectDeletion $deletion, bool $_rbac = true, bool $_multitenancy = true, bool $_retentionSweep = false): bool {
+		$uuid = $deletion->uuid;
+		$register = $deletion->target->register;
+		$schema = $deletion->target->schema;
 		$this->deletes[] = $uuid;
 		if (in_array($uuid, $this->undeletable, true) === true) {
 			throw new RuntimeException('Delete refused');

@@ -8,6 +8,9 @@
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -15,6 +18,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use Exception;
+use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\EventsController;
 use OCA\Larpinq\Service\DocuDeskPdfRenderer;
 use OCA\Larpinq\Service\EventRosterService;
@@ -35,36 +39,58 @@ class EventsControllerAttendanceTest extends TestCase {
 	private const EVT = '00000000-0000-0000-0000-0000000000ev';
 	private const CHAR = '00000000-0000-0000-0000-00000000char';
 
+	/** @var RegisterObjectFetcher&MockObject The object fetcher. */
 	private RegisterObjectFetcher&MockObject $objectFetcher;
+	/** @var DocuDeskPdfRenderer&MockObject The pdf renderer. */
 	private DocuDeskPdfRenderer&MockObject $pdfRenderer;
+	/** @var IUserSession&MockObject The user session. */
 	private IUserSession&MockObject $userSession;
+	/** @var IGroupManager&MockObject The group manager. */
 	private IGroupManager&MockObject $groupManager;
+	/** @var IRequest&MockObject The request. */
 	private IRequest&MockObject $request;
 
+	/**
+	 * Build the doubles and the subject every test starts from.
+	 *
+	 * @return void
+	 */
 	protected function setUp(): void {
 		parent::setUp();
-		$this->objectFetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->pdfRenderer = $this->createMock(DocuDeskPdfRenderer::class);
-		$this->userSession = $this->createMock(IUserSession::class);
-		$this->groupManager = $this->createMock(IGroupManager::class);
-		$this->request = $this->createMock(IRequest::class);
+		$this->objectFetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$this->pdfRenderer = $this->createMock(originalClassName: DocuDeskPdfRenderer::class);
+		$this->userSession = $this->createMock(originalClassName: IUserSession::class);
+		$this->groupManager = $this->createMock(originalClassName: IGroupManager::class);
+		$this->request = $this->createMock(originalClassName: IRequest::class);
 	}
 
+	/**
+	 * The controller over the real roster service and the doubles.
+	 *
+	 * @return EventsController The controller over the real roster service and the doubles.
+	 */
 	private function controller(): EventsController {
 		// The real EventRosterService over the mocked fetcher: the attendance /
 		// participation rules stay under test end-to-end through the controller.
 		return new EventsController(
-			'larpinq',
-			$this->request,
-			new EventRosterService($this->objectFetcher),
-			$this->pdfRenderer,
-			$this->userSession,
-			$this->groupManager,
+			request: $this->request,
+			rosterService: new EventRosterService(objectFetcher: $this->objectFetcher),
+			pdfRenderer: $this->pdfRenderer,
+			callerAccess: new CallerAccess(userSession: $this->userSession, groupManager: $this->groupManager),
 		);
 	}
 
+	/**
+	 * Sign in a user, as a game master and or administrator or not.
+	 *
+	 * @param string $uid The user id.
+	 * @param bool $isGm Whether the user is a game master.
+	 * @param bool $isAdmin Whether the user is an administrator.
+	 *
+	 * @return void
+	 */
 	private function asUser(string $uid, bool $isGm, bool $isAdmin = false): void {
-		$user = $this->createMock(IUser::class);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn($uid);
 		$this->userSession->method('getUser')->willReturn($user);
 		$this->groupManager->method('isInGroup')->willReturn($isGm);
@@ -73,6 +99,8 @@ class EventsControllerAttendanceTest extends TestCase {
 
 	/**
 	 * @param array<string,string> $params Request params (character/status).
+	 *
+	 * @return void
 	 */
 	private function withParams(array $params): void {
 		$this->request->method('getParam')->willReturnCallback(
@@ -84,45 +112,75 @@ class EventsControllerAttendanceTest extends TestCase {
 
 	// ---- recordAttendance -------------------------------------------------
 
+	/**
+	 * Recording attendance without a signed-in user answers 401.
+	 *
+	 * @return void
+	 */
 	public function testRecordUnauthenticatedReturns401(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(401, $result->getStatus());
+		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record non GM refused.
+	 *
+	 * @return void
+	 */
 	public function testRecordNonGmRefused(): void {
-		$this->asUser('player1', isGm: false, isAdmin: false);
+		$this->asUser(uid: 'player1', isGm: false, isAdmin: false);
 		// A non-GM must never reach the write path.
 		$this->objectFetcher->expects(self::never())->method('saveObject');
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(403, $result->getStatus());
+		self::assertSame(expected: 403, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record missing character returns400.
+	 *
+	 * @return void
+	 */
 	public function testRecordMissingCharacterReturns400(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['status' => 'checked-in']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['status' => 'checked-in']);
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(400, $result->getStatus());
+		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record invalid status returns400.
+	 *
+	 * @return void
+	 */
 	public function testRecordInvalidStatusReturns400(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['character' => self::CHAR, 'status' => 'teleported']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'teleported']);
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(400, $result->getStatus());
+		self::assertSame(expected: 400, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record event not found returns404.
+	 *
+	 * @return void
+	 */
 	public function testRecordEventNotFoundReturns404(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['character' => self::CHAR, 'status' => 'checked-in']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
 		$this->objectFetcher->method('getObject')->willThrowException(new Exception('nope'));
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(404, $result->getStatus());
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record non participant refused.
+	 *
+	 * @return void
+	 */
 	public function testRecordNonParticipantRefused(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['character' => self::CHAR, 'status' => 'checked-in']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
 		// Event has no players; character does not reference the event.
 		$this->objectFetcher->method('getObject')->willReturnCallback(
 			function (string $objectType, string $id): array {
@@ -134,13 +192,18 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 		$this->objectFetcher->expects(self::never())->method('saveObject');
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(422, $result->getStatus());
+		self::assertSame(expected: 422, actual: $result->getStatus());
 	}
 
+	/**
+	 * Record stamps server provenance ignoring body.
+	 *
+	 * @return void
+	 */
 	public function testRecordStampsServerProvenanceIgnoringBody(): void {
-		$this->asUser('gm-real', isGm: true);
+		$this->asUser(uid: 'gm-real', isGm: true);
 		// Spoofed provenance in the body MUST be ignored.
-		$this->withParams([
+		$this->withParams(params: [
 			'character' => self::CHAR,
 			'status' => 'checked-in',
 			'checkedInBy' => 'attacker',
@@ -162,25 +225,30 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertInstanceOf(JSONResponse::class, $result);
-		self::assertSame(200, $result->getStatus());
+		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
+		self::assertSame(expected: 200, actual: $result->getStatus());
 
-		self::assertSame('attendance', $captured['type']);
-		self::assertNull($captured['uuid']);
-		self::assertSame(self::CHAR, $captured['data']['character']);
-		self::assertSame(self::EVT, $captured['data']['event']);
-		self::assertSame('checked-in', $captured['data']['status']);
+		self::assertSame(expected: 'attendance', actual: $captured['type']);
+		self::assertNull(actual: $captured['uuid']);
+		self::assertSame(expected: self::CHAR, actual: $captured['data']['character']);
+		self::assertSame(expected: self::EVT, actual: $captured['data']['event']);
+		self::assertSame(expected: 'checked-in', actual: $captured['data']['status']);
 		// Server-stamped: uid is the acting GM, NOT the spoofed 'attacker'.
-		self::assertSame('gm-real', $captured['data']['checkedInBy']);
-		self::assertNotSame('attacker', $captured['data']['checkedInBy']);
-		// checkedInAt is a server ISO-8601 timestamp, NOT the spoofed 1999 value.
-		self::assertNotSame('1999-01-01T00:00:00+00:00', $captured['data']['checkedInAt']);
-		self::assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T/', $captured['data']['checkedInAt']);
+		self::assertSame(expected: 'gm-real', actual: $captured['data']['checkedInBy']);
+		self::assertNotSame(expected: 'attacker', actual: $captured['data']['checkedInBy']);
+		// The checkedInAt value is a server ISO-8601 timestamp, NOT the spoofed 1999 value.
+		self::assertNotSame(expected: '1999-01-01T00:00:00+00:00', actual: $captured['data']['checkedInAt']);
+		self::assertMatchesRegularExpression(pattern: '/^\d{4}-\d{2}-\d{2}T/', string: $captured['data']['checkedInAt']);
 	}
 
+	/**
+	 * Record updates existing record in place.
+	 *
+	 * @return void
+	 */
 	public function testRecordUpdatesExistingRecordInPlace(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['character' => self::CHAR, 'status' => 'no-show']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'no-show']);
 		$this->objectFetcher->method('getObject')->willReturn(
 			['id' => self::EVT, 'players' => [self::CHAR]]
 		);
@@ -198,13 +266,18 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(200, $result->getStatus());
-		self::assertSame('att-1', $capturedUuid);
+		self::assertSame(expected: 200, actual: $result->getStatus());
+		self::assertSame(expected: 'att-1', actual: $capturedUuid);
 	}
 
+	/**
+	 * Record degrades to424 when schema absent.
+	 *
+	 * @return void
+	 */
 	public function testRecordDegradesTo424WhenSchemaAbsent(): void {
-		$this->asUser('gm1', isGm: true);
-		$this->withParams(['character' => self::CHAR, 'status' => 'checked-in']);
+		$this->asUser(uid: 'gm1', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
 		$this->objectFetcher->method('getObject')->willReturn(
 			['id' => self::EVT, 'players' => [self::CHAR]]
 		);
@@ -213,26 +286,41 @@ class EventsControllerAttendanceTest extends TestCase {
 		$this->objectFetcher->expects(self::never())->method('saveObject');
 
 		$result = $this->controller()->recordAttendance(self::EVT);
-		self::assertSame(424, $result->getStatus());
+		self::assertSame(expected: 424, actual: $result->getStatus());
 	}
 
 	// ---- roster -----------------------------------------------------------
 
+	/**
+	 * Reading the roster without a signed-in user answers 401.
+	 *
+	 * @return void
+	 */
 	public function testRosterUnauthenticatedReturns401(): void {
 		$this->userSession->method('getUser')->willReturn(null);
 		$result = $this->controller()->roster(self::EVT);
-		self::assertSame(401, $result->getStatus());
+		self::assertSame(expected: 401, actual: $result->getStatus());
 	}
 
+	/**
+	 * Roster event not found returns404.
+	 *
+	 * @return void
+	 */
 	public function testRosterEventNotFoundReturns404(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->objectFetcher->method('getObject')->willThrowException(new Exception('nope'));
 		$result = $this->controller()->roster(self::EVT);
-		self::assertSame(404, $result->getStatus());
+		self::assertSame(expected: 404, actual: $result->getStatus());
 	}
 
+	/**
+	 * Roster lists participants with status.
+	 *
+	 * @return void
+	 */
 	public function testRosterListsParticipantsWithStatus(): void {
-		$this->asUser('gm1', isGm: true);
+		$this->asUser(uid: 'gm1', isGm: true);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => []]);
 		$this->objectFetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, $limit = null, $offset = null, $filters = []): array {
@@ -252,19 +340,24 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 
 		$result = $this->controller()->roster(self::EVT);
-		self::assertSame(200, $result->getStatus());
+		self::assertSame(expected: 200, actual: $result->getStatus());
 		$data = $result->getData();
-		self::assertTrue($data['attendanceAvailable']);
-		self::assertTrue($data['isGm']);
-		self::assertCount(1, $data['participants']);
-		self::assertSame('Aldric', $data['participants'][0]['name']);
-		self::assertSame('checked-in', $data['participants'][0]['status']);
-		self::assertSame('Alice', $data['participants'][0]['playerName']);
+		self::assertTrue(condition: $data['attendanceAvailable']);
+		self::assertTrue(condition: $data['isGm']);
+		self::assertCount(expectedCount: 1, haystack: $data['participants']);
+		self::assertSame(expected: 'Aldric', actual: $data['participants'][0]['name']);
+		self::assertSame(expected: 'checked-in', actual: $data['participants'][0]['status']);
+		self::assertSame(expected: 'Alice', actual: $data['participants'][0]['playerName']);
 	}
 
+	/**
+	 * Roster degrades when attendance unavailable.
+	 *
+	 * @return void
+	 */
 	public function testRosterDegradesWhenAttendanceUnavailable(): void {
 		// A player (non-GM) viewing an event whose attendance schema is absent.
-		$this->asUser('player1', isGm: false);
+		$this->asUser(uid: 'player1', isGm: false);
 		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => []]);
 		$this->objectFetcher->method('getObjects')->willReturnCallback(
 			function (string $objectType, $limit = null, $offset = null, $filters = []): array {
@@ -281,12 +374,12 @@ class EventsControllerAttendanceTest extends TestCase {
 		);
 
 		$result = $this->controller()->roster(self::EVT);
-		self::assertSame(200, $result->getStatus());
+		self::assertSame(expected: 200, actual: $result->getStatus());
 		$data = $result->getData();
 		// Degraded: participant still listed read-only, no attendance, not GM.
-		self::assertFalse($data['attendanceAvailable']);
-		self::assertFalse($data['isGm']);
-		self::assertCount(1, $data['participants']);
-		self::assertSame('registered', $data['participants'][0]['status']);
+		self::assertFalse(condition: $data['attendanceAvailable']);
+		self::assertFalse(condition: $data['isGm']);
+		self::assertCount(expectedCount: 1, haystack: $data['participants']);
+		self::assertSame(expected: 'registered', actual: $data['participants'][0]['status']);
 	}
 }

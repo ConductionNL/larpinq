@@ -18,9 +18,26 @@
  * to deterministic stubs.
  */
 
+const { parse, compileScript } = require('@vue/compiler-sfc')
 const path = require('path')
 
+/**
+ * Compiles the script block of a single-file component, so a spec can import
+ * a component's options without a DOM. The template is not compiled.
+ */
+const vueScriptOnly = {
+	name: 'vue-script-only',
+	transform(code, id) {
+		if (!id.endsWith('.vue')) {
+			return null
+		}
+		const { descriptor } = parse(code, { filename: id })
+		return compileScript(descriptor, { id }).content
+	},
+}
+
 module.exports = {
+	plugins: [vueScriptOnly],
 	test: {
 		environment: 'node',
 		globals: false,

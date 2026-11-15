@@ -1,0 +1,97 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_history_entry"
+        ]
+      }
+    },
+    "schemas": {
+      "historyEntry": {
+        "slug": "larping_history_entry",
+        "title": "History entry",
+        "icon": "TimelineClockOutline",
+        "version": "1.0.0",
+        "summary": "A dated moment in a world's history",
+        "description": "Something that happened in a world, with its date. Players read only the entries meant for players.",
+        "type": "object",
+        "x-schema-org": "schema:Event",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "setting",
+          "date",
+          "title",
+          "visibility"
+        ],
+        "properties": {
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "title": "World",
+            "description": "The world this moment belongs to"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date",
+            "description": "When it happened, used to sort the timeline"
+          },
+          "dateLabel": {
+            "type": "string",
+            "title": "In-game date",
+            "description": "How the date is told in the world",
+            "maxLength": 255
+          },
+          "title": {
+            "type": "string",
+            "title": "Title",
+            "description": "What happened, in a few words",
+            "maxLength": 255
+          },
+          "text": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Text",
+            "description": "The story of this moment"
+          },
+          "visibility": {
+            "type": "string",
+            "title": "Visible to",
+            "description": "Who may read the entry: game masters only, or players too",
+            "enum": [
+              "gamemasters",
+              "players"
+            ],
+            "default": "gamemasters"
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "visibility": "players"
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}

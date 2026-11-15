@@ -34,7 +34,7 @@ class EventsWorldScopeFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -55,9 +55,9 @@ class EventsWorldScopeFragmentTest extends TestCase {
 	public function testTheEventWorldIsVisible(): void {
 		$setting = $this->mergedRegister()['components']['schemas']['event']['properties']['setting'];
 
-		$this->assertTrue($setting['visible'] ?? null, 'event.setting must be visible');
-		$this->assertSame('World', $setting['title'] ?? null);
-		$this->assertSame('setting', $setting['$ref'] ?? null);
-		$this->assertSame('uuid', $setting['format'] ?? null);
+		$this->assertTrue(condition: $setting['visible'] ?? null, message: 'event.setting must be visible');
+		$this->assertSame(expected: 'World', actual: $setting['title'] ?? null);
+		$this->assertSame(expected: 'setting', actual: $setting['$ref'] ?? null);
+		$this->assertSame(expected: 'uuid', actual: $setting['format'] ?? null);
 	}//end testTheEventWorldIsVisible()
 }//end class

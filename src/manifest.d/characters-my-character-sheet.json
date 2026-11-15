@@ -1,0 +1,44 @@
+{
+	"_meta": {
+		"spdx-license": "EUPL-1.2",
+		"spdx-copyright": "2026 Conduction B.V.",
+		"change": "my-character-sheet",
+		"description": "Board LrTelefoon: a player opens their own character sheet from the menu, on a phone as on a desktop. The list is narrowed to the signed-in player's characters (ownerUid @me), so a game master who also plays sees only their own here; the character schema already lets a player read and update their own characters. A card opens the character page."
+	},
+	"pages": [
+		{
+			"id": "MyCharacters",
+			"route": "/my-characters",
+			"type": "index",
+			"title": "My character sheet",
+			"config": {
+				"register": "larpinq",
+				"schema": "character",
+				"filter": { "ownerUid": "@me" },
+				"availableViewModes": ["cards", "table"],
+				"viewMode": "cards",
+				"allowExport": false,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "type", "label": "Type" },
+					{ "key": "status", "label": "Status" },
+					{ "key": "setting", "label": "World" }
+				],
+				"actions": [
+					{ "id": "view", "label": "Open sheet", "icon": "CardAccountDetailsOutline", "handler": "navigate", "route": "CharacterDetail" }
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "MyCharacters",
+			"label": "My character sheet",
+			"icon": "CardAccountDetailsOutline",
+			"route": "MyCharacters",
+			"order": 15
+		}
+	]
+}

@@ -15,7 +15,7 @@
 
 ## 3. Portal
 
-- [ ] 3.1 `rulebookChapters` and `skillLists` in `PortalContributionProvider` (REQ-RRS-005). Verify: provider PHPUnit shape and whitelist tests.
+- [ ] 3.1 `rulebookChapters` and `skillLists` in `PortalContributionProvider` (REQ-RRS-005). `rulebookChapters` shipped with portal-my-larp-pages; `skillLists` waits on 1.1. Verify: provider PHPUnit shape and whitelist tests.
 
 ## 4. Strings and docs
 

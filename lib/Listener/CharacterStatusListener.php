@@ -15,14 +15,17 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/character-management/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\CharacterStatusGuard;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -77,7 +80,7 @@ class CharacterStatusListener implements IEventListener {
 			return;
 		}
 
-		$schema = $this->config->getValueString(Application::APP_ID, 'character_schema', '');
+		$schema = $this->config->getValueString(AppIdentity::APP_ID, 'character_schema', '');
 		if ($schema === '' || is_callable([$entity, 'getSchema']) === false || (string)$entity->getSchema() !== $schema) {
 			return;
 		}
@@ -88,11 +91,7 @@ class CharacterStatusListener implements IEventListener {
 		}
 
 		$errors = $this->guard->check(candidate: (array)$entity->getObject(), old: $previous);
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**

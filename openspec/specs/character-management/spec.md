@@ -668,6 +668,17 @@ others and list the refused characters by name with the reason.
 - THEN "Old Captain Harrow" is retired
 - AND the modal names "Lady Venn" as not changed, with the reason
 
+### Requirement: A player opens their own character sheet from the menu
+
+larpinq SHALL offer a menu entry "My character sheet" that lists the signed-in user's own characters (`ownerUid` equals
+the current user) and opens a character's page from its card.
+
+#### Scenario: Sanne plays one character
+
+- **GIVEN** Sanne owns the character Elandra van de Wilgen
+- **WHEN** she opens My character sheet
+- **THEN** she sees Elandra's card, and only hers, and a click opens Elandra's page
+
 ## Data Model
 
 ### Character Entity (Full / OpenRegister)

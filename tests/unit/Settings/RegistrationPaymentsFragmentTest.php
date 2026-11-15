@@ -46,7 +46,7 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$merge = $reflection->getMethod('mergeRegisterFragments');
 		$merge->setAccessible(true);
 
-		/** @var array<string, mixed> $merged */
+		// @var array<string, mixed> $merged
 		$merged = $merge->invoke($loader, $monolith, $appPath);
 		return $merged;
 	}//end mergedRegister()
@@ -60,7 +60,7 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 	 */
 	private function schema(string $key): array {
 		$schemas = $this->mergedRegister()['components']['schemas'];
-		$this->assertArrayHasKey($key, $schemas);
+		$this->assertArrayHasKey(key: $key, array: $schemas);
 		return $schemas[$key];
 	}//end schema()
 
@@ -71,10 +71,10 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 	 */
 	public function testAnEventAsksForPaymentByADate(): void {
 		$event = $this->schema(key: 'event')['properties'];
-		$this->assertSame('boolean', $event['paymentRequired']['type']);
-		$this->assertFalse($event['paymentRequired']['default']);
-		$this->assertSame('date-time', $event['payBy']['format']);
-		$this->assertSame('^[A-Z0-9]{2,8}$', $event['paymentCode']['pattern']);
+		$this->assertSame(expected: 'boolean', actual: $event['paymentRequired']['type']);
+		$this->assertFalse(condition: $event['paymentRequired']['default']);
+		$this->assertSame(expected: 'date-time', actual: $event['payBy']['format']);
+		$this->assertSame(expected: '^[A-Z0-9]{2,8}$', actual: $event['paymentCode']['pattern']);
 	}//end testAnEventAsksForPaymentByADate()
 
 	/**
@@ -85,15 +85,19 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 	 */
 	public function testTheRegistrationCarriesThePaymentState(): void {
 		$properties = $this->schema(key: 'registration')['properties'];
-		$this->assertSame(['not-needed', 'to-request', 'open', 'paid', 'expired'], $properties['paymentState']['enum']);
-		$this->assertSame('uuid', $properties['paymentRequestId']['format']);
+		$this->assertSame(expected: ['not-needed', 'to-request', 'open', 'paid', 'expired'], actual: $properties['paymentState']['enum']);
+		$this->assertSame(expected: 'uuid', actual: $properties['paymentRequestId']['format']);
 		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason'] as $field) {
-			$this->assertSame(['gamemasters'], $properties[$field]['authorization']['update'], "{$field} is set by larpinq and game masters only");
+			$this->assertSame(
+				expected: ['gamemasters'],
+				actual: $properties[$field]['authorization']['update'],
+				message: "{$field} is set by larpinq and game masters only"
+			);
 		}
 
-		$this->assertSame('boolean', $properties['invoiceRequested']['type']);
-		$this->assertArrayNotHasKey('authorization', $properties['invoiceRequested'], 'the player asks for an invoice');
-		$this->assertContains('unpaid', $properties['cancelReason']['enum']);
+		$this->assertSame(expected: 'boolean', actual: $properties['invoiceRequested']['type']);
+		$this->assertArrayNotHasKey(key: 'authorization', array: $properties['invoiceRequested'], message: 'the player asks for an invoice');
+		$this->assertContains(needle: 'unpaid', haystack: $properties['cancelReason']['enum']);
 	}//end testTheRegistrationCarriesThePaymentState()
 
 	/**
@@ -120,11 +124,11 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		];
 
 		$result = (new Validator())->validate(json_decode((string)json_encode($written)), json_decode((string)json_encode($schema)));
-		$this->assertTrue($result->isValid(), 'the payment fields larpinq writes must validate');
+		$this->assertTrue(condition: $result->isValid(), message: 'the payment fields larpinq writes must validate');
 
 		$written['paymentState'] = 'pending';
 		$result = (new Validator())->validate(json_decode((string)json_encode($written)), json_decode((string)json_encode($schema)));
-		$this->assertFalse($result->isValid(), 'shillinq states are not registration payment states');
+		$this->assertFalse(condition: $result->isValid(), message: 'shillinq states are not registration payment states');
 	}//end testThePaymentFieldsLarpinqWritesValidate()
 
 	/**
@@ -150,12 +154,12 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 
 			$schema = array_intersect_key($schema, array_flip(['type', 'properties']));
 			$result = (new Validator())->validate(json_decode((string)json_encode($object)), json_decode((string)json_encode($schema)));
-			$this->assertTrue($result->isValid(), "seed {$slug} must validate");
+			$this->assertTrue(condition: $result->isValid(), message: "seed {$slug} must validate");
 			if (isset($object['paymentState']) === true) {
 				$states[] = $object['paymentState'] . ' ' . $object['paymentReference'];
 			}
 		}
 
-		$this->assertSame(['open WC26-0001', 'paid WC26-0002', 'paid WC26-0003'], $states);
+		$this->assertSame(expected: ['open WC26-0001', 'paid WC26-0002', 'paid WC26-0003'], actual: $states);
 	}//end testThePaymentSeedsValidate()
 }//end class

@@ -15,16 +15,17 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/character-management/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\CharacterService;
-use OCA\Larpinq\Service\CharacterStatsPresenter;
+use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\SkillRequirementService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
@@ -50,9 +51,7 @@ class CharacterStatsController extends Controller {
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
 	 * @param RegisterObjectFetcher $objectFetcher Reads the character as the calling user.
-	 * @param CharacterService $characterService The stat engine.
-	 * @param SkillRequirementService $requirementService Resolves the XP ability the budget check uses.
-	 * @param CharacterStatsPresenter $presenter Shapes the sheet.
+	 * @param CharacterStatSheet $statSheet Computes and shapes the sheet.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -60,9 +59,7 @@ class CharacterStatsController extends Controller {
 		string $appName,
 		IRequest $request,
 		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly CharacterService $characterService,
-		private readonly SkillRequirementService $requirementService,
-		private readonly CharacterStatsPresenter $presenter,
+		private readonly CharacterStatSheet $statSheet,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -97,10 +94,6 @@ class CharacterStatsController extends Controller {
 			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
 		}
 
-		$stats = (array)($this->characterService->calculateCharacter(character: $character)['stats'] ?? []);
-
-		return new JSONResponse(
-			data: $this->presenter->present(stats: $stats, xpAbilityId: $this->requirementService->resolveXpAbility(stats: $stats))
-		);
+		return new JSONResponse(data: $this->statSheet->present(stats: $this->statSheet->stats(character: $character)));
 	}//end show()
 }//end class

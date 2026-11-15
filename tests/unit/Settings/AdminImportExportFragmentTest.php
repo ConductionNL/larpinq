@@ -39,7 +39,7 @@ class AdminImportExportFragmentTest extends TestCase {
 	private function mergedRegister(): array {
 		$appPath = dirname(__DIR__, 3);
 		$monolith = json_decode((string)file_get_contents($appPath . '/lib/Settings/larpinq_register.json'), true);
-		$this->assertIsArray($monolith);
+		$this->assertIsArray(actual: $monolith);
 
 		$reflection = new ReflectionClass(ConfigFileLoaderService::class);
 		$loader = $reflection->newInstanceWithoutConstructor();
@@ -59,11 +59,11 @@ class AdminImportExportFragmentTest extends TestCase {
 	public function testEverySchemaIsExportable(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 
-		$this->assertArrayHasKey('attendance', $schemas, 'the fragment-added schema must be covered too');
+		$this->assertArrayHasKey(key: 'attendance', array: $schemas, message: 'the fragment-added schema must be covered too');
 		foreach ($schemas as $key => $schema) {
 			$this->assertTrue(
-				($schema['configuration']['exportable'] ?? null) === true,
-				"schema {$key} must be exportable"
+				condition: ($schema['configuration']['exportable'] ?? null) === true,
+				message: "schema {$key} must be exportable"
 			);
 		}
 	}//end testEverySchemaIsExportable()
@@ -76,9 +76,9 @@ class AdminImportExportFragmentTest extends TestCase {
 	public function testTheFlagKeepsTheOtherConfiguration(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 
-		$this->assertContains('photos', $schemas['character']['configuration']['linkedTypes']);
-		$this->assertArrayHasKey('x-openregister-lifecycle', $schemas['character']['configuration']);
-		$this->assertTrue($schemas['skill']['configuration']['x-openregister-shareable']);
-		$this->assertContains('deck', $schemas['event']['configuration']['linkedTypes']);
+		$this->assertContains(needle: 'photos', haystack: $schemas['character']['configuration']['linkedTypes']);
+		$this->assertArrayHasKey(key: 'x-openregister-lifecycle', array: $schemas['character']['configuration']);
+		$this->assertTrue(condition: $schemas['skill']['configuration']['x-openregister-shareable']);
+		$this->assertContains(needle: 'deck', haystack: $schemas['event']['configuration']['linkedTypes']);
 	}//end testTheFlagKeepsTheOtherConfiguration()
 }//end class

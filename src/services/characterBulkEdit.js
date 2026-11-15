@@ -11,8 +11,8 @@
  * @spec openspec/specs/character-management/spec.md
  */
 
-import { getRequestToken } from '@nextcloud/auth'
 import { generateUrl } from '@nextcloud/router'
+import { jsonHeaders } from './requestHeaders.js'
 
 const OBJECTS = '/apps/openregister/api/objects/larpinq'
 
@@ -39,16 +39,16 @@ export function bulkBody(choices) {
 }
 
 /**
- * The headers of every request.
+ * The message of a refusal body: the nested `errors` object's message, else
+ * the body's own message or error.
  *
- * @return {object} The headers.
+ * @param {object|string|null} body The parsed response body.
+ * @return {string|number|undefined} The message, or undefined.
  */
-function headers() {
-	return {
-		requesttoken: getRequestToken(),
-		Accept: 'application/json',
-		'Content-Type': 'application/json',
-	}
+function refusalMessage(body) {
+	const errors =
+		body?.errors && typeof body.errors === 'object' ? body.errors : body
+	return errors?.message ?? body?.message ?? body?.error
 }
 
 /**
@@ -59,10 +59,7 @@ function headers() {
  */
 async function reasonOf(response) {
 	try {
-		const body = await response.json()
-		const errors =
-			body?.errors && typeof body.errors === 'object' ? body.errors : body
-		const reason = errors?.message ?? body?.message ?? body?.error
+		const reason = refusalMessage(await response.json())
 		if (reason) {
 			return String(reason)
 		}
@@ -70,6 +67,58 @@ async function reasonOf(response) {
 		// No JSON body: fall through to the status.
 	}
 	return `HTTP ${response.status}`
+}
+
+/**
+ * PATCH one character.
+ *
+ * @param {string} id The character id.
+ * @param {string} body The JSON body.
+ * @return {Promise<string|null>} Null when written, else the reason it was refused.
+ */
+async function patchCharacter(id, body) {
+	let response
+	try {
+		response = await fetch(
+			generateUrl(`${OBJECTS}/character/${encodeURIComponent(id)}`),
+			{ method: 'PATCH', headers: jsonHeaders(), body },
+		)
+	} catch (error) {
+		return String(error)
+	}
+	return response.ok ? null : reasonOf(response)
+}
+
+/**
+ * Write one character of a bulk edit and add the outcome to the run's report.
+ *
+ * @param {object} run The run: `body`, `names`, `changed` and `refused`.
+ * @param {string} id The character id.
+ * @return {Promise<void>}
+ */
+async function writeCharacter(run, id) {
+	const reason = await patchCharacter(id, run.body)
+	if (reason === null) {
+		run.changed.push(id)
+		return
+	}
+	run.refused.push({ id, name: run.names[id] || id, reason })
+}
+
+/**
+ * A fresh bulk-edit run: the PATCH body, the names and an empty report.
+ *
+ * @param {object} choices The chosen values.
+ * @param {object} names Character names by id.
+ * @return {object} The run.
+ */
+function bulkRun(choices, names) {
+	return {
+		body: JSON.stringify(bulkBody(choices)),
+		names,
+		changed: [],
+		refused: [],
+	}
 }
 
 /**
@@ -90,33 +139,12 @@ export async function applyBulkEdit(
 	names = {},
 	onProgress = () => {},
 ) {
-	const body = JSON.stringify(bulkBody(choices))
-	const changed = []
-	const refused = []
+	const run = bulkRun(choices, names)
 	for (const [index, id] of (ids || []).entries()) {
-		let response
-		try {
-			response = await fetch(
-				generateUrl(`${OBJECTS}/character/${encodeURIComponent(id)}`),
-				{ method: 'PATCH', headers: headers(), body },
-			)
-		} catch (error) {
-			refused.push({ id, name: names[id] || id, reason: String(error) })
-			onProgress(index + 1)
-			continue
-		}
-		if (response.ok) {
-			changed.push(id)
-		} else {
-			refused.push({
-				id,
-				name: names[id] || id,
-				reason: await reasonOf(response),
-			})
-		}
+		await writeCharacter(run, id)
 		onProgress(index + 1)
 	}
-	return { changed, refused }
+	return { changed: run.changed, refused: run.refused }
 }
 
 /**
@@ -132,7 +160,7 @@ export async function fetchCharacterNames(ids) {
 	for (const id of ids || []) {
 		const response = await fetch(
 			generateUrl(`${OBJECTS}/character/${encodeURIComponent(id)}`),
-			{ headers: headers() },
+			{ headers: jsonHeaders() },
 		)
 		if (response.ok) {
 			const character = await response.json()
@@ -151,7 +179,7 @@ export async function fetchCharacterNames(ids) {
  */
 export async function fetchWorlds() {
 	const response = await fetch(generateUrl(`${OBJECTS}/setting?_limit=500`), {
-		headers: headers(),
+		headers: jsonHeaders(),
 	})
 	if (!response.ok) {
 		return []
