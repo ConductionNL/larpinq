@@ -85,5 +85,6 @@ The example data holds "Winter Court 2026" with a casting deadline of
 1 November 2026 and four open characters: The Chancellor, The Spy, The Heir and
 The Bard. Anna ranks The Heir 1 and The Spy 2, Pieter The Heir 1 and The Bard 2,
 and Sanne The Spy 1, so the proposal is Anna The Heir, Pieter The Bard and Sanne
-The Spy. The Bandits (NPC, 6 places) and the Kitchen (crew, 3 places) are its
-roles, and Joris is in the Kitchen.
+The Spy. The Bandits (NPC, 6 places), the Kitchen (crew, 3 places) and the
+Healers (NPC, 2 places) are its roles. Joris is in the Kitchen, and Lotte, who has
+an NPC ticket, plays with the Bandits and the Healers.
