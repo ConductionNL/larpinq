@@ -265,7 +265,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Tgi che giogia tge, e tge che spetga anc l'approvaziun.",
         "Experience awarded, and who earned it.": "L'experientscha attribuida e tgi ch'i l'ha gudagnà.",
         "How much the world holds, and what characters actually carry.": "Quant ch'il mund cuntegna e tge che las persunas portan propi.",
-        "Store": "Butia",
+        "Marketplace": "Butia",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installescha registers, schemas e process ch'autras organisaziuns han publitgà.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s posseda gia %2$s. Allontanescha el qua l'emprim.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s è gia sin %2$s. Allontanescha el qua l'emprim.",
