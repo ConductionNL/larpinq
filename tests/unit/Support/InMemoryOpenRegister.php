@@ -31,6 +31,7 @@ use OCA\OpenRegister\Event\ObjectUpdatedEvent;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\EventDispatcher\IEventListener;
 use RuntimeException;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
 
 /**
  * An OpenRegister object as the events carry it.
@@ -220,13 +221,14 @@ class InMemoryOpenRegister {
 	 */
 	public function saveObject(
 		array $object,
-		?array $extend = [],
-		$register = null,
-		$schema = null,
-		?string $uuid = null,
+		ObjectSaveOptions $options = new ObjectSaveOptions(),
 		bool $_rbac = true,
-		bool $_multitenancy = true,
+		bool $_multitenancy = true
 	): array {
+		$extend = $options->extend ?? [];
+		$register = $options->target->register;
+		$schema = $options->target->schema;
+		$uuid = $options->uuid;
 		$schema = (string)$schema;
 		unset($object['@self']);
 		$old = null;

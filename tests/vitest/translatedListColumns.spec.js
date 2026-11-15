@@ -63,6 +63,7 @@ describe('the translatedName widget', () => {
 	it('is registered as an app cell widget', () => {
 		const app = readFileSync(resolve(ROOT, 'src/App.vue'), 'utf8')
 
-		expect(app).toContain('cellWidgets: { translatedName: TranslatedNameCell }')
+		// Other widgets may sit beside it in the same object (events-qr-checkin adds `checkinQr`).
+		expect(app).toMatch(/cellWidgets: \{[^}]*\btranslatedName: TranslatedNameCell\b[^}]*\}/)
 	})
 })

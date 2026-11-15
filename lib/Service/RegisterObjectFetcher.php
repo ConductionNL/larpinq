@@ -27,6 +27,9 @@ namespace OCA\Larpinq\Service;
 use Exception;
 use InvalidArgumentException;
 use OCA\Larpinq\Support\AppIdentity;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectDeletion;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindTarget;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
@@ -620,10 +623,10 @@ class RegisterObjectFetcher {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			$data,
-			[],
-			$register,
-			$schema,
-			$uuid
+			new ObjectSaveOptions(
+				target: new ObjectFindTarget(register: $register, schema: $schema),
+				uuid: $uuid
+			)
 		);
 
 		return $this->toArray(object: $saved);
@@ -657,10 +660,10 @@ class RegisterObjectFetcher {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			object: $data,
-			extend: [],
-			register: $register,
-			schema: $schema,
-			uuid: $uuid,
+			options: new ObjectSaveOptions(
+				target: new ObjectFindTarget(register: $register, schema: $schema),
+				uuid: $uuid
+			),
 			_rbac: false,
 			_multitenancy: false
 		);
@@ -687,6 +690,6 @@ class RegisterObjectFetcher {
 
 		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
-		return (bool)$openRegister->deleteObject($uuid, $register, $schema);
+		return (bool)$openRegister->deleteObject(new ObjectDeletion(uuid: $uuid, target: new ObjectFindTarget(register: $register, schema: $schema)));
 	}//end deleteObject()
 }//end class
