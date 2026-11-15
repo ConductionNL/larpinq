@@ -772,7 +772,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fișa personajului meu",
-        "Open sheet": "Deschide fișa"
+        "Open sheet": "Deschide fișa",
+        "History entry": "Intrare de istorie",
+        "How the date is told in the world": "Cum este spusă data în lume",
+        "In-game date": "Data în joc",
+        "The story of this moment": "Povestea acestui moment",
+        "The world this moment belongs to": "Lumea căreia îi aparține acest moment",
+        "What happened, in a few words": "Ce s-a întâmplat, în câteva cuvinte",
+        "When it happened, used to sort the timeline": "Când s-a întâmplat, pentru sortarea cronologiei",
+        "Who may read the entry: game masters only, or players too": "Cine poate citi intrarea: doar maeștrii de joc sau și jucătorii",
+        "Price": "Preț",
+        "Gold pieces the item costs": "Piese de aur pe care le costă obiectul",
+        "Silver pieces the item costs": "Piese de argint pe care le costă obiectul",
+        "Copper pieces the item costs": "Piese de cupru pe care le costă obiectul",
+        "What the item costs in in-game money; a character buys it from the character page": "Cât costă obiectul în bani de joc; un personaj îl cumpără de pe pagina personajului"
     },
     "plurals": {}
 }

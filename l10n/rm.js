@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -777,7 +773,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mia fegl da persunagi",
-        "Open sheet": "Avrir il fegl"
+        "Open sheet": "Avrir il fegl",
+        "History entry": "Inscripziun d'istorgia",
+        "How the date is told in the world": "Co che la data vegn numnada en il mund",
+        "In-game date": "Data en il gieu",
+        "The story of this moment": "L'istorgia da quest mument",
+        "The world this moment belongs to": "Il mund al qual quest mument appartegna",
+        "What happened, in a few words": "Tge ch'è capità, en paucs pleds",
+        "When it happened, used to sort the timeline": "Cura ch'igl è capità, per zavrar la cronologia",
+        "Who may read the entry: game masters only, or players too": "Tgi che dastga leger l'inscripziun: mo ils manaders dal gieu u er ils giugaders",
+        "Price": "Pretsch",
+        "Gold pieces the item costs": "Tocs d'aur che l'object custa",
+        "Silver pieces the item costs": "Tocs d'argient che l'object custa",
+        "Copper pieces the item costs": "Tocs d'arom che l'object custa",
+        "What the item costs in in-game money; a character buys it from the character page": "Quai che l'object custa en daners dal gieu; in persunagi al cumpra sin la pagina dal persunagi"
     },
     "nplurals=2; plural=(n != 1);"
 )

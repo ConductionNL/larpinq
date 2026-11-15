@@ -1407,6 +1407,7 @@
 				"filter": { "setting": "@workspace.activeWorld?" },
 				"register": "larpinq",
 				"schema": "larping_item",
+				"columnOverrides": { "name": { "widget": "translatedName" } },
 				"allowExport": true,
 				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"
@@ -1814,6 +1815,7 @@
 				],
 				"register": "larpinq",
 				"schema": "larping_event",
+				"columnOverrides": { "name": { "widget": "translatedName" } },
 				"allowExport": true,
 				"showMassImport": false,
 				"documentationUrl": "https://larpinq.conduction.nl"

@@ -772,7 +772,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
-        "Open sheet": "Άνοιγμα φύλλου"
+        "Open sheet": "Άνοιγμα φύλλου",
+        "History entry": "Καταχώριση ιστορίας",
+        "How the date is told in the world": "Πώς λέγεται η ημερομηνία στον κόσμο",
+        "In-game date": "Ημερομηνία στο παιχνίδι",
+        "The story of this moment": "Η ιστορία αυτής της στιγμής",
+        "The world this moment belongs to": "Ο κόσμος στον οποίο ανήκει αυτή η στιγμή",
+        "What happened, in a few words": "Τι συνέβη, με λίγα λόγια",
+        "When it happened, used to sort the timeline": "Πότε συνέβη, για την ταξινόμηση του χρονολογίου",
+        "Who may read the entry: game masters only, or players too": "Ποιος μπορεί να διαβάσει την καταχώριση: μόνο οι αφηγητές ή και οι παίκτες",
+        "Price": "Τιμή",
+        "Gold pieces the item costs": "Χρυσά νομίσματα που κοστίζει το αντικείμενο",
+        "Silver pieces the item costs": "Ασημένια νομίσματα που κοστίζει το αντικείμενο",
+        "Copper pieces the item costs": "Χάλκινα νομίσματα που κοστίζει το αντικείμενο",
+        "What the item costs in in-game money; a character buys it from the character page": "Πόσο κοστίζει το αντικείμενο σε χρήματα του παιχνιδιού· ένας χαρακτήρας το αγοράζει από τη σελίδα του χαρακτήρα"
     },
     "plurals": {}
 }
