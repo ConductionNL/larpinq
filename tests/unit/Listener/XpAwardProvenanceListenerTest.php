@@ -130,4 +130,60 @@ class XpAwardProvenanceListenerTest extends TestCase {
 		$this->listener()->handle($seed);
 		$this->assertSame(expected: [], actual: $seed->getModifiedData());
 	}//end testOtherObjectsAndSystemWritesAreLeftAlone()
+
+	/**
+	 * An update whose stored provenance is blank leaves the modified data as
+	 * it was; a filled value replaces it, a blank one is not kept.
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateKeepsOnlyFilledProvenance(): void {
+		$blank = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1, 'awardedBy' => 'anna']),
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => '', 'awardedAt' => null])
+		);
+		$blank->setModifiedData(['kept' => 1]);
+		$this->listener()->handle($blank);
+		$this->assertSame(expected: ['kept' => 1], actual: $blank->getModifiedData());
+
+		$partial = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 1]),
+			new AwardObjectEntity(self::SCHEMA_ID, ['amount' => 3, 'awardedBy' => 'joris', 'awardedAt' => ''])
+		);
+		$partial->setModifiedData(['kept' => 1]);
+		$this->listener()->handle($partial);
+		$this->assertSame(expected: ['awardedBy' => 'joris'], actual: $partial->getModifiedData());
+	}//end testAnUpdateKeepsOnlyFilledProvenance()
+
+	/**
+	 * An update of another schema is left alone, even with nobody signed in.
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateOfAnotherObjectIsLeftAlone(): void {
+		$this->signedIn = null;
+		$event = new ObjectUpdatingEvent(
+			new AwardObjectEntity('character-schema', ['awardedBy' => 'anna']),
+			new AwardObjectEntity('character-schema', ['awardedBy' => 'joris'])
+		);
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
+	}//end testAnUpdateOfAnotherObjectIsLeftAlone()
+
+	/**
+	 * With nobody signed in an update still keeps the stored provenance.
+	 *
+	 * @return void
+	 */
+	public function testASystemUpdateStillKeepsTheProvenance(): void {
+		$this->signedIn = null;
+		$event = new ObjectUpdatingEvent(
+			new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'anna']),
+			new AwardObjectEntity(self::SCHEMA_ID, ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'])
+		);
+		$this->listener()->handle($event);
+
+		$this->assertSame(expected: ['awardedBy' => 'joris', 'awardedAt' => '2026-09-01T10:00:00+00:00'], actual: $event->getModifiedData());
+	}//end testASystemUpdateStillKeepsTheProvenance()
 }//end class

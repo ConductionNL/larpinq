@@ -5,6 +5,7 @@
 ## 1. Record the inherited rows
 
 - [x] 1.1 `openspec/parity/capabilities.json`: rows adm-access-group, adm-two-factor, adm-multi-organisation, adm-api, adm-self-hosted and adm-multilingual cite this change and their requirement (REQ-PLB-001 to REQ-PLB-006). Read from code: `appinfo/info.xml` group comment, no `PublicPage` in `lib/Controller`, `useTenantContext()` in `src/App.vue` with the organisation header in `src/store/modules/object.js`, the register in `lib/Settings/larpinq_register.json`, translations loaded in `src/main.js`.
+- [x] 1.2 `openspec/parity/capabilities.json`: row adm-open-source cites REQ-PLB-008. Read from code: `appinfo/info.xml:50`, `publiccode.yml:49` and `LICENSE` all name EUPL-1.2.
 
 ## 2. Language switch on the phone pages
 

@@ -13,6 +13,9 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-99
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-100
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-101
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);

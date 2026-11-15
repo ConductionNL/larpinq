@@ -109,27 +109,27 @@ The dashboard MUST be accessible as the default view from the app's navigation s
 
 ### Requirement: Dashboard Content
 
-The dashboard MUST display a welcome message as its current content.
+The dashboard MUST open with four count tiles in one row: Characters, Events, Items and Players. Each tile MUST show the number of objects of its schema in the larpinq register, filtered to the active world when one is chosen, and MUST open that entity's list when clicked. Below the tiles the dashboard MUST show the most recent characters, the upcoming events and a chart of skill usage by characters. The page MUST be the manifest page `Dashboard` of type `dashboard` on route `/`.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
 | DASH-020 | Dashboard MUST display a page header with text "Dashboard" | MUST | Implemented |
-| DASH-021 | Dashboard MUST display a welcome message | MUST | Implemented |
-| DASH-022 | Dashboard MUST use NcAppContent as its container component | MUST | Implemented |
-| DASH-023 | Dashboard content MUST be wrapped in `.dashboard-content` CSS class | MUST | Implemented |
+| DASH-021 | Dashboard MUST show count tiles for characters, events, items and players | MUST | Implemented |
+| DASH-022 | Dashboard MUST show recent characters, upcoming events and skill usage | MUST | Implemented |
+| DASH-023 | Each count tile MUST open its entity's list | MUST | Implemented |
 
 #### Scenario: View dashboard content
 
-- GIVEN the user has navigated to the dashboard
-- THEN the page MUST show an `<h2>` element with text "Dashboard"
-- AND the page MUST show a welcome message
-- AND the content MUST be wrapped in an `NcAppContent` component
+- GIVEN 25 characters, 12 players, 5 events and 30 items exist
+- WHEN the user opens the dashboard
+- THEN the page shows the header "Dashboard"
+- AND the tiles show Characters 25, Events 5, Items 30 and Players 12 in one responsive row
 
 #### Scenario: Dashboard is minimal but functional
 
 - GIVEN the user views the dashboard
-- THEN no data widgets or charts MUST be displayed (current implementation)
-- AND only the heading and welcome message MUST be visible
+- THEN the page shows only the count tiles, the recent characters, the upcoming events and the skill usage chart
+- AND clicking the Characters tile opens the Characters list
 
 #### Scenario: Dashboard after app install
 
@@ -137,10 +137,9 @@ The dashboard MUST display a welcome message as its current content.
 
 - GIVEN Larpinq was just installed and no data exists
 - WHEN the admin navigates to the app
-- THEN the dashboard MUST display the welcome message
-- AND the sidebar MUST be navigable to all entity views
-
----
+- THEN every count tile shows 0
+- AND the skill usage chart shows its "No skill data available" state
+- AND the sidebar is navigable to all entity views
 
 ### Requirement: Dashboard CSS Infrastructure
 
@@ -274,53 +273,6 @@ The application MUST initialize correctly via Nextcloud's auto-wiring without ex
 - AND no event listeners MUST fire from Larpinq bootstrap
 
 ---
-
-### Requirement: Planned Analytics Dashboard
-
-As a planned future enhancement, when implemented the dashboard MUST provide analytics widgets built with the ApexCharts library, as detailed in the SHOULD-level items below.
-
-| ID | Requirement | Priority | Status |
-|----|------------|----------|--------|
-| DASH-060 | Dashboard SHOULD display KPI cards with counts: total characters, total players, total events, total skills | SHOULD | Planned |
-| DASH-061 | Dashboard SHOULD display a chart showing character type distribution (player vs NPC vs other) | SHOULD | Planned |
-| DASH-062 | Dashboard SHOULD display a chart showing skill popularity across characters | SHOULD | Planned |
-| DASH-063 | Dashboard SHOULD display a timeline chart of recent events | SHOULD | Planned |
-| DASH-064 | Dashboard SHOULD display recent activity (latest object changes) | SHOULD | Planned |
-| DASH-065 | KPI cards MUST use the `.most-searched-terms` CSS grid already defined | SHOULD | Planned |
-| DASH-066 | Charts MUST use the `.graphs` CSS grid already defined | SHOULD | Planned |
-
-#### Scenario: View character distribution chart (planned)
-
-@e2e exclude planned feature (DASH-061, status: Planned) — a player-vs-NPC distribution pie chart is not implemented; the realized dashboard ships KPI/recent/skill-usage widgets instead (covered under dashboard-analytics-widgets and larping-skill-widget specs)
-
-- GIVEN 15 player characters, 8 NPCs, and 2 "other" characters exist
-- WHEN the user views the dashboard
-- THEN a pie/donut chart MUST display the distribution: 60% player, 32% NPC, 8% other
-- AND ApexCharts MUST be used for rendering
-
-#### Scenario: View KPI cards (planned)
-
-@e2e exclude planned feature (DASH-060/DASH-065, status: Planned) — this scenario specifies the unbuilt `.most-searched-terms` grid design with seeded counts; the realized KPI tiles (DashboardKpi) and their pagination-total render are covered under larping-skill-widget#widget-displays-pagination-totals-from-object-store and dashboard-analytics-widgets#kpi-reflects-store-pagination-total
-
-- GIVEN 25 characters, 12 players, 5 events, and 30 skills exist
-- WHEN the user views the dashboard
-- THEN KPI cards MUST display: Characters 25, Players 12, Events 5, Skills 30
-- AND the cards MUST use the responsive grid layout
-
-#### Scenario: View skill popularity chart (planned)
-
-@e2e exclude planned feature (DASH-062, status: Planned) — this scenario specifies a ranked bar chart in the unbuilt `.graphs` grid; the realized skill-usage donut widget render is covered under larping-skill-widget#skill-usage-chart-with-no-data and dashboard-analytics-widgets#chart-aggregates-skill-facets
-
-- GIVEN skills "Healing" is used by 10 characters, "Fireball" by 8, and "Stealth" by 3
-- WHEN the user views the dashboard
-- THEN a bar chart MUST show skill usage ranked by frequency
-
-#### Scenario: Empty dashboard with no data (planned)
-
-- GIVEN no entities exist in the system
-- WHEN the user views the dashboard
-- THEN KPI cards MUST display 0 for all counts
-- AND charts MUST display empty state or "No data" indicators
 
 ## API Endpoints
 

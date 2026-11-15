@@ -7,6 +7,9 @@
  * which only resolves inside the Nextcloud container.  In bare CI environments
  * or on a local host where /var/www/html does not exist, fall back to the
  * bundled OCP.bak copy that ships alongside the symlink.
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 $autoloader = require __DIR__ . '/vendor/autoload.php';
@@ -16,3 +19,7 @@ $ocpDir  = is_dir($ocpBase . '/OCP') ? $ocpBase . '/OCP' : $ocpBase . '/OCP.bak'
 
 $autoloader->addPsr4('OCP\\', $ocpDir . '/');
 $autoloader->addPsr4('NCU\\', $ocpBase . '/NCU/');
+
+// OpenRegister's MCP attribute and opt-in interface, copied unchanged into the test
+// stubs (hermiq-ai-tooling), so the curated tools analyse without OpenRegister.
+$autoloader->addPsr4('OCA\\OpenRegister\\Mcp\\', __DIR__ . '/tests/stubs/openregister/Mcp/');

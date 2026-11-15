@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+
 declare(strict_types=1);
 
 /*
@@ -32,10 +37,15 @@ $extra = [
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
+	// events-qr-checkin: a steward scans or types a registration's code (REQ-EQC-003).
+	['name' => 'events#checkinByCode', 'url' => '/api/events/{id}/checkin-code', 'verb' => 'POST'],
 	['name' => 'xpAwards#access', 'url' => '/api/xp-awards/access', 'verb' => 'GET'],
 	['name' => 'xpAwards#roster', 'url' => '/api/events/{id}/xp-award-roster', 'verb' => 'GET'],
 	['name' => 'xpAwards#award', 'url' => '/api/events/{id}/xp-awards', 'verb' => 'POST'],
+	// Who answered the feedback form (events-post-event-survey REQ-EPS-004).
+	['name' => 'eventFeedback#summary', 'url' => '/api/events/{id}/feedback', 'verb' => 'GET'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
+	['name' => 'characterPurchases#buy', 'url' => '/api/characters/{id}/purchases', 'verb' => 'POST'],
 	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
 	['name' => 'playerAttendance#index', 'url' => '/api/players/{id}/attendance', 'verb' => 'GET'],
 	['name' => 'registrationChoices#offer', 'url' => '/api/registrations/{id}/offer', 'verb' => 'GET'],
@@ -53,6 +63,8 @@ $extra = [
 	['name' => 'worlds#access', 'url' => '/api/worlds/copy-access', 'verb' => 'GET'],
 	['name' => 'worlds#preview', 'url' => '/api/worlds/{id}/copy', 'verb' => 'GET'],
 	['name' => 'worlds#copy', 'url' => '/api/worlds/{id}/copy', 'verb' => 'POST'],
+	// The OpenAPI document, public (spec api-contract).
+	['name' => 'openApi#show', 'url' => '/api/openapi.json', 'verb' => 'GET'],
 	['name' => 'settings#index', 'url' => 'api/settings', 'verb' => 'GET'],
 	['name' => 'settings#create', 'url' => 'api/settings', 'verb' => 'POST'],
 	// Canonical AppHost settings write (OpenRegister\AppHost\Routes::standard()).
@@ -85,7 +97,8 @@ $extra = [
 // The fallback below reproduces `Routes::standard()`'s output locally, so
 // larpinq still routes — catch-all included — without openregister.
 if (class_exists('OCA\OpenRegister\AppHost\Routes') === true) {
-	return \OCA\OpenRegister\AppHost\Routes::standard($extra);
+	// Every unversioned API route is also served under /api/v1/; see ApiPathAliases.
+	return \OCA\Larpinq\Middleware\Support\ApiPathAliases::withVersionedAliases(\OCA\OpenRegister\AppHost\Routes::standard($extra));
 }
 
 $canonicalRoutes = [
@@ -148,4 +161,4 @@ foreach ($canonicalRoutes as $canonicalRoute) {
 $mergedRoutes = array_merge($mergedRoutes, $extra);
 $mergedRoutes[] = $catchAllRoute;
 
-return ['routes' => $mergedRoutes];
+return \OCA\Larpinq\Middleware\Support\ApiPathAliases::withVersionedAliases(['routes' => $mergedRoutes]);

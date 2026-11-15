@@ -16,6 +16,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/character-builds/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -23,6 +26,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
@@ -91,6 +96,42 @@ class CallerAccess {
 	}//end isGameMasterOrAdmin()
 
 	/**
+	 * Whether a user may check people in: a game master, an admin or a steward (REQ-ASR-003).
+	 *
+	 * @param string $uid The user id.
+	 *
+	 * @return boolean
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-stewards-check-people-in-req-asr-003
+	 */
+	public function mayCheckIn(string $uid): bool {
+		return $this->isGameMasterOrAdmin(uid: $uid) === true
+			|| $this->groupManager->isInGroup($uid, AppIdentity::ROLE_STEWARDS) === true;
+	}//end mayCheckIn()
+
+	/**
+	 * The signed-in user who may check people in, or the refusal: 401 without
+	 * a session, 403 for anyone who is not a game master, admin or steward.
+	 *
+	 * @return array{0: string, 1: JSONResponse|null}
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-stewards-check-people-in-req-asr-003
+	 */
+	public function resolveCheckIn(): array {
+		$user = $this->user();
+		if ($user === null) {
+			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
+		}
+
+		$uid = $user->getUID();
+		if ($this->mayCheckIn(uid: $uid) === false) {
+			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
+		}
+
+		return [$uid, null];
+	}//end resolveCheckIn()
+
+	/**
 	 * Whether the signed-in user is an administrator; false when nobody is signed in.
 	 *
 	 * @return bool True for a signed-in administrator.
@@ -101,4 +142,45 @@ class CallerAccess {
 		$user = $this->userSession->getUser();
 		return $user !== null && $this->groupManager->isAdmin($user->getUID());
 	}//end currentUserIsAdmin()
+	/**
+	 * Resolve the acting game master, or the refusal response to return.
+	 *
+	 * Collapses the authenticate-then-authorize pair into one decision so the
+	 * endpoints carry a single guard branch and receive a non-empty uid.
+	 *
+	 * @return array{0: string, 1: JSONResponse|null} The [actingUid, refusal] pair;
+	 *                                                the uid is empty when refused.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	public function resolveGameMaster(): array {
+		$user = $this->user();
+		if ($user === null) {
+			return ['', new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED)];
+		}
+
+		$uid = $user->getUID();
+		if ($this->isGameMasterOrAdmin(uid: $uid) === false) {
+			return ['', new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN)];
+		}
+
+		return [$uid, null];
+	}//end resolveGameMaster()
+
+	/**
+	 * Whether the signed-in user is a game master or an administrator, as the
+	 * `{allowed: bool}` answer a page shows its game-master actions on.
+	 *
+	 * @return JSONResponse `{allowed: bool}`, or 401 when nobody is signed in.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	public function gameMasterAnswer(): JSONResponse {
+		$user = $this->user();
+		if ($user === null) {
+			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
+		}
+
+		return new JSONResponse(data: ['allowed' => $this->isGameMasterOrAdmin(uid: $user->getUID())]);
+	}//end gameMasterAnswer()
 }//end class

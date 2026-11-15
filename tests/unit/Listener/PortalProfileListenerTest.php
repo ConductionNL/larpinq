@@ -103,6 +103,20 @@ class PortalProfileListenerTest extends TestCase {
 	private array $warnings = [];
 
 	/**
+	 * Errors logged.
+	 *
+	 * @var array<int, string>
+	 */
+	private array $errors = [];
+
+	/**
+	 * Whether the one-profile lookup fails.
+	 *
+	 * @var bool
+	 */
+	private bool $lookupFails = false;
+
+	/**
 	 * The listener with the configured schemas.
 	 *
 	 * @return PortalProfileListener The listener.
@@ -122,6 +136,10 @@ class PortalProfileListenerTest extends TestCase {
 				$this->assertSame(expected: 'player', actual: $type);
 				$this->assertSame(expected: 1, actual: $limit, message: 'A bounded query');
 				$this->asked[] = $filters;
+				if ($this->lookupFails === true) {
+					throw new \RuntimeException('register offline');
+				}
+
 				return $this->existing;
 			}
 		);
@@ -140,6 +158,12 @@ class PortalProfileListenerTest extends TestCase {
 		$logger->method('warning')->willReturnCallback(
 			function (string $message): void {
 				$this->warnings[] = $message;
+			}
+		);
+
+		$logger->method('error')->willReturnCallback(
+			function (string $message): void {
+				$this->errors[] = $message;
 			}
 		);
 
@@ -162,6 +186,35 @@ class PortalProfileListenerTest extends TestCase {
 		$this->assertSame(expected: ['portalSubjectRef' => self::SUBJECT], actual: $this->asked[0]);
 		$this->assertSame(expected: ['description' => 'kept', 'selfRegistered' => true, 'awaitingReview' => true], actual: $event->getModifiedData());
 	}//end testAPortalProfileIsMarkedSelfRegisteredAndAwaitingReview()
+
+	/**
+	 * A failing one-profile check is logged and the profile is created as a
+	 * portal sign-up: a lookup outage does not lock a visitor out.
+	 *
+	 * @return void
+	 */
+	public function testAFailingProfileCheckAllowsTheCreate(): void {
+		$this->lookupFails = true;
+		$event = new ObjectCreatingEvent(new PortalObjectEntity(self::PLAYER_SCHEMA, ['name' => 'Lotte Bakker', 'portalSubjectRef' => self::SUBJECT]));
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: ['selfRegistered' => true, 'awaitingReview' => true], actual: $event->getModifiedData());
+		$this->assertSame(expected: ['Larpinq: the one-profile check failed; allowing the create.'], actual: $this->errors);
+	}//end testAFailingProfileCheckAllowsTheCreate()
+
+	/**
+	 * Events other than an object create are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOtherEventsAreIgnored(): void {
+		$this->listener()->handle(new Event());
+
+		$this->assertSame(expected: [], actual: $this->asked);
+		$this->assertSame(expected: [], actual: $this->dispatched);
+	}//end testOtherEventsAreIgnored()
 
 	/**
 	 * Scenario "A double click": a second profile for the same portal account

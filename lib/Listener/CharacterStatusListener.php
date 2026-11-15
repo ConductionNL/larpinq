@@ -15,6 +15,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/character-management/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -88,11 +91,7 @@ class CharacterStatusListener implements IEventListener {
 		}
 
 		$errors = $this->guard->check(candidate: (array)$entity->getObject(), old: $previous);
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
-			$event->setErrors($errors);
-		}
+		PreWriteEvent::refuseOnErrors(event: $event, errors: $errors);
 	}//end handle()
 
 	/**

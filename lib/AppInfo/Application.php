@@ -17,6 +17,9 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-5
  *
  * @phpversion 8.2
+ *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -25,6 +28,11 @@ namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
+use OCA\Larpinq\Mcp\LarpinqScannableServices;
+use OCA\Larpinq\Middleware\ApiContractMiddleware;
+use OCA\Larpinq\Notification\Notifier;
+use OCA\Larpinq\Service\FeedbackAnswers;
+use OCA\Larpinq\Service\FormsFeedbackAnswers;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -56,6 +64,36 @@ class Application extends App implements IBootstrap {
 	 * @spec openspec/specs/setting-management/spec.md
 	 */
 	public const GM_GROUP = AppIdentity::GM_GROUP;
+
+	/**
+	 * The staff role groups (admin-staff-roles-and-invites D1). Each is a
+	 * Nextcloud group next to the game masters; none of them is a second
+	 * game master group (ADR-002).
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_WRITERS = AppIdentity::ROLE_WRITERS;
+
+	/**
+	 * Rules marshals.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_RULES = AppIdentity::ROLE_RULES;
+
+	/**
+	 * Treasurers.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_TREASURERS = AppIdentity::ROLE_TREASURERS;
+
+	/**
+	 * Stewards.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
+	 */
+	public const ROLE_STEWARDS = AppIdentity::ROLE_STEWARDS;
 
 	/**
 	 * Constructor for the application
@@ -115,6 +153,25 @@ class Application extends App implements IBootstrap {
 		OpenRegisterAutoloader::register();
 
 		$this->registerAppHostGenerics(context: $context);
+
+		// Post-event feedback (events-post-event-survey): the notifier renders the
+		// invitation and reminder; who answered is read from Forms' submissions,
+		// and is unknown (every invitee reminded) when Forms cannot tell (design D3).
+		$context->registerNotifierService(Notifier::class);
+		$context->registerServiceAlias(FeedbackAnswers::class, FormsFeedbackAnswers::class);
+
+		// API-Version header and problem details on the JSON API (spec api-contract).
+		$context->registerMiddleware(ApiContractMiddleware::class);
+
+		// The curated MCP tools (hermiq-ai-tooling REQ-004): OpenRegister scans
+		// the classes this lists for #[McpTool] methods. The interface is
+		// OpenRegister's, so the alias is only registered when it is there.
+		if (interface_exists('OCA\OpenRegister\Mcp\IMcpScannableServices') === true) {
+			$context->registerServiceAlias(
+				'OCA\OpenRegister\Mcp\IMcpScannableServices::' . self::APP_ID,
+				LarpinqScannableServices::class
+			);
+		}
 
 		// Register the deep link listener for OpenRegister unified search.
 		// The event class is only available when OpenRegister is installed.

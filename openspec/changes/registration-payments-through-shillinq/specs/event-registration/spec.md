@@ -41,6 +41,17 @@ reference.
 - WHEN shillinq matches the statement line and captures the request
 - THEN Sanne's registration shows paid on the event's registrations list
 
+### Requirement: A game master uploads a bank statement to match transfers (REQ-RPS-007)
+
+The Registrations list SHALL offer game masters an action to upload a bank statement (CAMT.053, MT940 or CSV). The upload MUST go to shillinq, which matches each incoming transfer to a payment request by its reference. A matched registration MUST show paid with the payment method bank transfer, and the lines that matched nothing MUST be listed for the game master.
+
+#### Scenario: The Monday statement
+
+- GIVEN Sanne's registration for "Winter Court 2026" is accepted with reference WC26-0002 and not paid
+- WHEN a game master uploads a statement with a transfer of EUR 120 quoting WC26-0002 and one transfer without a reference
+- THEN Sanne's registration shows paid by bank transfer
+- AND the transfer without a reference is listed as not matched
+
 ### Requirement: Players are reminded before the pay-by date (REQ-RPS-003)
 
 Three days before the pay-by date, larpinq SHALL send a player whose

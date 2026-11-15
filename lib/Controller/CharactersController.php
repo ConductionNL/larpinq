@@ -3,6 +3,9 @@
 /**
  * Characters controller for Larpinq
  *
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * @category  Controller
  * @package   OCA\Larpinq\Controller
  * @author    Ruben Linde <ruben@larpingapp.com>
@@ -83,10 +86,12 @@ class CharactersController extends Controller {
 	/**
 	 * Downloads a character PDF using a specific template.
 	 *
-	 * Only administrators (GMs) may download character sheets. Per-player access
-	 * requires the character schema to gain a `player` ownership field — tracked
-	 * as a follow-up. This guard prevents unauthenticated users and non-admin
-	 * NC users from reading GM-private notes (closes #205).
+	 * Access is the admin / game-master / owner matrix: a Nextcloud admin, a
+	 * member of the game-master group, or the player whose uid is the
+	 * character's `ownerUid`. The character is fetched before that decision,
+	 * and a caller who is none of the three gets 403 whether or not the id
+	 * exists, so the id cannot be probed (the #205 contract). A sheet rendered
+	 * for its owner leaves out the GM-private notes (`slNotesPrivate`).
 	 *
 	 * DocuDesk availability, template-id validation, template lookup and the
 	 * render itself are all delegated to the shared DocuDeskPdfRenderer — the
@@ -98,16 +103,10 @@ class CharactersController extends Controller {
 	 *
 	 * @return DataDownloadResponse|JSONResponse A response containing the PDF file for download or an error response
 	 *
-	 * Deliberately NOT `@NoAdminRequired`. The body requires an administrator
-	 * (the `isAdmin()` guard below, added by #205 to close the character-PDF
-	 * IDOR), so declaring the endpoint non-admin contradicted what it actually
-	 * enforces — anyone reading the attribute would conclude any logged-in user
-	 * may call it. Nextcloud's middleware now rejects a non-admin before the
-	 * controller runs; the in-body guard stays as defence in depth for direct
-	 * invocation. Per-player self-access remains a follow-up requiring a
-	 * `player` ownership field on the character schema — when that lands this
-	 * becomes `@NoAdminRequired` again, paired with a real ownership check.
+	 * `@NoAdminRequired` because a player may download their own sheet; the
+	 * per-object guard is canAccessCharacter() in sheetFor(), after the fetch.
 	 *
+	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 *
 	 * @SuppressWarnings(PHPMD.ShortVariable)
@@ -130,7 +129,9 @@ class CharactersController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-95
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
 	 */
+	#[NoAdminRequired]
 	#[NoCSRFRequired]
 	public function downloadPdf(string $id, string $template): DataDownloadResponse|JSONResponse {
 		$user = $this->callerAccess->user();
@@ -138,28 +139,35 @@ class CharactersController extends Controller {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
-		// Only admins (GMs) may download character sheets that include GM-private fields.
-		// Per-player self-access requires the character schema to include a `player` ownership
-		// field so the controller can verify ownership — that is a follow-up schema change.
-		// Closes #205 (Character PDF IDOR).
-		if ($this->callerAccess->isAdmin($user->getUID()) === false) {
-			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+		$uid = $user->getUID();
+
+		// The template id and DocuDesk come first: they are properties of the
+		// request and the instance, answered the same for every caller.
+		$templateId = $this->usableTemplateId(template: $template);
+		if ($templateId instanceof JSONResponse) {
+			return $templateId;
 		}
 
-		return $this->renderCharacterSheet(id: $id, template: $template);
+		// Access is admin / game master / owner, decided once the character is
+		// fetched (closes #205: never a 404 for a non-owner).
+		$character = $this->authorisedCharacter(id: $id, uid: $uid);
+		if ($character instanceof JSONResponse) {
+			return $character;
+		}
+
+		return $this->sheetFor(character: $character, templateId: $templateId);
 	}//end downloadPdf()
 
 	/**
-	 * Render the sheet of a character for an administrator: check the template id, then DocuDesk.
+	 * The normalised template id, once it is a UUID and DocuDesk is there; else the error.
 	 *
-	 * @param string $id       The character UUID.
 	 * @param string $template The template id as requested.
 	 *
-	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
+	 * @return string|JSONResponse The template UUID, or a 400 / 424 response.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
 	 */
-	private function renderCharacterSheet(string $id, string $template): DataDownloadResponse|JSONResponse {
+	private function usableTemplateId(string $template): string|JSONResponse {
 		// Validate the template ID to a UUID before delegating to DocuDesk,
 		// preventing path-traversal or injection via a crafted template value.
 		//
@@ -181,25 +189,51 @@ class CharactersController extends Controller {
 			return new JSONResponse(data: ['error' => 'PDF generation requires the DocuDesk app to be installed and enabled'], statusCode: 424);
 		}
 
-		return $this->sheetFor(id: $id, templateId: $templateId);
-	}//end renderCharacterSheet()
+		return $templateId;
+	}//end usableTemplateId()
 
 	/**
-	 * Render the sheet of a character with a validated template, once DocuDesk is known to be there.
+	 * The character the caller may download, without the GM-private notes for
+	 * an owner who is not a game master; else the refusal.
 	 *
-	 * @param string $id         The character UUID.
-	 * @param string $templateId The normalised template UUID.
+	 * The character is fetched first and the caller authorised second. A caller
+	 * who is not an admin or game master gets 403 for a missing character as
+	 * for one they do not own, so the answer says nothing about which ids exist.
+	 *
+	 * @param string $id  The character UUID.
+	 * @param string $uid The caller.
+	 *
+	 * @return array<string,mixed>|JSONResponse The character, or a 403 / 404 response.
+	 *
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 */
+	private function authorisedCharacter(string $id, string $uid): array|JSONResponse {
+		$character = $this->readCharacter(id: $id);
+		$isGameMaster = $this->callerAccess->isGameMasterOrAdmin(uid: $uid);
+		if ($isGameMaster === true) {
+			return $character ?? new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
+		}
+
+		if ($character === null || self::isOwner(character: $character, uid: $uid) === false) {
+			return new JSONResponse(data: ['error' => 'Access denied'], statusCode: Http::STATUS_FORBIDDEN);
+		}
+
+		// The owner's own sheet never carries the GM-private notes, whatever the template prints.
+		return self::redactGmPrivateFields(character: $character);
+	}//end authorisedCharacter()
+
+	/**
+	 * Render the sheet of a character the caller may download, with a validated template.
+	 *
+	 * @param array<string,mixed> $character  The character, already authorised and redacted.
+	 * @param string              $templateId The normalised template UUID.
 	 *
 	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
 	 */
-	private function sheetFor(string $id, string $templateId): DataDownloadResponse|JSONResponse {
-		$character = $this->readCharacter(id: $id);
-		if ($character === null) {
-			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
-		}
-
+	private function sheetFor(array $character, string $templateId): DataDownloadResponse|JSONResponse {
 		$templateData = $this->pdfRenderer->getTemplate($templateId);
 		if ($templateData === null) {
 			return new JSONResponse(data: ['error' => 'Template not found'], statusCode: 404);
@@ -211,6 +245,40 @@ class CharactersController extends Controller {
 
 		return $this->characterSheetFile(pdfString: $pdfString, character: $character);
 	}//end sheetFor()
+
+	/**
+	 * Whether the caller is the player whose uid is the character's `ownerUid`.
+	 * An empty owner matches nobody.
+	 *
+	 * @param array<string,mixed> $character The character.
+	 * @param string              $uid       The caller.
+	 *
+	 * @return bool True when the caller owns the character.
+	 *
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 */
+	private static function isOwner(array $character, string $uid): bool {
+		$owner = $character['ownerUid'] ?? '';
+
+		return is_string($owner) === true && $owner !== '' && $owner === $uid;
+	}//end isOwner()
+
+	/**
+	 * The character without the notes only game masters may read.
+	 *
+	 * `slNotesPublic` stays: it is the player-facing note by schema design.
+	 *
+	 * @param array<string,mixed> $character The character.
+	 *
+	 * @return array<string,mixed> The character without `slNotesPrivate`.
+	 *
+	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 */
+	private static function redactGmPrivateFields(array $character): array {
+		unset($character['slNotesPrivate']);
+
+		return $character;
+	}//end redactGmPrivateFields()
 
 	/**
 	 * The character, or null when OpenRegister cannot give it.
@@ -251,13 +319,14 @@ class CharactersController extends Controller {
 	/**
 	 * The character-sheet templates for the Download as PDF dialog.
 	 *
-	 * Administrator only, like downloadPdf(): the header action reads this
-	 * endpoint as its visibility predicate, so the action is hidden for
-	 * everyone who could not download anyway, and when the document app is
-	 * absent (`available: false`).
+	 * Administrator only. The header action reads this endpoint as its
+	 * visibility predicate, so the action is shown to administrators only, and
+	 * hidden when the document app is absent (`available: false`).
+	 * downloadPdf() itself also serves game masters and a character's owner
+	 * (player-character-sheet-access); showing them the action is a separate
+	 * decision about this listing, not made here.
 	 *
-	 * Deliberately NOT `@NoAdminRequired`, for the same reason as
-	 * downloadPdf(): only an administrator may download a sheet today.
+	 * Not `@NoAdminRequired`.
 	 * `#[NoCSRFRequired]` because it is a read-only GET that the header
 	 * action's visibility probe fetches, like downloadPdf's GET.
 	 *

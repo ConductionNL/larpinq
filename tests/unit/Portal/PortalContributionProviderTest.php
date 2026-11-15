@@ -3,6 +3,9 @@
 /**
  * Unit tests for the portaliq portal contribution provider.
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * Pins larpinq's ADR-046 contract-v2.1 contribution: the dependency-free
  * duck-typed shape (inert without portaliq), the v2 getAudiences() + v1
  * getAudience() pair, the single `player`-audience manifest (collections,
@@ -564,4 +567,16 @@ final class PortalContributionProviderTest extends TestCase {
 
 		return array_merge($base, $fragmentProps);
 	}//end mergedCharacterProperties()
+
+	/**
+	 * The whole player manifest, key order included, equals the recorded
+	 * golden in fixtures/player-contribution.golden.json.
+	 *
+	 * @return void
+	 */
+	public function testPlayerManifestMatchesGolden(): void {
+		$golden = json_decode((string)file_get_contents(__DIR__ . '/fixtures/player-contribution.golden.json'), true);
+
+		$this->assertSame(expected: $golden, actual: $this->provider->getContribution(self::PLAYER_SUBJECT));
+	}//end testPlayerManifestMatchesGolden()
 }//end class
