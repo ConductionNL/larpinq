@@ -20,6 +20,6 @@
 ## 4. Strings and docs
 
 - [x] 4.1 Dutch and English strings (REQ-ECC-001). Verify: `npm run test:l10n`.
-- [ ] 4.2 `docs/features/casting-and-crew.md` (ADR-010). Verify: the docs build renders it.
+- [x] 4.2 `docs/features/casting-and-crew.md` (ADR-010). Verify: the docs build renders it.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
