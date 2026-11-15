@@ -1,6 +1,6 @@
 <?php
 
-/**
+	/**
  * StaffInviteService for Larpinq
  *
  * Staff invites: a game master creates a link for one role, a signed-in user
@@ -35,7 +35,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OutOfBoundsException;
 
-/**
+	/**
  * Creates, reads, redeems and revokes staff invites, and lists and trims the team.
  *
  * Only a SHA-256 hash of an invite's token is stored; the plain token is
@@ -216,18 +216,6 @@ class StaffInviteService {
 	}//end redeem()
 
 	/**
-	 * Revoke an invite: from now on it adds nobody.
-	 *
-	 * @param string $id The invite id.
-	 * @param string $actingUid The game master revoking it.
-	 *
-	 * @return array<string, mixed> The revoked invite.
-	 *
-	 * @throws \Exception When the invite cannot be read.
-	 *
-	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 */
-	/**
 	 * The group a valid invite adds to.
 	 *
 	 * @param array<string, mixed> $invite The invite.
@@ -272,6 +260,18 @@ class StaffInviteService {
 		);
 	}//end recordUse()
 
+	/**
+	 * Revoke an invite: from now on it adds nobody.
+	 *
+	 * @param string $id The invite id.
+	 * @param string $actingUid The game master revoking it.
+	 *
+	 * @return array<string, mixed> The revoked invite.
+	 *
+	 * @throws \Exception When the invite cannot be read.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
+	 */
 	public function revoke(string $id, string $actingUid): array {
 		$invite = $this->objectFetcher->getObjectOfType(objectType: self::OBJECT_TYPE, id: $id);
 		if (self::isRevoked(invite: $invite) === true) {
@@ -313,23 +313,6 @@ class StaffInviteService {
 	}//end team()
 
 	/**
-	 * Remove a member from a role.
-	 *
-	 * A game master cannot remove themself from the game master group, so a
-	 * team never locks itself out by accident.
-	 *
-	 * @param string $role The role group.
-	 * @param string $uid The member to remove.
-	 * @param string $actingUid The game master removing them.
-	 *
-	 * @return bool True when the member was in the role and is removed.
-	 *
-	 * @throws InvalidArgumentException When the role is not one of the invite roles.
-	 * @throws DomainException When a game master removes themself from the game masters.
-	 *
-	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 */
-	/**
 	 * A role's members by display name.
 	 *
 	 * @param string $role The group id.
@@ -346,6 +329,23 @@ class StaffInviteService {
 		return $members;
 	}//end members()
 
+	/**
+	 * Remove a member from a role.
+	 *
+	 * A game master cannot remove themself from the game master group, so a
+	 * team never locks itself out by accident.
+	 *
+	 * @param string $role The role group.
+	 * @param string $uid The member to remove.
+	 * @param string $actingUid The game master removing them.
+	 *
+	 * @return bool True when the member was in the role and is removed.
+	 *
+	 * @throws InvalidArgumentException When the role is not one of the invite roles.
+	 * @throws DomainException When a game master removes themself from the game masters.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
+	 */
 	public function removeMember(string $role, string $uid, string $actingUid): bool {
 		self::assertKnownRole(role: $role);
 
@@ -404,15 +404,6 @@ class StaffInviteService {
 		return self::STATE_VALID;
 	}//end state()
 
-	/**
-	 * The SHA-256 hash under which an invite's token is stored.
-	 *
-	 * @param string $token The plain token.
-	 *
-	 * @return string The hex hash.
-	 *
-	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 */
 	/**
 	 * Whether the invite was revoked.
 	 *
@@ -485,6 +476,15 @@ class StaffInviteService {
 		}
 	}//end assertMaxUses()
 
+	/**
+	 * The SHA-256 hash under which an invite's token is stored.
+	 *
+	 * @param string $token The plain token.
+	 *
+	 * @return string The hex hash.
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
+	 */
 	public static function hashToken(string $token): string {
 		return hash('sha256', $token);
 	}//end hashToken()
@@ -516,13 +516,6 @@ class StaffInviteService {
 	}//end findByToken()
 
 	/**
-	 * The recorded uses of an invite.
-	 *
-	 * @param array<string, mixed> $invite The invite.
-	 *
-	 * @return list<array<string, mixed>> The uses.
-	 */
-	/**
 	 * Whether the invite carries this token hash.
 	 *
 	 * @param array<string, mixed> $invite The invite.
@@ -534,6 +527,13 @@ class StaffInviteService {
 		return is_string($invite['tokenHash'] ?? null) === true && hash_equals($hash, $invite['tokenHash']) === true;
 	}//end hasHash()
 
+	/**
+	 * The recorded uses of an invite.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 *
+	 * @return list<array<string, mixed>> The uses.
+	 */
 	private static function uses(array $invite): array {
 		$uses = $invite['uses'] ?? [];
 		if (is_array($uses) === false) {
