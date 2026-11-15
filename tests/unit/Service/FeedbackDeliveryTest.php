@@ -145,7 +145,7 @@ class FeedbackDeliveryTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnInvitationIsANotificationAndAMailWithTheFormLink(): void {
-		$sent = $this->delivery()->send(uid: 'anna', event: ['id' => 'e-1', 'name' => 'Summer Siege 2025'], formId: 42, reminder: false);
+		$sent = $this->delivery()->send(uid: 'anna', invite: ['event' => ['id' => 'e-1', 'name' => 'Summer Siege 2025'], 'formId' => 42, 'reminder' => false]);
 
 		self::assertTrue($sent);
 		self::assertTrue($this->notification['notified']);
@@ -164,11 +164,11 @@ class FeedbackDeliveryTest extends TestCase {
 	 * @return void
 	 */
 	public function testAReminderAndAnAccountWithoutAnAddress(): void {
-		$this->delivery()->send(uid: 'anna', event: ['id' => 'e-1', 'name' => 'Summer Siege 2025'], formId: 42, reminder: true);
+		$this->delivery()->send(uid: 'anna', invite: ['event' => ['id' => 'e-1', 'name' => 'Summer Siege 2025'], 'formId' => 42, 'reminder' => true]);
 		self::assertSame(FeedbackDelivery::SUBJECT_REMINDER, $this->notification['setSubject'][0]);
 		self::assertSame('Reminder: tell us about Summer Siege 2025', $this->mail['setSubject']);
 
-		$this->delivery(address: '')->send(uid: 'anna', event: ['id' => 'e-1', 'name' => 'Summer Siege 2025'], formId: 42, reminder: false);
+		$this->delivery(address: '')->send(uid: 'anna', invite: ['event' => ['id' => 'e-1', 'name' => 'Summer Siege 2025'], 'formId' => 42, 'reminder' => false]);
 		self::assertSame([], $this->mail);
 	}//end testAReminderAndAnAccountWithoutAnAddress()
 
@@ -182,7 +182,7 @@ class FeedbackDeliveryTest extends TestCase {
 
 		$logger = $this->createMock(LoggerInterface::class);
 		$logger->expects($this->once())->method('warning');
-		self::assertTrue($this->delivery(mailFails: true, logger: $logger)->send(uid: 'anna', event: ['id' => 'e-1', 'name' => 'X'], formId: 42, reminder: false));
+		self::assertTrue($this->delivery(mailFails: true, logger: $logger)->send(uid: 'anna', invite: ['event' => ['id' => 'e-1', 'name' => 'X'], 'formId' => 42, 'reminder' => false]));
 	}//end testFallbacks()
 
 	/**
@@ -196,7 +196,7 @@ class FeedbackDeliveryTest extends TestCase {
 		$users = $this->createMock(IUserManager::class);
 		$delivery = new FeedbackDelivery($notifications, $this->createMock(IMailer::class), $users, $this->createMock(IURLGenerator::class), $this->createMock(IFactory::class), $this->createMock(ContainerInterface::class), $this->createMock(LoggerInterface::class));
 
-		self::assertFalse($delivery->send(uid: 'ghost', event: ['id' => 'e-1'], formId: 42, reminder: false));
+		self::assertFalse($delivery->send(uid: 'ghost', invite: ['event' => ['id' => 'e-1'], 'formId' => 42, 'reminder' => false]));
 	}//end testAnUnknownAccountGetsNothing()
 
 }//end class

@@ -25,6 +25,8 @@ namespace OCA\Larpinq\Service;
 use DateTime;
 use OCA\Larpinq\AppInfo\Application;
 use OCP\IURLGenerator;
+use OCP\IL10N;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
 use OCP\Mail\IMailer;
@@ -83,24 +85,24 @@ class FeedbackDelivery {
 	/**
 	 * Ask one participant for feedback, or remind them.
 	 *
-	 * @param string $uid      The participant's user id.
-	 * @param array  $event    The event (id, name).
-	 * @param int    $formId   The feedback form.
-	 * @param bool   $reminder Whether this is the reminder.
+	 * @param string                                          $uid    The participant's user id.
+	 * @param array{event: array, formId: int, reminder: bool} $invite The event (id, name), the feedback form and whether this is the reminder.
 	 *
 	 * @return bool False when the account does not exist, so nothing was sent.
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-participants-who-were-there-are-invited-once-req-eps-002
 	 */
-	public function send(string $uid, array $event, int $formId, bool $reminder): bool {
+	public function send(string $uid, array $invite): bool {
 		$user = $this->users->get($uid);
 		if ($user === null) {
 			return false;
 		}
 
-		$name    = (string)($event['name'] ?? '');
-		$link    = $this->formLink(formId: $formId);
-		$subject = self::SUBJECT_INVITATION;
+		$event    = $invite['event'];
+		$reminder = $invite['reminder'];
+		$name     = (string)($event['name'] ?? '');
+		$link     = $this->formLink(formId: $invite['formId']);
+		$subject  = self::SUBJECT_INVITATION;
 		if ($reminder === true) {
 			$subject = self::SUBJECT_REMINDER;
 		}
@@ -113,14 +115,7 @@ class FeedbackDelivery {
 			->setSubject($subject, ['event' => $name, 'link' => $link]);
 		$this->notifications->notify($notification);
 
-		$this->mail(
-			address: (string)$user->getEMailAddress(),
-			displayName: $user->getDisplayName(),
-			uid: $uid,
-			event: $name,
-			link: $link,
-			reminder: $reminder
-		);
+		$this->mail(user: $user, text: ['event' => $name, 'link' => $link, 'reminder' => $reminder]);
 
 		return true;
 	}//end send()
@@ -129,41 +124,68 @@ class FeedbackDelivery {
 	 * Mail the participant when the account has an address. A failing mail
 	 * is logged; the notification already went out.
 	 *
-	 * @param string $address     The address, or ''.
-	 * @param string $displayName The participant's name.
-	 * @param string $uid         The user id, for the language.
-	 * @param string $event       The event name.
-	 * @param string $link        The form link.
-	 * @param bool   $reminder    Whether this is the reminder.
+	 * @param IUser                                              $user The participant: address, name and language.
+	 * @param array{event: string, link: string, reminder: bool} $text The event name, the form link and whether this is the reminder.
 	 *
 	 * @return void
 	 */
-	private function mail(string $address, string $displayName, string $uid, string $event, string $link, bool $reminder): void {
+	private function mail(IUser $user, array $text): void {
+		$address = (string)$user->getEMailAddress();
 		if ($address === '') {
 			return;
 		}
 
-		$l = $this->l10nFactory->get(Application::APP_ID, $this->l10nFactory->getUserLanguage($this->users->get($uid)));
-		$subject = $l->t('Tell us about %s', [$event]);
-		$body    = $l->t(
+		[$event, $link] = [$text['event'], $text['link']];
+		$l    = $this->l10nFactory->get(Application::APP_ID, $this->l10nFactory->getUserLanguage($user));
+		$body = $l->t(
 			'Thank you for playing at %1$s. The story team would like to hear what your character did and what you plan next. Fill in the form here: %2$s',
 			[$event, $link]
 		);
-		if ($reminder === true) {
-			$subject = $l->t('Reminder: tell us about %s', [$event]);
-			$body    = $l->t('The feedback form for %1$s closes soon. If you have not filled it in yet, you can do so here: %2$s', [$event, $link]);
+		if ($text['reminder'] === true) {
+			$body = $l->t('The feedback form for %1$s closes soon. If you have not filled it in yet, you can do so here: %2$s', [$event, $link]);
 		}
 
+		$this->deliver(user: $user, mail: ['subject' => self::subjectText(l: $l, event: $event, reminder: $text['reminder']), 'body' => $body]);
+	}//end mail()
+
+	/**
+	 * The title of the invitation or the reminder, in the reader's language.
+	 *
+	 * @param IL10N  $l        The reader's translations.
+	 * @param string $event    The event name.
+	 * @param bool   $reminder Whether this is the reminder.
+	 *
+	 * @return string
+	 *
+	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-participants-who-were-there-are-invited-once-req-eps-002
+	 */
+	public static function subjectText(IL10N $l, string $event, bool $reminder): string {
+		if ($reminder === true) {
+			return $l->t('Reminder: tell us about %s', [$event]);
+		}
+
+		return $l->t('Tell us about %s', [$event]);
+	}//end subjectText()
+
+	/**
+	 * Send the mail; a failure is logged, never thrown.
+	 *
+	 * @param IUser                                $user The participant.
+	 * @param array{subject: string, body: string} $mail The subject and the plain body.
+	 *
+	 * @return void
+	 */
+	private function deliver(IUser $user, array $mail): void {
 		try {
 			$message = $this->mailer->createMessage();
-			$message->setTo([$address => $displayName]);
-			$message->setSubject($subject);
-			$message->setPlainBody($body);
+			$message->setTo([(string)$user->getEMailAddress() => $user->getDisplayName()]);
+			$message->setSubject($mail['subject']);
+			$message->setPlainBody($mail['body']);
 			$this->mailer->send($message);
 		} catch (Throwable $e) {
-			$this->logger->warning('Larpinq: the feedback mail to {uid} was not sent.', ['uid' => $uid, 'exception' => $e]);
+			$this->logger->warning('Larpinq: the feedback mail to {uid} was not sent.', ['uid' => $user->getUID(), 'exception' => $e]);
 		}
-	}//end mail()
+	}//end deliver()
 
 	/**
 	 * The link to the form in Nextcloud Forms, or to Forms itself when the

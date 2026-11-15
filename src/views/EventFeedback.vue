@@ -106,11 +106,11 @@ export default {
 }
 
 .event-feedback__list li {
+	overflow-wrap: anywhere;
 	display: flex;
 	flex-direction: column;
 	padding: calc(var(--default-grid-baseline, 4px) * 2) 0;
 	border-bottom: 1px solid var(--color-border);
-	overflow-wrap: anywhere;
 }
 
 .event-feedback__meta {

@@ -20,9 +20,7 @@ use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\EventFeedbackController;
 use OCA\Larpinq\Service\EventFeedbackService;
 use OCA\Larpinq\Service\FeedbackDelivery;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Support\AppIdentity;
-use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUser;
@@ -43,7 +41,6 @@ class EventFeedbackControllerTest extends TestCase {
 
 	private EventFeedbackService&MockObject $feedback;
 	private FeedbackDelivery&MockObject $delivery;
-	private RegisterObjectFetcher&MockObject $fetcher;
 
 	/**
 	 * The controller for a caller in these groups, or nobody signed in.
@@ -55,7 +52,6 @@ class EventFeedbackControllerTest extends TestCase {
 	private function controllerFor(?array $groups): EventFeedbackController {
 		$this->feedback = $this->createMock(EventFeedbackService::class);
 		$this->delivery = $this->createMock(FeedbackDelivery::class);
-		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
 		$groupManager = $this->createMock(IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturnCallback(static fn (string $uid, string $group): bool => in_array($group, $groups ?? [], true));
 		$groupManager->method('isAdmin')->willReturn(false);
@@ -72,7 +68,6 @@ class EventFeedbackControllerTest extends TestCase {
 			request: $this->createMock(IRequest::class),
 			feedback: $this->feedback,
 			delivery: $this->delivery,
-			fetcher: $this->fetcher,
 			callerAccess: new CallerAccess(userSession: $session, groupManager: $groupManager),
 		);
 	}//end controllerFor()
@@ -85,7 +80,7 @@ class EventFeedbackControllerTest extends TestCase {
 	public function testAGameMasterSeesWhoAnswered(): void {
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
 		$event = ['id' => self::EVENT, 'feedbackForm' => 42];
-		$this->fetcher->method('getObjectOfType')->with('event', self::EVENT)->willReturn($event);
+		$this->feedback->method('event')->with(self::EVENT)->willReturn($event);
 		$this->feedback->method('summary')->with($event)->willReturn(['formId' => 42, 'invited' => 2, 'answered' => 1, 'notAnswered' => [['uid' => 'sanne', 'character' => 'Brannoc']]]);
 		$this->delivery->method('resultsLink')->with(42)->willReturn('https://cloud.example/apps/forms/abc/results');
 
@@ -103,7 +98,7 @@ class EventFeedbackControllerTest extends TestCase {
 	 */
 	public function testNoFormNoLink(): void {
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
-		$this->fetcher->method('getObjectOfType')->willReturn(['id' => self::EVENT]);
+		$this->feedback->method('event')->willReturn(['id' => self::EVENT]);
 		$this->feedback->method('summary')->willReturn(['formId' => 0, 'invited' => 0, 'answered' => null, 'notAnswered' => null]);
 		$this->delivery->expects($this->never())->method('resultsLink');
 
@@ -118,13 +113,13 @@ class EventFeedbackControllerTest extends TestCase {
 	public function testOnlyGameMastersAndAnUnknownEvent(): void {
 		foreach ([[['larpers'], 403], [[AppIdentity::ROLE_STEWARDS], 403], [null, 401]] as [$groups, $status]) {
 			$controller = $this->controllerFor(groups: $groups);
-			$this->fetcher->expects($this->never())->method('getObjectOfType');
+			$this->feedback->expects($this->never())->method('event');
 			$this->feedback->expects($this->never())->method('summary');
 			$this->assertSame(expected: $status, actual: $controller->summary(id: self::EVENT)->getStatus());
 		}
 
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
-		$this->fetcher->method('getObjectOfType')->willThrowException(new DoesNotExistException('gone'));
+		$this->feedback->method('event')->willReturn(null);
 		$this->assertSame(expected: 404, actual: $controller->summary(id: self::EVENT)->getStatus());
 	}//end testOnlyGameMastersAndAnUnknownEvent()
 }//end class

@@ -25,13 +25,11 @@ namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Service\EventFeedbackService;
 use OCA\Larpinq\Service\FeedbackDelivery;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
-use Throwable;
 
 /**
  * The feedback summary of one event, game masters only.
@@ -49,17 +47,15 @@ class EventFeedbackController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param IRequest              $request      The request.
-	 * @param EventFeedbackService  $feedback     The feedback round.
-	 * @param FeedbackDelivery      $delivery     Builds the link to the form's results.
-	 * @param RegisterObjectFetcher $fetcher      Reads the event.
-	 * @param CallerAccess          $callerAccess The caller checks.
+	 * @param IRequest             $request      The request.
+	 * @param EventFeedbackService $feedback     The feedback round and the event.
+	 * @param FeedbackDelivery     $delivery     Builds the link to the form's results.
+	 * @param CallerAccess         $callerAccess The caller checks.
 	 */
 	public function __construct(
 		IRequest $request,
 		private readonly EventFeedbackService $feedback,
 		private readonly FeedbackDelivery $delivery,
-		private readonly RegisterObjectFetcher $fetcher,
 		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: 'larpinq', request: $request);
@@ -82,9 +78,8 @@ class EventFeedbackController extends Controller {
 			return $denied;
 		}
 
-		try {
-			$event = $this->fetcher->getObjectOfType(objectType: 'event', id: $id);
-		} catch (Throwable $e) {
+		$event = $this->feedback->event(id: $id);
+		if ($event === null) {
 			return new JSONResponse(data: ['error' => 'Event not found'], statusCode: Http::STATUS_NOT_FOUND);
 		}
 

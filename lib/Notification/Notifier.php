@@ -93,11 +93,7 @@ class Notifier implements INotifier {
 
 		$l      = $this->l10nFactory->get(Application::APP_ID, $languageCode);
 		$params = $notification->getSubjectParameters();
-		$event  = (string)($params['event'] ?? '');
-		$text   = $l->t('Tell us about %s', [$event]);
-		if ($subject === FeedbackDelivery::SUBJECT_REMINDER) {
-			$text = $l->t('Reminder: tell us about %s', [$event]);
-		}
+		$text   = FeedbackDelivery::subjectText(l: $l, event: (string)($params['event'] ?? ''), reminder: $subject === FeedbackDelivery::SUBJECT_REMINDER);
 
 		$notification->setParsedSubject($text)
 			->setIcon($this->urls->getAbsoluteURL($this->urls->imagePath(Application::APP_ID, 'app-dark.svg')));

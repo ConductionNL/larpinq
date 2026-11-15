@@ -101,9 +101,9 @@ class EventFeedbackServiceTest extends TestCase {
 
 		$delivery = $this->createMock(FeedbackDelivery::class);
 		$delivery->method('send')->willReturnCallback(
-			function (string $uid, array $event, int $formId, bool $reminder): bool {
-				self::assertSame(42, $formId);
-				$this->sent[] = [$uid, $reminder];
+			function (string $uid, array $invite): bool {
+				self::assertSame(42, $invite['formId']);
+				$this->sent[] = [$uid, $invite['reminder']];
 
 				return true;
 			}
@@ -289,5 +289,28 @@ class EventFeedbackServiceTest extends TestCase {
 		$service = new EventFeedbackService($fetcher, $this->createMock(FeedbackDelivery::class), $this->createMock(FeedbackAnswers::class), $logger);
 		self::assertSame(['events' => 1, 'invited' => 0, 'reminded' => 0], $service->daily(now: new DateTimeImmutable('2025-08-18T03:00:00+00:00')));
 	}//end testAFailingEventIsLogged()
+
+	/**
+	 * The event is read with the app's authority; one that cannot be read is null.
+	 *
+	 * @return void
+	 */
+	public function testTheEventIsReadOrNullWhenItCannotBe(): void {
+		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher->method('getObjectOfType')->willReturnCallback(
+			static function (string $objectType, string $id): array {
+				self::assertSame('event', $objectType);
+				if ($id === 'gone') {
+					throw new RuntimeException('gone');
+				}
+
+				return ['id' => $id, 'name' => 'Summer Siege'];
+			}
+		);
+		$service = new EventFeedbackService($fetcher, $this->createMock(FeedbackDelivery::class), $this->createMock(FeedbackAnswers::class), $this->createMock(LoggerInterface::class));
+
+		self::assertSame(['id' => self::EVENT, 'name' => 'Summer Siege'], $service->event(id: self::EVENT));
+		self::assertNull($service->event(id: 'gone'));
+	}//end testTheEventIsReadOrNullWhenItCannotBe()
 
 }//end class
