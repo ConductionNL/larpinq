@@ -822,7 +822,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moja karta postaci",
-        "Open sheet": "Otwórz kartę"
+        "Open sheet": "Otwórz kartę",
+        "History entry": "Wpis historii",
+        "How the date is told in the world": "Jak data jest podawana w świecie",
+        "In-game date": "Data w grze",
+        "The story of this moment": "Opowieść o tej chwili",
+        "The world this moment belongs to": "Świat, do którego należy ta chwila",
+        "What happened, in a few words": "Co się stało, w kilku słowach",
+        "When it happened, used to sort the timeline": "Kiedy to się stało, do sortowania osi czasu",
+        "Who may read the entry: game masters only, or players too": "Kto może czytać wpis: tylko mistrzowie gry czy także gracze",
+        "Price": "Cena",
+        "Gold pieces the item costs": "Sztuki złota, które kosztuje przedmiot",
+        "Silver pieces the item costs": "Sztuki srebra, które kosztuje przedmiot",
+        "Copper pieces the item costs": "Sztuki miedzi, które kosztuje przedmiot",
+        "What the item costs in in-game money; a character buys it from the character page": "Ile przedmiot kosztuje w pieniądzach gry; postać kupuje go na stronie postaci"
     },
     "nplurals=2; plural=(n != 1);"
 )

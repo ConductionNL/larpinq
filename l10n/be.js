@@ -822,7 +822,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой аркуш персанажа",
-        "Open sheet": "Адкрыць аркуш"
+        "Open sheet": "Адкрыць аркуш",
+        "History entry": "Запіс гісторыі",
+        "How the date is told in the world": "Як дата называецца ў свеце",
+        "In-game date": "Дата ў гульні",
+        "The story of this moment": "Гісторыя гэтага моманту",
+        "The world this moment belongs to": "Свет, да якога належыць гэты момант",
+        "What happened, in a few words": "Што здарылася, некалькімі словамі",
+        "When it happened, used to sort the timeline": "Калі гэта здарылася, для сартавання храналогіі",
+        "Who may read the entry: game masters only, or players too": "Хто можа чытаць запіс: толькі майстры гульні ці таксама гульцы",
+        "Price": "Цана",
+        "Gold pieces the item costs": "Залатыя манеты, якія каштуе прадмет",
+        "Silver pieces the item costs": "Срэбныя манеты, якія каштуе прадмет",
+        "Copper pieces the item costs": "Медныя манеты, якія каштуе прадмет",
+        "What the item costs in in-game money; a character buys it from the character page": "Колькі каштуе прадмет у гульнявых грашах; персанаж купляе яго на старонцы персанажа"
     },
     "nplurals=2; plural=(n != 1);"
 )

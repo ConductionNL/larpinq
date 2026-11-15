@@ -822,7 +822,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mo bhileog charachtair",
-        "Open sheet": "Oscail an bhileog"
+        "Open sheet": "Oscail an bhileog",
+        "History entry": "Iontráil staire",
+        "How the date is told in the world": "Conas a deirtear an dáta sa domhan",
+        "In-game date": "Dáta sa chluiche",
+        "The story of this moment": "Scéal na huaire seo",
+        "The world this moment belongs to": "An domhan lena mbaineann an uair seo",
+        "What happened, in a few words": "Cad a tharla, i gcúpla focal",
+        "When it happened, used to sort the timeline": "Cathain a tharla sé, chun an amlíne a shórtáil",
+        "Who may read the entry: game masters only, or players too": "Cé a fhéadfaidh an iontráil a léamh: máistrí cluiche amháin, nó imreoirí freisin",
+        "Price": "Praghas",
+        "Gold pieces the item costs": "Píosaí óir a chosnaíonn an mhír",
+        "Silver pieces the item costs": "Píosaí airgid a chosnaíonn an mhír",
+        "Copper pieces the item costs": "Píosaí copair a chosnaíonn an mhír",
+        "What the item costs in in-game money; a character buys it from the character page": "Cad a chosnaíonn an mhír in airgead an chluiche; ceannaíonn carachtar í ó leathanach an charachtair"
     },
     "nplurals=2; plural=(n != 1);"
 )

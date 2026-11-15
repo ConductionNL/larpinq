@@ -821,7 +821,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fleta e personazhit tim",
-        "Open sheet": "Hap fletën"
+        "Open sheet": "Hap fletën",
+        "History entry": "Hyrje historie",
+        "How the date is told in the world": "Si thuhet data në botë",
+        "In-game date": "Data në lojë",
+        "The story of this moment": "Historia e këtij çasti",
+        "The world this moment belongs to": "Bota së cilës i përket ky çast",
+        "What happened, in a few words": "Çfarë ndodhi, me pak fjalë",
+        "When it happened, used to sort the timeline": "Kur ndodhi, për renditjen e vijës kohore",
+        "Who may read the entry: game masters only, or players too": "Kush mund ta lexojë hyrjen: vetëm drejtuesit e lojës apo edhe lojtarët",
+        "Price": "Çmimi",
+        "Gold pieces the item costs": "Monedhat e arit që kushton sendi",
+        "Silver pieces the item costs": "Monedhat e argjendit që kushton sendi",
+        "Copper pieces the item costs": "Monedhat e bakrit që kushton sendi",
+        "What the item costs in in-game money; a character buys it from the character page": "Sa kushton sendi në para të lojës; personazhi e blen nga faqja e personazhit"
     },
     "plurals": {}
 }
