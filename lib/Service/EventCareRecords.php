@@ -92,35 +92,12 @@ class EventCareRecords {
 	 */
 	public function copyForRegistration(array $registration): bool {
 		$registrationId = (string)($registration['id'] ?? '');
-		$eventId = (string)($registration['event'] ?? '');
-		$playerId = (string)($registration['player'] ?? '');
-		if ($registrationId === '' || $eventId === '' || $playerId === '') {
+		if (self::hasLinks(registration: $registration) === false) {
 			return false;
 		}
 
 		try {
-			$event = $this->fetcher->getObjectWithAppAuthority(objectType: 'event', id: $eventId);
-			if ($this->hasStarted(event: $event) === true) {
-				return false;
-			}
-
-			$player = $this->fetcher->getObjectWithAppAuthority(objectType: 'player', id: $playerId);
-			$record = self::recordFor(event: $event, registration: $registration, player: $player);
-			if ($record === null) {
-				return false;
-			}
-
-			$existing = $this->fetcher->getObjectsWithAppAuthority(objectType: 'eventcarerecord', filters: ['registration' => $registrationId], limit: 1);
-			$uuid = null;
-			if (isset($existing[0]['id']) === true && (string)$existing[0]['id'] !== '') {
-				$uuid = (string)$existing[0]['id'];
-			}
-
-			if ($uuid === null && self::isEmpty(record: $record) === true) {
-				return false;
-			}
-
-			$this->fetcher->saveObjectWithAppAuthority(objectType: 'eventcarerecord', data: $record, uuid: $uuid);
+			return $this->writeCopy(registration: $registration);
 		} catch (Throwable $e) {
 			$this->logger->error(
 				'Larpinq: the care details of registration {registration} could not be copied for its event.',
@@ -128,9 +105,66 @@ class EventCareRecords {
 			);
 			return false;
 		}
+	}//end copyForRegistration()
+
+	/**
+	 * Whether a registration names itself, its event and its player.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return bool
+	 */
+	private static function hasLinks(array $registration): bool {
+		foreach (['id', 'event', 'player'] as $field) {
+			if ((string)($registration[$field] ?? '') === '') {
+				return false;
+			}
+		}
 
 		return true;
-	}//end copyForRegistration()
+	}//end hasLinks()
+
+	/**
+	 * Write the copy for a registration whose event has not started.
+	 *
+	 * @param array<string, mixed> $registration The registration, with its `id`, `event` and `player`.
+	 *
+	 * @return bool Whether a copy was written.
+	 */
+	private function writeCopy(array $registration): bool {
+		$event = $this->fetcher->getObjectWithAppAuthority(objectType: 'event', id: (string)$registration['event']);
+		if ($this->hasStarted(event: $event) === true) {
+			return false;
+		}
+
+		$player = $this->fetcher->getObjectWithAppAuthority(objectType: 'player', id: (string)$registration['player']);
+		$record = self::recordFor(event: $event, registration: $registration, player: $player);
+		if ($record === null) {
+			return false;
+		}
+
+		$uuid = $this->existingCopyId(registrationId: (string)$registration['id']);
+		if ($uuid === null && self::isEmpty(record: $record) === true) {
+			return false;
+		}
+
+		$this->fetcher->saveObjectWithAppAuthority(objectType: 'eventcarerecord', data: $record, uuid: $uuid);
+		return true;
+	}//end writeCopy()
+
+	/**
+	 * The id of the copy a registration already has, or null.
+	 *
+	 * @param string $registrationId The registration.
+	 *
+	 * @return string|null
+	 */
+	private function existingCopyId(string $registrationId): ?string {
+		$existing = $this->fetcher->getObjectsWithAppAuthority(objectType: 'eventcarerecord', filters: ['registration' => $registrationId], limit: 1);
+		$uuid = (string)($existing[0]['id'] ?? '');
+
+		return $uuid === '' ? null : $uuid;
+	}//end existingCopyId()
 
 	/**
 	 * Bring the copies of a player's accepted registrations up to date; events that started are left alone.
@@ -142,12 +176,30 @@ class EventCareRecords {
 	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public function refreshForPlayer(string $playerId): int {
+		$written = 0;
+		foreach ($this->acceptedRegistrations(playerId: $playerId) as $registration) {
+			if ($this->copyForRegistration(registration: $registration) === true) {
+				$written++;
+			}
+		}
+
+		return $written;
+	}//end refreshForPlayer()
+
+	/**
+	 * The accepted registrations of a player; none when there is no player or they cannot be read.
+	 *
+	 * @param string $playerId The player.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function acceptedRegistrations(string $playerId): array {
 		if ($playerId === '') {
-			return 0;
+			return [];
 		}
 
 		try {
-			$registrations = $this->fetcher->getObjectsWithAppAuthority(
+			return $this->fetcher->getObjectsWithAppAuthority(
 				objectType: 'registration',
 				filters: ['player' => $playerId, 'status' => RegistrationService::ACCEPTED],
 				limit: self::MAX_REGISTRATIONS
@@ -157,18 +209,9 @@ class EventCareRecords {
 				'Larpinq: the registrations of player {player} could not be read to refresh their care copies.',
 				['player' => $playerId, 'exception' => $e]
 			);
-			return 0;
+			return [];
 		}
-
-		$written = 0;
-		foreach ($registrations as $registration) {
-			if ($this->copyForRegistration(registration: $registration) === true) {
-				$written++;
-			}
-		}
-
-		return $written;
-	}//end refreshForPlayer()
+	}//end acceptedRegistrations()
 
 	/**
 	 * The copy of a player's care details for one event, or null when the event has no end to count from.
@@ -187,29 +230,53 @@ class EventCareRecords {
 			return null;
 		}
 
-		$days = $event['careRetentionDays'] ?? self::DEFAULT_RETENTION_DAYS;
-		if (is_int($days) === false || $days < 0) {
-			$days = self::DEFAULT_RETENTION_DAYS;
-		}
-
 		$record = [
 			'event' => (string)($event['id'] ?? ($registration['event'] ?? '')),
 			'registration' => (string)$registration['id'],
 			'player' => (string)$registration['player'],
 		];
-		foreach (self::FIELDS as $field) {
-			$value = $player[$field] ?? null;
-			$record[$field] = null;
-			if (is_string($value) === true && trim($value) !== '') {
-				$record[$field] = $value;
-			}
-		}
-
+		$record = array_merge($record, self::careFields(player: $player));
 		$record['eventEndDate'] = $end->format(DateTimeInterface::ATOM);
-		$record['eraseAfter'] = $end->modify('+' . $days . ' days')->format(DateTimeInterface::ATOM);
+		$record['eraseAfter'] = $end->modify('+' . self::retentionDays(event: $event) . ' days')->format(DateTimeInterface::ATOM);
 
 		return $record;
 	}//end recordFor()
+
+	/**
+	 * The player's care fields, each a non-blank string or null.
+	 *
+	 * @param array<string, mixed> $player The player.
+	 *
+	 * @return array<string, string|null>
+	 */
+	private static function careFields(array $player): array {
+		$fields = [];
+		foreach (self::FIELDS as $field) {
+			$value = $player[$field] ?? null;
+			$fields[$field] = null;
+			if (is_string($value) === true && trim($value) !== '') {
+				$fields[$field] = $value;
+			}
+		}
+
+		return $fields;
+	}//end careFields()
+
+	/**
+	 * The days a copy is kept after the event: the event's own, else the default.
+	 *
+	 * @param array<string, mixed> $event The event.
+	 *
+	 * @return int
+	 */
+	private static function retentionDays(array $event): int {
+		$days = $event['careRetentionDays'] ?? self::DEFAULT_RETENTION_DAYS;
+		if (is_int($days) === false || $days < 0) {
+			return self::DEFAULT_RETENTION_DAYS;
+		}
+
+		return $days;
+	}//end retentionDays()
 
 	/**
 	 * Whether a copy carries no care detail at all.

@@ -282,16 +282,33 @@ class RegistrationService {
 			$this->release(eventId: $eventId);
 		}
 
-		if ($wasAccepted === true && (string)($new['status'] ?? '') !== self::ACCEPTED) {
-			$this->promoteNext(eventId: $eventId);
+		$this->followAcceptance(new: $new, wasAccepted: $wasAccepted);
+	}//end afterWrite()
+
+	/**
+	 * Follow a change of acceptance: a freed place goes to the oldest waitlisted
+	 * registration, and a newly accepted registration carries a copy of the
+	 * player's care details for the event (REQ-PCE-002). The copy never fails
+	 * the registration.
+	 *
+	 * @param array<string, mixed> $new The stored registration.
+	 * @param bool $wasAccepted Whether the registration was accepted before.
+	 *
+	 * @return void
+	 */
+	private function followAcceptance(array $new, bool $wasAccepted): void {
+		$isAccepted = (string)($new['status'] ?? '') === self::ACCEPTED;
+		if ($wasAccepted === $isAccepted) {
+			return;
 		}
 
-		// An accepted registration carries a copy of the player's care details
-		// for the event (REQ-PCE-002). The copy never fails the registration.
-		if ($wasAccepted === false && (string)($new['status'] ?? '') === self::ACCEPTED) {
-			$this->care?->copyForRegistration(registration: $new);
+		if ($wasAccepted === true) {
+			$this->promoteNext(eventId: (string)($new['event'] ?? ''));
+			return;
 		}
-	}//end afterWrite()
+
+		$this->care?->copyForRegistration(registration: $new);
+	}//end followAcceptance()
 
 	/**
 	 * Release the event's lock when this request holds it.
