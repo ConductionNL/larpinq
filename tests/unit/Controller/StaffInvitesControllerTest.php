@@ -44,7 +44,7 @@ use ReflectionMethod;
 #[UsesClass(CallerAccess::class)]
 class StaffInvitesControllerTest extends TestCase {
 
-	private const TOKEN = '0123456789abcdef0123456789abcdef';
+	private const CODE = '0123456789abcdef0123456789abcdef';
 
 	private StaffInviteService&MockObject $invites;
 
@@ -94,13 +94,13 @@ class StaffInvitesControllerTest extends TestCase {
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP], params: ['role' => AppIdentity::ROLE_STEWARDS, 'days' => '7', 'maxUses' => '3']);
 		$this->invites->expects($this->once())->method('create')
 			->with(AppIdentity::ROLE_STEWARDS, 7, 3, 'caller')
-			->willReturn(['invite' => ['role' => AppIdentity::ROLE_STEWARDS], 'token' => self::TOKEN]);
+			->willReturn(['invite' => ['role' => AppIdentity::ROLE_STEWARDS], 'token' => self::CODE]);
 
 		$response = $controller->create();
 
 		$this->assertSame(expected: 201, actual: $response->getStatus());
-		$this->assertSame(expected: self::TOKEN, actual: $response->getData()['token']);
-		$this->assertSame(expected: 'https://cloud.example/apps/larpinq/staff-invite/' . self::TOKEN, actual: $response->getData()['link']);
+		$this->assertSame(expected: self::CODE, actual: $response->getData()['token']);
+		$this->assertSame(expected: 'https://cloud.example/apps/larpinq/staff-invite/' . self::CODE, actual: $response->getData()['link']);
 	}//end testAGameMasterCreatesAnInvite()
 
 	/**
@@ -112,7 +112,7 @@ class StaffInvitesControllerTest extends TestCase {
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP], params: ['role' => AppIdentity::ROLE_WRITERS]);
 		$this->invites->expects($this->once())->method('create')
 			->with(AppIdentity::ROLE_WRITERS, 7, 1, 'caller')
-			->willReturn(['invite' => [], 'token' => self::TOKEN]);
+			->willReturn(['invite' => [], 'token' => self::CODE]);
 
 		$this->assertSame(expected: 201, actual: $controller->create()->getStatus());
 	}//end testCreateDefaultsToSevenDaysAndOneUse()
@@ -158,8 +158,8 @@ class StaffInvitesControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testInspect(): void {
-		$controller = $this->controllerFor(groups: [], params: ['token' => self::TOKEN]);
-		$this->invites->method('inspect')->with(self::TOKEN)->willReturn(['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid']);
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+		$this->invites->method('inspect')->with(self::CODE)->willReturn(['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid']);
 
 		$response = $controller->inspect();
 
@@ -177,7 +177,7 @@ class StaffInvitesControllerTest extends TestCase {
 		$this->invites->method('inspect')->willThrowException(new OutOfBoundsException('No such invite'));
 		$this->assertSame(expected: 404, actual: $controller->inspect()->getStatus());
 
-		$controller = $this->controllerFor(groups: null, params: ['token' => self::TOKEN]);
+		$controller = $this->controllerFor(groups: null, params: ['token' => self::CODE]);
 		$this->invites->expects($this->never())->method('inspect');
 		$this->assertSame(expected: 401, actual: $controller->inspect()->getStatus());
 	}//end testInspectRefusals()
@@ -188,9 +188,9 @@ class StaffInvitesControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testRedeem(): void {
-		$controller = $this->controllerFor(groups: [], params: ['token' => self::TOKEN]);
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
 		$this->invites->expects($this->once())->method('redeem')
-			->with(self::TOKEN, $this->callback(static fn (IUser $user): bool => $user->getUID() === 'caller'))
+			->with(self::CODE, $this->callback(static fn (IUser $user): bool => $user->getUID() === 'caller'))
 			->willReturn(['role' => AppIdentity::ROLE_STEWARDS, 'joined' => true]);
 
 		$response = $controller->redeem();
@@ -205,17 +205,17 @@ class StaffInvitesControllerTest extends TestCase {
 	 * @return void
 	 */
 	public function testRedeemRefusals(): void {
-		$controller = $this->controllerFor(groups: [], params: ['token' => self::TOKEN]);
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
 		$this->invites->method('redeem')->willThrowException(new DomainException(StaffInviteService::STATE_USED_UP));
 		$response = $controller->redeem();
 		$this->assertSame(expected: 410, actual: $response->getStatus());
 		$this->assertSame(expected: ['error' => 'This invite is used up', 'state' => 'used-up'], actual: $response->getData());
 
-		$controller = $this->controllerFor(groups: [], params: ['token' => self::TOKEN]);
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
 		$this->invites->method('redeem')->willThrowException(new OutOfBoundsException('No such invite'));
 		$this->assertSame(expected: 404, actual: $controller->redeem()->getStatus());
 
-		$controller = $this->controllerFor(groups: null, params: ['token' => self::TOKEN]);
+		$controller = $this->controllerFor(groups: null, params: ['token' => self::CODE]);
 		$this->invites->expects($this->never())->method('redeem');
 		$this->assertSame(expected: 401, actual: $controller->redeem()->getStatus());
 	}//end testRedeemRefusals()

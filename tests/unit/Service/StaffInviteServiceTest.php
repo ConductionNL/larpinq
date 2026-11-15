@@ -39,7 +39,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(StaffInviteService::class)]
 class StaffInviteServiceTest extends TestCase {
 
-	private const TOKEN = '0123456789abcdef0123456789abcdef';
+	private const CODE = '0123456789abcdef0123456789abcdef';
 	private const ID = '11111111-2222-3333-4444-555555555555';
 	private const NOW = '2026-11-14T12:00:00+00:00';
 
@@ -106,7 +106,7 @@ class StaffInviteServiceTest extends TestCase {
 	}//end user()
 
 	/**
-	 * A stored invite whose token is TOKEN.
+	 * A stored invite whose token is CODE.
 	 *
 	 * @param array<string, mixed> $fields Fields over the valid default.
 	 *
@@ -118,7 +118,7 @@ class StaffInviteServiceTest extends TestCase {
 				'id' => self::ID,
 				'@self' => ['id' => self::ID],
 				'role' => AppIdentity::ROLE_STEWARDS,
-				'tokenHash' => hash('sha256', self::TOKEN),
+				'tokenHash' => hash('sha256', self::CODE),
 				'expiresAt' => '2026-11-21T12:00:00+00:00',
 				'maxUses' => 1,
 				'uses' => [],
@@ -137,7 +137,7 @@ class StaffInviteServiceTest extends TestCase {
 	 */
 	private function lookupFinds(array $found): void {
 		$this->fetcher->method('getObjectsWithAppAuthority')
-			->with('staffInvite', ['tokenHash' => hash('sha256', self::TOKEN)], 2)
+			->with('staffInvite', ['tokenHash' => hash('sha256', self::CODE)], 2)
 			->willReturn($found);
 	}//end lookupFinds()
 
@@ -212,7 +212,7 @@ class StaffInviteServiceTest extends TestCase {
 		$service = $this->service();
 		$this->lookupFinds(found: [self::invite()]);
 
-		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid'], actual: $service->inspect(token: self::TOKEN));
+		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid'], actual: $service->inspect(token: self::CODE));
 	}//end testInspectAnswersRoleAndState()
 
 	/**
@@ -233,7 +233,7 @@ class StaffInviteServiceTest extends TestCase {
 		}
 
 		$this->expectException(OutOfBoundsException::class);
-		$service->inspect(token: self::TOKEN);
+		$service->inspect(token: self::CODE);
 	}//end testAnUnknownTokenOpensNothing()
 
 	/**
@@ -254,13 +254,13 @@ class StaffInviteServiceTest extends TestCase {
 			->with(
 				'staffInvite',
 				$this->callback(static fn (array $data): bool => $data['uses'] === [['uid' => 'pieter', 'at' => self::NOW]]
-					&& $data['tokenHash'] === hash('sha256', self::TOKEN)
+					&& $data['tokenHash'] === hash('sha256', self::CODE)
 					&& isset($data['@self'], $data['id']) === false),
 				self::ID
 			)
 			->willReturnArgument(1);
 
-		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'joined' => true], actual: $service->redeem(token: self::TOKEN, user: $pieter));
+		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'joined' => true], actual: $service->redeem(token: self::CODE, user: $pieter));
 	}//end testRedeemAddsTheUserAndRecordsTheUse()
 
 	/**
@@ -278,7 +278,7 @@ class StaffInviteServiceTest extends TestCase {
 
 		$this->expectException(DomainException::class);
 		$this->expectExceptionMessage('used-up');
-		$service->redeem(token: self::TOKEN, user: $this->user(uid: 'karel'));
+		$service->redeem(token: self::CODE, user: $this->user(uid: 'karel'));
 	}//end testAUsedUpInviteAddsNobody()
 
 	/**
@@ -294,7 +294,7 @@ class StaffInviteServiceTest extends TestCase {
 			$stewards->expects($this->never())->method('addUser');
 
 			try {
-				$service->redeem(token: self::TOKEN, user: $this->user(uid: 'karel'));
+				$service->redeem(token: self::CODE, user: $this->user(uid: 'karel'));
 				$this->fail("a {$state} invite must add nobody");
 			} catch (DomainException $exception) {
 				$this->assertSame(expected: $state, actual: $exception->getMessage());
@@ -315,7 +315,7 @@ class StaffInviteServiceTest extends TestCase {
 		$stewards->expects($this->never())->method('addUser');
 		$this->fetcher->expects($this->never())->method('saveObjectWithAppAuthority');
 
-		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'joined' => false], actual: $service->redeem(token: self::TOKEN, user: $this->user(uid: 'joris')));
+		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'joined' => false], actual: $service->redeem(token: self::CODE, user: $this->user(uid: 'joris')));
 	}//end testAMemberTakesNoUse()
 
 	/**
@@ -329,7 +329,7 @@ class StaffInviteServiceTest extends TestCase {
 		$this->fetcher->expects($this->never())->method('saveObjectWithAppAuthority');
 
 		$this->expectException(OutOfBoundsException::class);
-		$service->redeem(token: self::TOKEN, user: $this->user(uid: 'pieter'));
+		$service->redeem(token: self::CODE, user: $this->user(uid: 'pieter'));
 	}//end testAMissingGroupAddsNobody()
 
 	/**
@@ -427,4 +427,89 @@ class StaffInviteServiceTest extends TestCase {
 		$this->expectException(DomainException::class);
 		$service->removeMember(role: AppIdentity::GM_GROUP, uid: 'gm', actingUid: 'gm');
 	}//end testRemoveMemberRefusals()
+
+	/**
+	 * Odd stored fields read the safe way: an unreadable expiry is expired, an
+	 * empty revokedAt is not a revocation, and a maxUses below one still allows one use.
+	 *
+	 * @return void
+	 */
+	public function testTheStateOfAnInviteWithOddFields(): void {
+		$service = $this->service();
+
+		$this->assertSame(expected: 'expired', actual: $service->state(invite: self::invite(fields: ['expiresAt' => 'not a date'])));
+		$this->assertSame(expected: 'expired', actual: $service->state(invite: self::invite(fields: ['expiresAt' => 1795000000])));
+		$this->assertSame(expected: 'expired', actual: $service->state(invite: self::invite(fields: ['expiresAt' => '2026-11-14T11:59:59+00:00'])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['expiresAt' => '2026-11-14T12:00:01+00:00'])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['revokedAt' => ''])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['revokedAt' => true])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['maxUses' => 0])));
+		$this->assertSame(expected: 'used-up', actual: $service->state(invite: self::invite(fields: ['maxUses' => 0, 'uses' => [['uid' => 'pieter']]])));
+		$twoUses = ['uses' => [['uid' => 'a'], ['uid' => 'b']]];
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: $twoUses + ['maxUses' => '3'])));
+		$this->assertSame(expected: 'used-up', actual: $service->state(invite: self::invite(fields: $twoUses + ['maxUses' => '2'])));
+	}//end testTheStateOfAnInviteWithOddFields()
+
+	/**
+	 * Uses that are not records count for nothing, and a uses field that is no list is no use.
+	 *
+	 * @return void
+	 */
+	public function testOnlyRecordedUsesCount(): void {
+		$service = $this->service();
+
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['uses' => 'pieter'])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['uses' => ['pieter', 7, null]])));
+		$this->assertSame(expected: 'used-up', actual: $service->state(invite: self::invite(fields: ['uses' => ['pieter', ['uid' => 'pieter']]])));
+	}//end testOnlyRecordedUsesCount()
+
+	/**
+	 * The stored hash is the SHA-256 of the token, never the token itself.
+	 *
+	 * @return void
+	 */
+	public function testHashTokenIsSha256(): void {
+		$this->assertSame(expected: hash('sha256', self::CODE), actual: StaffInviteService::hashToken(token: self::CODE));
+		$this->assertSame(expected: 64, actual: strlen(StaffInviteService::hashToken(token: self::CODE)));
+		$reversed = StaffInviteService::hashToken(token: strrev(self::CODE));
+		$this->assertNotSame(expected: StaffInviteService::hashToken(token: self::CODE), actual: $reversed);
+	}//end testHashTokenIsSha256()
+
+	/**
+	 * Only 32 lowercase hex characters are looked up; anything else opens nothing without a lookup.
+	 *
+	 * @return void
+	 */
+	public function testAMalformedTokenIsNeverLookedUp(): void {
+		$service = $this->service();
+		$this->fetcher->expects($this->never())->method('getObjectsWithAppAuthority');
+
+		$refused = 0;
+		foreach ([strtoupper(self::CODE), substr(self::CODE, 1), self::CODE . '0', '', ' ' . self::CODE] as $token) {
+			try {
+				$service->inspect(token: $token);
+			} catch (OutOfBoundsException $e) {
+				$this->assertSame(expected: 'No such invite', actual: $e->getMessage());
+				$refused++;
+			}
+		}
+
+		$this->assertSame(expected: 5, actual: $refused);
+	}//end testAMalformedTokenIsNeverLookedUp()
+
+	/**
+	 * A store that ignores the hash filter never opens another invite: the matching one is picked.
+	 *
+	 * @return void
+	 */
+	public function testTheLookupRechecksTheHash(): void {
+		$service = $this->service();
+		$this->lookupFinds(found: [
+			self::invite(fields: ['tokenHash' => hash('sha256', 'another invite'), 'role' => AppIdentity::GM_GROUP]),
+			self::invite(fields: ['tokenHash' => null, 'role' => AppIdentity::GM_GROUP]),
+			self::invite(),
+		]);
+
+		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid'], actual: $service->inspect(token: self::CODE));
+	}//end testTheLookupRechecksTheHash()
 }//end class

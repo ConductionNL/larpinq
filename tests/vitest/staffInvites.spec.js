@@ -21,7 +21,7 @@ import {
 	stateLabel,
 } from '../../src/services/staffInvites.js'
 
-const TOKEN = '0123456789abcdef0123456789abcdef'
+const CODE = '0123456789abcdef0123456789abcdef'
 
 /**
  * Answer the next fetch with this status and body.
@@ -66,13 +66,13 @@ describe('staff invites', () => {
 	})
 
 	it('creates an invite with the role, days and uses, and returns its link', async () => {
-		const fetchMock = answer(201, { invite: { id: 'i1' }, token: TOKEN, link: `https://cloud.example/apps/larpinq/staff-invite/${TOKEN}` })
+		const fetchMock = answer(201, { invite: { id: 'i1' }, token: CODE, link: `https://cloud.example/apps/larpinq/staff-invite/${CODE}` })
 		const created = await createInvite('larpinq-stewards', 7, 3)
 
 		expect(fetchMock.mock.calls[0][0]).toBe('/index.php/apps/larpinq/api/staff-invites')
 		expect(fetchMock.mock.calls[0][1].method).toBe('POST')
 		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ role: 'larpinq-stewards', days: 7, maxUses: 3 })
-		expect(created).toEqual({ ok: true, link: `https://cloud.example/apps/larpinq/staff-invite/${TOKEN}`, invite: { id: 'i1' } })
+		expect(created).toEqual({ ok: true, link: `https://cloud.example/apps/larpinq/staff-invite/${CODE}`, invite: { id: 'i1' } })
 	})
 
 	it('passes the reason of a refused invite on', async () => {
@@ -98,11 +98,11 @@ describe('staff invites', () => {
 
 	it('opens a link: its role and state, or that it is unknown', async () => {
 		const fetchMock = answer(200, { role: 'larpinq-stewards', state: 'valid' })
-		expect(await inspectInvite(TOKEN)).toEqual({ role: 'larpinq-stewards', state: 'valid' })
-		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ token: TOKEN })
+		expect(await inspectInvite(CODE)).toEqual({ role: 'larpinq-stewards', state: 'valid' })
+		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ token: CODE })
 
 		answer(404, { error: 'No such invite' })
-		expect(await inspectInvite(TOKEN)).toEqual({ state: 'unknown' })
+		expect(await inspectInvite(CODE)).toEqual({ state: 'unknown' })
 
 		globalThis.fetch = vi.fn()
 		expect(await inspectInvite('')).toEqual({ state: 'unknown' })
@@ -111,14 +111,14 @@ describe('staff invites', () => {
 
 	it('redeems a link: joined, already a member, or why not', async () => {
 		answer(200, { role: 'larpinq-stewards', joined: true })
-		expect(await redeemInvite(TOKEN)).toEqual({ state: 'joined', role: 'larpinq-stewards' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'joined', role: 'larpinq-stewards' })
 		answer(200, { role: 'larpinq-stewards', joined: false })
-		expect(await redeemInvite(TOKEN)).toEqual({ state: 'member', role: 'larpinq-stewards' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'member', role: 'larpinq-stewards' })
 		answer(410, { error: 'This invite is used up', state: 'used-up' })
-		expect(await redeemInvite(TOKEN)).toEqual({ state: 'used-up' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'used-up' })
 		answer(404, null)
-		expect(await redeemInvite(TOKEN)).toEqual({ state: 'unknown' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'unknown' })
 		answer(429, null)
-		expect(await redeemInvite(TOKEN)).toEqual({ state: 'failed' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'failed' })
 	})
 })
