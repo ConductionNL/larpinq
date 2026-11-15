@@ -71,9 +71,29 @@ export function isHidden(object) {
  * @return {number}
  */
 function byOrderThenName(a, b) {
-	const order = (Number(a.order) || 0) - (Number(b.order) || 0)
+	const order = orderOf(a) - orderOf(b)
 	if (order !== 0) return order
-	return String(a.name ?? a.title ?? '').localeCompare(String(b.name ?? b.title ?? ''))
+	return sortName(a).localeCompare(sortName(b))
+}
+
+/**
+ * The `order` of a row as a number, 0 when it has none.
+ *
+ * @param {object} row The row.
+ * @return {number}
+ */
+function orderOf(row) {
+	return Number(row.order) || 0
+}
+
+/**
+ * The name, else the title, of a row: what it sorts by after its order.
+ *
+ * @param {object} row The row.
+ * @return {string}
+ */
+function sortName(row) {
+	return String(row.name ?? row.title ?? '')
 }
 
 /**
@@ -86,17 +106,71 @@ function byOrderThenName(a, b) {
  */
 export function skillCosts(skill, effects, abilities) {
 	const costs = []
-	for (const effectId of Array.isArray(skill?.effects) ? skill.effects : []) {
+	for (const effectId of asList(skill?.effects)) {
 		const effect = effects.get(String(effectId))
-		if (!effect || effect.modification !== 'negative') continue
-		const amount = Math.abs(Number(effect.modifier) || 0)
+		const amount = effectCost(effect)
 		if (amount === 0) continue
-		for (const abilityId of Array.isArray(effect.abilities) ? effect.abilities : []) {
-			const ability = abilities.get(String(abilityId))
-			if (ability) costs.push({ amount, ability: ability.name || '' })
-		}
+		costs.push(...abilityCosts(effect, amount, abilities))
 	}
 	return costs
+}
+
+/**
+ * One cost per known ability an effect lowers.
+ *
+ * @param {object} effect The effect.
+ * @param {number} amount How much it lowers each ability.
+ * @param {Map<string, object>} abilities The abilities by id.
+ * @return {Array<{amount: number, ability: string}>}
+ */
+function abilityCosts(effect, amount, abilities) {
+	return asList(effect.abilities)
+		.map((abilityId) => abilities.get(String(abilityId)))
+		.filter((ability) => ability)
+		.map((ability) => ({ amount, ability: ability.name || '' }))
+}
+
+/**
+ * The value when it is an array, else an empty list.
+ *
+ * @param {Array|undefined} value The value.
+ * @return {Array}
+ */
+function asList(value) {
+	return Array.isArray(value) ? value : []
+}
+
+/**
+ * How much an effect lowers its abilities: 0 for a missing or non-lowering effect.
+ *
+ * @param {object|undefined} effect The effect.
+ * @return {number}
+ */
+function effectCost(effect) {
+	if (!effect || effect.modification !== 'negative') return 0
+	return Math.abs(Number(effect.modifier) || 0)
+}
+
+/**
+ * The name, kind and description of a skill list, with their defaults.
+ *
+ * @param {object} list The list.
+ * @return {{name: string, kind: string, description: string}}
+ */
+function listText(list) {
+	return { name: list.name || '', kind: list.kind || 'skills', description: list.description || '' }
+}
+
+/**
+ * The name of the ability a list's skills are paid from, else the default pool.
+ *
+ * @param {object} list The list.
+ * @param {Map<string, object>} abilities The abilities by id.
+ * @param {string} xpLabel The name of the default pool.
+ * @return {string}
+ */
+function poolName(list, abilities, xpLabel) {
+	return abilities.get(String(list.costAbility || ''))?.name || xpLabel
 }
 
 /**
@@ -139,10 +213,8 @@ export function buildRulebook(data, xpLabel = 'XP', generalLabel = 'General skil
 			listIds.add(id)
 			return {
 				id,
-				name: list.name || '',
-				kind: list.kind || 'skills',
-				description: list.description || '',
-				pool: abilities.get(String(list.costAbility || ''))?.name || xpLabel,
+				...listText(list),
+				pool: poolName(list, abilities, xpLabel),
 				skills: visibleSkills.filter((skill) => String(skill.list || '') === id).sort(byOrderThenName).map(skillEntry),
 			}
 		})

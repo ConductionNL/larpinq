@@ -241,7 +241,7 @@ class SkillRequirementService {
 		}
 
 		foreach ($requirements as $entry) {
-			if ($entry['status'] === 'unmet' || $entry['status'] === 'unresolvable') {
+			if (in_array($entry['status'], ['unmet', 'unresolvable'], true) === true) {
 				return true;
 			}
 		}
