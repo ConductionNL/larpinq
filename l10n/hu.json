@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Kötelező. Például: cselekményjutalom a nyári fináléból.",
         "Grant with override": "Megadás felülbírálással",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} mostantól rendelkezik ezzel: {skill}. A felülbírálás és indoklása a naplóban szerepel.",
-        "The override was not saved: {reason}": "A felülbírálás nem lett mentve: {reason}"
+        "The override was not saved: {reason}": "A felülbírálás nem lett mentve: {reason}",
+        "Reject": "Elutasítás",
+        "Reject character": "Karakter elutasítása",
+        "Rejection reason": "Elutasítás oka",
+        "Tell the owner what to change. They can change the character and submit it again.": "Írja meg a tulajdonosnak, mit változtasson. Módosíthatja a karaktert, és újra beküldheti.",
+        "The character is rejected. Its owner is notified with your reason.": "A karakter elutasítva. A tulajdonos értesítést kap az indoklásával.",
+        "The character was not rejected: {reason}": "A karakter nem lett elutasítva: {reason}",
+        "Submit again": "Újbóli beküldés",
+        "Submitted again. The character waits for a game master.": "Újra beküldve. A karakter mesélőre vár.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Miért utasította el a mesélő a karaktert; a tulajdonos módosítja és újra beküldi",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Mesélői jóváhagyás állapota: még nincs jóváhagyva, jóváhagyva vagy indoklással elutasítva",
+        "rejected": "elutasítva"
     },
     "plurals": {}
 }

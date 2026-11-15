@@ -574,6 +574,7 @@
 					{ "key": "type", "label": "Type" },
 					{ "key": "status", "label": "Status" },
 					{ "key": "approved", "label": "Approved" },
+					{ "key": "rejectionReason", "label": "Rejection reason" },
 					{ "key": "setting", "label": "World" }
 				],
 				"selectable": true,
@@ -600,13 +601,40 @@
 						"icon": "CartOutline"
 					},
 					{
+						"id": "reject-character",
+						"type": "open-modal",
+						"target": "RejectCharacterDialog",
+						"label": "Reject",
+						"icon": "CloseCircleOutline",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/characters/game-master-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
+					{
+						"id": "resubmit-character",
+						"type": "api-call",
+						"label": "Submit again",
+						"icon": "Refresh",
+						"url": "/apps/larpinq/api/characters/{objectId}/resubmit",
+						"method": "POST",
+						"successMessage": "Submitted again. The character waits for a game master.",
+						"visibleWhen": {
+							"field": "approved",
+							"op": "eq",
+							"value": "rejected"
+						}
+					},
+					{
 						"id": "override-requirement",
 						"type": "open-modal",
 						"target": "OverrideRequirementDialog",
 						"label": "Override a requirement",
 						"icon": "ShieldAccountOutline",
 						"visibleWhen": {
-							"endpoint": "/apps/larpinq/api/characters/override-access",
+							"endpoint": "/apps/larpinq/api/characters/game-master-access",
 							"field": "allowed",
 							"op": "eq",
 							"value": true

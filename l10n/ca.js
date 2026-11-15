@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligatori. Per exemple: recompensa de la trama del final d'estiu.",
         "Grant with override": "Atorga amb excepció",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ara té {skill}. L'excepció i el seu motiu són al registre d'auditoria.",
-        "The override was not saved: {reason}": "L'excepció no s'ha desat: {reason}"
+        "The override was not saved: {reason}": "L'excepció no s'ha desat: {reason}",
+        "Reject": "Rebutja",
+        "Reject character": "Rebutja el personatge",
+        "Rejection reason": "Motiu del rebuig",
+        "Tell the owner what to change. They can change the character and submit it again.": "Digueu al propietari què ha de canviar. Pot canviar el personatge i tornar-lo a enviar.",
+        "The character is rejected. Its owner is notified with your reason.": "El personatge s'ha rebutjat. El propietari rep un avís amb el vostre motiu.",
+        "The character was not rejected: {reason}": "El personatge no s'ha rebutjat: {reason}",
+        "Submit again": "Torna a enviar",
+        "Submitted again. The character waits for a game master.": "S'ha tornat a enviar. El personatge espera un màster.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Per què un màster ha rebutjat el personatge; el propietari el canvia i el torna a enviar",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Estat d'aprovació del màster: encara no aprovat, aprovat o rebutjat amb un motiu",
+        "rejected": "rebutjat"
     },
     "nplurals=2; plural=(n != 1);"
 )

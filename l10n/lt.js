@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Privaloma. Pavyzdžiui: siužeto apdovanojimas iš vasaros finalo.",
         "Grant with override": "Suteikti su išimtimi",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} dabar turi įgūdį {skill}. Išimtis ir jos priežastis yra audito žurnale.",
-        "The override was not saved: {reason}": "Išimtis neišsaugota: {reason}"
+        "The override was not saved: {reason}": "Išimtis neišsaugota: {reason}",
+        "Reject": "Atmesti",
+        "Reject character": "Atmesti personažą",
+        "Rejection reason": "Atmetimo priežastis",
+        "Tell the owner what to change. They can change the character and submit it again.": "Pasakykite savininkui, ką pakeisti. Jis gali pakeisti personažą ir pateikti jį iš naujo.",
+        "The character is rejected. Its owner is notified with your reason.": "Personažas atmestas. Savininkui pranešama su jūsų priežastimi.",
+        "The character was not rejected: {reason}": "Personažas neatmestas: {reason}",
+        "Submit again": "Pateikti iš naujo",
+        "Submitted again. The character waits for a game master.": "Pateikta iš naujo. Personažas laukia žaidimo vedėjo.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Kodėl žaidimo vedėjas atmetė personažą; savininkas jį pakeičia ir pateikia iš naujo",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Žaidimo vedėjo patvirtinimo būsena: dar nepatvirtinta, patvirtinta arba atmesta su priežastimi",
+        "rejected": "atmesta"
     },
     "nplurals=2; plural=(n != 1);"
 )

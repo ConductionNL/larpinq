@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Задължително. Например: награда от сюжета на летния финал.",
         "Grant with override": "Даване с изключение",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} вече има умението {skill}. Изключението и причината му са в одитната следа.",
-        "The override was not saved: {reason}": "Изключението не е запазено: {reason}"
+        "The override was not saved: {reason}": "Изключението не е запазено: {reason}",
+        "Reject": "Отхвърляне",
+        "Reject character": "Отхвърляне на героя",
+        "Rejection reason": "Причина за отхвърляне",
+        "Tell the owner what to change. They can change the character and submit it again.": "Кажете на собственика какво да промени. Той може да промени героя и да го подаде отново.",
+        "The character is rejected. Its owner is notified with your reason.": "Героят е отхвърлен. Собственикът е уведомен с вашата причина.",
+        "The character was not rejected: {reason}": "Героят не е отхвърлен: {reason}",
+        "Submit again": "Подаване отново",
+        "Submitted again. The character waits for a game master.": "Подадено отново. Героят чака водещ на играта.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Защо водещият на играта е отхвърлил героя; собственикът го променя и го подава отново",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Статус на одобрение от водещия: още неодобрен, одобрен или отхвърлен с причина",
+        "rejected": "отхвърлен"
     },
     "plurals": {}
 }

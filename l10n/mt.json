@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Meħtieġ. Pereżempju: premju tal-plott mill-finali tas-sajf.",
         "Grant with override": "Agħti b'eċċezzjoni",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} issa għandu {skill}. L-eċċezzjoni u r-raġuni tagħha jinsabu fir-rekord tal-verifika.",
-        "The override was not saved: {reason}": "L-eċċezzjoni ma ġietx salvata: {reason}"
+        "The override was not saved: {reason}": "L-eċċezzjoni ma ġietx salvata: {reason}",
+        "Reject": "Irrifjuta",
+        "Reject character": "Irrifjuta l-karattru",
+        "Rejection reason": "Raġuni taċ-ċaħda",
+        "Tell the owner what to change. They can change the character and submit it again.": "Għid lis-sid x'għandu jibdel. Jista' jibdel il-karattru u jissottomettih mill-ġdid.",
+        "The character is rejected. Its owner is notified with your reason.": "Il-karattru ġie rrifjutat. Is-sid jiġi nnotifikat bir-raġuni tiegħek.",
+        "The character was not rejected: {reason}": "Il-karattru ma ġiex irrifjutat: {reason}",
+        "Submit again": "Issottometti mill-ġdid",
+        "Submitted again. The character waits for a game master.": "Issottomess mill-ġdid. Il-karattru qed jistenna kaptan tal-logħba.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Għaliex kaptan tal-logħba rrifjuta l-karattru; is-sid jibdlu u jissottomettih mill-ġdid",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status tal-approvazzjoni mill-kaptan: għadu mhux approvat, approvat jew irrifjutat b'raġuni",
+        "rejected": "irrifjutat"
     },
     "plurals": {}
 }

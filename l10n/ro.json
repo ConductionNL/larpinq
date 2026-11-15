@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Obligatoriu. De exemplu: recompensă din intriga finalei de vară.",
         "Grant with override": "Acordă cu excepție",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} are acum {skill}. Excepția și motivul ei sunt în jurnalul de audit.",
-        "The override was not saved: {reason}": "Excepția nu a fost salvată: {reason}"
+        "The override was not saved: {reason}": "Excepția nu a fost salvată: {reason}",
+        "Reject": "Respinge",
+        "Reject character": "Respinge personajul",
+        "Rejection reason": "Motivul respingerii",
+        "Tell the owner what to change. They can change the character and submit it again.": "Spuneți proprietarului ce să schimbe. Poate modifica personajul și îl poate trimite din nou.",
+        "The character is rejected. Its owner is notified with your reason.": "Personajul este respins. Proprietarul este notificat cu motivul dumneavoastră.",
+        "The character was not rejected: {reason}": "Personajul nu a fost respins: {reason}",
+        "Submit again": "Trimite din nou",
+        "Submitted again. The character waits for a game master.": "Trimis din nou. Personajul așteaptă un maestru de joc.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "De ce un maestru de joc a respins personajul; proprietarul îl modifică și îl trimite din nou",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Starea aprobării de către maestru: încă neaprobat, aprobat sau respins cu un motiv",
+        "rejected": "respins"
     },
     "plurals": {}
 }

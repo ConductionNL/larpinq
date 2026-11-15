@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Povinné. Například: odměna z příběhu letního finále.",
         "Grant with override": "Udělit s výjimkou",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} teď má dovednost {skill}. Výjimka a její důvod jsou v auditním záznamu.",
-        "The override was not saved: {reason}": "Výjimka nebyla uložena: {reason}"
+        "The override was not saved: {reason}": "Výjimka nebyla uložena: {reason}",
+        "Reject": "Zamítnout",
+        "Reject character": "Zamítnout postavu",
+        "Rejection reason": "Důvod zamítnutí",
+        "Tell the owner what to change. They can change the character and submit it again.": "Napište vlastníkovi, co má změnit. Může postavu upravit a znovu ji odeslat.",
+        "The character is rejected. Its owner is notified with your reason.": "Postava je zamítnuta. Vlastník dostane oznámení s vaším důvodem.",
+        "The character was not rejected: {reason}": "Postava nebyla zamítnuta: {reason}",
+        "Submit again": "Odeslat znovu",
+        "Submitted again. The character waits for a game master.": "Odesláno znovu. Postava čeká na vypravěče.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Proč vypravěč postavu zamítl; vlastník ji upraví a odešle znovu",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Stav schválení vypravěčem: zatím neschváleno, schváleno, nebo zamítnuto s důvodem",
+        "rejected": "zamítnuto"
     },
     "plurals": {}
 }

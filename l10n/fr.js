@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligatoire. Par exemple : récompense d'intrigue de la finale d'été.",
         "Grant with override": "Accorder avec exception",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} possède maintenant {skill}. L'exception et sa raison figurent dans la piste d'audit.",
-        "The override was not saved: {reason}": "L'exception n'a pas été enregistrée : {reason}"
+        "The override was not saved: {reason}": "L'exception n'a pas été enregistrée : {reason}",
+        "Reject": "Refuser",
+        "Reject character": "Refuser le personnage",
+        "Rejection reason": "Motif du refus",
+        "Tell the owner what to change. They can change the character and submit it again.": "Dites au propriétaire ce qu'il doit changer. Il peut modifier le personnage et le soumettre à nouveau.",
+        "The character is rejected. Its owner is notified with your reason.": "Le personnage est refusé. Son propriétaire est averti avec votre motif.",
+        "The character was not rejected: {reason}": "Le personnage n'a pas été refusé : {reason}",
+        "Submit again": "Soumettre à nouveau",
+        "Submitted again. The character waits for a game master.": "Soumis à nouveau. Le personnage attend un meneur de jeu.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Pourquoi un meneur de jeu a refusé le personnage ; le propriétaire le modifie et le soumet à nouveau",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Statut d'approbation par le meneur : pas encore approuvé, approuvé ou refusé avec un motif",
+        "rejected": "refusé"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -29,6 +29,7 @@ import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
 import OverrideRequirementDialog from './dialogs/OverrideRequirementDialog.vue'
+import RejectCharacterDialog from './dialogs/RejectCharacterDialog.vue'
 import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
@@ -88,6 +89,14 @@ export default {
 	OverrideRequirementDialog: {
 		kind: 'modal',
 		component: OverrideRequirementDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Reject" header action, game masters only: the
+	// approval lifecycle's reject transition with its required reason.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	RejectCharacterDialog: {
+		kind: 'modal',
+		component: RejectCharacterDialog,
 		propsSchema: {},
 	},
 	CopyWorldDialog: {

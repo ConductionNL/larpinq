@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Nauðsynlegt. Til dæmis: söguverðlaun úr sumarlokunum.",
         "Grant with override": "Veita með undanþágu",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} hefur nú {skill}. Undanþágan og ástæða hennar eru í endurskoðunarslóðinni.",
-        "The override was not saved: {reason}": "Undanþágan var ekki vistuð: {reason}"
+        "The override was not saved: {reason}": "Undanþágan var ekki vistuð: {reason}",
+        "Reject": "Hafna",
+        "Reject character": "Hafna persónu",
+        "Rejection reason": "Ástæða höfnunar",
+        "Tell the owner what to change. They can change the character and submit it again.": "Segðu eigandanum hverju á að breyta. Hann getur breytt persónunni og sent hana aftur.",
+        "The character is rejected. Its owner is notified with your reason.": "Persónunni er hafnað. Eigandinn fær tilkynningu með ástæðu þinni.",
+        "The character was not rejected: {reason}": "Persónunni var ekki hafnað: {reason}",
+        "Submit again": "Senda aftur",
+        "Submitted again. The character waits for a game master.": "Sent aftur. Persónan bíður eftir stjórnanda leiksins.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Hvers vegna stjórnandi leiksins hafnaði persónunni; eigandinn breytir henni og sendir aftur",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Staða samþykkis stjórnanda: ekki enn samþykkt, samþykkt eða hafnað með ástæðu",
+        "rejected": "hafnað"
     },
     "plurals": {}
 }

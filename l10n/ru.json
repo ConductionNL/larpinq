@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Обязательно. Например: сюжетная награда за летний финал.",
         "Grant with override": "Выдать с исключением",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} теперь имеет навык {skill}. Исключение и его причина записаны в журнале аудита.",
-        "The override was not saved: {reason}": "Исключение не сохранено: {reason}"
+        "The override was not saved: {reason}": "Исключение не сохранено: {reason}",
+        "Reject": "Отклонить",
+        "Reject character": "Отклонить персонажа",
+        "Rejection reason": "Причина отклонения",
+        "Tell the owner what to change. They can change the character and submit it again.": "Напишите владельцу, что изменить. Он может изменить персонажа и подать его снова.",
+        "The character is rejected. Its owner is notified with your reason.": "Персонаж отклонён. Владелец получит уведомление с вашей причиной.",
+        "The character was not rejected: {reason}": "Персонаж не отклонён: {reason}",
+        "Submit again": "Подать снова",
+        "Submitted again. The character waits for a game master.": "Подано снова. Персонаж ждёт мастера игры.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Почему мастер игры отклонил персонажа; владелец меняет его и подаёт снова",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Статус одобрения мастером: ещё не одобрен, одобрен или отклонён с причиной",
+        "rejected": "отклонён"
     },
     "plurals": {}
 }

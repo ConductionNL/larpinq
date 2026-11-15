@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligatori. Per exempel: premi da l'istorgia dal final da stad.",
         "Grant with override": "Dar cun excepziun",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ha ussa {skill}. L'excepziun ed ses motiv èn en il protocol da revisiun.",
-        "The override was not saved: {reason}": "L'excepziun n'è betg vegnida memorisada: {reason}"
+        "The override was not saved: {reason}": "L'excepziun n'è betg vegnida memorisada: {reason}",
+        "Reject": "Refusar",
+        "Reject character": "Refusar il persunaj",
+        "Rejection reason": "Motiv dal refus",
+        "Tell the owner what to change. They can change the character and submit it again.": "Di al possessur tge midar. El po midar il persunaj e al inoltrar danovamain.",
+        "The character is rejected. Its owner is notified with your reason.": "Il persunaj è refusà. Il possessur vegn infurmà cun tes motiv.",
+        "The character was not rejected: {reason}": "Il persunaj n'è betg vegnì refusà: {reason}",
+        "Submit again": "Inoltrar danovamain",
+        "Submitted again. The character waits for a game master.": "Inoltrà danovamain. Il persunaj spetga in manader dal gieu.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Pertge ch'in manader dal gieu ha refusà il persunaj; il possessur al mida e l'inoltrescha danovamain",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status da l'approvaziun dal manader: anc betg approvà, approvà u refusà cun in motiv",
+        "rejected": "refusà"
     },
     "nplurals=2; plural=(n != 1);"
 )

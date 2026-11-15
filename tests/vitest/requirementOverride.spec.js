@@ -188,9 +188,9 @@ describe('the Override a requirement action', () => {
 			target: 'OverrideRequirementDialog',
 			label: 'Override a requirement',
 			icon: 'ShieldAccountOutline',
-			visibleWhen: { endpoint: '/apps/larpinq/api/characters/override-access', field: 'allowed', op: 'eq', value: true },
+			visibleWhen: { endpoint: '/apps/larpinq/api/characters/game-master-access', field: 'allowed', op: 'eq', value: true },
 		})
 		expect(REGISTRY).toMatch(/OverrideRequirementDialog: \{\s*kind: 'modal',\s*component: OverrideRequirementDialog,/)
-		expect(ROUTES).toContain("['name' => 'characters#overrideAccess', 'url' => '/api/characters/override-access', 'verb' => 'GET']")
+		expect(ROUTES).toContain("['name' => 'characters#gameMasterAccess', 'url' => '/api/characters/game-master-access', 'verb' => 'GET']")
 	})
 })

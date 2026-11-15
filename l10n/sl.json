@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Obvezno. Na primer: nagrada zgodbe iz poletnega finala.",
         "Grant with override": "Dodeli z izjemo",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ima zdaj veščino {skill}. Izjema in njen razlog sta v revizijski sledi.",
-        "The override was not saved: {reason}": "Izjema ni bila shranjena: {reason}"
+        "The override was not saved: {reason}": "Izjema ni bila shranjena: {reason}",
+        "Reject": "Zavrni",
+        "Reject character": "Zavrni lika",
+        "Rejection reason": "Razlog zavrnitve",
+        "Tell the owner what to change. They can change the character and submit it again.": "Lastniku povejte, kaj naj spremeni. Lika lahko spremeni in ga znova odda.",
+        "The character is rejected. Its owner is notified with your reason.": "Lik je zavrnjen. Lastnik prejme obvestilo z vašim razlogom.",
+        "The character was not rejected: {reason}": "Lik ni bil zavrnjen: {reason}",
+        "Submit again": "Oddaj znova",
+        "Submitted again. The character waits for a game master.": "Znova oddano. Lik čaka na vodjo igre.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Zakaj je vodja igre zavrnil lika; lastnik ga spremeni in znova odda",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Stanje odobritve vodje igre: še ni odobren, odobren ali zavrnjen z razlogom",
+        "rejected": "zavrnjen"
     },
     "plurals": {}
 }

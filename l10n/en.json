@@ -784,7 +784,18 @@
         "Required. For example: plot reward from the summer finale.": "Required. For example: plot reward from the summer finale.",
         "Grant with override": "Grant with override",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} now has {skill}. The override and its reason are in the audit trail.",
-        "The override was not saved: {reason}": "The override was not saved: {reason}"
+        "The override was not saved: {reason}": "The override was not saved: {reason}",
+        "Reject": "Reject",
+        "Reject character": "Reject character",
+        "Rejection reason": "Rejection reason",
+        "Tell the owner what to change. They can change the character and submit it again.": "Tell the owner what to change. They can change the character and submit it again.",
+        "The character is rejected. Its owner is notified with your reason.": "The character is rejected. Its owner is notified with your reason.",
+        "The character was not rejected: {reason}": "The character was not rejected: {reason}",
+        "Submit again": "Submit again",
+        "Submitted again. The character waits for a game master.": "Submitted again. The character waits for a game master.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Why a game master rejected the character; the owner changes it and submits it again",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Approval status by game master: not yet approved, approved, or rejected with a reason",
+        "rejected": "rejected"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

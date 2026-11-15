@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligatoriskt. Till exempel: intrigbelöning från sommarfinalen.",
         "Grant with override": "Ge med åsidosättande",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} har nu {skill}. Åsidosättandet och skälet finns i granskningsloggen.",
-        "The override was not saved: {reason}": "Åsidosättandet sparades inte: {reason}"
+        "The override was not saved: {reason}": "Åsidosättandet sparades inte: {reason}",
+        "Reject": "Avvisa",
+        "Reject character": "Avvisa karaktär",
+        "Rejection reason": "Skäl för avvisning",
+        "Tell the owner what to change. They can change the character and submit it again.": "Berätta för ägaren vad som ska ändras. Hen kan ändra karaktären och skicka in den igen.",
+        "The character is rejected. Its owner is notified with your reason.": "Karaktären är avvisad. Ägaren meddelas med ditt skäl.",
+        "The character was not rejected: {reason}": "Karaktären avvisades inte: {reason}",
+        "Submit again": "Skicka in igen",
+        "Submitted again. The character waits for a game master.": "Inskickad igen. Karaktären väntar på en spelledare.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Varför en spelledare avvisade karaktären; ägaren ändrar den och skickar in den igen",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Godkännandestatus från spelledare: ännu inte godkänd, godkänd eller avvisad med ett skäl",
+        "rejected": "avvisad"
     },
     "nplurals=2; plural=(n != 1);"
 )

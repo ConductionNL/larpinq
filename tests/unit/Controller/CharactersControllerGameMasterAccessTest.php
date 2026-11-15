@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Unit tests for CharactersController::overrideAccess(): who the character
+ * Unit tests for CharactersController::gameMasterAccess(): who the character
  * page offers the requirement override action to.
  *
  * @category Test
@@ -34,7 +34,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * The override action is offered to game masters and administrators only.
  */
-class CharactersControllerOverrideAccessTest extends TestCase {
+class CharactersControllerGameMasterAccessTest extends TestCase {
 
 	/**
 	 * A controller for a caller.
@@ -76,7 +76,7 @@ class CharactersControllerOverrideAccessTest extends TestCase {
 	 * @return void
 	 */
 	public function testAGameMasterMayOverride(): void {
-		$response = $this->controller(uid: 'joris', gm: true)->overrideAccess();
+		$response = $this->controller(uid: 'joris', gm: true)->gameMasterAccess();
 
 		self::assertSame(expected: 200, actual: $response->getStatus());
 		self::assertSame(expected: ['allowed' => true], actual: $response->getData());
@@ -88,7 +88,7 @@ class CharactersControllerOverrideAccessTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnAdministratorMayOverride(): void {
-		self::assertSame(expected: ['allowed' => true], actual: $this->controller(uid: 'admin', admin: true)->overrideAccess()->getData());
+		self::assertSame(expected: ['allowed' => true], actual: $this->controller(uid: 'admin', admin: true)->gameMasterAccess()->getData());
 	}//end testAnAdministratorMayOverride()
 
 	/**
@@ -97,7 +97,7 @@ class CharactersControllerOverrideAccessTest extends TestCase {
 	 * @return void
 	 */
 	public function testAPlayerHasNoOverride(): void {
-		self::assertSame(expected: ['allowed' => false], actual: $this->controller(uid: 'sem')->overrideAccess()->getData());
+		self::assertSame(expected: ['allowed' => false], actual: $this->controller(uid: 'sem')->gameMasterAccess()->getData());
 	}//end testAPlayerHasNoOverride()
 
 	/**
@@ -106,6 +106,6 @@ class CharactersControllerOverrideAccessTest extends TestCase {
 	 * @return void
 	 */
 	public function testNobodySignedInIsUnauthorised(): void {
-		self::assertSame(expected: 401, actual: $this->controller(uid: null)->overrideAccess()->getStatus());
+		self::assertSame(expected: 401, actual: $this->controller(uid: null)->gameMasterAccess()->getStatus());
 	}//end testNobodySignedInIsUnauthorised()
 }//end class

@@ -908,7 +908,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Verplicht. Bijvoorbeeld: plotbeloning uit de zomerfinale.",
         "Grant with override": "Toekennen met uitzondering",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} heeft nu {skill}. De uitzondering en de reden staan in het auditlogboek.",
-        "The override was not saved: {reason}": "De uitzondering is niet opgeslagen: {reason}"
+        "The override was not saved: {reason}": "De uitzondering is niet opgeslagen: {reason}",
+        "Reject": "Afkeuren",
+        "Reject character": "Karakter afkeuren",
+        "Rejection reason": "Reden van afkeuring",
+        "Tell the owner what to change. They can change the character and submit it again.": "Vertel de eigenaar wat er moet veranderen. Die kan het karakter aanpassen en opnieuw indienen.",
+        "The character is rejected. Its owner is notified with your reason.": "Het karakter is afgekeurd. De eigenaar krijgt een melding met jouw reden.",
+        "The character was not rejected: {reason}": "Het karakter is niet afgekeurd: {reason}",
+        "Submit again": "Opnieuw indienen",
+        "Submitted again. The character waits for a game master.": "Opnieuw ingediend. Het karakter wacht op een spelleider.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Waarom een spelleider het karakter heeft afgekeurd; de eigenaar past het aan en dient het opnieuw in",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Goedkeuringsstatus door de spelleider: nog niet goedgekeurd, goedgekeurd of afgekeurd met een reden",
+        "rejected": "afgekeurd"
     },
     "nplurals=2; plural=(n != 1);"
 )

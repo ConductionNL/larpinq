@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Zorunlu. Örneğin: yaz finalinden olay örgüsü ödülü.",
         "Grant with override": "İstisnayla ver",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} artık {skill} yeteneğine sahip. İstisna ve gerekçesi denetim kaydında.",
-        "The override was not saved: {reason}": "İstisna kaydedilmedi: {reason}"
+        "The override was not saved: {reason}": "İstisna kaydedilmedi: {reason}",
+        "Reject": "Reddet",
+        "Reject character": "Karakteri reddet",
+        "Rejection reason": "Ret nedeni",
+        "Tell the owner what to change. They can change the character and submit it again.": "Sahibine neyi değiştirmesi gerektiğini söyleyin. Karakteri değiştirip yeniden gönderebilir.",
+        "The character is rejected. Its owner is notified with your reason.": "Karakter reddedildi. Sahibine gerekçenizle bildirim gönderilir.",
+        "The character was not rejected: {reason}": "Karakter reddedilmedi: {reason}",
+        "Submit again": "Yeniden gönder",
+        "Submitted again. The character waits for a game master.": "Yeniden gönderildi. Karakter bir oyun yöneticisini bekliyor.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Bir oyun yöneticisinin karakteri neden reddettiği; sahibi onu değiştirip yeniden gönderir",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Oyun yöneticisi onay durumu: henüz onaylanmadı, onaylandı veya gerekçeyle reddedildi",
+        "rejected": "reddedildi"
     },
     "nplurals=2; plural=(n != 1);"
 )

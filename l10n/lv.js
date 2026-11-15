@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligāti. Piemēram: sižeta balva no vasaras fināla.",
         "Grant with override": "Piešķirt ar izņēmumu",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} tagad ir prasme {skill}. Izņēmums un tā iemesls ir audita žurnālā.",
-        "The override was not saved: {reason}": "Izņēmums netika saglabāts: {reason}"
+        "The override was not saved: {reason}": "Izņēmums netika saglabāts: {reason}",
+        "Reject": "Noraidīt",
+        "Reject character": "Noraidīt tēlu",
+        "Rejection reason": "Noraidīšanas iemesls",
+        "Tell the owner what to change. They can change the character and submit it again.": "Pasakiet īpašniekam, ko mainīt. Viņš var mainīt tēlu un iesniegt to vēlreiz.",
+        "The character is rejected. Its owner is notified with your reason.": "Tēls ir noraidīts. Īpašnieks saņem paziņojumu ar jūsu iemeslu.",
+        "The character was not rejected: {reason}": "Tēls netika noraidīts: {reason}",
+        "Submit again": "Iesniegt vēlreiz",
+        "Submitted again. The character waits for a game master.": "Iesniegts vēlreiz. Tēls gaida spēles vadītāju.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Kāpēc spēles vadītājs noraidīja tēlu; īpašnieks to maina un iesniedz vēlreiz",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Spēles vadītāja apstiprinājuma statuss: vēl nav apstiprināts, apstiprināts vai noraidīts ar iemeslu",
+        "rejected": "noraidīts"
     },
     "nplurals=2; plural=(n != 1);"
 )

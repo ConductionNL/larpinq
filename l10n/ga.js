@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Riachtanach. Mar shampla: duais phlota ó chluiche ceannais an tsamhraidh.",
         "Grant with override": "Tabhair le sárú",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "Tá {skill} ag {character} anois. Tá an sárú agus a chúis sa rian iniúchta.",
-        "The override was not saved: {reason}": "Níor sábháladh an sárú: {reason}"
+        "The override was not saved: {reason}": "Níor sábháladh an sárú: {reason}",
+        "Reject": "Diúltaigh",
+        "Reject character": "Diúltaigh don charachtar",
+        "Rejection reason": "Cúis an diúltaithe",
+        "Tell the owner what to change. They can change the character and submit it again.": "Inis don úinéir cad ba cheart a athrú. Is féidir leo an carachtar a athrú agus é a chur isteach arís.",
+        "The character is rejected. Its owner is notified with your reason.": "Diúltaíodh don charachtar. Cuirtear an t-úinéir ar an eolas faoi do chúis.",
+        "The character was not rejected: {reason}": "Níor diúltaíodh don charachtar: {reason}",
+        "Submit again": "Cuir isteach arís",
+        "Submitted again. The character waits for a game master.": "Curtha isteach arís. Tá an carachtar ag fanacht le máistir cluiche.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Cén fáth ar dhiúltaigh máistir cluiche don charachtar; athraíonn an t-úinéir é agus cuireann sé isteach arís é",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Stádas ceadaithe ag máistir cluiche: gan cheadú fós, ceadaithe, nó diúltaithe le cúis",
+        "rejected": "diúltaithe"
     },
     "nplurals=2; plural=(n != 1);"
 )

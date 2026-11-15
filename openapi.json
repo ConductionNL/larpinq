@@ -167,11 +167,11 @@
                 ]
             }
         },
-        "/characters/override-access": {
+        "/characters/game-master-access": {
             "get": {
-                "operationId": "characters-override-access",
-                "summary": "Whether the signed-in user may record a requirement override; the character page shows its override action on this answer",
-                "description": "Whether the signed-in user may record a requirement override: game masters and admins. The character page shows its override action on this answer; the write itself is checked by the requirement listener.",
+                "operationId": "characters-game-master-access",
+                "summary": "Whether the signed-in user is a game master for the character page's game master actions",
+                "description": "Whether the signed-in user may record a requirement override or reject a character: game masters and admins. The character page shows its Override a requirement and Reject actions on this answer; the writes themselves are checked by the requirement listener and the lifecycle.",
                 "tags": [
                     "characters"
                 ],
@@ -313,6 +313,57 @@
                         }
                     }
                 }
+            }
+        },
+        "/characters/{id}/resubmit": {
+            "post": {
+                "operationId": "character-resubmission-resubmit",
+                "summary": "Submit a rejected character again",
+                "description": "Submit a rejected character again: it goes back to waiting for approval and the game masters are told. The character's owner or a game master only; a character that is not rejected is refused with 409 and changes nothing.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The saved character, or 401, 403, 404, 409.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
             }
         },
         "/characters/{id}/stats": {

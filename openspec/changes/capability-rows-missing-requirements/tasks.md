@@ -24,4 +24,4 @@
 
 ## 6. Rejecting a character
 
-- [ ] 6.1 A `rejected` state with a required `rejectionReason` on the character's approval lifecycle, a Reject action for game masters next to Approve in `src/manifest.json`, the state and reason on the character page and in the Characters list, and a notification to the owner; a rejected character can be submitted again (REQ-CTA-001). Verify: `npm run check:register`; `npm run check:manifest`; PHPUnit for the transition and the notification; Dutch and English strings with `npm run test:l10n`.
+- [x] 6.1 A `rejected` state with a required `rejectionReason` on the character's approval lifecycle, a Reject action for game masters next to Approve in `src/manifest.json`, the state and reason on the character page and in the Characters list, and a notification to the owner; a rejected character can be submitted again (REQ-CTA-001). Verify: `npm run check:register`; `npm run check:manifest`; PHPUnit for the transition and the notification; Dutch and English strings with `npm run test:l10n`.

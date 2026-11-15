@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Obrigatório. Por exemplo: recompensa de enredo do final de verão.",
         "Grant with override": "Conceder com exceção",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} tem agora {skill}. A exceção e o seu motivo estão no registo de auditoria.",
-        "The override was not saved: {reason}": "A exceção não foi guardada: {reason}"
+        "The override was not saved: {reason}": "A exceção não foi guardada: {reason}",
+        "Reject": "Rejeitar",
+        "Reject character": "Rejeitar personagem",
+        "Rejection reason": "Motivo da rejeição",
+        "Tell the owner what to change. They can change the character and submit it again.": "Diga ao proprietário o que mudar. Pode alterar a personagem e submetê-la de novo.",
+        "The character is rejected. Its owner is notified with your reason.": "A personagem foi rejeitada. O proprietário é notificado com o seu motivo.",
+        "The character was not rejected: {reason}": "A personagem não foi rejeitada: {reason}",
+        "Submit again": "Submeter de novo",
+        "Submitted again. The character waits for a game master.": "Submetida de novo. A personagem aguarda um mestre de jogo.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Porque um mestre de jogo rejeitou a personagem; o proprietário altera-a e submete-a de novo",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Estado de aprovação pelo mestre: ainda não aprovado, aprovado ou rejeitado com um motivo",
+        "rejected": "rejeitado"
     },
     "plurals": {}
 }

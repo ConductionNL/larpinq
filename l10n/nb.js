@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Påkrevd. For eksempel: plotbelønning fra sommerfinalen.",
         "Grant with override": "Gi med overstyring",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} har nå {skill}. Overstyringen og begrunnelsen står i revisjonssporet.",
-        "The override was not saved: {reason}": "Overstyringen ble ikke lagret: {reason}"
+        "The override was not saved: {reason}": "Overstyringen ble ikke lagret: {reason}",
+        "Reject": "Avvis",
+        "Reject character": "Avvis karakter",
+        "Rejection reason": "Begrunnelse for avvisning",
+        "Tell the owner what to change. They can change the character and submit it again.": "Fortell eieren hva som må endres. De kan endre karakteren og sende den inn på nytt.",
+        "The character is rejected. Its owner is notified with your reason.": "Karakteren er avvist. Eieren varsles med begrunnelsen din.",
+        "The character was not rejected: {reason}": "Karakteren ble ikke avvist: {reason}",
+        "Submit again": "Send inn på nytt",
+        "Submitted again. The character waits for a game master.": "Sendt inn på nytt. Karakteren venter på en spilleder.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Hvorfor en spilleder avviste karakteren; eieren endrer den og sender den inn på nytt",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Godkjenningsstatus fra spilleder: ikke godkjent ennå, godkjent eller avvist med en begrunnelse",
+        "rejected": "avvist"
     },
     "nplurals=2; plural=(n != 1);"
 )

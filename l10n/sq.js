@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "E detyrueshme. Për shembull: shpërblim i subjektit nga finalja e verës.",
         "Grant with override": "Jep me përjashtim",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} tani ka aftësinë {skill}. Përjashtimi dhe arsyeja e tij janë në gjurmën e auditimit.",
-        "The override was not saved: {reason}": "Përjashtimi nuk u ruajt: {reason}"
+        "The override was not saved: {reason}": "Përjashtimi nuk u ruajt: {reason}",
+        "Reject": "Refuzo",
+        "Reject character": "Refuzo personazhin",
+        "Rejection reason": "Arsyeja e refuzimit",
+        "Tell the owner what to change. They can change the character and submit it again.": "Thuajini pronarit çfarë të ndryshojë. Ai mund ta ndryshojë personazhin dhe ta dorëzojë përsëri.",
+        "The character is rejected. Its owner is notified with your reason.": "Personazhi u refuzua. Pronari njoftohet me arsyen tuaj.",
+        "The character was not rejected: {reason}": "Personazhi nuk u refuzua: {reason}",
+        "Submit again": "Dorëzo përsëri",
+        "Submitted again. The character waits for a game master.": "U dorëzua përsëri. Personazhi pret një drejtues loje.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Pse një drejtues loje e refuzoi personazhin; pronari e ndryshon dhe e dorëzon përsëri",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Statusi i miratimit nga drejtuesi: ende i pamiratuar, i miratuar ose i refuzuar me arsye",
+        "rejected": "i refuzuar"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Obligatoresch. Zum Beispill: Plot-Belounung aus dem Summerfinal.",
         "Grant with override": "Mat Ausnam ginn",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} huet elo {skill}. D'Ausnam an hire Grond stinn am Audit-Protokoll.",
-        "The override was not saved: {reason}": "D'Ausnam gouf net gespäichert: {reason}"
+        "The override was not saved: {reason}": "D'Ausnam gouf net gespäichert: {reason}",
+        "Reject": "Ofleenen",
+        "Reject character": "Personnage ofleenen",
+        "Rejection reason": "Grond vun der Oflehnung",
+        "Tell the owner what to change. They can change the character and submit it again.": "Sot dem Besëtzer, wat e soll änneren. E kann de Personnage änneren an nach eng Kéier areechen.",
+        "The character is rejected. Its owner is notified with your reason.": "De Personnage ass ofgeleent. De Besëtzer kritt eng Notifikatioun mat Ärem Grond.",
+        "The character was not rejected: {reason}": "De Personnage gouf net ofgeleent: {reason}",
+        "Submit again": "Nach eng Kéier areechen",
+        "Submitted again. The character waits for a game master.": "Nach eng Kéier agereecht. De Personnage waart op d'Spillleedung.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Firwat d'Spillleedung de Personnage ofgeleent huet; de Besëtzer ännert en a reecht en nach eng Kéier an",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Fräigabestatus vun der Spillleedung: nach net fräiginn, fräiginn oder mat Grond ofgeleent",
+        "rejected": "ofgeleent"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -818,7 +818,18 @@ OC.L10N.register(
         "Required. For example: plot reward from the summer finale.": "Wymagane. Na przykład: nagroda fabularna z letniego finału.",
         "Grant with override": "Nadaj z wyjątkiem",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character} ma teraz umiejętność {skill}. Wyjątek i jego powód są w dzienniku audytu.",
-        "The override was not saved: {reason}": "Wyjątek nie został zapisany: {reason}"
+        "The override was not saved: {reason}": "Wyjątek nie został zapisany: {reason}",
+        "Reject": "Odrzuć",
+        "Reject character": "Odrzuć postać",
+        "Rejection reason": "Powód odrzucenia",
+        "Tell the owner what to change. They can change the character and submit it again.": "Napisz właścicielowi, co ma zmienić. Może zmienić postać i zgłosić ją ponownie.",
+        "The character is rejected. Its owner is notified with your reason.": "Postać została odrzucona. Właściciel otrzyma powiadomienie z Twoim powodem.",
+        "The character was not rejected: {reason}": "Postać nie została odrzucona: {reason}",
+        "Submit again": "Zgłoś ponownie",
+        "Submitted again. The character waits for a game master.": "Zgłoszono ponownie. Postać czeka na mistrza gry.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Dlaczego mistrz gry odrzucił postać; właściciel ją zmienia i zgłasza ponownie",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status zatwierdzenia przez mistrza gry: jeszcze niezatwierdzona, zatwierdzona lub odrzucona z powodem",
+        "rejected": "odrzucona"
     },
     "nplurals=2; plural=(n != 1);"
 )

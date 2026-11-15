@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Υποχρεωτικό. Για παράδειγμα: ανταμοιβή πλοκής από το καλοκαιρινό φινάλε.",
         "Grant with override": "Παραχώρηση με παράκαμψη",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: έχει πλέον τη δεξιότητα {skill}. Η παράκαμψη και ο λόγος της βρίσκονται στο αρχείο ελέγχου.",
-        "The override was not saved: {reason}": "Η παράκαμψη δεν αποθηκεύτηκε: {reason}"
+        "The override was not saved: {reason}": "Η παράκαμψη δεν αποθηκεύτηκε: {reason}",
+        "Reject": "Απόρριψη",
+        "Reject character": "Απόρριψη χαρακτήρα",
+        "Rejection reason": "Λόγος απόρριψης",
+        "Tell the owner what to change. They can change the character and submit it again.": "Πείτε στον κάτοχο τι να αλλάξει. Μπορεί να αλλάξει τον χαρακτήρα και να τον υποβάλει ξανά.",
+        "The character is rejected. Its owner is notified with your reason.": "Ο χαρακτήρας απορρίφθηκε. Ο κάτοχος ειδοποιείται με τον λόγο σας.",
+        "The character was not rejected: {reason}": "Ο χαρακτήρας δεν απορρίφθηκε: {reason}",
+        "Submit again": "Υποβολή ξανά",
+        "Submitted again. The character waits for a game master.": "Υποβλήθηκε ξανά. Ο χαρακτήρας περιμένει αφηγητή.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Γιατί ένας αφηγητής απέρριψε τον χαρακτήρα· ο κάτοχος τον αλλάζει και τον υποβάλλει ξανά",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Κατάσταση έγκρισης από αφηγητή: δεν έχει εγκριθεί ακόμη, εγκρίθηκε ή απορρίφθηκε με λόγο",
+        "rejected": "απορρίφθηκε"
     },
     "plurals": {}
 }

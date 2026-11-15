@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Pakollinen. Esimerkiksi: juonipalkinto kesän finaalista.",
         "Grant with override": "Anna ohituksella",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: nyt taito {skill}. Ohitus ja sen syy ovat tarkastuslokissa.",
-        "The override was not saved: {reason}": "Ohitusta ei tallennettu: {reason}"
+        "The override was not saved: {reason}": "Ohitusta ei tallennettu: {reason}",
+        "Reject": "Hylkää",
+        "Reject character": "Hylkää hahmo",
+        "Rejection reason": "Hylkäyksen syy",
+        "Tell the owner what to change. They can change the character and submit it again.": "Kerro omistajalle, mitä muuttaa. Hän voi muuttaa hahmoa ja lähettää sen uudelleen.",
+        "The character is rejected. Its owner is notified with your reason.": "Hahmo on hylätty. Omistajalle ilmoitetaan syystäsi.",
+        "The character was not rejected: {reason}": "Hahmoa ei hylätty: {reason}",
+        "Submit again": "Lähetä uudelleen",
+        "Submitted again. The character waits for a game master.": "Lähetetty uudelleen. Hahmo odottaa pelinjohtajaa.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Miksi pelinjohtaja hylkäsi hahmon; omistaja muuttaa sitä ja lähettää sen uudelleen",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Pelinjohtajan hyväksynnän tila: ei vielä hyväksytty, hyväksytty tai hylätty syyn kanssa",
+        "rejected": "hylätty"
     },
     "plurals": {}
 }

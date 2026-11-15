@@ -817,7 +817,18 @@
         "Required. For example: plot reward from the summer finale.": "Kohustuslik. Näiteks: süžeepreemia suvefinaalist.",
         "Grant with override": "Anna erandiga",
         "{character} now has {skill}. The override and its reason are in the audit trail.": "{character}: nüüd on oskus {skill}. Erand ja selle põhjus on auditilogis.",
-        "The override was not saved: {reason}": "Erandit ei salvestatud: {reason}"
+        "The override was not saved: {reason}": "Erandit ei salvestatud: {reason}",
+        "Reject": "Lükka tagasi",
+        "Reject character": "Lükka tegelane tagasi",
+        "Rejection reason": "Tagasilükkamise põhjus",
+        "Tell the owner what to change. They can change the character and submit it again.": "Ütle omanikule, mida muuta. Ta saab tegelast muuta ja selle uuesti esitada.",
+        "The character is rejected. Its owner is notified with your reason.": "Tegelane on tagasi lükatud. Omanikku teavitatakse sinu põhjusega.",
+        "The character was not rejected: {reason}": "Tegelast ei lükatud tagasi: {reason}",
+        "Submit again": "Esita uuesti",
+        "Submitted again. The character waits for a game master.": "Uuesti esitatud. Tegelane ootab mängujuhti.",
+        "Why a game master rejected the character; the owner changes it and submits it again": "Miks mängujuht tegelase tagasi lükkas; omanik muudab seda ja esitab uuesti",
+        "Approval status by game master: not yet approved, approved, or rejected with a reason": "Mängujuhi kinnituse olek: veel kinnitamata, kinnitatud või põhjusega tagasi lükatud",
+        "rejected": "tagasi lükatud"
     },
     "plurals": {}
 }
