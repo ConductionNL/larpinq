@@ -26,6 +26,22 @@ export const STAFF_ROLES = [
 	'larpinq-stewards',
 ]
 
+// Functions, so each text is translated when it is shown and stays a literal t() call for the catalogue.
+const ROLE_LABELS = {
+	gamemasters: () => t('larpinq', 'Game master'),
+	'larpinq-writers': () => t('larpinq', 'Story writer'),
+	'larpinq-rules': () => t('larpinq', 'Rules marshal'),
+	'larpinq-treasurers': () => t('larpinq', 'Treasurer'),
+	'larpinq-stewards': () => t('larpinq', 'Steward'),
+}
+
+const STATE_LABELS = {
+	valid: () => t('larpinq', 'Open'),
+	expired: () => t('larpinq', 'Expired'),
+	'used-up': () => t('larpinq', 'Used up'),
+	revoked: () => t('larpinq', 'Revoked'),
+}
+
 /**
  * The name of a role, as people read it.
  *
@@ -35,20 +51,7 @@ export const STAFF_ROLES = [
  * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-four-staff-roles-exist-next-to-the-game-masters-req-asr-001
  */
 export function roleLabel(role) {
-	switch (role) {
-	case 'gamemasters':
-		return t('larpinq', 'Game master')
-	case 'larpinq-writers':
-		return t('larpinq', 'Story writer')
-	case 'larpinq-rules':
-		return t('larpinq', 'Rules marshal')
-	case 'larpinq-treasurers':
-		return t('larpinq', 'Treasurer')
-	case 'larpinq-stewards':
-		return t('larpinq', 'Steward')
-	default:
-		return role
-	}
+	return Object.hasOwn(ROLE_LABELS, role) ? ROLE_LABELS[role]() : role
 }
 
 /**
@@ -60,18 +63,7 @@ export function roleLabel(role) {
  * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
  */
 export function stateLabel(state) {
-	switch (state) {
-	case 'valid':
-		return t('larpinq', 'Open')
-	case 'expired':
-		return t('larpinq', 'Expired')
-	case 'used-up':
-		return t('larpinq', 'Used up')
-	case 'revoked':
-		return t('larpinq', 'Revoked')
-	default:
-		return state
-	}
+	return Object.hasOwn(STATE_LABELS, state) ? STATE_LABELS[state]() : state
 }
 
 /**

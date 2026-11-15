@@ -29,6 +29,7 @@ use DomainException;
 use InvalidArgumentException;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -133,17 +134,9 @@ class StaffInviteService {
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
 	public function create(string $role, int $days, int $maxUses, string $actingUid): array {
-		if (in_array($role, self::roles(), true) === false) {
-			throw new InvalidArgumentException('Unknown role');
-		}
-
-		if ($days < 1 || $days > self::MAX_DAYS) {
-			throw new InvalidArgumentException('An invite is valid for 1 to ' . self::MAX_DAYS . ' days');
-		}
-
-		if ($maxUses < 1 || $maxUses > self::MAX_USES) {
-			throw new InvalidArgumentException('An invite has 1 to ' . self::MAX_USES . ' uses');
-		}
+		self::assertKnownRole(role: $role);
+		self::assertDays(days: $days);
+		self::assertMaxUses(maxUses: $maxUses);
 
 		$token = bin2hex(random_bytes(16));
 		$now = $this->now();
@@ -195,31 +188,13 @@ class StaffInviteService {
 	 */
 	public function redeem(string $token, IUser $user): array {
 		$invite = $this->findByToken(token: $token);
-		$state = $this->state(invite: $invite);
-		if ($state !== self::STATE_VALID) {
-			throw new DomainException($state);
-		}
-
-		$role = (string)($invite['role'] ?? '');
-		$group = $this->groupManager->get($role);
-		if (in_array($role, self::roles(), true) === false || $group === null) {
-			throw new OutOfBoundsException('The role of this invite does not exist');
-		}
-
+		$group = $this->redeemableGroup(invite: $invite);
+		$role  = (string)($invite['role'] ?? '');
 		if ($group->inGroup($user) === true) {
 			return ['role' => $role, 'joined' => false];
 		}
 
-		$uses = self::uses(invite: $invite);
-		$uses[] = ['uid' => $user->getUID(), 'at' => $this->now()->format(DateTimeInterface::ATOM)];
-		$invite['uses'] = $uses;
-		// The whole invite is written back, token hash included: a save replaces the object.
-		$this->objectFetcher->saveObjectWithAppAuthority(
-			objectType: self::OBJECT_TYPE,
-			data: self::payload(invite: $invite),
-			uuid: self::idOf(invite: $invite)
-		);
-
+		$this->recordUse(invite: $invite, user: $user);
 		$group->addUser($user);
 		$users = $this->groupManager->get(AppIdentity::USERS_GROUP);
 		if ($users !== null && $users->inGroup($user) === false) {
@@ -241,9 +216,54 @@ class StaffInviteService {
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 	 */
+	/**
+	 * The group a valid invite adds to.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 *
+	 * @return IGroup
+	 *
+	 * @throws DomainException     When the invite is not valid; the message is its state.
+	 * @throws OutOfBoundsException When its role is not a staff role or the group is gone.
+	 */
+	private function redeemableGroup(array $invite): IGroup {
+		$state = $this->state(invite: $invite);
+		if ($state !== self::STATE_VALID) {
+			throw new DomainException($state);
+		}
+
+		$role  = (string)($invite['role'] ?? '');
+		$group = $this->groupManager->get($role);
+		if (in_array($role, self::roles(), true) === false || $group === null) {
+			throw new OutOfBoundsException('The role of this invite does not exist');
+		}
+
+		return $group;
+	}//end redeemableGroup()
+
+	/**
+	 * Write the invite back with one more use by this user.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 * @param IUser                $user   Who redeemed it.
+	 *
+	 * @return void
+	 */
+	private function recordUse(array $invite, IUser $user): void {
+		$uses   = self::uses(invite: $invite);
+		$uses[] = ['uid' => $user->getUID(), 'at' => $this->now()->format(DateTimeInterface::ATOM)];
+		$invite['uses'] = $uses;
+		// The whole invite is written back, token hash included: a save replaces the object.
+		$this->objectFetcher->saveObjectWithAppAuthority(
+			objectType: self::OBJECT_TYPE,
+			data: self::payload(invite: $invite),
+			uuid: self::idOf(invite: $invite)
+		);
+	}//end recordUse()
+
 	public function revoke(string $id, string $actingUid): array {
 		$invite = $this->objectFetcher->getObjectOfType(objectType: self::OBJECT_TYPE, id: $id);
-		if (is_string($invite['revokedAt'] ?? null) === true && $invite['revokedAt'] !== '') {
+		if (self::isRevoked(invite: $invite) === true) {
 			return self::withoutHash(invite: $invite);
 		}
 
@@ -268,14 +288,7 @@ class StaffInviteService {
 	public function team(): array {
 		$roles = [];
 		foreach (self::roles() as $role) {
-			$members = [];
-			$group = $this->groupManager->get($role);
-			foreach (($group?->getUsers() ?? []) as $member) {
-				$members[] = ['uid' => $member->getUID(), 'displayName' => $member->getDisplayName()];
-			}
-
-			usort($members, static fn (array $a, array $b): int => strcasecmp($a['displayName'], $b['displayName']));
-			$roles[] = ['role' => $role, 'members' => $members];
+			$roles[] = ['role' => $role, 'members' => $this->members(role: $role)];
 		}
 
 		$invites = [];
@@ -305,18 +318,37 @@ class StaffInviteService {
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 	 */
-	public function removeMember(string $role, string $uid, string $actingUid): bool {
-		if (in_array($role, self::roles(), true) === false) {
-			throw new InvalidArgumentException('Unknown role');
+	/**
+	 * A role's members by display name.
+	 *
+	 * @param string $role The group id.
+	 *
+	 * @return list<array{uid: string, displayName: string}>
+	 */
+	private function members(string $role): array {
+		$members = [];
+		foreach (($this->groupManager->get($role)?->getUsers() ?? []) as $member) {
+			$members[] = ['uid' => $member->getUID(), 'displayName' => $member->getDisplayName()];
 		}
+
+		usort($members, static fn (array $a, array $b): int => strcasecmp($a['displayName'], $b['displayName']));
+		return $members;
+	}//end members()
+
+	public function removeMember(string $role, string $uid, string $actingUid): bool {
+		self::assertKnownRole(role: $role);
 
 		if ($role === AppIdentity::GM_GROUP && $uid === $actingUid) {
 			throw new DomainException('You cannot remove yourself from the game masters');
 		}
 
 		$group = $this->groupManager->get($role);
-		$user = $this->userManager->get($uid);
-		if ($group === null || $user === null || $group->inGroup($user) === false) {
+		$user  = $this->userManager->get($uid);
+		if ($group === null || $user === null) {
+			return false;
+		}
+
+		if ($group->inGroup($user) === false) {
 			return false;
 		}
 
@@ -334,16 +366,11 @@ class StaffInviteService {
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
 	public function state(array $invite): string {
-		if (is_string($invite['revokedAt'] ?? null) === true && $invite['revokedAt'] !== '') {
+		if (self::isRevoked(invite: $invite) === true) {
 			return self::STATE_REVOKED;
 		}
 
-		$expires = false;
-		if (is_string($invite['expiresAt'] ?? null) === true) {
-			$expires = strtotime($invite['expiresAt']);
-		}
-
-		if ($expires === false || $expires <= $this->now()->getTimestamp()) {
+		if ($this->isExpired(invite: $invite) === true) {
 			return self::STATE_EXPIRED;
 		}
 
@@ -363,6 +390,78 @@ class StaffInviteService {
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
+	/**
+	 * Whether the invite was revoked.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 *
+	 * @return bool
+	 */
+	private static function isRevoked(array $invite): bool {
+		return is_string($invite['revokedAt'] ?? null) === true && $invite['revokedAt'] !== '';
+	}//end isRevoked()
+
+	/**
+	 * Whether the invite's end has passed; one without a readable end has.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 *
+	 * @return bool
+	 */
+	private function isExpired(array $invite): bool {
+		$expires = false;
+		if (is_string($invite['expiresAt'] ?? null) === true) {
+			$expires = strtotime($invite['expiresAt']);
+		}
+
+		return $expires === false || $expires <= $this->now()->getTimestamp();
+	}//end isExpired()
+
+	/**
+	 * Refuse a role that is not a staff role.
+	 *
+	 * @param string $role The group id.
+	 *
+	 * @return void
+	 *
+	 * @throws InvalidArgumentException When it is not.
+	 */
+	private static function assertKnownRole(string $role): void {
+		if (in_array($role, self::roles(), true) === false) {
+			throw new InvalidArgumentException('Unknown role');
+		}
+	}//end assertKnownRole()
+
+	/**
+	 * Refuse a validity outside 1 to MAX_DAYS days.
+	 *
+	 * @param int $days The days.
+	 *
+	 * @return void
+	 *
+	 * @throws InvalidArgumentException When it is outside.
+	 */
+	private static function assertDays(int $days): void {
+		if ($days < 1 || $days > self::MAX_DAYS) {
+			throw new InvalidArgumentException('An invite is valid for 1 to ' . self::MAX_DAYS . ' days');
+		}
+	}//end assertDays()
+
+	/**
+	 * Refuse a use count outside 1 to MAX_USES.
+	 *
+	 * @param int $maxUses The uses.
+	 *
+	 * @return void
+	 *
+	 * @throws InvalidArgumentException When it is outside.
+	 */
+	private static function assertMaxUses(int $maxUses): void {
+		if ($maxUses < 1 || $maxUses > self::MAX_USES) {
+			throw new InvalidArgumentException('An invite has 1 to ' . self::MAX_USES . ' uses');
+		}
+	}//end assertMaxUses()
+
 	public static function hashToken(string $token): string {
 		return hash('sha256', $token);
 	}//end hashToken()
@@ -383,9 +482,9 @@ class StaffInviteService {
 
 		$hash = self::hashToken(token: $token);
 		$found = $this->objectFetcher->getObjectsWithAppAuthority(objectType: self::OBJECT_TYPE, filters: ['tokenHash' => $hash], limit: 2);
+		// The filter is matched again here, so a store that ignores it never opens another invite.
 		foreach ($found as $invite) {
-			// The filter is matched again here, so a store that ignores it never opens another invite.
-			if (is_string($invite['tokenHash'] ?? null) === true && hash_equals($hash, $invite['tokenHash']) === true) {
+			if (self::hasHash(invite: $invite, hash: $hash) === true) {
 				return $invite;
 			}
 		}
@@ -400,6 +499,18 @@ class StaffInviteService {
 	 *
 	 * @return list<array<string, mixed>> The uses.
 	 */
+	/**
+	 * Whether the invite carries this token hash.
+	 *
+	 * @param array<string, mixed> $invite The invite.
+	 * @param string               $hash   The token's hash.
+	 *
+	 * @return bool
+	 */
+	private static function hasHash(array $invite, string $hash): bool {
+		return is_string($invite['tokenHash'] ?? null) === true && hash_equals($hash, $invite['tokenHash']) === true;
+	}//end hasHash()
+
 	private static function uses(array $invite): array {
 		$uses = $invite['uses'] ?? [];
 		if (is_array($uses) === false) {
