@@ -25,6 +25,7 @@
 import WorldSwitcher from './components/WorldSwitcher.vue'
 import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
+import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
@@ -68,6 +69,14 @@ export default {
 	CharacterPdfDownloadDialog: {
 		kind: 'modal',
 		component: CharacterPdfDownloadDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Buy item" header action: the priced items of the
+	// character's world, bought with its in-game money in one server write.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	BuyItemDialog: {
+		kind: 'modal',
+		component: BuyItemDialog,
 		propsSchema: {},
 	},
 	CopyWorldDialog: {

@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Kuparirahat, jotka esine maksaa",
         "What the item costs in in-game money; a character buys it from the character page": "Mitä esine maksaa pelirahassa; hahmo ostaa sen hahmosivulta",
         "Timeline": "Aikajana",
-        "History": "Historia"
+        "History": "Historia",
+        "Buy item": "Osta esine",
+        "Buy": "Osta",
+        "Loading the items for sale": "Ladataan myytäviä esineitä",
+        "Could not read the character.": "Hahmoa ei voitu lukea.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} kantaa nyt: {item}.",
+        "No item of this world is for sale.": "Mikään tämän maailman esine ei ole myynnissä.",
+        "{character} cannot pay {price}.": "{character}: rahat eivät riitä, tarvitaan {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "kultaa: {count}",
+        "{count} silver": "hopeaa: {count}",
+        "{count} copper": "kuparia: {count}",
+        "no money": "ei rahaa",
+        "The character cannot pay this item.": "Hahmo ei pysty maksamaan tätä esinettä.",
+        "The character already carries this item.": "Hahmo kantaa jo tätä esinettä.",
+        "This item belongs to another world.": "Tämä esine kuuluu toiseen maailmaan.",
+        "This item is not for sale.": "Tämä esine ei ole myynnissä.",
+        "Only the owner and game masters buy for this character.": "Vain omistaja ja pelinjohtajat ostavat tälle hahmolle.",
+        "Nothing was bought: {reason}": "Mitään ei ostettu: {reason}"
     },
     "plurals": {}
 }

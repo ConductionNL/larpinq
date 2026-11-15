@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Бакрењаци које предмет кошта",
         "What the item costs in in-game money; a character buys it from the character page": "Колико предмет кошта у новцу игре; лик га купује на страници лика",
         "Timeline": "Хронологија",
-        "History": "Историја"
+        "History": "Историја",
+        "Buy item": "Купи предмет",
+        "Buy": "Купи",
+        "Loading the items for sale": "Учитавање предмета на продају",
+        "Could not read the character.": "Лик није могуће прочитати.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} сада носи: {item}.",
+        "No item of this world is for sale.": "Ниједан предмет овог света није на продају.",
+        "{character} cannot pay {price}.": "{character}: нема довољно новца, потребно је {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "злато: {count}",
+        "{count} silver": "сребро: {count}",
+        "{count} copper": "бакар: {count}",
+        "no money": "нема новца",
+        "The character cannot pay this item.": "Лик не може да плати овај предмет.",
+        "The character already carries this item.": "Лик већ носи овај предмет.",
+        "This item belongs to another world.": "Овај предмет припада другом свету.",
+        "This item is not for sale.": "Овај предмет није на продају.",
+        "Only the owner and game masters buy for this character.": "Само власник и водитељи игре купују за овај лик.",
+        "Nothing was bought: {reason}": "Ништа није купљено: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

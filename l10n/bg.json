@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Медни монети, които струва предметът",
         "What the item costs in in-game money; a character buys it from the character page": "Колко струва предметът в пари от играта; персонажът го купува от страницата на персонажа",
         "Timeline": "Хронология",
-        "History": "История"
+        "History": "История",
+        "Buy item": "Купуване на предмет",
+        "Buy": "Купуване",
+        "Loading the items for sale": "Зареждане на предметите за продан",
+        "Could not read the character.": "Героят не може да бъде прочетен.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} вече носи: {item}.",
+        "No item of this world is for sale.": "Нито един предмет от този свят не се продава.",
+        "{character} cannot pay {price}.": "{character}: няма достатъчно пари, нужни са {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "злато: {count}",
+        "{count} silver": "сребро: {count}",
+        "{count} copper": "мед: {count}",
+        "no money": "няма пари",
+        "The character cannot pay this item.": "Героят не може да плати този предмет.",
+        "The character already carries this item.": "Героят вече носи този предмет.",
+        "This item belongs to another world.": "Този предмет принадлежи на друг свят.",
+        "This item is not for sale.": "Този предмет не се продава.",
+        "Only the owner and game masters buy for this character.": "Само собственикът и водещите на играта купуват за този герой.",
+        "Nothing was bought: {reason}": "Нищо не е купено: {reason}"
     },
     "plurals": {}
 }

@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Kofferstécker, déi de Géigestand kascht",
         "What the item costs in in-game money; a character buys it from the character page": "Wat de Géigestand a Spillgeld kascht; e Charakter keeft en op der Charaktersäit",
         "Timeline": "Zäitlinn",
-        "History": "Geschicht"
+        "History": "Geschicht",
+        "Buy item": "Géigestand kafen",
+        "Buy": "Kafen",
+        "Loading the items for sale": "D'Géigestänn fir ze verkafen gi gelueden",
+        "Could not read the character.": "De Personnage konnt net gelies ginn.",
+        "{character} has {money}.": "{character} huet {money}.",
+        "{character} now carries {item}.": "{character} dréit elo {item}.",
+        "No item of this world is for sale.": "Keen Géigestand vun dëser Welt ass ze verkafen.",
+        "{character} cannot pay {price}.": "{character} kann {price} net bezuelen.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} Gold",
+        "{count} silver": "{count} Sëlwer",
+        "{count} copper": "{count} Koffer",
+        "no money": "keng Suen",
+        "The character cannot pay this item.": "De Personnage kann dëse Géigestand net bezuelen.",
+        "The character already carries this item.": "De Personnage dréit dëse Géigestand schonn.",
+        "This item belongs to another world.": "Dëse Géigestand gehéiert zu enger anerer Welt.",
+        "This item is not for sale.": "Dëse Géigestand ass net ze verkafen.",
+        "Only the owner and game masters buy for this character.": "Nëmmen de Besëtzer an d'Spillleedung kafe fir dëse Personnage.",
+        "Nothing was bought: {reason}": "Et gouf näischt kaf: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

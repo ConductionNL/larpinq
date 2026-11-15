@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Χάλκινα νομίσματα που κοστίζει το αντικείμενο",
         "What the item costs in in-game money; a character buys it from the character page": "Πόσο κοστίζει το αντικείμενο σε χρήματα του παιχνιδιού· ένας χαρακτήρας το αγοράζει από τη σελίδα του χαρακτήρα",
         "Timeline": "Χρονολόγιο",
-        "History": "Ιστορία"
+        "History": "Ιστορία",
+        "Buy item": "Αγορά αντικειμένου",
+        "Buy": "Αγορά",
+        "Loading the items for sale": "Φόρτωση των αντικειμένων προς πώληση",
+        "Could not read the character.": "Δεν ήταν δυνατή η ανάγνωση του χαρακτήρα.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} κουβαλά πλέον: {item}.",
+        "No item of this world is for sale.": "Κανένα αντικείμενο αυτού του κόσμου δεν πωλείται.",
+        "{character} cannot pay {price}.": "{character}: δεν επαρκούν τα χρήματα, χρειάζονται {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "χρυσά: {count}",
+        "{count} silver": "ασημένια: {count}",
+        "{count} copper": "χάλκινα: {count}",
+        "no money": "καθόλου χρήματα",
+        "The character cannot pay this item.": "Ο χαρακτήρας δεν μπορεί να πληρώσει αυτό το αντικείμενο.",
+        "The character already carries this item.": "Ο χαρακτήρας κουβαλά ήδη αυτό το αντικείμενο.",
+        "This item belongs to another world.": "Αυτό το αντικείμενο ανήκει σε άλλον κόσμο.",
+        "This item is not for sale.": "Αυτό το αντικείμενο δεν πωλείται.",
+        "Only the owner and game masters buy for this character.": "Μόνο ο κάτοχος και οι αφηγητές αγοράζουν για αυτόν τον χαρακτήρα.",
+        "Nothing was bought: {reason}": "Δεν αγοράστηκε τίποτα: {reason}"
     },
     "plurals": {}
 }

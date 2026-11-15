@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Бакарници што ги чини предметот",
         "What the item costs in in-game money; a character buys it from the character page": "Колку чини предметот во пари од играта; ликот го купува на страницата на ликот",
         "Timeline": "Хронологија",
-        "History": "Историја"
+        "History": "Историја",
+        "Buy item": "Купи предмет",
+        "Buy": "Купи",
+        "Loading the items for sale": "Се вчитуваат предметите за продажба",
+        "Could not read the character.": "Ликот не може да се прочита.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} сега носи: {item}.",
+        "No item of this world is for sale.": "Ниту еден предмет од овој свет не се продава.",
+        "{character} cannot pay {price}.": "{character}: нема доволно пари, потребно е {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "злато: {count}",
+        "{count} silver": "сребро: {count}",
+        "{count} copper": "бакар: {count}",
+        "no money": "нема пари",
+        "The character cannot pay this item.": "Ликот не може да го плати овој предмет.",
+        "The character already carries this item.": "Ликот веќе го носи овој предмет.",
+        "This item belongs to another world.": "Овој предмет припаѓа на друг свет.",
+        "This item is not for sale.": "Овој предмет не се продава.",
+        "Only the owner and game masters buy for this character.": "Само сопственикот и водачите на играта купуваат за овој лик.",
+        "Nothing was bought: {reason}": "Ништо не е купено: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

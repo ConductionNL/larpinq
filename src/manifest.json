@@ -593,6 +593,13 @@
 				"schema": "character",
 				"headerActions": [
 					{
+						"id": "buy-item",
+						"type": "open-modal",
+						"target": "BuyItemDialog",
+						"label": "Buy item",
+						"icon": "CartOutline"
+					},
+					{
 						"id": "download-pdf",
 						"type": "open-modal",
 						"target": "CharacterPdfDownloadDialog",

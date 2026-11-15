@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Piezas de cobre que cuesta el objeto",
         "What the item costs in in-game money; a character buys it from the character page": "Lo que cuesta el objeto en dinero del juego; un personaje lo compra en la página del personaje",
         "Timeline": "Cronología",
-        "History": "Historia"
+        "History": "Historia",
+        "Buy item": "Comprar objeto",
+        "Buy": "Comprar",
+        "Loading the items for sale": "Cargando los objetos a la venta",
+        "Could not read the character.": "No se pudo leer el personaje.",
+        "{character} has {money}.": "{character} tiene {money}.",
+        "{character} now carries {item}.": "{character} ahora lleva {item}.",
+        "No item of this world is for sale.": "Ningún objeto de este mundo está a la venta.",
+        "{character} cannot pay {price}.": "{character} no puede pagar {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} de oro",
+        "{count} silver": "{count} de plata",
+        "{count} copper": "{count} de cobre",
+        "no money": "nada de dinero",
+        "The character cannot pay this item.": "El personaje no puede pagar este objeto.",
+        "The character already carries this item.": "El personaje ya lleva este objeto.",
+        "This item belongs to another world.": "Este objeto pertenece a otro mundo.",
+        "This item is not for sale.": "Este objeto no está a la venta.",
+        "Only the owner and game masters buy for this character.": "Solo el propietario y los directores de juego compran para este personaje.",
+        "Nothing was bought: {reason}": "No se compró nada: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

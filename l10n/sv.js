@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Kopparmynt som föremålet kostar",
         "What the item costs in in-game money; a character buys it from the character page": "Vad föremålet kostar i spelpengar; en karaktär köper det på karaktärssidan",
         "Timeline": "Tidslinje",
-        "History": "Historia"
+        "History": "Historia",
+        "Buy item": "Köp föremål",
+        "Buy": "Köp",
+        "Loading the items for sale": "Läser in föremål till salu",
+        "Could not read the character.": "Karaktären kunde inte läsas.",
+        "{character} has {money}.": "{character} har {money}.",
+        "{character} now carries {item}.": "{character} bär nu {item}.",
+        "No item of this world is for sale.": "Inget föremål i den här världen är till salu.",
+        "{character} cannot pay {price}.": "{character} kan inte betala {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} guld",
+        "{count} silver": "{count} silver",
+        "{count} copper": "{count} koppar",
+        "no money": "inga pengar",
+        "The character cannot pay this item.": "Karaktären kan inte betala för föremålet.",
+        "The character already carries this item.": "Karaktären bär redan föremålet.",
+        "This item belongs to another world.": "Föremålet hör till en annan värld.",
+        "This item is not for sale.": "Föremålet är inte till salu.",
+        "Only the owner and game masters buy for this character.": "Bara ägaren och spelledarna köper åt den här karaktären.",
+        "Nothing was bought: {reason}": "Inget köptes: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

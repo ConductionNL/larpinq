@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Kobberstykker gjenstanden koster",
         "What the item costs in in-game money; a character buys it from the character page": "Hva gjenstanden koster i spillpenger; en karakter kjøper den på karaktersiden",
         "Timeline": "Tidslinje",
-        "History": "Historie"
+        "History": "Historie",
+        "Buy item": "Kjøp gjenstand",
+        "Buy": "Kjøp",
+        "Loading the items for sale": "Laster gjenstander til salgs",
+        "Could not read the character.": "Karakteren kunne ikke leses.",
+        "{character} has {money}.": "{character} har {money}.",
+        "{character} now carries {item}.": "{character} bærer nå {item}.",
+        "No item of this world is for sale.": "Ingen gjenstand fra denne verdenen er til salgs.",
+        "{character} cannot pay {price}.": "{character} kan ikke betale {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} gull",
+        "{count} silver": "{count} sølv",
+        "{count} copper": "{count} kobber",
+        "no money": "ingen penger",
+        "The character cannot pay this item.": "Karakteren kan ikke betale for denne gjenstanden.",
+        "The character already carries this item.": "Karakteren bærer allerede denne gjenstanden.",
+        "This item belongs to another world.": "Denne gjenstanden hører til en annen verden.",
+        "This item is not for sale.": "Denne gjenstanden er ikke til salgs.",
+        "Only the owner and game masters buy for this character.": "Bare eieren og spillederne kjøper for denne karakteren.",
+        "Nothing was bought: {reason}": "Ingenting ble kjøpt: {reason}"
     },
     "plurals": {}
 }

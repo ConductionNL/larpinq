@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Vara monētas, ko priekšmets maksā",
         "What the item costs in in-game money; a character buys it from the character page": "Cik priekšmets maksā spēles naudā; tēls to pērk tēla lapā",
         "Timeline": "Laika līnija",
-        "History": "Vēsture"
+        "History": "Vēsture",
+        "Buy item": "Pirkt priekšmetu",
+        "Buy": "Pirkt",
+        "Loading the items for sale": "Ielādē pārdodamos priekšmetus",
+        "Could not read the character.": "Neizdevās nolasīt tēlu.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} tagad nes: {item}.",
+        "No item of this world is for sale.": "Neviens šīs pasaules priekšmets netiek pārdots.",
+        "{character} cannot pay {price}.": "{character}: nepietiek naudas, vajag {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "zelts: {count}",
+        "{count} silver": "sudrabs: {count}",
+        "{count} copper": "varš: {count}",
+        "no money": "naudas nav",
+        "The character cannot pay this item.": "Tēls nevar samaksāt par šo priekšmetu.",
+        "The character already carries this item.": "Tēls jau nes šo priekšmetu.",
+        "This item belongs to another world.": "Šis priekšmets pieder citai pasaulei.",
+        "This item is not for sale.": "Šis priekšmets netiek pārdots.",
+        "Only the owner and game masters buy for this character.": "Šim tēlam pērk tikai īpašnieks un spēles vadītāji.",
+        "Nothing was bought: {reason}": "Nekas netika nopirkts: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

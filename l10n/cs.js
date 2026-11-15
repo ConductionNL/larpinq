@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Měděné mince, které předmět stojí",
         "What the item costs in in-game money; a character buys it from the character page": "Kolik předmět stojí v herních penězích; postava ho kupuje na stránce postavy",
         "Timeline": "Časová osa",
-        "History": "Historie"
+        "History": "Historie",
+        "Buy item": "Koupit předmět",
+        "Buy": "Koupit",
+        "Loading the items for sale": "Načítání předmětů na prodej",
+        "Could not read the character.": "Postavu se nepodařilo načíst.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} teď nese: {item}.",
+        "No item of this world is for sale.": "Žádný předmět tohoto světa není na prodej.",
+        "{character} cannot pay {price}.": "{character}: nedostatek peněz, potřeba je {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "zlato: {count}",
+        "{count} silver": "stříbro: {count}",
+        "{count} copper": "měď: {count}",
+        "no money": "žádné peníze",
+        "The character cannot pay this item.": "Postava nemůže tento předmět zaplatit.",
+        "The character already carries this item.": "Postava už tento předmět nese.",
+        "This item belongs to another world.": "Tento předmět patří do jiného světa.",
+        "This item is not for sale.": "Tento předmět není na prodej.",
+        "Only the owner and game masters buy for this character.": "Pro tuto postavu nakupuje jen vlastník a vypravěči.",
+        "Nothing was bought: {reason}": "Nic nebylo koupeno: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

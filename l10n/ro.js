@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Piese de cupru pe care le costă obiectul",
         "What the item costs in in-game money; a character buys it from the character page": "Cât costă obiectul în bani de joc; un personaj îl cumpără de pe pagina personajului",
         "Timeline": "Cronologie",
-        "History": "Istorie"
+        "History": "Istorie",
+        "Buy item": "Cumpără obiect",
+        "Buy": "Cumpără",
+        "Loading the items for sale": "Se încarcă obiectele de vânzare",
+        "Could not read the character.": "Personajul nu a putut fi citit.",
+        "{character} has {money}.": "{character} are {money}.",
+        "{character} now carries {item}.": "{character} poartă acum {item}.",
+        "No item of this world is for sale.": "Niciun obiect din această lume nu este de vânzare.",
+        "{character} cannot pay {price}.": "{character} nu poate plăti {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} aur",
+        "{count} silver": "{count} argint",
+        "{count} copper": "{count} cupru",
+        "no money": "fără bani",
+        "The character cannot pay this item.": "Personajul nu poate plăti acest obiect.",
+        "The character already carries this item.": "Personajul poartă deja acest obiect.",
+        "This item belongs to another world.": "Acest obiect aparține altei lumi.",
+        "This item is not for sale.": "Acest obiect nu este de vânzare.",
+        "Only the owner and game masters buy for this character.": "Doar proprietarul și maeștrii de joc cumpără pentru acest personaj.",
+        "Nothing was bought: {reason}": "Nu s-a cumpărat nimic: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Bakrenjaki, ki jih predmet stane",
         "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet stane v denarju igre; lik ga kupi na strani lika",
         "Timeline": "Časovnica",
-        "History": "Zgodovina"
+        "History": "Zgodovina",
+        "Buy item": "Kupi predmet",
+        "Buy": "Kupi",
+        "Loading the items for sale": "Nalaganje predmetov za prodajo",
+        "Could not read the character.": "Lika ni bilo mogoče prebrati.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} zdaj nosi: {item}.",
+        "No item of this world is for sale.": "Noben predmet tega sveta ni naprodaj.",
+        "{character} cannot pay {price}.": "{character}: ni dovolj denarja, potrebno je {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "zlato: {count}",
+        "{count} silver": "srebro: {count}",
+        "{count} copper": "baker: {count}",
+        "no money": "brez denarja",
+        "The character cannot pay this item.": "Lik ne more plačati tega predmeta.",
+        "The character already carries this item.": "Lik ta predmet že nosi.",
+        "This item belongs to another world.": "Ta predmet pripada drugemu svetu.",
+        "This item is not for sale.": "Ta predmet ni naprodaj.",
+        "Only the owner and game masters buy for this character.": "Za tega lika kupujeta samo lastnik in vodje igre.",
+        "Nothing was bought: {reason}": "Nič ni bilo kupljeno: {reason}"
     },
     "plurals": {}
 }

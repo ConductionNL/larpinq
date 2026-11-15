@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Мідні монети, які коштує предмет",
         "What the item costs in in-game money; a character buys it from the character page": "Скільки коштує предмет в ігрових грошах; персонаж купує його на сторінці персонажа",
         "Timeline": "Хронологія",
-        "History": "Історія"
+        "History": "Історія",
+        "Buy item": "Купити предмет",
+        "Buy": "Купити",
+        "Loading the items for sale": "Завантаження предметів на продаж",
+        "Could not read the character.": "Не вдалося прочитати персонажа.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} тепер несе: {item}.",
+        "No item of this world is for sale.": "Жоден предмет цього світу не продається.",
+        "{character} cannot pay {price}.": "{character}: бракує грошей, потрібно {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "золото: {count}",
+        "{count} silver": "срібло: {count}",
+        "{count} copper": "мідь: {count}",
+        "no money": "немає грошей",
+        "The character cannot pay this item.": "Персонажу бракує грошей на цей предмет.",
+        "The character already carries this item.": "Персонаж уже несе цей предмет.",
+        "This item belongs to another world.": "Цей предмет належить іншому світу.",
+        "This item is not for sale.": "Цей предмет не продається.",
+        "Only the owner and game masters buy for this character.": "Для цього персонажа купують лише власник і майстри гри.",
+        "Nothing was bought: {reason}": "Нічого не куплено: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

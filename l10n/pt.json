@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Peças de cobre que o item custa",
         "What the item costs in in-game money; a character buys it from the character page": "Quanto o item custa em dinheiro do jogo; uma personagem compra-o na página da personagem",
         "Timeline": "Cronologia",
-        "History": "História"
+        "History": "História",
+        "Buy item": "Comprar item",
+        "Buy": "Comprar",
+        "Loading the items for sale": "A carregar os itens à venda",
+        "Could not read the character.": "Não foi possível ler a personagem.",
+        "{character} has {money}.": "{character} tem {money}.",
+        "{character} now carries {item}.": "{character} leva agora {item}.",
+        "No item of this world is for sale.": "Nenhum item deste mundo está à venda.",
+        "{character} cannot pay {price}.": "{character} não pode pagar {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} de ouro",
+        "{count} silver": "{count} de prata",
+        "{count} copper": "{count} de cobre",
+        "no money": "sem dinheiro",
+        "The character cannot pay this item.": "A personagem não pode pagar este item.",
+        "The character already carries this item.": "A personagem já leva este item.",
+        "This item belongs to another world.": "Este item pertence a outro mundo.",
+        "This item is not for sale.": "Este item não está à venda.",
+        "Only the owner and game masters buy for this character.": "Só o proprietário e os mestres de jogo compram para esta personagem.",
+        "Nothing was bought: {reason}": "Nada foi comprado: {reason}"
     },
     "plurals": {}
 }

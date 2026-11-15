@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Monedhat e bakrit që kushton sendi",
         "What the item costs in in-game money; a character buys it from the character page": "Sa kushton sendi në para të lojës; personazhi e blen nga faqja e personazhit",
         "Timeline": "Kronologjia",
-        "History": "Historia"
+        "History": "Historia",
+        "Buy item": "Bli artikull",
+        "Buy": "Bli",
+        "Loading the items for sale": "Po ngarkohen artikujt në shitje",
+        "Could not read the character.": "Personazhi nuk u lexua dot.",
+        "{character} has {money}.": "{character} ka {money}.",
+        "{character} now carries {item}.": "{character} tani mban: {item}.",
+        "No item of this world is for sale.": "Asnjë artikull i kësaj bote nuk është në shitje.",
+        "{character} cannot pay {price}.": "{character} nuk mund të paguajë {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} ar",
+        "{count} silver": "{count} argjend",
+        "{count} copper": "{count} bakër",
+        "no money": "pa para",
+        "The character cannot pay this item.": "Personazhi nuk mund ta paguajë këtë artikull.",
+        "The character already carries this item.": "Personazhi e mban tashmë këtë artikull.",
+        "This item belongs to another world.": "Ky artikull i përket një bote tjetër.",
+        "This item is not for sale.": "Ky artikull nuk është në shitje.",
+        "Only the owner and game masters buy for this character.": "Vetëm pronari dhe drejtuesit e lojës blejnë për këtë personazh.",
+        "Nothing was bought: {reason}": "Nuk u ble asgjë: {reason}"
     },
     "plurals": {}
 }

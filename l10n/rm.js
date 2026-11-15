@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Tocs d'arom che l'object custa",
         "What the item costs in in-game money; a character buys it from the character page": "Quai che l'object custa en daners dal gieu; in persunagi al cumpra sin la pagina dal persunagi",
         "Timeline": "Cronologia",
-        "History": "Istorgia"
+        "History": "Istorgia",
+        "Buy item": "Cumprar object",
+        "Buy": "Cumprar",
+        "Loading the items for sale": "Chargiar ils objects da vender",
+        "Could not read the character.": "Il persunaj na pudeva betg vegnir legì.",
+        "{character} has {money}.": "{character} ha {money}.",
+        "{character} now carries {item}.": "{character} porta ussa {item}.",
+        "No item of this world is for sale.": "Nagin object da quest mund n'è da vender.",
+        "{character} cannot pay {price}.": "{character} na po betg pajar {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} aur",
+        "{count} silver": "{count} argient",
+        "{count} copper": "{count} arom",
+        "no money": "nagins daners",
+        "The character cannot pay this item.": "Il persunaj na po betg pajar quest object.",
+        "The character already carries this item.": "Il persunaj porta gia quest object.",
+        "This item belongs to another world.": "Quest object tutga tar in auter mund.",
+        "This item is not for sale.": "Quest object n'è betg da vender.",
+        "Only the owner and game masters buy for this character.": "Mo il possessur ed ils manaders dal gieu cumpran per quest persunaj.",
+        "Nothing was bought: {reason}": "Nagut n'è vegnì cumprà: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

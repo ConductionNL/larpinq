@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Koparpeningar sem hluturinn kostar",
         "What the item costs in in-game money; a character buys it from the character page": "Hvað hluturinn kostar í leikpeningum; persóna kaupir hann á persónusíðunni",
         "Timeline": "Tímalína",
-        "History": "Saga"
+        "History": "Saga",
+        "Buy item": "Kaupa hlut",
+        "Buy": "Kaupa",
+        "Loading the items for sale": "Hleð hlutum til sölu",
+        "Could not read the character.": "Ekki tókst að lesa persónuna.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} ber nú: {item}.",
+        "No item of this world is for sale.": "Enginn hlutur þessa heims er til sölu.",
+        "{character} cannot pay {price}.": "{character}: ekki nóg fé, þarf {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "gull: {count}",
+        "{count} silver": "silfur: {count}",
+        "{count} copper": "kopar: {count}",
+        "no money": "ekkert fé",
+        "The character cannot pay this item.": "Persónan getur ekki greitt fyrir þennan hlut.",
+        "The character already carries this item.": "Persónan ber þennan hlut nú þegar.",
+        "This item belongs to another world.": "Þessi hlutur tilheyrir öðrum heimi.",
+        "This item is not for sale.": "Þessi hlutur er ekki til sölu.",
+        "Only the owner and game masters buy for this character.": "Aðeins eigandinn og stjórnendur leiksins kaupa fyrir þessa persónu.",
+        "Nothing was bought: {reason}": "Ekkert var keypt: {reason}"
     },
     "plurals": {}
 }

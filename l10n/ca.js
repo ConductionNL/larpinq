@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Peces de coure que costa l'objecte",
         "What the item costs in in-game money; a character buys it from the character page": "El que costa l'objecte en diners del joc; un personatge el compra des de la pàgina del personatge",
         "Timeline": "Cronologia",
-        "History": "Història"
+        "History": "Història",
+        "Buy item": "Compra un objecte",
+        "Buy": "Compra",
+        "Loading the items for sale": "S'estan carregant els objectes en venda",
+        "Could not read the character.": "No s'ha pogut llegir el personatge.",
+        "{character} has {money}.": "{character} té {money}.",
+        "{character} now carries {item}.": "{character} ara porta {item}.",
+        "No item of this world is for sale.": "Cap objecte d'aquest món no està en venda.",
+        "{character} cannot pay {price}.": "{character} no pot pagar {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} d'or",
+        "{count} silver": "{count} de plata",
+        "{count} copper": "{count} de coure",
+        "no money": "cap diners",
+        "The character cannot pay this item.": "El personatge no pot pagar aquest objecte.",
+        "The character already carries this item.": "El personatge ja porta aquest objecte.",
+        "This item belongs to another world.": "Aquest objecte pertany a un altre món.",
+        "This item is not for sale.": "Aquest objecte no està en venda.",
+        "Only the owner and game masters buy for this character.": "Només el propietari i els màsters compren per a aquest personatge.",
+        "Nothing was bought: {reason}": "No s'ha comprat res: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

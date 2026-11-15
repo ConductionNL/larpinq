@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Eşyanın tuttuğu bakır",
         "What the item costs in in-game money; a character buys it from the character page": "Eşyanın oyun parasıyla fiyatı; karakter onu karakter sayfasından satın alır",
         "Timeline": "Zaman çizelgesi",
-        "History": "Tarih"
+        "History": "Tarih",
+        "Buy item": "Eşya satın al",
+        "Buy": "Satın al",
+        "Loading the items for sale": "Satılık eşyalar yükleniyor",
+        "Could not read the character.": "Karakter okunamadı.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} artık şunu taşıyor: {item}.",
+        "No item of this world is for sale.": "Bu dünyanın hiçbir eşyası satılık değil.",
+        "{character} cannot pay {price}.": "{character}: yeterli para yok, gereken {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "altın: {count}",
+        "{count} silver": "gümüş: {count}",
+        "{count} copper": "bakır: {count}",
+        "no money": "para yok",
+        "The character cannot pay this item.": "Karakter bu eşyanın parasını ödeyemez.",
+        "The character already carries this item.": "Karakter bu eşyayı zaten taşıyor.",
+        "This item belongs to another world.": "Bu eşya başka bir dünyaya ait.",
+        "This item is not for sale.": "Bu eşya satılık değil.",
+        "Only the owner and game masters buy for this character.": "Bu karakter için yalnızca sahibi ve oyun yöneticileri satın alır.",
+        "Nothing was bought: {reason}": "Hiçbir şey satın alınmadı: {reason}"
     },
     "plurals": {}
 }

@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Píosaí copair a chosnaíonn an mhír",
         "What the item costs in in-game money; a character buys it from the character page": "Cad a chosnaíonn an mhír in airgead an chluiche; ceannaíonn carachtar í ó leathanach an charachtair",
         "Timeline": "Amlíne",
-        "History": "Stair"
+        "History": "Stair",
+        "Buy item": "Ceannaigh mír",
+        "Buy": "Ceannaigh",
+        "Loading the items for sale": "Míreanna ar díol á lódáil",
+        "Could not read the character.": "Níorbh fhéidir an carachtar a léamh.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "Tá {item} ag {character} anois.",
+        "No item of this world is for sale.": "Níl aon mhír den domhan seo ar díol.",
+        "{character} cannot pay {price}.": "Ní féidir le {character} {price} a íoc.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "ór: {count}",
+        "{count} silver": "airgead: {count}",
+        "{count} copper": "copar: {count}",
+        "no money": "gan airgead",
+        "The character cannot pay this item.": "Ní féidir leis an gcarachtar an mhír seo a íoc.",
+        "The character already carries this item.": "Tá an mhír seo ag an gcarachtar cheana.",
+        "This item belongs to another world.": "Baineann an mhír seo le domhan eile.",
+        "This item is not for sale.": "Níl an mhír seo ar díol.",
+        "Only the owner and game masters buy for this character.": "Ní cheannaíonn ach an t-úinéir agus máistrí an chluiche don charachtar seo.",
+        "Nothing was bought: {reason}": "Níor ceannaíodh aon rud: {reason}"
     },
     "plurals": {}
 }

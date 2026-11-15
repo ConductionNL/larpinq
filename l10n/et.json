@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Vaskmündid, mida ese maksab",
         "What the item costs in in-game money; a character buys it from the character page": "Kui palju ese mänguraha maksab; tegelane ostab selle tegelase lehelt",
         "Timeline": "Ajajoon",
-        "History": "Ajalugu"
+        "History": "Ajalugu",
+        "Buy item": "Osta ese",
+        "Buy": "Osta",
+        "Loading the items for sale": "Müügil olevate esemete laadimine",
+        "Could not read the character.": "Tegelast ei õnnestunud lugeda.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} kannab nüüd: {item}.",
+        "No item of this world is for sale.": "Selle maailma ükski ese pole müügil.",
+        "{character} cannot pay {price}.": "{character}: raha ei jätku, vaja on {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "kuld: {count}",
+        "{count} silver": "hõbe: {count}",
+        "{count} copper": "vask: {count}",
+        "no money": "raha pole",
+        "The character cannot pay this item.": "Tegelane ei saa seda eset maksta.",
+        "The character already carries this item.": "Tegelane juba kannab seda eset.",
+        "This item belongs to another world.": "See ese kuulub teise maailma.",
+        "This item is not for sale.": "See ese pole müügil.",
+        "Only the owner and game masters buy for this character.": "Selle tegelase eest ostavad ainult omanik ja mängujuhid.",
+        "Nothing was bought: {reason}": "Midagi ei ostetud: {reason}"
     },
     "plurals": {}
 }

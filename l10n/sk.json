@@ -787,7 +787,26 @@
         "Copper pieces the item costs": "Medené mince, ktoré predmet stojí",
         "What the item costs in in-game money; a character buys it from the character page": "Koľko predmet stojí v herných peniazoch; postava ho kupuje na stránke postavy",
         "Timeline": "Časová os",
-        "History": "História"
+        "History": "História",
+        "Buy item": "Kúpiť predmet",
+        "Buy": "Kúpiť",
+        "Loading the items for sale": "Načítavajú sa predmety na predaj",
+        "Could not read the character.": "Postavu sa nepodarilo načítať.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} teraz nesie: {item}.",
+        "No item of this world is for sale.": "Žiadny predmet tohto sveta nie je na predaj.",
+        "{character} cannot pay {price}.": "{character}: nedostatok peňazí, treba {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "zlato: {count}",
+        "{count} silver": "striebro: {count}",
+        "{count} copper": "meď: {count}",
+        "no money": "žiadne peniaze",
+        "The character cannot pay this item.": "Postava nemôže zaplatiť tento predmet.",
+        "The character already carries this item.": "Postava už tento predmet nesie.",
+        "This item belongs to another world.": "Tento predmet patrí do iného sveta.",
+        "This item is not for sale.": "Tento predmet nie je na predaj.",
+        "Only the owner and game masters buy for this character.": "Pre túto postavu nakupuje len vlastník a rozprávači.",
+        "Nothing was bought: {reason}": "Nič nebolo kúpené: {reason}"
     },
     "plurals": {}
 }

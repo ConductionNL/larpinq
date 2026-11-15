@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Rézérmék, amennyibe a tárgy kerül",
         "What the item costs in in-game money; a character buys it from the character page": "Mennyibe kerül a tárgy játékbeli pénzben; a karakter a karakteroldalon veszi meg",
         "Timeline": "Idővonal",
-        "History": "Történelem"
+        "History": "Történelem",
+        "Buy item": "Tárgy vásárlása",
+        "Buy": "Vásárlás",
+        "Loading the items for sale": "Az eladó tárgyak betöltése",
+        "Could not read the character.": "A karaktert nem sikerült beolvasni.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} most már viseli: {item}.",
+        "No item of this world is for sale.": "Ennek a világnak egyetlen tárgya sem eladó.",
+        "{character} cannot pay {price}.": "{character}: nincs elég pénz, szükséges: {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "arany: {count}",
+        "{count} silver": "ezüst: {count}",
+        "{count} copper": "réz: {count}",
+        "no money": "nincs pénz",
+        "The character cannot pay this item.": "A karakter nem tudja kifizetni ezt a tárgyat.",
+        "The character already carries this item.": "A karakternél már megvan ez a tárgy.",
+        "This item belongs to another world.": "Ez a tárgy egy másik világhoz tartozik.",
+        "This item is not for sale.": "Ez a tárgy nem eladó.",
+        "Only the owner and game masters buy for this character.": "Ennek a karakternek csak a tulajdonos és a mesélők vásárolhatnak.",
+        "Nothing was bought: {reason}": "Semmi sem lett megvásárolva: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

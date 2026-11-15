@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Biċċiet tar-ram li jiswa l-oġġett",
         "What the item costs in in-game money; a character buys it from the character page": "Kemm jiswa l-oġġett fi flus tal-logħba; karattru jixtrih mill-paġna tal-karattru",
         "Timeline": "Kronoloġija",
-        "History": "Storja"
+        "History": "Storja",
+        "Buy item": "Ixtri oġġett",
+        "Buy": "Ixtri",
+        "Loading the items for sale": "Qed jitgħabbew l-oġġetti għall-bejgħ",
+        "Could not read the character.": "Ma setax jinqara l-karattru.",
+        "{character} has {money}.": "{character} għandu {money}.",
+        "{character} now carries {item}.": "{character} issa jġorr {item}.",
+        "No item of this world is for sale.": "L-ebda oġġett ta' din id-dinja ma jinbiegħ.",
+        "{character} cannot pay {price}.": "{character} ma jistax iħallas {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "{count} deheb",
+        "{count} silver": "{count} fidda",
+        "{count} copper": "{count} ram",
+        "no money": "l-ebda flus",
+        "The character cannot pay this item.": "Il-karattru ma jistax iħallas għal dan l-oġġett.",
+        "The character already carries this item.": "Il-karattru diġà qed iġorr dan l-oġġett.",
+        "This item belongs to another world.": "Dan l-oġġett jappartjeni għal dinja oħra.",
+        "This item is not for sale.": "Dan l-oġġett mhuwiex għall-bejgħ.",
+        "Only the owner and game masters buy for this character.": "Is-sid u l-kaptani tal-logħba biss jixtru għal dan il-karattru.",
+        "Nothing was bought: {reason}": "Ma nxtara xejn: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )

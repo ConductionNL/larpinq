@@ -788,7 +788,26 @@ OC.L10N.register(
         "Copper pieces the item costs": "Vario monetos, kiek kainuoja daiktas",
         "What the item costs in in-game money; a character buys it from the character page": "Kiek daiktas kainuoja žaidimo pinigais; veikėjas jį perka veikėjo puslapyje",
         "Timeline": "Laiko juosta",
-        "History": "Istorija"
+        "History": "Istorija",
+        "Buy item": "Pirkti daiktą",
+        "Buy": "Pirkti",
+        "Loading the items for sale": "Įkeliami parduodami daiktai",
+        "Could not read the character.": "Nepavyko nuskaityti personažo.",
+        "{character} has {money}.": "{character}: {money}.",
+        "{character} now carries {item}.": "{character} dabar neša: {item}.",
+        "No item of this world is for sale.": "Nė vienas šio pasaulio daiktas neparduodamas.",
+        "{character} cannot pay {price}.": "{character}: neužtenka pinigų, reikia {price}.",
+        "{item} ({price})": "{item} ({price})",
+        "{count} gold": "auksas: {count}",
+        "{count} silver": "sidabras: {count}",
+        "{count} copper": "varis: {count}",
+        "no money": "pinigų nėra",
+        "The character cannot pay this item.": "Personažas negali sumokėti už šį daiktą.",
+        "The character already carries this item.": "Personažas jau neša šį daiktą.",
+        "This item belongs to another world.": "Šis daiktas priklauso kitam pasauliui.",
+        "This item is not for sale.": "Šis daiktas neparduodamas.",
+        "Only the owner and game masters buy for this character.": "Šiam personažui perka tik savininkas ir žaidimo vedėjai.",
+        "Nothing was bought: {reason}": "Nieko nenupirkta: {reason}"
     },
     "nplurals=2; plural=(n != 1);"
 )
