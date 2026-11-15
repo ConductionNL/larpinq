@@ -181,7 +181,7 @@
 		},
 		{
 			"id": "StoreMenu",
-			"label": "Store",
+			"label": "Marketplace",
 			"icon": "StoreOutline",
 			"route": "Store",
 			"section": "footer",
@@ -250,7 +250,7 @@
 	"pages": [
 		[
 			"Store",
-			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
 		],
 		[
 			"Dashboard",

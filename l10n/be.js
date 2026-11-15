@@ -265,7 +265,7 @@ OC.L10N.register(
         "Who is playing what, and what is still waiting for approval.": "Хто што грае і што яшчэ чакае ўхвалення.",
         "Experience awarded, and who earned it.": "Налічаны досвед і хто яго зарабіў.",
         "How much the world holds, and what characters actually carry.": "Колькі змяшчае свет і што персанажы сапраўды нясуць.",
-        "Store": "Крама",
+        "Marketplace": "Крама",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Усталюйце рэестры, схемы і патокі, апублікаваныя іншымі арганізацыямі.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s ужо ў %2$s. Спачатку прыберыце яго адтуль.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s ужо накладзена на %2$s. Спачатку прыберыце яго адтуль.",
