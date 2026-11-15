@@ -116,19 +116,22 @@
             "type": "string",
             "format": "uuid",
             "$ref": "larping_event",
-            "title": "Event"
+            "title": "Event",
+            "description": "The event the character is ranked for"
           },
           "registration": {
             "type": "string",
             "format": "uuid",
             "$ref": "larping_registration",
-            "title": "Registration"
+            "title": "Registration",
+            "description": "The registration of the player who ranks"
           },
           "character": {
             "type": "string",
             "format": "uuid",
             "$ref": "character",
-            "title": "Character"
+            "title": "Character",
+            "description": "The character the player would like to play"
           },
           "rank": {
             "type": "integer",
@@ -201,7 +204,8 @@
             "type": "string",
             "format": "uuid",
             "$ref": "larping_event",
-            "title": "Event"
+            "title": "Event",
+            "description": "The event this role is for"
           },
           "name": {
             "type": "string",
@@ -285,17 +289,20 @@
             "type": "string",
             "format": "uuid",
             "$ref": "larping_crew_role",
-            "title": "Role"
+            "title": "Role",
+            "description": "The role the volunteer fills"
           },
           "registration": {
             "type": "string",
             "format": "uuid",
             "$ref": "larping_registration",
-            "title": "Registration"
+            "title": "Registration",
+            "description": "The registration of the volunteer"
           },
           "note": {
             "type": "string",
-            "title": "Note"
+            "title": "Note",
+            "description": "A note for the volunteer, such as a shift"
           },
           "playerUid": {
             "type": "string",

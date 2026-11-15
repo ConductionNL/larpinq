@@ -1310,6 +1310,23 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-npc-lotte"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "lotte",
+        "playerUid": "lotte",
+        "status": "accepted",
+        "submissionId": 8,
+        "submittedAt": "2026-09-08T10:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000003",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "larping_casting_preference",
           "slug": "larping-casting-preference-anna-heir"
         },
@@ -1394,6 +1411,18 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_crew_role",
+          "slug": "larping-crew-role-healers"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "name": "Healers",
+        "kind": "npc",
+        "places": 2,
+        "description": "Play the village healers who patch up wounded characters."
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "larping_crew_assignment",
           "slug": "larping-crew-assignment-joris-kitchen"
         },
@@ -1401,6 +1430,28 @@
         "registration": "00000000-0000-4000-8000-000000000006",
         "note": "Breakfast shift",
         "playerUid": "joris"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_crew_assignment",
+          "slug": "larping-crew-assignment-lotte-bandits"
+        },
+        "crewRole": "00000000-0000-4000-8000-000000000000",
+        "registration": "00000000-0000-4000-8000-000000000007",
+        "note": "Saturday ambush",
+        "playerUid": "lotte"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_crew_assignment",
+          "slug": "larping-crew-assignment-lotte-healers"
+        },
+        "crewRole": "00000000-0000-4000-8000-000000000002",
+        "registration": "00000000-0000-4000-8000-000000000007",
+        "note": "Sunday morning",
+        "playerUid": "lotte"
       },
       {
         "@self": {

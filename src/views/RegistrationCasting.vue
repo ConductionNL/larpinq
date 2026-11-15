@@ -131,6 +131,8 @@ export default {
 		 * "Not ranked", then ranks 1 to 5.
 		 *
 		 * @return {Array<object>} The options.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		rankOptions() {
 			const ranks = Array.from({ length: MAX_RANK }, (_, i) => ({
@@ -155,6 +157,8 @@ export default {
 		 * Whether every rank is given once at most.
 		 *
 		 * @return {boolean} True when the ranking can be saved.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		valid() {
 			return rankingIsValid(this.ranks)
@@ -200,6 +204,8 @@ export default {
 		 *
 		 * @param {number} rank The rank, 0 for none.
 		 * @return {object} The option.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		optionOf(rank) {
 			return (
@@ -214,6 +220,8 @@ export default {
 		 * @param {string} characterId The character uuid.
 		 * @param {object|null} option The chosen option.
 		 * @return {void}
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		rankChanged(characterId, option) {
 			this.ranks = { ...this.ranks, [characterId]: Number(option?.id ?? 0) }

@@ -167,6 +167,8 @@ export default {
 		 * The option that leaves a player uncast.
 		 *
 		 * @return {object} The option.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		notCast() {
 			return { id: '', label: t('larpinq', 'Not cast') }
@@ -194,6 +196,8 @@ export default {
 		 * The rank count columns: the character, then ranks 1 to 5.
 		 *
 		 * @return {Array<object>} The columns.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		rankColumns() {
 			const ranks = Array.from({ length: MAX_RANK }, (_, i) => ({
@@ -224,6 +228,8 @@ export default {
 		 * The proposal columns.
 		 *
 		 * @return {Array<object>} The columns.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		proposalColumns() {
 			return [
@@ -262,6 +268,8 @@ export default {
 		 * The names of the players the proposal left without a ranked character.
 		 *
 		 * @return {string} The names, comma separated.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		unmatchedNames() {
 			return (this.view.proposal?.unmatched ?? [])
@@ -273,6 +281,8 @@ export default {
 		 * The refused pairs of the last confirmation, by player.
 		 *
 		 * @return {string} The names, comma separated.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		refusedNames() {
 			return this.refused
@@ -330,6 +340,8 @@ export default {
 		 *
 		 * @param {string} kind `crew` or `npc`.
 		 * @return {string} The label.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		kindLabel(kind) {
 			return kind === 'npc' ? t('larpinq', 'npc') : t('larpinq', 'crew')
@@ -340,6 +352,8 @@ export default {
 		 *
 		 * @param {string} registrationId The registration uuid.
 		 * @return {string} The name.
+		 *
+		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
 		 */
 		nameOf(registrationId) {
 			const registration = (this.view.registrations ?? []).find(

@@ -131,13 +131,15 @@ class CastingSeedTest extends TestCase {
 
 		$roles = $this->seed(schema: 'larping_crew_role');
 		$this->assertSame(
-			expected: [['Bandits', 'npc', 6], ['Kitchen', 'crew', 3]],
+			expected: [['Bandits', 'npc', 6], ['Kitchen', 'crew', 3], ['Healers', 'npc', 2]],
 			actual: array_map(static fn (array $r): array => [$r['name'], $r['kind'], $r['places']], $roles)
 		);
 
 		$assignments = $this->seed(schema: 'larping_crew_assignment');
-		$this->assertCount(expectedCount: 1, haystack: $assignments);
+		$this->assertCount(expectedCount: 3, haystack: $assignments);
 		$this->assertSame(expected: self::placeholder(1), actual: $assignments[0]['crewRole'], message: 'Joris is in the Kitchen');
+		$kitchen = array_filter($assignments, static fn (array $a): bool => $a['crewRole'] === self::placeholder(1));
+		$this->assertCount(expectedCount: 1, haystack: $kitchen, message: 'the Kitchen has 1 of 3 places filled');
 		$registrations = $this->seed(schema: 'larping_registration');
 		$joris = $registrations[(int)substr($assignments[0]['registration'], -12)];
 		$this->assertSame(expected: 'joris', actual: $joris['submitterUid']);
