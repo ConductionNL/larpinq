@@ -195,7 +195,7 @@
 		},
 		{
 			"id": "StoreMenu",
-			"label": "Store",
+			"label": "Marketplace",
 			"icon": "StoreOutline",
 			"route": "Store",
 			"section": "footer",
@@ -264,7 +264,7 @@
 	"pages": [
 		[
 			"Store",
-			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
 		],
 		[
 			"Dashboard",
@@ -336,7 +336,7 @@
 		],
 		[
 			"EventDetail",
-			"c20532fadae30453125018aa6fdb7eb5fb5c19f433d8c97192b0477ebb9f6727"
+			"64aefa8d67d51ad008353af44c366f1d380d5e6a6447fecc53a78b37c59f64ae"
 		],
 		[
 			"Settings",
@@ -432,7 +432,7 @@
 		],
 		[
 			"MyRegistrations",
-			"f326769feaabf627a97c2d783155e908ed9d170f2a1dee5f1f90e1a93015077e"
+			"f1ed2f43ab2a58e4cdfe012383f612f44c41259ac8d6c967a103a6bc0650ffab"
 		],
 		[
 			"RegistrationDetail",
