@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Gener",
         "Leader": "Manader",
         "Leader or member": "Manader u commember",
+        "Check-in code": "Code d'annunzia",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il code ch'in steward scannescha u tippa a l'entrada, fixà da larpinq cura che l'annunzia è acceptada. Resta il medem cura che l'annunzia passa ad in auter giugader.",
+        "Already checked in at {time} by {steward}": "L'arrivada è gia vegnida annunziada a las {time} da {steward}",
+        "Camera preview for scanning check-in codes": "Purschida da la camera per scannar codes d'annunzia",
+        "Check-in failed. Try again.": "L'annunzia da l'arrivada n'è betg reussida. Emprova anc ina giada.",
+        "Checked in: {name}, {character}": "Arrivada annunziada: {name}, {character}",
+        "Close scan": "Serrar la scannaziun",
+        "Only game masters can check participants in.": "Mo ils manaders dal gieu pon annunziar l'arrivada dals participants.",
+        "QR code of your check-in code": "Code QR da tes code d'annunzia",
+        "Scan": "Scannar",
+        "This registration is not accepted. Nobody was checked in.": "Questa annunzia n'è betg acceptada. Nagin n'è vegnì annunzià.",
+        "Too many attempts. Wait a moment and try again.": "Memia bleras emprovas. Spetga in mument ed emprova anc ina giada.",
+        "Type the code or use a handheld scanner, then press Enter.": "Tippa il code u dovra in scanner a maun e smatga lura Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Code nunenconuschent u in code d'in auter eveniment. Nagin n'è vegnì annunzià.",
         "Leader's player account": "Conto da giugader dal manader",
         "More about the relationship, for example sister or old debt": "Dapli davart la relaziun, per exempel sora u debit vegl",
         "Player account": "Conto da giugader",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mia fegl da persunagi",
         "Open sheet": "Avrir il fegl",
-        "Check-in code": "Code d'annunzia",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il code ch'in steward scannescha u tippa a l'entrada, fixà da larpinq cura che l'annunzia è acceptada. Resta il medem cura che l'annunzia passa ad in auter giugader.",
-        "Already checked in at {time} by {steward}": "L'arrivada è gia vegnida annunziada a las {time} da {steward}",
-        "Camera preview for scanning check-in codes": "Purschida da la camera per scannar codes d'annunzia",
-        "Check-in failed. Try again.": "L'annunzia da l'arrivada n'è betg reussida. Emprova anc ina giada.",
-        "Checked in: {name}, {character}": "Arrivada annunziada: {name}, {character}",
-        "Close scan": "Serrar la scannaziun",
-        "Only game masters can check participants in.": "Mo ils manaders dal gieu pon annunziar l'arrivada dals participants.",
-        "QR code of your check-in code": "Code QR da tes code d'annunzia",
-        "Scan": "Scannar",
-        "This registration is not accepted. Nobody was checked in.": "Questa annunzia n'è betg acceptada. Nagin n'è vegnì annunzià.",
-        "Too many attempts. Wait a moment and try again.": "Memia bleras emprovas. Spetga in mument ed emprova anc ina giada.",
-        "Type the code or use a handheld scanner, then press Enter.": "Tippa il code u dovra in scanner a maun e smatga lura Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Code nunenconuschent u in code d'in auter eveniment. Nagin n'è vegnì annunzià."
+        "History entry": "Inscripziun d'istorgia",
+        "How the date is told in the world": "Co che la data vegn numnada en il mund",
+        "In-game date": "Data en il gieu",
+        "The story of this moment": "L'istorgia da quest mument",
+        "The world this moment belongs to": "Il mund al qual quest mument appartegna",
+        "What happened, in a few words": "Tge ch'è capità, en paucs pleds",
+        "When it happened, used to sort the timeline": "Cura ch'igl è capità, per zavrar la cronologia",
+        "Who may read the entry: game masters only, or players too": "Tgi che dastga leger l'inscripziun: mo ils manaders dal gieu u er ils giugaders",
+        "Price": "Pretsch",
+        "Gold pieces the item costs": "Tocs d'aur che l'object custa",
+        "Silver pieces the item costs": "Tocs d'argient che l'object custa",
+        "Copper pieces the item costs": "Tocs d'arom che l'object custa",
+        "What the item costs in in-game money; a character buys it from the character page": "Quai che l'object custa en daners dal gieu; in persunagi al cumpra sin la pagina dal persunagi"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Slags",
         "Leader": "Leder",
         "Leader or member": "Leder eller medlem",
+        "Check-in code": "Check-in-kode",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Koden, som en steward scanner eller taster ved indgangen, sat af larpinq, når tilmeldingen accepteres. Bevares, når tilmeldingen overgår til en anden spiller.",
+        "Already checked in at {time} by {steward}": "Allerede tjekket ind kl. {time} af {steward}",
+        "Camera preview for scanning check-in codes": "Kameravisning til scanning af check-in-koder",
+        "Check-in failed. Try again.": "Indtjekning mislykkedes. Prøv igen.",
+        "Checked in: {name}, {character}": "Tjekket ind: {name}, {character}",
+        "Close scan": "Luk scanning",
+        "Only game masters can check participants in.": "Kun spilledere kan tjekke deltagere ind.",
+        "QR code of your check-in code": "QR-kode for din check-in-kode",
+        "Scan": "Scan",
+        "This registration is not accepted. Nobody was checked in.": "Denne tilmelding er ikke accepteret. Ingen blev tjekket ind.",
+        "Too many attempts. Wait a moment and try again.": "For mange forsøg. Vent et øjeblik, og prøv igen.",
+        "Type the code or use a handheld scanner, then press Enter.": "Indtast koden eller brug en håndscanner, og tryk så på Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Ukendt kode, eller en kode til et andet arrangement. Ingen blev tjekket ind.",
         "Leader's player account": "Lederens spillerkonto",
         "More about the relationship, for example sister or old debt": "Mere om forholdet, for eksempel søster eller gammel gæld",
         "Player account": "Spillerkonto",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mit karakterark",
         "Open sheet": "Åbn ark",
-        "Check-in code": "Check-in-kode",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Koden, som en steward scanner eller taster ved indgangen, sat af larpinq, når tilmeldingen accepteres. Bevares, når tilmeldingen overgår til en anden spiller.",
-        "Already checked in at {time} by {steward}": "Allerede tjekket ind kl. {time} af {steward}",
-        "Camera preview for scanning check-in codes": "Kameravisning til scanning af check-in-koder",
-        "Check-in failed. Try again.": "Indtjekning mislykkedes. Prøv igen.",
-        "Checked in: {name}, {character}": "Tjekket ind: {name}, {character}",
-        "Close scan": "Luk scanning",
-        "Only game masters can check participants in.": "Kun spilledere kan tjekke deltagere ind.",
-        "QR code of your check-in code": "QR-kode for din check-in-kode",
-        "Scan": "Scan",
-        "This registration is not accepted. Nobody was checked in.": "Denne tilmelding er ikke accepteret. Ingen blev tjekket ind.",
-        "Too many attempts. Wait a moment and try again.": "For mange forsøg. Vent et øjeblik, og prøv igen.",
-        "Type the code or use a handheld scanner, then press Enter.": "Indtast koden eller brug en håndscanner, og tryk så på Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Ukendt kode, eller en kode til et andet arrangement. Ingen blev tjekket ind."
+        "History entry": "Historisk post",
+        "How the date is told in the world": "Hvordan datoen siges i verdenen",
+        "In-game date": "Dato i spillet",
+        "The story of this moment": "Historien om dette øjeblik",
+        "The world this moment belongs to": "Verdenen, som dette øjeblik hører til",
+        "What happened, in a few words": "Hvad der skete, med få ord",
+        "When it happened, used to sort the timeline": "Hvornår det skete, bruges til at sortere tidslinjen",
+        "Who may read the entry: game masters only, or players too": "Hvem der må læse posten: kun spilledere eller også spillere",
+        "Price": "Pris",
+        "Gold pieces the item costs": "Guldstykker, som genstanden koster",
+        "Silver pieces the item costs": "Sølvstykker, som genstanden koster",
+        "Copper pieces the item costs": "Kobberstykker, som genstanden koster",
+        "What the item costs in in-game money; a character buys it from the character page": "Hvad genstanden koster i spilpenge; en karakter køber den på karaktersiden"
     },
     "nplurals=2; plural=(n != 1);"
 )

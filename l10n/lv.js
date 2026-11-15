@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Veids",
         "Leader": "Vadītājs",
         "Leader or member": "Vadītājs vai dalībnieks",
+        "Check-in code": "Ierašanās kods",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kods, ko kārtības uzraugs pie ieejas noskenē vai ieraksta. To iestata larpinq, kad pieteikums ir apstiprināts. Tas paliek nemainīgs, ja pieteikums pāriet citam spēlētājam.",
+        "Already checked in at {time} by {steward}": "Ierašanās jau reģistrēta {time}, reģistrēja {steward}",
+        "Camera preview for scanning check-in codes": "Kameras skats ierašanās kodu skenēšanai",
+        "Check-in failed. Try again.": "Ierašanos neizdevās reģistrēt. Mēģini vēlreiz.",
+        "Checked in: {name}, {character}": "Reģistrēts: {name}, {character}",
+        "Close scan": "Aizvērt skenēšanu",
+        "Only game masters can check participants in.": "Dalībnieku ierašanos var reģistrēt tikai spēles vadītāji.",
+        "QR code of your check-in code": "Tava ierašanās koda QR kods",
+        "Scan": "Skenēt",
+        "This registration is not accepted. Nobody was checked in.": "Šis pieteikums nav apstiprināts. Neviens netika reģistrēts.",
+        "Too many attempts. Wait a moment and try again.": "Pārāk daudz mēģinājumu. Uzgaidi brīdi un mēģini vēlreiz.",
+        "Type the code or use a handheld scanner, then press Enter.": "Ieraksti kodu vai izmanto rokas skeneri un pēc tam nospied Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Nezināms kods vai cita pasākuma kods. Neviens netika reģistrēts.",
         "Leader's player account": "Vadītāja spēlētāja konts",
         "More about the relationship, for example sister or old debt": "Vairāk par attiecībām, piemēram, māsa vai vecs parāds",
         "Player account": "Spēlētāja konts",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mana tēla lapa",
         "Open sheet": "Atvērt lapu",
-        "Check-in code": "Ierašanās kods",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kods, ko kārtības uzraugs pie ieejas noskenē vai ieraksta. To iestata larpinq, kad pieteikums ir apstiprināts. Tas paliek nemainīgs, ja pieteikums pāriet citam spēlētājam.",
-        "Already checked in at {time} by {steward}": "Ierašanās jau reģistrēta {time}, reģistrēja {steward}",
-        "Camera preview for scanning check-in codes": "Kameras skats ierašanās kodu skenēšanai",
-        "Check-in failed. Try again.": "Ierašanos neizdevās reģistrēt. Mēģini vēlreiz.",
-        "Checked in: {name}, {character}": "Reģistrēts: {name}, {character}",
-        "Close scan": "Aizvērt skenēšanu",
-        "Only game masters can check participants in.": "Dalībnieku ierašanos var reģistrēt tikai spēles vadītāji.",
-        "QR code of your check-in code": "Tava ierašanās koda QR kods",
-        "Scan": "Skenēt",
-        "This registration is not accepted. Nobody was checked in.": "Šis pieteikums nav apstiprināts. Neviens netika reģistrēts.",
-        "Too many attempts. Wait a moment and try again.": "Pārāk daudz mēģinājumu. Uzgaidi brīdi un mēģini vēlreiz.",
-        "Type the code or use a handheld scanner, then press Enter.": "Ieraksti kodu vai izmanto rokas skeneri un pēc tam nospied Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Nezināms kods vai cita pasākuma kods. Neviens netika reģistrēts."
+        "History entry": "Vēstures ieraksts",
+        "How the date is told in the world": "Kā datumu sauc pasaulē",
+        "In-game date": "Datums spēlē",
+        "The story of this moment": "Šī brīža stāsts",
+        "The world this moment belongs to": "Pasaule, kurai pieder šis brīdis",
+        "What happened, in a few words": "Kas notika, dažos vārdos",
+        "When it happened, used to sort the timeline": "Kad tas notika, laika joslas kārtošanai",
+        "Who may read the entry: game masters only, or players too": "Kas drīkst lasīt ierakstu: tikai spēles vadītāji vai arī spēlētāji",
+        "Price": "Cena",
+        "Gold pieces the item costs": "Zelta monētas, ko priekšmets maksā",
+        "Silver pieces the item costs": "Sudraba monētas, ko priekšmets maksā",
+        "Copper pieces the item costs": "Vara monētas, ko priekšmets maksā",
+        "What the item costs in in-game money; a character buys it from the character page": "Cik priekšmets maksā spēles naudā; tēls to pērk tēla lapā"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Druh",
         "Leader": "Vůdce",
         "Leader or member": "Vůdce nebo člen",
+        "Check-in code": "Kód příchodu",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kód, který pořadatel u vstupu naskenuje nebo opíše, nastavený larpinq při přijetí přihlášky. Zůstává stejný, když přihláška přejde na jiného hráče.",
+        "Already checked in at {time} by {steward}": "Příchod už zaregistroval {steward} v {time}",
+        "Camera preview for scanning check-in codes": "Náhled kamery pro skenování kódů příchodu",
+        "Check-in failed. Try again.": "Registrace příchodu se nezdařila. Zkus to znovu.",
+        "Checked in: {name}, {character}": "Zaregistrováno: {name}, {character}",
+        "Close scan": "Zavřít skenování",
+        "Only game masters can check participants in.": "Příchod účastníků mohou registrovat jen vypravěči.",
+        "QR code of your check-in code": "QR kód tvého kódu příchodu",
+        "Scan": "Skenovat",
+        "This registration is not accepted. Nobody was checked in.": "Tato přihláška není přijata. Nikdo nebyl zaregistrován.",
+        "Too many attempts. Wait a moment and try again.": "Příliš mnoho pokusů. Chvíli počkej a zkus to znovu.",
+        "Type the code or use a handheld scanner, then press Enter.": "Napiš kód nebo použij ruční čtečku a pak stiskni Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Neznámý kód nebo kód jiné akce. Nikdo nebyl zaregistrován.",
         "Leader's player account": "Hráčský účet vůdce",
         "More about the relationship, for example sister or old debt": "Více o vztahu, například sestra nebo starý dluh",
         "Player account": "Hráčský účet",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Můj deník postavy",
         "Open sheet": "Otevřít deník",
-        "Check-in code": "Kód příchodu",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kód, který pořadatel u vstupu naskenuje nebo opíše, nastavený larpinq při přijetí přihlášky. Zůstává stejný, když přihláška přejde na jiného hráče.",
-        "Already checked in at {time} by {steward}": "Příchod už zaregistroval {steward} v {time}",
-        "Camera preview for scanning check-in codes": "Náhled kamery pro skenování kódů příchodu",
-        "Check-in failed. Try again.": "Registrace příchodu se nezdařila. Zkus to znovu.",
-        "Checked in: {name}, {character}": "Zaregistrováno: {name}, {character}",
-        "Close scan": "Zavřít skenování",
-        "Only game masters can check participants in.": "Příchod účastníků mohou registrovat jen vypravěči.",
-        "QR code of your check-in code": "QR kód tvého kódu příchodu",
-        "Scan": "Skenovat",
-        "This registration is not accepted. Nobody was checked in.": "Tato přihláška není přijata. Nikdo nebyl zaregistrován.",
-        "Too many attempts. Wait a moment and try again.": "Příliš mnoho pokusů. Chvíli počkej a zkus to znovu.",
-        "Type the code or use a handheld scanner, then press Enter.": "Napiš kód nebo použij ruční čtečku a pak stiskni Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Neznámý kód nebo kód jiné akce. Nikdo nebyl zaregistrován."
+        "History entry": "Záznam historie",
+        "How the date is told in the world": "Jak se datum říká ve světě",
+        "In-game date": "Datum ve hře",
+        "The story of this moment": "Příběh této chvíle",
+        "The world this moment belongs to": "Svět, ke kterému tato chvíle patří",
+        "What happened, in a few words": "Co se stalo, v několika slovech",
+        "When it happened, used to sort the timeline": "Kdy se to stalo, pro řazení časové osy",
+        "Who may read the entry: game masters only, or players too": "Kdo smí záznam číst: jen vypravěči, nebo i hráči",
+        "Price": "Cena",
+        "Gold pieces the item costs": "Zlaté mince, které předmět stojí",
+        "Silver pieces the item costs": "Stříbrné mince, které předmět stojí",
+        "Copper pieces the item costs": "Měděné mince, které předmět stojí",
+        "What the item costs in in-game money; a character buys it from the character page": "Kolik předmět stojí v herních penězích; postava ho kupuje na stránce postavy"
     },
     "nplurals=2; plural=(n != 1);"
 )

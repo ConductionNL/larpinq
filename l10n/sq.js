@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Lloj",
         "Leader": "Udhëheqës",
         "Leader or member": "Udhëheqës ose anëtar",
+        "Check-in code": "Kodi i mbërritjes",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kodi që një steward e skanon ose e shkruan te hyrja, i vendosur nga larpinq kur regjistrimi pranohet. Mbetet i njëjtë kur regjistrimi kalon te një lojtar tjetër.",
+        "Already checked in at {time} by {steward}": "Mbërritja është regjistruar tashmë në {time} nga {steward}",
+        "Camera preview for scanning check-in codes": "Pamja e kamerës për skanimin e kodeve të mbërritjes",
+        "Check-in failed. Try again.": "Regjistrimi i mbërritjes dështoi. Provo sërish.",
+        "Checked in: {name}, {character}": "Mbërritja u regjistrua: {name}, {character}",
+        "Close scan": "Mbyll skanimin",
+        "Only game masters can check participants in.": "Vetëm drejtuesit e lojës mund të regjistrojnë mbërritjen e pjesëmarrësve.",
+        "QR code of your check-in code": "Kodi QR i kodit tënd të mbërritjes",
+        "Scan": "Skano",
+        "This registration is not accepted. Nobody was checked in.": "Ky regjistrim nuk është pranuar. Nuk u regjistrua askush.",
+        "Too many attempts. Wait a moment and try again.": "Shumë përpjekje. Prit pak dhe provo sërish.",
+        "Type the code or use a handheld scanner, then press Enter.": "Shkruaj kodin ose përdor një skaner dore, pastaj shtyp Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Kod i panjohur, ose kod për një event tjetër. Nuk u regjistrua askush.",
         "Leader's player account": "Llogaria e lojtarit të udhëheqësit",
         "More about the relationship, for example sister or old debt": "Më shumë për marrëdhënien, për shembull motër ose borxh i vjetër",
         "Player account": "Llogari lojtari",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fleta e personazhit tim",
         "Open sheet": "Hap fletën",
-        "Check-in code": "Kodi i mbërritjes",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kodi që një steward e skanon ose e shkruan te hyrja, i vendosur nga larpinq kur regjistrimi pranohet. Mbetet i njëjtë kur regjistrimi kalon te një lojtar tjetër.",
-        "Already checked in at {time} by {steward}": "Mbërritja është regjistruar tashmë në {time} nga {steward}",
-        "Camera preview for scanning check-in codes": "Pamja e kamerës për skanimin e kodeve të mbërritjes",
-        "Check-in failed. Try again.": "Regjistrimi i mbërritjes dështoi. Provo sërish.",
-        "Checked in: {name}, {character}": "Mbërritja u regjistrua: {name}, {character}",
-        "Close scan": "Mbyll skanimin",
-        "Only game masters can check participants in.": "Vetëm drejtuesit e lojës mund të regjistrojnë mbërritjen e pjesëmarrësve.",
-        "QR code of your check-in code": "Kodi QR i kodit tënd të mbërritjes",
-        "Scan": "Skano",
-        "This registration is not accepted. Nobody was checked in.": "Ky regjistrim nuk është pranuar. Nuk u regjistrua askush.",
-        "Too many attempts. Wait a moment and try again.": "Shumë përpjekje. Prit pak dhe provo sërish.",
-        "Type the code or use a handheld scanner, then press Enter.": "Shkruaj kodin ose përdor një skaner dore, pastaj shtyp Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Kod i panjohur, ose kod për një event tjetër. Nuk u regjistrua askush."
+        "History entry": "Hyrje historie",
+        "How the date is told in the world": "Si thuhet data në botë",
+        "In-game date": "Data në lojë",
+        "The story of this moment": "Historia e këtij çasti",
+        "The world this moment belongs to": "Bota së cilës i përket ky çast",
+        "What happened, in a few words": "Çfarë ndodhi, me pak fjalë",
+        "When it happened, used to sort the timeline": "Kur ndodhi, për renditjen e vijës kohore",
+        "Who may read the entry: game masters only, or players too": "Kush mund ta lexojë hyrjen: vetëm drejtuesit e lojës apo edhe lojtarët",
+        "Price": "Çmimi",
+        "Gold pieces the item costs": "Monedhat e arit që kushton sendi",
+        "Silver pieces the item costs": "Monedhat e argjendit që kushton sendi",
+        "Copper pieces the item costs": "Monedhat e bakrit që kushton sendi",
+        "What the item costs in in-game money; a character buys it from the character page": "Sa kushton sendi në para të lojës; personazhi e blen nga faqja e personazhit"
     },
     "nplurals=2; plural=(n != 1);"
 )

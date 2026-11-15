@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Tür",
         "Leader": "Lider",
         "Leader or member": "Lider ya da üye",
+        "Check-in code": "Giriş kodu",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Görevlinin girişte okuttuğu ya da yazdığı kod; kayıt kabul edildiğinde larpinq tarafından atanır. Kayıt başka bir oyuncuya geçtiğinde aynı kalır.",
+        "Already checked in at {time} by {steward}": "Giriş zaten {time} saatinde {steward} tarafından kaydedildi",
+        "Camera preview for scanning check-in codes": "Giriş kodlarını okutmak için kamera önizlemesi",
+        "Check-in failed. Try again.": "Giriş kaydedilemedi. Yeniden dene.",
+        "Checked in: {name}, {character}": "Giriş kaydedildi: {name}, {character}",
+        "Close scan": "Taramayı kapat",
+        "Only game masters can check participants in.": "Katılımcıların girişini yalnızca oyun yöneticileri kaydedebilir.",
+        "QR code of your check-in code": "Giriş kodunun QR kodu",
+        "Scan": "Tara",
+        "This registration is not accepted. Nobody was checked in.": "Bu kayıt kabul edilmedi. Kimsenin girişi kaydedilmedi.",
+        "Too many attempts. Wait a moment and try again.": "Çok fazla deneme. Biraz bekle ve yeniden dene.",
+        "Type the code or use a handheld scanner, then press Enter.": "Kodu yaz ya da el tipi okuyucu kullan, ardından Enter'a bas.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Bilinmeyen kod ya da başka bir etkinliğin kodu. Kimsenin girişi kaydedilmedi.",
         "Leader's player account": "Liderin oyuncu hesabı",
         "More about the relationship, for example sister or old debt": "İlişki hakkında daha fazlası, örneğin kız kardeş ya da eski borç",
         "Player account": "Oyuncu hesabı",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakter sayfam",
         "Open sheet": "Sayfayı aç",
-        "Check-in code": "Giriş kodu",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Görevlinin girişte okuttuğu ya da yazdığı kod; kayıt kabul edildiğinde larpinq tarafından atanır. Kayıt başka bir oyuncuya geçtiğinde aynı kalır.",
-        "Already checked in at {time} by {steward}": "Giriş zaten {time} saatinde {steward} tarafından kaydedildi",
-        "Camera preview for scanning check-in codes": "Giriş kodlarını okutmak için kamera önizlemesi",
-        "Check-in failed. Try again.": "Giriş kaydedilemedi. Yeniden dene.",
-        "Checked in: {name}, {character}": "Giriş kaydedildi: {name}, {character}",
-        "Close scan": "Taramayı kapat",
-        "Only game masters can check participants in.": "Katılımcıların girişini yalnızca oyun yöneticileri kaydedebilir.",
-        "QR code of your check-in code": "Giriş kodunun QR kodu",
-        "Scan": "Tara",
-        "This registration is not accepted. Nobody was checked in.": "Bu kayıt kabul edilmedi. Kimsenin girişi kaydedilmedi.",
-        "Too many attempts. Wait a moment and try again.": "Çok fazla deneme. Biraz bekle ve yeniden dene.",
-        "Type the code or use a handheld scanner, then press Enter.": "Kodu yaz ya da el tipi okuyucu kullan, ardından Enter'a bas.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Bilinmeyen kod ya da başka bir etkinliğin kodu. Kimsenin girişi kaydedilmedi."
+        "History entry": "Tarih kaydı",
+        "How the date is told in the world": "Tarihin dünyada nasıl söylendiği",
+        "In-game date": "Oyun içi tarih",
+        "The story of this moment": "Bu anın hikâyesi",
+        "The world this moment belongs to": "Bu anın ait olduğu dünya",
+        "What happened, in a few words": "Ne oldu, birkaç kelimeyle",
+        "When it happened, used to sort the timeline": "Ne zaman oldu, zaman çizelgesini sıralamak için",
+        "Who may read the entry: game masters only, or players too": "Kaydı kim okuyabilir: yalnızca oyun yöneticileri mi, oyuncular da mı",
+        "Price": "Fiyat",
+        "Gold pieces the item costs": "Eşyanın tuttuğu altın",
+        "Silver pieces the item costs": "Eşyanın tuttuğu gümüş",
+        "Copper pieces the item costs": "Eşyanın tuttuğu bakır",
+        "What the item costs in in-game money; a character buys it from the character page": "Eşyanın oyun parasıyla fiyatı; karakter onu karakter sayfasından satın alır"
     },
     "nplurals=2; plural=(n != 1);"
 )

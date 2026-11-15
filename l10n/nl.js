@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -444,6 +440,20 @@ OC.L10N.register(
         "{label} (game masters only)": "{label} (alleen spelleiders)",
         "Could not load the extra fields.": "De extra velden konden niet worden geladen.",
         "Loading extra fields": "Extra velden laden",
+        "Check-in code": "Incheckcode",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "De code die een steward bij de deur scant of intypt, door larpinq gezet zodra de inschrijving is geaccepteerd. Blijft gelijk als de inschrijving naar een andere speler gaat.",
+        "Already checked in at {time} by {steward}": "Al ingecheckt om {time} door {steward}",
+        "Camera preview for scanning check-in codes": "Camerabeeld voor het scannen van incheckcodes",
+        "Check-in failed. Try again.": "Inchecken mislukt. Probeer het opnieuw.",
+        "Checked in: {name}, {character}": "Ingecheckt: {name}, {character}",
+        "Close scan": "Scannen sluiten",
+        "Only game masters can check participants in.": "Alleen spelleiders kunnen deelnemers inchecken.",
+        "QR code of your check-in code": "QR-code van je incheckcode",
+        "Scan": "Scannen",
+        "This registration is not accepted. Nobody was checked in.": "Deze inschrijving is niet geaccepteerd. Er is niemand ingecheckt.",
+        "Too many attempts. Wait a moment and try again.": "Te veel pogingen. Wacht even en probeer het opnieuw.",
+        "Type the code or use a handheld scanner, then press Enter.": "Typ de code of gebruik een handscanner en druk dan op Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Onbekende code, of een code voor een ander evenement. Er is niemand ingecheckt.",
         "Save extra fields": "Extra velden opslaan",
         "Saving": "Opslaan…",
         "The extra fields are saved.": "De extra velden zijn opgeslagen.",
@@ -870,20 +880,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Waar Larpinq de gegevens van je spel bewaart. Kies per soort een bron, en bij Open Register het register en schema.",
         "My character sheet": "Mijn karakterblad",
         "Open sheet": "Blad openen",
-        "Check-in code": "Incheckcode",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "De code die een steward bij de deur scant of intypt, door larpinq gezet zodra de inschrijving is geaccepteerd. Blijft gelijk als de inschrijving naar een andere speler gaat.",
-        "Already checked in at {time} by {steward}": "Al ingecheckt om {time} door {steward}",
-        "Camera preview for scanning check-in codes": "Camerabeeld voor het scannen van incheckcodes",
-        "Check-in failed. Try again.": "Inchecken mislukt. Probeer het opnieuw.",
-        "Checked in: {name}, {character}": "Ingecheckt: {name}, {character}",
-        "Close scan": "Scannen sluiten",
-        "Only game masters can check participants in.": "Alleen spelleiders kunnen deelnemers inchecken.",
-        "QR code of your check-in code": "QR-code van je incheckcode",
-        "Scan": "Scannen",
-        "This registration is not accepted. Nobody was checked in.": "Deze inschrijving is niet geaccepteerd. Er is niemand ingecheckt.",
-        "Too many attempts. Wait a moment and try again.": "Te veel pogingen. Wacht even en probeer het opnieuw.",
-        "Type the code or use a handheld scanner, then press Enter.": "Typ de code of gebruik een handscanner en druk dan op Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Onbekende code, of een code voor een ander evenement. Er is niemand ingecheckt."
+        "History entry": "Geschiedenisregel",
+        "How the date is told in the world": "Hoe de datum in de wereld wordt genoemd",
+        "In-game date": "Datum in het spel",
+        "The story of this moment": "Het verhaal van dit moment",
+        "The world this moment belongs to": "De wereld waar dit moment bij hoort",
+        "What happened, in a few words": "Wat er gebeurde, in een paar woorden",
+        "When it happened, used to sort the timeline": "Wanneer het gebeurde, gebruikt om de tijdlijn te sorteren",
+        "Who may read the entry: game masters only, or players too": "Wie de regel mag lezen: alleen spelleiders, of ook spelers",
+        "Price": "Prijs",
+        "Gold pieces the item costs": "Goudstukken die het item kost",
+        "Silver pieces the item costs": "Zilverstukken die het item kost",
+        "Copper pieces the item costs": "Koperstukken die het item kost",
+        "What the item costs in in-game money; a character buys it from the character page": "Wat het item kost in spelgeld; een personage koopt het op de personagepagina"
     },
     "nplurals=2; plural=(n != 1);"
 )

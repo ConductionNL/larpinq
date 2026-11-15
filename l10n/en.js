@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -381,6 +377,20 @@ OC.L10N.register(
         "The name of the faction or group": "The name of the faction or group",
         "The name of the faction, copied when the membership is saved, so a member of a secret faction sees its name": "The name of the faction, copied when the membership is saved, so a member of a secret faction sees its name",
         "The other character": "The other character",
+        "Check-in code": "Check-in code",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.",
+        "Already checked in at {time} by {steward}": "Already checked in at {time} by {steward}",
+        "Camera preview for scanning check-in codes": "Camera preview for scanning check-in codes",
+        "Check-in failed. Try again.": "Check-in failed. Try again.",
+        "Checked in: {name}, {character}": "Checked in: {name}, {character}",
+        "Close scan": "Close scan",
+        "Only game masters can check participants in.": "Only game masters can check participants in.",
+        "QR code of your check-in code": "QR code of your check-in code",
+        "Scan": "Scan",
+        "This registration is not accepted. Nobody was checked in.": "This registration is not accepted. Nobody was checked in.",
+        "Too many attempts. Wait a moment and try again.": "Too many attempts. Wait a moment and try again.",
+        "Type the code or use a handheld scanner, then press Enter.": "Type the code or use a handheld scanner, then press Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Unknown code, or a code for another event. Nobody was checked in.",
         "The visibility of the faction, copied when the membership is saved": "The visibility of the faction, copied when the membership is saved",
         "The world this faction belongs to": "The world this faction belongs to",
         "To": "To",
@@ -744,20 +754,20 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "My character sheet",
         "Open sheet": "Open sheet",
-        "Check-in code": "Check-in code",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.",
-        "Already checked in at {time} by {steward}": "Already checked in at {time} by {steward}",
-        "Camera preview for scanning check-in codes": "Camera preview for scanning check-in codes",
-        "Check-in failed. Try again.": "Check-in failed. Try again.",
-        "Checked in: {name}, {character}": "Checked in: {name}, {character}",
-        "Close scan": "Close scan",
-        "Only game masters can check participants in.": "Only game masters can check participants in.",
-        "QR code of your check-in code": "QR code of your check-in code",
-        "Scan": "Scan",
-        "This registration is not accepted. Nobody was checked in.": "This registration is not accepted. Nobody was checked in.",
-        "Too many attempts. Wait a moment and try again.": "Too many attempts. Wait a moment and try again.",
-        "Type the code or use a handheld scanner, then press Enter.": "Type the code or use a handheld scanner, then press Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Unknown code, or a code for another event. Nobody was checked in."
+        "History entry": "History entry",
+        "How the date is told in the world": "How the date is told in the world",
+        "In-game date": "In-game date",
+        "The story of this moment": "The story of this moment",
+        "The world this moment belongs to": "The world this moment belongs to",
+        "What happened, in a few words": "What happened, in a few words",
+        "When it happened, used to sort the timeline": "When it happened, used to sort the timeline",
+        "Who may read the entry: game masters only, or players too": "Who may read the entry: game masters only, or players too",
+        "Date": "Date",
+        "Price": "Price",
+        "Gold pieces the item costs": "Gold pieces the item costs",
+        "Silver pieces the item costs": "Silver pieces the item costs",
+        "Copper pieces the item costs": "Copper pieces the item costs",
+        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page"
     },
     "nplurals=2; plural=(n != 1);"
 )

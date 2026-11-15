@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Tegund",
         "Leader": "Leiðtogi",
         "Leader or member": "Leiðtogi eða meðlimur",
+        "Check-in code": "Innritunarkóði",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kóðinn sem gæslumaður skannar eða slær inn við innganginn, settur af larpinq þegar skráningin er samþykkt. Helst óbreyttur þegar skráningin færist til annars leikmanns.",
+        "Already checked in at {time} by {steward}": "Þegar mætt kl. {time}, skráð af {steward}",
+        "Camera preview for scanning check-in codes": "Myndavélarsýn til að skanna innritunarkóða",
+        "Check-in failed. Try again.": "Ekki tókst að skrá mætingu. Reyndu aftur.",
+        "Checked in: {name}, {character}": "Mæting skráð: {name}, {character}",
+        "Close scan": "Loka skönnun",
+        "Only game masters can check participants in.": "Aðeins stjórnendur leiksins geta skráð mætingu þátttakenda.",
+        "QR code of your check-in code": "QR-kóði innritunarkóðans þíns",
+        "Scan": "Skanna",
+        "This registration is not accepted. Nobody was checked in.": "Þessi skráning er ekki samþykkt. Enginn var skráður inn.",
+        "Too many attempts. Wait a moment and try again.": "Of margar tilraunir. Bíddu aðeins og reyndu aftur.",
+        "Type the code or use a handheld scanner, then press Enter.": "Sláðu inn kóðann eða notaðu handskanna og ýttu svo á Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Óþekktur kóði, eða kóði fyrir annan viðburð. Enginn var skráður inn.",
         "Leader's player account": "Leikmannsaðgangur leiðtoga",
         "More about the relationship, for example sister or old debt": "Meira um tengslin, til dæmis systir eða gömul skuld",
         "Player account": "Leikmannsaðgangur",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Persónublaðið mitt",
         "Open sheet": "Opna blað",
-        "Check-in code": "Innritunarkóði",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kóðinn sem gæslumaður skannar eða slær inn við innganginn, settur af larpinq þegar skráningin er samþykkt. Helst óbreyttur þegar skráningin færist til annars leikmanns.",
-        "Already checked in at {time} by {steward}": "Þegar mætt kl. {time}, skráð af {steward}",
-        "Camera preview for scanning check-in codes": "Myndavélarsýn til að skanna innritunarkóða",
-        "Check-in failed. Try again.": "Ekki tókst að skrá mætingu. Reyndu aftur.",
-        "Checked in: {name}, {character}": "Mæting skráð: {name}, {character}",
-        "Close scan": "Loka skönnun",
-        "Only game masters can check participants in.": "Aðeins stjórnendur leiksins geta skráð mætingu þátttakenda.",
-        "QR code of your check-in code": "QR-kóði innritunarkóðans þíns",
-        "Scan": "Skanna",
-        "This registration is not accepted. Nobody was checked in.": "Þessi skráning er ekki samþykkt. Enginn var skráður inn.",
-        "Too many attempts. Wait a moment and try again.": "Of margar tilraunir. Bíddu aðeins og reyndu aftur.",
-        "Type the code or use a handheld scanner, then press Enter.": "Sláðu inn kóðann eða notaðu handskanna og ýttu svo á Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Óþekktur kóði, eða kóði fyrir annan viðburð. Enginn var skráður inn."
+        "History entry": "Söguleg færsla",
+        "How the date is told in the world": "Hvernig dagsetningin er sögð í heiminum",
+        "In-game date": "Dagsetning í leiknum",
+        "The story of this moment": "Saga þessa augnabliks",
+        "The world this moment belongs to": "Heimurinn sem þetta augnablik tilheyrir",
+        "What happened, in a few words": "Hvað gerðist, í fáum orðum",
+        "When it happened, used to sort the timeline": "Hvenær það gerðist, notað til að raða tímalínunni",
+        "Who may read the entry: game masters only, or players too": "Hver má lesa færsluna: aðeins spilastjórar eða líka leikmenn",
+        "Price": "Verð",
+        "Gold pieces the item costs": "Gullpeningar sem hluturinn kostar",
+        "Silver pieces the item costs": "Silfurpeningar sem hluturinn kostar",
+        "Copper pieces the item costs": "Koparpeningar sem hluturinn kostar",
+        "What the item costs in in-game money; a character buys it from the character page": "Hvað hluturinn kostar í leikpeningum; persóna kaupir hann á persónusíðunni"
     },
     "nplurals=2; plural=(n != 1);"
 )

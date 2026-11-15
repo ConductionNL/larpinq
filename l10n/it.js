@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Tipo",
         "Leader": "Capo",
         "Leader or member": "Capo o membro",
+        "Check-in code": "Codice di check-in",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il codice che uno steward scansiona o digita all'ingresso, impostato da larpinq quando l'iscrizione viene accettata. Resta invariato quando l'iscrizione passa a un altro giocatore.",
+        "Already checked in at {time} by {steward}": "Presenza già registrata alle {time} da {steward}",
+        "Camera preview for scanning check-in codes": "Anteprima della fotocamera per scansionare i codici di check-in",
+        "Check-in failed. Try again.": "Registrazione della presenza non riuscita. Riprova.",
+        "Checked in: {name}, {character}": "Presenza registrata: {name}, {character}",
+        "Close scan": "Chiudi scansione",
+        "Only game masters can check participants in.": "Solo i master possono registrare la presenza dei partecipanti.",
+        "QR code of your check-in code": "Codice QR del tuo codice di check-in",
+        "Scan": "Scansiona",
+        "This registration is not accepted. Nobody was checked in.": "Questa iscrizione non è accettata. Nessuna presenza è stata registrata.",
+        "Too many attempts. Wait a moment and try again.": "Troppi tentativi. Attendi un momento e riprova.",
+        "Type the code or use a handheld scanner, then press Enter.": "Digita il codice o usa uno scanner portatile, poi premi Invio.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Codice sconosciuto, o codice di un altro evento. Nessuna presenza è stata registrata.",
         "Leader's player account": "Account giocatore del capo",
         "More about the relationship, for example sister or old debt": "Altro sulla relazione, per esempio sorella o vecchio debito",
         "Player account": "Account giocatore",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La mia scheda personaggio",
         "Open sheet": "Apri scheda",
-        "Check-in code": "Codice di check-in",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Il codice che uno steward scansiona o digita all'ingresso, impostato da larpinq quando l'iscrizione viene accettata. Resta invariato quando l'iscrizione passa a un altro giocatore.",
-        "Already checked in at {time} by {steward}": "Presenza già registrata alle {time} da {steward}",
-        "Camera preview for scanning check-in codes": "Anteprima della fotocamera per scansionare i codici di check-in",
-        "Check-in failed. Try again.": "Registrazione della presenza non riuscita. Riprova.",
-        "Checked in: {name}, {character}": "Presenza registrata: {name}, {character}",
-        "Close scan": "Chiudi scansione",
-        "Only game masters can check participants in.": "Solo i master possono registrare la presenza dei partecipanti.",
-        "QR code of your check-in code": "Codice QR del tuo codice di check-in",
-        "Scan": "Scansiona",
-        "This registration is not accepted. Nobody was checked in.": "Questa iscrizione non è accettata. Nessuna presenza è stata registrata.",
-        "Too many attempts. Wait a moment and try again.": "Troppi tentativi. Attendi un momento e riprova.",
-        "Type the code or use a handheld scanner, then press Enter.": "Digita il codice o usa uno scanner portatile, poi premi Invio.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Codice sconosciuto, o codice di un altro evento. Nessuna presenza è stata registrata."
+        "History entry": "Voce di storia",
+        "How the date is told in the world": "Come si dice la data nel mondo",
+        "In-game date": "Data nel gioco",
+        "The story of this moment": "La storia di questo momento",
+        "The world this moment belongs to": "Il mondo a cui appartiene questo momento",
+        "What happened, in a few words": "Cosa è successo, in poche parole",
+        "When it happened, used to sort the timeline": "Quando è successo, per ordinare la cronologia",
+        "Who may read the entry: game masters only, or players too": "Chi può leggere la voce: solo i master o anche i giocatori",
+        "Price": "Prezzo",
+        "Gold pieces the item costs": "Monete d'oro che costa l'oggetto",
+        "Silver pieces the item costs": "Monete d'argento che costa l'oggetto",
+        "Copper pieces the item costs": "Monete di rame che costa l'oggetto",
+        "What the item costs in in-game money; a character buys it from the character page": "Quanto costa l'oggetto in denaro di gioco; un personaggio lo compra dalla pagina del personaggio"
     },
     "nplurals=2; plural=(n != 1);"
 )

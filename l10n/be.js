@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Від",
         "Leader": "Лідар",
         "Leader or member": "Лідар або ўдзельнік",
+        "Check-in code": "Код рэгістрацыі прыбыцця",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Код, які распарадчык скануе або ўводзіць на ўваходзе. larpinq задае яго, калі заяўка прынятая. Захоўваецца, калі заяўка пераходзіць да іншага гульца.",
+        "Already checked in at {time} by {steward}": "Прыбыццё ўжо зарэгістравана ў {time}, рэгістраваў {steward}",
+        "Camera preview for scanning check-in codes": "Выява з камеры для сканавання кодаў прыбыцця",
+        "Check-in failed. Try again.": "Не ўдалося зарэгістраваць прыбыццё. Паспрабуй яшчэ раз.",
+        "Checked in: {name}, {character}": "Прыбыццё зарэгістравана: {name}, {character}",
+        "Close scan": "Закрыць сканаванне",
+        "Only game masters can check participants in.": "Рэгістраваць прыбыццё ўдзельнікаў могуць толькі майстры гульні.",
+        "QR code of your check-in code": "QR-код твайго кода прыбыцця",
+        "Scan": "Сканаваць",
+        "This registration is not accepted. Nobody was checked in.": "Гэтая заяўка не прынятая. Нікога не зарэгістравана.",
+        "Too many attempts. Wait a moment and try again.": "Занадта шмат спроб. Пачакай крыху і паспрабуй яшчэ раз.",
+        "Type the code or use a handheld scanner, then press Enter.": "Увядзі код або скарыстайся ручным сканерам, потым націсні Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Невядомы код або код іншага мерапрыемства. Нікога не зарэгістравана.",
         "Leader's player account": "Уліковы запіс гульца лідара",
         "More about the relationship, for example sister or old debt": "Больш пра адносіны, напрыклад сястра або стары доўг",
         "Player account": "Уліковы запіс гульца",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой аркуш персанажа",
         "Open sheet": "Адкрыць аркуш",
-        "Check-in code": "Код рэгістрацыі прыбыцця",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Код, які распарадчык скануе або ўводзіць на ўваходзе. larpinq задае яго, калі заяўка прынятая. Захоўваецца, калі заяўка пераходзіць да іншага гульца.",
-        "Already checked in at {time} by {steward}": "Прыбыццё ўжо зарэгістравана ў {time}, рэгістраваў {steward}",
-        "Camera preview for scanning check-in codes": "Выява з камеры для сканавання кодаў прыбыцця",
-        "Check-in failed. Try again.": "Не ўдалося зарэгістраваць прыбыццё. Паспрабуй яшчэ раз.",
-        "Checked in: {name}, {character}": "Прыбыццё зарэгістравана: {name}, {character}",
-        "Close scan": "Закрыць сканаванне",
-        "Only game masters can check participants in.": "Рэгістраваць прыбыццё ўдзельнікаў могуць толькі майстры гульні.",
-        "QR code of your check-in code": "QR-код твайго кода прыбыцця",
-        "Scan": "Сканаваць",
-        "This registration is not accepted. Nobody was checked in.": "Гэтая заяўка не прынятая. Нікога не зарэгістравана.",
-        "Too many attempts. Wait a moment and try again.": "Занадта шмат спроб. Пачакай крыху і паспрабуй яшчэ раз.",
-        "Type the code or use a handheld scanner, then press Enter.": "Увядзі код або скарыстайся ручным сканерам, потым націсні Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Невядомы код або код іншага мерапрыемства. Нікога не зарэгістравана."
+        "History entry": "Запіс гісторыі",
+        "How the date is told in the world": "Як дата называецца ў свеце",
+        "In-game date": "Дата ў гульні",
+        "The story of this moment": "Гісторыя гэтага моманту",
+        "The world this moment belongs to": "Свет, да якога належыць гэты момант",
+        "What happened, in a few words": "Што здарылася, некалькімі словамі",
+        "When it happened, used to sort the timeline": "Калі гэта здарылася, для сартавання храналогіі",
+        "Who may read the entry: game masters only, or players too": "Хто можа чытаць запіс: толькі майстры гульні ці таксама гульцы",
+        "Price": "Цана",
+        "Gold pieces the item costs": "Залатыя манеты, якія каштуе прадмет",
+        "Silver pieces the item costs": "Срэбныя манеты, якія каштуе прадмет",
+        "Copper pieces the item costs": "Медныя манеты, якія каштуе прадмет",
+        "What the item costs in in-game money; a character buys it from the character page": "Колькі каштуе прадмет у гульнявых грашах; персанаж купляе яго на старонцы персанажа"
     },
     "nplurals=2; plural=(n != 1);"
 )

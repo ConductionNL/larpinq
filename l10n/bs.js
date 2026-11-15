@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Vrsta",
         "Leader": "Vođa",
         "Leader or member": "Vođa ili član",
+        "Check-in code": "Kod za prijavu dolaska",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kod koji redar na ulazu skenira ili ukuca, a postavlja ga larpinq kada je prijava prihvaćena. Ostaje isti kada prijava pređe na drugog igrača.",
+        "Already checked in at {time} by {steward}": "Dolazak je već prijavio {steward} u {time}",
+        "Camera preview for scanning check-in codes": "Pregled kamere za skeniranje kodova za prijavu dolaska",
+        "Check-in failed. Try again.": "Prijava dolaska nije uspjela. Pokušaj ponovo.",
+        "Checked in: {name}, {character}": "Prijavljen dolazak: {name}, {character}",
+        "Close scan": "Zatvori skeniranje",
+        "Only game masters can check participants in.": "Dolazak učesnika mogu prijaviti samo voditelji igre.",
+        "QR code of your check-in code": "QR kod tvog koda za prijavu dolaska",
+        "Scan": "Skeniraj",
+        "This registration is not accepted. Nobody was checked in.": "Ova prijava nije prihvaćena. Niko nije prijavljen.",
+        "Too many attempts. Wait a moment and try again.": "Previše pokušaja. Sačekaj trenutak i pokušaj ponovo.",
+        "Type the code or use a handheld scanner, then press Enter.": "Ukucaj kod ili koristi ručni skener, a zatim pritisni Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Nepoznat kod ili kod drugog događaja. Niko nije prijavljen.",
         "Leader's player account": "Igrački račun vođe",
         "More about the relationship, for example sister or old debt": "Više o odnosu, na primjer sestra ili stari dug",
         "Player account": "Igrački račun",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
         "Open sheet": "Otvori list",
-        "Check-in code": "Kod za prijavu dolaska",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Kod koji redar na ulazu skenira ili ukuca, a postavlja ga larpinq kada je prijava prihvaćena. Ostaje isti kada prijava pređe na drugog igrača.",
-        "Already checked in at {time} by {steward}": "Dolazak je već prijavio {steward} u {time}",
-        "Camera preview for scanning check-in codes": "Pregled kamere za skeniranje kodova za prijavu dolaska",
-        "Check-in failed. Try again.": "Prijava dolaska nije uspjela. Pokušaj ponovo.",
-        "Checked in: {name}, {character}": "Prijavljen dolazak: {name}, {character}",
-        "Close scan": "Zatvori skeniranje",
-        "Only game masters can check participants in.": "Dolazak učesnika mogu prijaviti samo voditelji igre.",
-        "QR code of your check-in code": "QR kod tvog koda za prijavu dolaska",
-        "Scan": "Skeniraj",
-        "This registration is not accepted. Nobody was checked in.": "Ova prijava nije prihvaćena. Niko nije prijavljen.",
-        "Too many attempts. Wait a moment and try again.": "Previše pokušaja. Sačekaj trenutak i pokušaj ponovo.",
-        "Type the code or use a handheld scanner, then press Enter.": "Ukucaj kod ili koristi ručni skener, a zatim pritisni Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Nepoznat kod ili kod drugog događaja. Niko nije prijavljen."
+        "History entry": "Historijski zapis",
+        "How the date is told in the world": "Kako se datum zove u svijetu",
+        "In-game date": "Datum u igri",
+        "The story of this moment": "Priča ovog trenutka",
+        "The world this moment belongs to": "Svijet kojem ovaj trenutak pripada",
+        "What happened, in a few words": "Šta se dogodilo, u nekoliko riječi",
+        "When it happened, used to sort the timeline": "Kada se dogodilo, za sortiranje vremenske linije",
+        "Who may read the entry: game masters only, or players too": "Ko smije čitati zapis: samo voditelji igre ili i igrači",
+        "Price": "Cijena",
+        "Gold pieces the item costs": "Zlatnici koje predmet košta",
+        "Silver pieces the item costs": "Srebrenjaci koje predmet košta",
+        "Copper pieces the item costs": "Bakrenjaci koje predmet košta",
+        "What the item costs in in-game money; a character buys it from the character page": "Koliko predmet košta u novcu igre; lik ga kupuje na stranici lika"
     },
     "nplurals=2; plural=(n != 1);"
 )

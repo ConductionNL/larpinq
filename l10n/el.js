@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Είδος",
         "Leader": "Αρχηγός",
         "Leader or member": "Αρχηγός ή μέλος",
+        "Check-in code": "Κωδικός προσέλευσης",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Ο κωδικός που σαρώνει ή πληκτρολογεί ο υπεύθυνος στην είσοδο, που ορίζεται από το larpinq όταν γίνεται δεκτή η εγγραφή. Παραμένει ίδιος όταν η εγγραφή περνά σε άλλον παίκτη.",
+        "Already checked in at {time} by {steward}": "Η προσέλευση έχει ήδη δηλωθεί στις {time} από {steward}",
+        "Camera preview for scanning check-in codes": "Προεπισκόπηση κάμερας για σάρωση κωδικών προσέλευσης",
+        "Check-in failed. Try again.": "Η δήλωση προσέλευσης απέτυχε. Δοκίμασε ξανά.",
+        "Checked in: {name}, {character}": "Δηλώθηκε προσέλευση: {name}, {character}",
+        "Close scan": "Κλείσιμο σάρωσης",
+        "Only game masters can check participants in.": "Μόνο οι αφηγητές μπορούν να δηλώνουν την προσέλευση των συμμετεχόντων.",
+        "QR code of your check-in code": "Κωδικός QR του κωδικού προσέλευσής σου",
+        "Scan": "Σάρωση",
+        "This registration is not accepted. Nobody was checked in.": "Αυτή η εγγραφή δεν έχει γίνει δεκτή. Δεν δηλώθηκε κανείς.",
+        "Too many attempts. Wait a moment and try again.": "Πάρα πολλές προσπάθειες. Περίμενε λίγο και δοκίμασε ξανά.",
+        "Type the code or use a handheld scanner, then press Enter.": "Πληκτρολόγησε τον κωδικό ή χρησιμοποίησε φορητό σαρωτή και πάτησε Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Άγνωστος κωδικός ή κωδικός άλλης εκδήλωσης. Δεν δηλώθηκε κανείς.",
         "Leader's player account": "Λογαριασμός παίκτη του αρχηγού",
         "More about the relationship, for example sister or old debt": "Περισσότερα για τη σχέση, για παράδειγμα αδελφή ή παλιό χρέος",
         "Player account": "Λογαριασμός παίκτη",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
         "Open sheet": "Άνοιγμα φύλλου",
-        "Check-in code": "Κωδικός προσέλευσης",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Ο κωδικός που σαρώνει ή πληκτρολογεί ο υπεύθυνος στην είσοδο, που ορίζεται από το larpinq όταν γίνεται δεκτή η εγγραφή. Παραμένει ίδιος όταν η εγγραφή περνά σε άλλον παίκτη.",
-        "Already checked in at {time} by {steward}": "Η προσέλευση έχει ήδη δηλωθεί στις {time} από {steward}",
-        "Camera preview for scanning check-in codes": "Προεπισκόπηση κάμερας για σάρωση κωδικών προσέλευσης",
-        "Check-in failed. Try again.": "Η δήλωση προσέλευσης απέτυχε. Δοκίμασε ξανά.",
-        "Checked in: {name}, {character}": "Δηλώθηκε προσέλευση: {name}, {character}",
-        "Close scan": "Κλείσιμο σάρωσης",
-        "Only game masters can check participants in.": "Μόνο οι αφηγητές μπορούν να δηλώνουν την προσέλευση των συμμετεχόντων.",
-        "QR code of your check-in code": "Κωδικός QR του κωδικού προσέλευσής σου",
-        "Scan": "Σάρωση",
-        "This registration is not accepted. Nobody was checked in.": "Αυτή η εγγραφή δεν έχει γίνει δεκτή. Δεν δηλώθηκε κανείς.",
-        "Too many attempts. Wait a moment and try again.": "Πάρα πολλές προσπάθειες. Περίμενε λίγο και δοκίμασε ξανά.",
-        "Type the code or use a handheld scanner, then press Enter.": "Πληκτρολόγησε τον κωδικό ή χρησιμοποίησε φορητό σαρωτή και πάτησε Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Άγνωστος κωδικός ή κωδικός άλλης εκδήλωσης. Δεν δηλώθηκε κανείς."
+        "History entry": "Καταχώριση ιστορίας",
+        "How the date is told in the world": "Πώς λέγεται η ημερομηνία στον κόσμο",
+        "In-game date": "Ημερομηνία στο παιχνίδι",
+        "The story of this moment": "Η ιστορία αυτής της στιγμής",
+        "The world this moment belongs to": "Ο κόσμος στον οποίο ανήκει αυτή η στιγμή",
+        "What happened, in a few words": "Τι συνέβη, με λίγα λόγια",
+        "When it happened, used to sort the timeline": "Πότε συνέβη, για την ταξινόμηση του χρονολογίου",
+        "Who may read the entry: game masters only, or players too": "Ποιος μπορεί να διαβάσει την καταχώριση: μόνο οι αφηγητές ή και οι παίκτες",
+        "Price": "Τιμή",
+        "Gold pieces the item costs": "Χρυσά νομίσματα που κοστίζει το αντικείμενο",
+        "Silver pieces the item costs": "Ασημένια νομίσματα που κοστίζει το αντικείμενο",
+        "Copper pieces the item costs": "Χάλκινα νομίσματα που κοστίζει το αντικείμενο",
+        "What the item costs in in-game money; a character buys it from the character page": "Πόσο κοστίζει το αντικείμενο σε χρήματα του παιχνιδιού· ένας χαρακτήρας το αγοράζει από τη σελίδα του χαρακτήρα"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Laji",
         "Leader": "Johtaja",
         "Leader or member": "Johtaja tai jäsen",
+        "Check-in code": "Sisäänkirjauskoodi",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Koodi, jonka järjestyksenvalvoja skannaa tai kirjoittaa ovella. larpinq asettaa sen, kun ilmoittautuminen hyväksytään. Säilyy, kun ilmoittautuminen siirtyy toiselle pelaajalle.",
+        "Already checked in at {time} by {steward}": "Kirjattu jo sisään klo {time}, kirjaaja {steward}",
+        "Camera preview for scanning check-in codes": "Kameranäkymä sisäänkirjauskoodien skannaukseen",
+        "Check-in failed. Try again.": "Sisäänkirjaus epäonnistui. Yritä uudelleen.",
+        "Checked in: {name}, {character}": "Kirjattu sisään: {name}, {character}",
+        "Close scan": "Sulje skannaus",
+        "Only game masters can check participants in.": "Vain pelinjohtajat voivat kirjata osallistujia sisään.",
+        "QR code of your check-in code": "Sisäänkirjauskoodisi QR-koodi",
+        "Scan": "Skannaa",
+        "This registration is not accepted. Nobody was checked in.": "Tätä ilmoittautumista ei ole hyväksytty. Ketään ei kirjattu sisään.",
+        "Too many attempts. Wait a moment and try again.": "Liian monta yritystä. Odota hetki ja yritä uudelleen.",
+        "Type the code or use a handheld scanner, then press Enter.": "Kirjoita koodi tai käytä käsiskanneria ja paina sitten Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Tuntematon koodi tai toisen tapahtuman koodi. Ketään ei kirjattu sisään.",
         "Leader's player account": "Johtajan pelaajatili",
         "More about the relationship, for example sister or old debt": "Lisää suhteesta, esimerkiksi sisar tai vanha velka",
         "Player account": "Pelaajatili",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Oma hahmolomake",
         "Open sheet": "Avaa lomake",
-        "Check-in code": "Sisäänkirjauskoodi",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Koodi, jonka järjestyksenvalvoja skannaa tai kirjoittaa ovella. larpinq asettaa sen, kun ilmoittautuminen hyväksytään. Säilyy, kun ilmoittautuminen siirtyy toiselle pelaajalle.",
-        "Already checked in at {time} by {steward}": "Kirjattu jo sisään klo {time}, kirjaaja {steward}",
-        "Camera preview for scanning check-in codes": "Kameranäkymä sisäänkirjauskoodien skannaukseen",
-        "Check-in failed. Try again.": "Sisäänkirjaus epäonnistui. Yritä uudelleen.",
-        "Checked in: {name}, {character}": "Kirjattu sisään: {name}, {character}",
-        "Close scan": "Sulje skannaus",
-        "Only game masters can check participants in.": "Vain pelinjohtajat voivat kirjata osallistujia sisään.",
-        "QR code of your check-in code": "Sisäänkirjauskoodisi QR-koodi",
-        "Scan": "Skannaa",
-        "This registration is not accepted. Nobody was checked in.": "Tätä ilmoittautumista ei ole hyväksytty. Ketään ei kirjattu sisään.",
-        "Too many attempts. Wait a moment and try again.": "Liian monta yritystä. Odota hetki ja yritä uudelleen.",
-        "Type the code or use a handheld scanner, then press Enter.": "Kirjoita koodi tai käytä käsiskanneria ja paina sitten Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Tuntematon koodi tai toisen tapahtuman koodi. Ketään ei kirjattu sisään."
+        "History entry": "Historiamerkintä",
+        "How the date is told in the world": "Miten päivämäärä sanotaan maailmassa",
+        "In-game date": "Pelinsisäinen päivämäärä",
+        "The story of this moment": "Tämän hetken tarina",
+        "The world this moment belongs to": "Maailma, johon tämä hetki kuuluu",
+        "What happened, in a few words": "Mitä tapahtui, muutamalla sanalla",
+        "When it happened, used to sort the timeline": "Milloin se tapahtui, aikajanan järjestämistä varten",
+        "Who may read the entry: game masters only, or players too": "Kuka saa lukea merkinnän: vain pelinjohtajat vai myös pelaajat",
+        "Price": "Hinta",
+        "Gold pieces the item costs": "Kultarahat, jotka esine maksaa",
+        "Silver pieces the item costs": "Hoperahat, jotka esine maksaa",
+        "Copper pieces the item costs": "Kuparirahat, jotka esine maksaa",
+        "What the item costs in in-game money; a character buys it from the character page": "Mitä esine maksaa pelirahassa; hahmo ostaa sen hahmosivulta"
     },
     "nplurals=2; plural=(n != 1);"
 )

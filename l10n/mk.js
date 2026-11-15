@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -398,6 +394,20 @@ OC.L10N.register(
         "Kind": "Вид",
         "Leader": "Водач",
         "Leader or member": "Водач или член",
+        "Check-in code": "Код за пристигнување",
+        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Кодот што редарот го скенира или го внесува на влезот, поставен од larpinq кога пријавата е прифатена. Останува ист кога пријавата преминува на друг играч.",
+        "Already checked in at {time} by {steward}": "Пристигнувањето веќе го пријави {steward} во {time}",
+        "Camera preview for scanning check-in codes": "Преглед од камерата за скенирање кодови за пристигнување",
+        "Check-in failed. Try again.": "Пријавувањето на пристигнувањето не успеа. Обиди се повторно.",
+        "Checked in: {name}, {character}": "Пријавено пристигнување: {name}, {character}",
+        "Close scan": "Затвори скенирање",
+        "Only game masters can check participants in.": "Само водителите на играта можат да го пријават пристигнувањето на учесниците.",
+        "QR code of your check-in code": "QR-код на твојот код за пристигнување",
+        "Scan": "Скенирај",
+        "This registration is not accepted. Nobody was checked in.": "Оваа пријава не е прифатена. Никој не е пријавен.",
+        "Too many attempts. Wait a moment and try again.": "Премногу обиди. Почекај малку и обиди се повторно.",
+        "Type the code or use a handheld scanner, then press Enter.": "Внеси го кодот или користи рачен скенер, а потоа притисни Enter.",
+        "Unknown code, or a code for another event. Nobody was checked in.": "Непознат код или код за друг настан. Никој не е пријавен.",
         "Leader's player account": "Играчка сметка на водачот",
         "More about the relationship, for example sister or old debt": "Повеќе за односот, на пример сестра или стар долг",
         "Player account": "Играчка сметка",
@@ -778,20 +788,19 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мојот лист на ликот",
         "Open sheet": "Отвори лист",
-        "Check-in code": "Код за пристигнување",
-        "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.": "Кодот што редарот го скенира или го внесува на влезот, поставен од larpinq кога пријавата е прифатена. Останува ист кога пријавата преминува на друг играч.",
-        "Already checked in at {time} by {steward}": "Пристигнувањето веќе го пријави {steward} во {time}",
-        "Camera preview for scanning check-in codes": "Преглед од камерата за скенирање кодови за пристигнување",
-        "Check-in failed. Try again.": "Пријавувањето на пристигнувањето не успеа. Обиди се повторно.",
-        "Checked in: {name}, {character}": "Пријавено пристигнување: {name}, {character}",
-        "Close scan": "Затвори скенирање",
-        "Only game masters can check participants in.": "Само водителите на играта можат да го пријават пристигнувањето на учесниците.",
-        "QR code of your check-in code": "QR-код на твојот код за пристигнување",
-        "Scan": "Скенирај",
-        "This registration is not accepted. Nobody was checked in.": "Оваа пријава не е прифатена. Никој не е пријавен.",
-        "Too many attempts. Wait a moment and try again.": "Премногу обиди. Почекај малку и обиди се повторно.",
-        "Type the code or use a handheld scanner, then press Enter.": "Внеси го кодот или користи рачен скенер, а потоа притисни Enter.",
-        "Unknown code, or a code for another event. Nobody was checked in.": "Непознат код или код за друг настан. Никој не е пријавен."
+        "History entry": "Историски запис",
+        "How the date is told in the world": "Како се вика датумот во светот",
+        "In-game date": "Датум во играта",
+        "The story of this moment": "Приказната за овој момент",
+        "The world this moment belongs to": "Светот на кој му припаѓа овој момент",
+        "What happened, in a few words": "Што се случи, во неколку зборови",
+        "When it happened, used to sort the timeline": "Кога се случи, за подредување на временската линија",
+        "Who may read the entry: game masters only, or players too": "Кој смее да го чита записот: само водачите на играта или и играчите",
+        "Price": "Цена",
+        "Gold pieces the item costs": "Златници што ги чини предметот",
+        "Silver pieces the item costs": "Сребреници што ги чини предметот",
+        "Copper pieces the item costs": "Бакарници што ги чини предметот",
+        "What the item costs in in-game money; a character buys it from the character page": "Колку чини предметот во пари од играта; ликот го купува на страницата на ликот"
     },
     "nplurals=2; plural=(n != 1);"
 )
