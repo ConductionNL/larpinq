@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Ez a tárgy egy másik világhoz tartozik.",
         "This item is not for sale.": "Ez a tárgy nem eladó.",
         "Only the owner and game masters buy for this character.": "Ennek a karakternek csak a tulajdonos és a mesélők vásárolhatnak.",
-        "Nothing was bought: {reason}": "Semmi sem lett megvásárolva: {reason}"
+        "Nothing was bought: {reason}": "Semmi sem lett megvásárolva: {reason}",
+        "Download run sheet": "Forgatókönyv letöltése",
+        "There is no run sheet template yet. Add one in the document app.": "Még nincs forgatókönyv-sablon. Adjon hozzá egyet a dokumentumalkalmazásban."
     },
     "plurals": {}
 }

@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Bu eşya başka bir dünyaya ait.",
         "This item is not for sale.": "Bu eşya satılık değil.",
         "Only the owner and game masters buy for this character.": "Bu karakter için yalnızca sahibi ve oyun yöneticileri satın alır.",
-        "Nothing was bought: {reason}": "Hiçbir şey satın alınmadı: {reason}"
+        "Nothing was bought: {reason}": "Hiçbir şey satın alınmadı: {reason}",
+        "Download run sheet": "Etkinlik akışını indir",
+        "There is no run sheet template yet. Add one in the document app.": "Henüz etkinlik akışı şablonu yok. Belge uygulamasında bir tane ekleyin."
     },
     "nplurals=2; plural=(n != 1);"
 )

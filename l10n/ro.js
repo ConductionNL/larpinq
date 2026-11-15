@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Acest obiect aparține altei lumi.",
         "This item is not for sale.": "Acest obiect nu este de vânzare.",
         "Only the owner and game masters buy for this character.": "Doar proprietarul și maeștrii de joc cumpără pentru acest personaj.",
-        "Nothing was bought: {reason}": "Nu s-a cumpărat nimic: {reason}"
+        "Nothing was bought: {reason}": "Nu s-a cumpărat nimic: {reason}",
+        "Download run sheet": "Descarcă foaia de desfășurare",
+        "There is no run sheet template yet. Add one in the document app.": "Nu există încă un șablon pentru foaia de desfășurare. Adăugați unul în aplicația de documente."
     },
     "nplurals=2; plural=(n != 1);"
 )

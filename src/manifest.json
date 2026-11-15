@@ -1832,6 +1832,19 @@
 				"schema": "larping_event",
 				"headerActions": [
 					{
+						"id": "download-runsheet",
+						"type": "open-modal",
+						"target": "RunsheetDownloadDialog",
+						"label": "Download run sheet",
+						"icon": "FilePdfBox",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/events/runsheet-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
+					{
 						"id": "award-xp",
 						"type": "open-modal",
 						"target": "XpAwardDialog",

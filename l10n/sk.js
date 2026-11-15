@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Tento predmet patrí do iného sveta.",
         "This item is not for sale.": "Tento predmet nie je na predaj.",
         "Only the owner and game masters buy for this character.": "Pre túto postavu nakupuje len vlastník a rozprávači.",
-        "Nothing was bought: {reason}": "Nič nebolo kúpené: {reason}"
+        "Nothing was bought: {reason}": "Nič nebolo kúpené: {reason}",
+        "Download run sheet": "Stiahnuť scenár akcie",
+        "There is no run sheet template yet. Add one in the document app.": "Zatiaľ neexistuje šablóna scenára akcie. Pridajte ju v aplikácii na dokumenty."
     },
     "nplurals=2; plural=(n != 1);"
 )

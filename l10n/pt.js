@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Este item pertence a outro mundo.",
         "This item is not for sale.": "Este item não está à venda.",
         "Only the owner and game masters buy for this character.": "Só o proprietário e os mestres de jogo compram para esta personagem.",
-        "Nothing was bought: {reason}": "Nada foi comprado: {reason}"
+        "Nothing was bought: {reason}": "Nada foi comprado: {reason}",
+        "Download run sheet": "Transferir folha de jogo",
+        "There is no run sheet template yet. Add one in the document app.": "Ainda não há modelo de folha de jogo. Adicione um na aplicação de documentos."
     },
     "nplurals=2; plural=(n != 1);"
 )

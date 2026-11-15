@@ -326,6 +326,37 @@
                 ]
             }
         },
+        "/events/runsheet-access": {
+            "get": {
+                "operationId": "events-runsheet-access",
+                "summary": "Whether the signed-in user may download event run sheets; the event page shows its \"Download run sheet\" action on this answer",
+                "description": "Whether the signed-in user may download event run sheets: game masters and admins, the same rule as the download. The event page shows its \"Download run sheet\" action on this answer.",
+                "tags": [
+                    "events"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
+        },
         "/events/{id}/attendance": {
             "post": {
                 "operationId": "events-record-attendance",

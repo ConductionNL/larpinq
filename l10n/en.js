@@ -774,7 +774,9 @@ OC.L10N.register(
         "This item belongs to another world.": "This item belongs to another world.",
         "This item is not for sale.": "This item is not for sale.",
         "Only the owner and game masters buy for this character.": "Only the owner and game masters buy for this character.",
-        "Nothing was bought: {reason}": "Nothing was bought: {reason}"
+        "Nothing was bought: {reason}": "Nothing was bought: {reason}",
+        "Download run sheet": "Download run sheet",
+        "There is no run sheet template yet. Add one in the document app.": "There is no run sheet template yet. Add one in the document app."
     },
     "nplurals=2; plural=(n != 1);"
 )

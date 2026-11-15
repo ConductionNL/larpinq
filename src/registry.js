@@ -28,6 +28,7 @@ import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
 import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
@@ -82,6 +83,14 @@ export default {
 	CopyWorldDialog: {
 		kind: 'modal',
 		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Download run sheet" header action, game masters only: a
+	// template picker, then the run sheet opens in a new tab.
+	// @spec openspec/specs/pdf-export/spec.md
+	RunsheetDownloadDialog: {
+		kind: 'modal',
+		component: RunsheetDownloadDialog,
 		propsSchema: {},
 	},
 	// EventDetail "Award XP" header action (events-xp-batch-award), game

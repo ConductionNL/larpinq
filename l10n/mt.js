@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Dan l-oġġett jappartjeni għal dinja oħra.",
         "This item is not for sale.": "Dan l-oġġett mhuwiex għall-bejgħ.",
         "Only the owner and game masters buy for this character.": "Is-sid u l-kaptani tal-logħba biss jixtru għal dan il-karattru.",
-        "Nothing was bought: {reason}": "Ma nxtara xejn: {reason}"
+        "Nothing was bought: {reason}": "Ma nxtara xejn: {reason}",
+        "Download run sheet": "Niżżel il-pjan tal-avveniment",
+        "There is no run sheet template yet. Add one in the document app.": "Għad m'hemmx mudell għall-pjan tal-avveniment. Żid wieħed fl-app tad-dokumenti."
     },
     "nplurals=2; plural=(n != 1);"
 )

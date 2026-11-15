@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Ovaj predmet pripada drugom svijetu.",
         "This item is not for sale.": "Ovaj predmet nije na prodaju.",
         "Only the owner and game masters buy for this character.": "Samo vlasnik i voditelji igre kupuju za ovaj lik.",
-        "Nothing was bought: {reason}": "Ništa nije kupljeno: {reason}"
+        "Nothing was bought: {reason}": "Ništa nije kupljeno: {reason}",
+        "Download run sheet": "Preuzmi raspored igre",
+        "There is no run sheet template yet. Add one in the document app.": "Još nema predloška za raspored igre. Dodajte ga u aplikaciji za dokumente."
     },
     "plurals": {}
 }

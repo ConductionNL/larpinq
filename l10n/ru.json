@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Этот предмет принадлежит другому миру.",
         "This item is not for sale.": "Этот предмет не продаётся.",
         "Only the owner and game masters buy for this character.": "Для этого персонажа покупают только владелец и мастера игры.",
-        "Nothing was bought: {reason}": "Ничего не куплено: {reason}"
+        "Nothing was bought: {reason}": "Ничего не куплено: {reason}",
+        "Download run sheet": "Скачать сценарный лист",
+        "There is no run sheet template yet. Add one in the document app.": "Шаблона сценарного листа пока нет. Добавьте его в приложении документов."
     },
     "plurals": {}
 }

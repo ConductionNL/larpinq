@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Dëse Géigestand gehéiert zu enger anerer Welt.",
         "This item is not for sale.": "Dëse Géigestand ass net ze verkafen.",
         "Only the owner and game masters buy for this character.": "Nëmmen de Besëtzer an d'Spillleedung kafe fir dëse Personnage.",
-        "Nothing was bought: {reason}": "Et gouf näischt kaf: {reason}"
+        "Nothing was bought: {reason}": "Et gouf näischt kaf: {reason}",
+        "Download run sheet": "Oflafplang eroflueden",
+        "There is no run sheet template yet. Add one in the document app.": "Et gëtt nach keng Virlag fir den Oflafplang. Füügt eng an der Dokumenter-App derbäi."
     },
     "nplurals=2; plural=(n != 1);"
 )

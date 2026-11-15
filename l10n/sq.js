@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Ky artikull i përket një bote tjetër.",
         "This item is not for sale.": "Ky artikull nuk është në shitje.",
         "Only the owner and game masters buy for this character.": "Vetëm pronari dhe drejtuesit e lojës blejnë për këtë personazh.",
-        "Nothing was bought: {reason}": "Nuk u ble asgjë: {reason}"
+        "Nothing was bought: {reason}": "Nuk u ble asgjë: {reason}",
+        "Download run sheet": "Shkarko planin e lojës",
+        "There is no run sheet template yet. Add one in the document app.": "Ende nuk ka shabllon për planin e lojës. Shtoni një në aplikacionin e dokumenteve."
     },
     "nplurals=2; plural=(n != 1);"
 )

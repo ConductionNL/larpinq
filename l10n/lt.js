@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Šis daiktas priklauso kitam pasauliui.",
         "This item is not for sale.": "Šis daiktas neparduodamas.",
         "Only the owner and game masters buy for this character.": "Šiam personažui perka tik savininkas ir žaidimo vedėjai.",
-        "Nothing was bought: {reason}": "Nieko nenupirkta: {reason}"
+        "Nothing was bought: {reason}": "Nieko nenupirkta: {reason}",
+        "Download run sheet": "Atsisiųsti renginio planą",
+        "There is no run sheet template yet. Add one in the document app.": "Renginio plano šablono dar nėra. Pridėkite jį dokumentų programoje."
     },
     "nplurals=2; plural=(n != 1);"
 )

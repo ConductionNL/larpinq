@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Aquest objecte pertany a un altre món.",
         "This item is not for sale.": "Aquest objecte no està en venda.",
         "Only the owner and game masters buy for this character.": "Només el propietari i els màsters compren per a aquest personatge.",
-        "Nothing was bought: {reason}": "No s'ha comprat res: {reason}"
+        "Nothing was bought: {reason}": "No s'ha comprat res: {reason}",
+        "Download run sheet": "Baixa el full de partida",
+        "There is no run sheet template yet. Add one in the document app.": "Encara no hi ha cap plantilla de full de partida. Afegiu-ne una a l'aplicació de documents."
     },
     "nplurals=2; plural=(n != 1);"
 )

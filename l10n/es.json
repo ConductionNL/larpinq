@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Este objeto pertenece a otro mundo.",
         "This item is not for sale.": "Este objeto no está a la venta.",
         "Only the owner and game masters buy for this character.": "Solo el propietario y los directores de juego compran para este personaje.",
-        "Nothing was bought: {reason}": "No se compró nada: {reason}"
+        "Nothing was bought: {reason}": "No se compró nada: {reason}",
+        "Download run sheet": "Descargar hoja de partida",
+        "There is no run sheet template yet. Add one in the document app.": "Todavía no hay ninguna plantilla de hoja de partida. Añada una en la aplicación de documentos."
     },
     "plurals": {}
 }

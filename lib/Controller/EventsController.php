@@ -81,6 +81,23 @@ class EventsController extends Controller {
 	}//end __construct()
 
 	/**
+	 * Whether the caller may download the event's run sheet, so the event page
+	 * shows its Download run sheet action only to those the download serves.
+	 *
+	 * The same rule as downloadRunsheet(): game masters and administrators.
+	 *
+	 * @return JSONResponse `{allowed: bool}`, or 401 when nobody is signed in.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/tasks.md#4-run-sheet-download
+	 */
+	#[NoAdminRequired]
+	public function runsheetAccess(): JSONResponse {
+		return $this->callerAccess->gameMasterAnswer();
+	}//end runsheetAccess()
+
+	/**
 	 * Download a per-event GM run-sheet / cast list as a PDF.
 	 *
 	 * Aggregates GM-facing material (approval status, GM notes, whole-cast

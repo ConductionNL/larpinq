@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Този предмет принадлежи на друг свят.",
         "This item is not for sale.": "Този предмет не се продава.",
         "Only the owner and game masters buy for this character.": "Само собственикът и водещите на играта купуват за този герой.",
-        "Nothing was bought: {reason}": "Нищо не е купено: {reason}"
+        "Nothing was bought: {reason}": "Нищо не е купено: {reason}",
+        "Download run sheet": "Изтегляне на сценария",
+        "There is no run sheet template yet. Add one in the document app.": "Все още няма шаблон за сценарий. Добавете такъв в приложението за документи."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -292,4 +292,46 @@ class EventsControllerTest extends TestCase {
 		// (DocuDesk absent) — proves not 403.
 		self::assertSame(expected: 424, actual: $result->getStatus());
 	}
+	/**
+	 * The run-sheet access answer follows the download's own rule, so the event
+	 * page offers the action to game masters and administrators only.
+	 *
+	 * @return void
+	 */
+	public function testRunsheetAccessAllowsGameMasters(): void {
+		$this->asUser(uid: 'joris', isGm: true);
+		$response = $this->controller()->runsheetAccess();
+		self::assertSame(expected: 200, actual: $response->getStatus());
+		self::assertSame(expected: ['allowed' => true], actual: $response->getData());
+	}
+
+	/**
+	 * An administrator outside the game master group may download too.
+	 *
+	 * @return void
+	 */
+	public function testRunsheetAccessAllowsAdministrators(): void {
+		$this->asUser(uid: 'admin', isGm: false, isAdmin: true);
+		self::assertSame(expected: ['allowed' => true], actual: $this->controller()->runsheetAccess()->getData());
+	}
+
+	/**
+	 * A player gets no action.
+	 *
+	 * @return void
+	 */
+	public function testRunsheetAccessRefusesPlayers(): void {
+		$this->asUser(uid: 'anna', isGm: false);
+		self::assertSame(expected: ['allowed' => false], actual: $this->controller()->runsheetAccess()->getData());
+	}
+
+	/**
+	 * Nobody signed in is answered 401, not "not allowed".
+	 *
+	 * @return void
+	 */
+	public function testRunsheetAccessNeedsASignedInUser(): void {
+		$this->userSession->method('getUser')->willReturn(null);
+		self::assertSame(expected: 401, actual: $this->controller()->runsheetAccess()->getStatus());
+	}
 }

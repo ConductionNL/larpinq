@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Dieser Gegenstand gehört zu einer anderen Welt.",
         "This item is not for sale.": "Dieser Gegenstand steht nicht zum Verkauf.",
         "Only the owner and game masters buy for this character.": "Nur der Besitzer und die Spielleitung kaufen für diesen Charakter.",
-        "Nothing was bought: {reason}": "Es wurde nichts gekauft: {reason}"
+        "Nothing was bought: {reason}": "Es wurde nichts gekauft: {reason}",
+        "Download run sheet": "Ablaufplan herunterladen",
+        "There is no run sheet template yet. Add one in the document app.": "Es gibt noch keine Vorlage für den Ablaufplan. Fügen Sie eine in der Dokumenten-App hinzu."
     },
     "nplurals=2; plural=(n != 1);"
 )

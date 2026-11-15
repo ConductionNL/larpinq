@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Šis priekšmets pieder citai pasaulei.",
         "This item is not for sale.": "Šis priekšmets netiek pārdots.",
         "Only the owner and game masters buy for this character.": "Šim tēlam pērk tikai īpašnieks un spēles vadītāji.",
-        "Nothing was bought: {reason}": "Nekas netika nopirkts: {reason}"
+        "Nothing was bought: {reason}": "Nekas netika nopirkts: {reason}",
+        "Download run sheet": "Lejupielādēt norises plānu",
+        "There is no run sheet template yet. Add one in the document app.": "Norises plāna veidnes vēl nav. Pievienojiet to dokumentu lietotnē."
     },
     "nplurals=2; plural=(n != 1);"
 )

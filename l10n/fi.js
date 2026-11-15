@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Tämä esine kuuluu toiseen maailmaan.",
         "This item is not for sale.": "Tämä esine ei ole myynnissä.",
         "Only the owner and game masters buy for this character.": "Vain omistaja ja pelinjohtajat ostavat tälle hahmolle.",
-        "Nothing was bought: {reason}": "Mitään ei ostettu: {reason}"
+        "Nothing was bought: {reason}": "Mitään ei ostettu: {reason}",
+        "Download run sheet": "Lataa pelin ajolista",
+        "There is no run sheet template yet. Add one in the document app.": "Ajolistan pohjaa ei vielä ole. Lisää sellainen asiakirjasovelluksessa."
     },
     "nplurals=2; plural=(n != 1);"
 )

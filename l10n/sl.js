@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Ta predmet pripada drugemu svetu.",
         "This item is not for sale.": "Ta predmet ni naprodaj.",
         "Only the owner and game masters buy for this character.": "Za tega lika kupujeta samo lastnik in vodje igre.",
-        "Nothing was bought: {reason}": "Nič ni bilo kupljeno: {reason}"
+        "Nothing was bought: {reason}": "Nič ni bilo kupljeno: {reason}",
+        "Download run sheet": "Prenesi potek igre",
+        "There is no run sheet template yet. Add one in the document app.": "Predloge za potek igre še ni. Dodajte jo v aplikaciji za dokumente."
     },
     "nplurals=2; plural=(n != 1);"
 )

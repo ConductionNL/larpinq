@@ -898,7 +898,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Dit item hoort bij een andere wereld.",
         "This item is not for sale.": "Dit item is niet te koop.",
         "Only the owner and game masters buy for this character.": "Alleen de eigenaar en spelleiders kopen voor dit karakter.",
-        "Nothing was bought: {reason}": "Er is niets gekocht: {reason}"
+        "Nothing was bought: {reason}": "Er is niets gekocht: {reason}",
+        "Download run sheet": "Draaiboek downloaden",
+        "There is no run sheet template yet. Add one in the document app.": "Er is nog geen sjabloon voor het draaiboek. Voeg er een toe in de documenten-app."
     },
     "nplurals=2; plural=(n != 1);"
 )

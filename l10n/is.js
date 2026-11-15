@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Þessi hlutur tilheyrir öðrum heimi.",
         "This item is not for sale.": "Þessi hlutur er ekki til sölu.",
         "Only the owner and game masters buy for this character.": "Aðeins eigandinn og stjórnendur leiksins kaupa fyrir þessa persónu.",
-        "Nothing was bought: {reason}": "Ekkert var keypt: {reason}"
+        "Nothing was bought: {reason}": "Ekkert var keypt: {reason}",
+        "Download run sheet": "Sækja keyrsluáætlun",
+        "There is no run sheet template yet. Add one in the document app.": "Enn er ekkert sniðmát fyrir keyrsluáætlun. Bættu við einu í skjalaforritinu."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Denne genstand hører til en anden verden.",
         "This item is not for sale.": "Denne genstand er ikke til salg.",
         "Only the owner and game masters buy for this character.": "Kun ejeren og spilledere køber til denne karakter.",
-        "Nothing was bought: {reason}": "Intet blev købt: {reason}"
+        "Nothing was bought: {reason}": "Intet blev købt: {reason}",
+        "Download run sheet": "Download køreplan",
+        "There is no run sheet template yet. Add one in the document app.": "Der er endnu ingen skabelon til køreplanen. Tilføj en i dokumentappen."
     },
     "plurals": {}
 }

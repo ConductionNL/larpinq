@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "See ese kuulub teise maailma.",
         "This item is not for sale.": "See ese pole müügil.",
         "Only the owner and game masters buy for this character.": "Selle tegelase eest ostavad ainult omanik ja mängujuhid.",
-        "Nothing was bought: {reason}": "Midagi ei ostetud: {reason}"
+        "Nothing was bought: {reason}": "Midagi ei ostetud: {reason}",
+        "Download run sheet": "Laadi alla mänguplaan",
+        "There is no run sheet template yet. Add one in the document app.": "Mänguplaani malli veel pole. Lisa see dokumendirakenduses."
     },
     "nplurals=2; plural=(n != 1);"
 )

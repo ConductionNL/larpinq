@@ -806,7 +806,9 @@
         "This item belongs to another world.": "Baineann an mhír seo le domhan eile.",
         "This item is not for sale.": "Níl an mhír seo ar díol.",
         "Only the owner and game masters buy for this character.": "Ní cheannaíonn ach an t-úinéir agus máistrí an chluiche don charachtar seo.",
-        "Nothing was bought: {reason}": "Níor ceannaíodh aon rud: {reason}"
+        "Nothing was bought: {reason}": "Níor ceannaíodh aon rud: {reason}",
+        "Download run sheet": "Íoslódáil an bhileog reatha",
+        "There is no run sheet template yet. Add one in the document app.": "Níl aon teimpléad bileoige reatha ann fós. Cuir ceann leis san aip doiciméad."
     },
     "plurals": {}
 }

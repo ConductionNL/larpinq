@@ -807,7 +807,9 @@ OC.L10N.register(
         "This item belongs to another world.": "Denne gjenstanden hører til en annen verden.",
         "This item is not for sale.": "Denne gjenstanden er ikke til salgs.",
         "Only the owner and game masters buy for this character.": "Bare eieren og spillederne kjøper for denne karakteren.",
-        "Nothing was bought: {reason}": "Ingenting ble kjøpt: {reason}"
+        "Nothing was bought: {reason}": "Ingenting ble kjøpt: {reason}",
+        "Download run sheet": "Last ned kjøreplan",
+        "There is no run sheet template yet. Add one in the document app.": "Det finnes ingen mal for kjøreplanen ennå. Legg til en i dokumentappen."
     },
     "nplurals=2; plural=(n != 1);"
 )
