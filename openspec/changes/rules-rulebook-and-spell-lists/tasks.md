@@ -25,7 +25,7 @@
 
 ## 4. Strings and docs
 
-- [ ] 4.1 Dutch and English strings (REQ-RRS-001). Verify: `npm run test:l10n`.
+- [x] 4.1 Dutch and English strings (REQ-RRS-001), and the 27 rulebook strings in the other 35 shipped locales so parity holds. Verify: `npm run test:l10n`.
   > English and Dutch are done for every new string (schema strings, the Rulebook page, the manifest labels); `test:l10n` finds every used key. Left: its parity step requires the other 34 locales of `l10n/*.json` too, and they lack the 27 keys this change adds (development is at full parity), so `npm run test:l10n` stays red until they are translated.
 - [x] 4.2 `docs/features/rulebook-and-spell-lists.md` (ADR-010). Verify: the docs build renders it.
   > Lists, one pool per list, the rulebook and printing, secret rules, the portal and the demo data; linked from `docs/features/README.md`. The docs site build was not run here.
