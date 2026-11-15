@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -799,7 +795,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мојот лист на ликот",
-        "Open sheet": "Отвори лист"
+        "Open sheet": "Отвори лист",
+        "History entry": "Историски запис",
+        "How the date is told in the world": "Како се вика датумот во светот",
+        "In-game date": "Датум во играта",
+        "The story of this moment": "Приказната за овој момент",
+        "The world this moment belongs to": "Светот на кој му припаѓа овој момент",
+        "What happened, in a few words": "Што се случи, во неколку зборови",
+        "When it happened, used to sort the timeline": "Кога се случи, за подредување на временската линија",
+        "Who may read the entry: game masters only, or players too": "Кој смее да го чита записот: само водачите на играта или и играчите",
+        "Price": "Цена",
+        "Gold pieces the item costs": "Златници што ги чини предметот",
+        "Silver pieces the item costs": "Сребреници што ги чини предметот",
+        "Copper pieces the item costs": "Бакарници што ги чини предметот",
+        "What the item costs in in-game money; a character buys it from the character page": "Колку чини предметот во пари од играта; ликот го купува на страницата на ликот"
     },
     "nplurals=2; plural=(n != 1);"
 )

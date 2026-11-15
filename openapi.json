@@ -212,6 +212,78 @@
                 ]
             }
         },
+        "/characters/{id}/purchases": {
+            "post": {
+                "operationId": "character-purchases-buy",
+                "summary": "Buy an item for a character with its in-game money",
+                "description": "Buy an item for a character with its in-game money. Adds the item and takes its price in gold, silver and copper in one write; each coin is paid from its own purse. The character's owner or a game master only. A purchase the character cannot pay is refused with 409 and changes nothing.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The saved character, or 400, 401, 403, 404, 409.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "itemId": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "itemId"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/characters/{id}/stats": {
             "get": {
                 "operationId": "character-stats-show",

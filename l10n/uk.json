@@ -794,7 +794,20 @@
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мій аркуш персонажа",
-        "Open sheet": "Відкрити аркуш"
+        "Open sheet": "Відкрити аркуш",
+        "History entry": "Запис історії",
+        "How the date is told in the world": "Як дата називається у світі",
+        "In-game date": "Дата в грі",
+        "The story of this moment": "Історія цього моменту",
+        "The world this moment belongs to": "Світ, до якого належить цей момент",
+        "What happened, in a few words": "Що сталося, кількома словами",
+        "When it happened, used to sort the timeline": "Коли це сталося, для сортування хронології",
+        "Who may read the entry: game masters only, or players too": "Хто може читати запис: лише майстри гри чи також гравці",
+        "Price": "Ціна",
+        "Gold pieces the item costs": "Золоті монети, які коштує предмет",
+        "Silver pieces the item costs": "Срібні монети, які коштує предмет",
+        "Copper pieces the item costs": "Мідні монети, які коштує предмет",
+        "What the item costs in in-game money; a character buys it from the character page": "Скільки коштує предмет в ігрових грошах; персонаж купує його на сторінці персонажа"
     },
     "plurals": {}
 }

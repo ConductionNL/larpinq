@@ -1,7 +1,3 @@
-/**
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
- * SPDX-License-Identifier: EUPL-1.2
- */
 OC.L10N.register(
     "larpinq",
     {
@@ -799,7 +795,20 @@ OC.L10N.register(
         "About this Larpinq installation.": "About this Larpinq installation.",
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mäi Personnageblat",
-        "Open sheet": "Blat opmaachen"
+        "Open sheet": "Blat opmaachen",
+        "History entry": "Geschichtsentrag",
+        "How the date is told in the world": "Wéi den Datum an der Welt genannt gëtt",
+        "In-game date": "Datum am Spill",
+        "The story of this moment": "D'Geschicht vun dësem Moment",
+        "The world this moment belongs to": "D'Welt, zu där dëse Moment gehéiert",
+        "What happened, in a few words": "Wat geschitt ass, an e puer Wierder",
+        "When it happened, used to sort the timeline": "Wéini et geschitt ass, fir d'Zäitlinn ze sortéieren",
+        "Who may read the entry: game masters only, or players too": "Wien den Entrag liese dierf: nëmmen d'Spillleeder oder och d'Spiller",
+        "Price": "Präis",
+        "Gold pieces the item costs": "Goldstécker, déi de Géigestand kascht",
+        "Silver pieces the item costs": "Sëlwerstécker, déi de Géigestand kascht",
+        "Copper pieces the item costs": "Kofferstécker, déi de Géigestand kascht",
+        "What the item costs in in-game money; a character buys it from the character page": "Wat de Géigestand a Spillgeld kascht; e Charakter keeft en op der Charaktersäit"
     },
     "nplurals=2; plural=(n != 1);"
 )

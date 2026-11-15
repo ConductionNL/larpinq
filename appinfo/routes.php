@@ -43,6 +43,7 @@ $extra = [
 	// Who answered the feedback form (events-post-event-survey REQ-EPS-004).
 	['name' => 'eventFeedback#summary', 'url' => '/api/events/{id}/feedback', 'verb' => 'GET'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
+	['name' => 'characterPurchases#buy', 'url' => '/api/characters/{id}/purchases', 'verb' => 'POST'],
 	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
 	['name' => 'playerAttendance#index', 'url' => '/api/players/{id}/attendance', 'verb' => 'GET'],
 	['name' => 'registrationChoices#offer', 'url' => '/api/registrations/{id}/offer', 'verb' => 'GET'],
