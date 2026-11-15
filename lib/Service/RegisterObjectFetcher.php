@@ -518,6 +518,46 @@ class RegisterObjectFetcher {
 	}//end getObject()
 
 	/**
+	 * Get a single object by type and ID with the app's own authority.
+	 *
+	 * For a server-side step that reads on behalf of a state change another
+	 * user triggered, such as copying a player's care details when a game
+	 * master accepts the registration: RBAC and multitenancy are off, so the
+	 * caller decides what may be read. Property authorization does not strip
+	 * fields on such a trusted internal read.
+	 *
+	 * @param string $objectType The object type (e.g. 'player').
+	 * @param string $id The object UUID.
+	 *
+	 * @return array<string,mixed> The object as an array.
+	 *
+	 * @throws Exception If OpenRegister is not available, the type is not configured,
+	 *                   the ID is not a valid UUID or the object does not exist.
+	 *
+	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
+	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
+	 *
+	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 */
+	public function getObjectWithAppAuthority(string $objectType, string $id): array {
+		$idLower = strtolower($id);
+		if (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/', $idLower) !== 1) {
+			throw new InvalidArgumentException('Invalid object ID: expected a UUID');
+		}
+
+		$openRegister = $this->getOpenRegisterService();
+		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
+
+		// @var mixed $object
+		$object = $openRegister->find(id: $idLower, register: $register, schema: $schema, _rbac: false, _multitenancy: false);
+		if ($object === null) {
+			throw new DoesNotExistException('Object ' . $id . ' does not exist');
+		}
+
+		return $this->toArray(object: $object);
+	}//end getObjectWithAppAuthority()
+
+	/**
 	 * Get a single object by type and ID, only when it belongs to that type's schema.
 	 *
 	 * OpenRegister's find() retries a UUID without the schema when the
