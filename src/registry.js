@@ -32,6 +32,7 @@ import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventChoiceCounts from './views/EventChoiceCounts.vue'
+import EventFeedback from './views/EventFeedback.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
@@ -104,6 +105,9 @@ export default {
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	// Feedback tab on the event page (events-post-event-survey), game masters only.
+	// @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
+	EventFeedback: { kind: 'section', component: EventFeedback },
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
 	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
 	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
