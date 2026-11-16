@@ -123,6 +123,11 @@ class StaffInvitesController extends Controller {
 	 *
 	 * @return JSONResponse 200 with role and state; 401, or 404 for an unknown token.
 	 *
+	 * @no-admin-idor-exempt The token is the capability (REQ-ASR-004): it is
+	 * 128 random bits, stored only as a hash, and an invite is found by that
+	 * hash alone, never by a caller-chosen id. Any signed-in user holding the
+	 * link may see its role and state; guessing is rate limited per user.
+	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
 	#[NoAdminRequired]
@@ -146,6 +151,11 @@ class StaffInvitesController extends Controller {
 	 * Join the role of the invite `token` opens.
 	 *
 	 * @return JSONResponse 200 with role and joined; 401, 404 for an unknown token, 410 for an expired, used-up or revoked invite.
+	 *
+	 * @no-admin-idor-exempt The token is the capability (REQ-ASR-004): an
+	 * invite is found by the hash of its 128-bit token alone, the service
+	 * refuses a revoked, expired or used-up one, and redeeming only ever adds
+	 * the signed-in caller to the invite's staff role. Rate limited per user.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
