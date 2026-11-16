@@ -148,7 +148,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$collections = $this->indexById(entries: $manifest['collections']);
 
 		$this->assertSame(
-			expected: ['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters', 'skillLists'],
+			expected: ['myCharacters', 'events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'myProfile', 'myRegistrations', 'rulebookChapters', 'skillLists', 'rulebookSkills'],
 			actual: array_keys($collections),
 			message: 'Exactly the declared collections, in order'
 		);
@@ -163,7 +163,7 @@ final class PortalContributionProviderTest extends TestCase {
 
 		// Public lists carry an explicit empty scopeField (the controller
 		// otherwise defaults to subjectRef and would match nothing).
-		foreach (['events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'skillLists'] as $publicId) {
+		foreach (['events', 'skillCatalog', 'itemCatalog', 'conditionCatalog', 'skillLists', 'rulebookSkills'] as $publicId) {
 			$this->assertSame(expected: '', actual: $collections[$publicId]['scopeField'], message: $publicId . ' must be an unscoped public list');
 			$this->assertArrayNotHasKey(key: 'scopeClaim', array: $collections[$publicId], message: $publicId . ' is not subject-scoped');
 		}
@@ -435,7 +435,7 @@ final class PortalContributionProviderTest extends TestCase {
 		$pages    = $this->indexById(entries: $manifest['pages']);
 
 		$this->assertSame(
-			expected: ['richText', 'collection:rulebookChapters', 'detail:rulebookChapters', 'collection:skillLists', 'collection:skillCatalog'],
+			expected: ['richText', 'collection:rulebookChapters', 'detail:rulebookChapters', 'collection:skillLists', 'collection:rulebookSkills'],
 			actual: $this->blockNames(blocks: $pages['rulebook']['blocks'])
 		);
 
@@ -471,6 +471,30 @@ final class PortalContributionProviderTest extends TestCase {
 		// The skill catalogue says which list a skill is in, so the portal can group them.
 		$this->assertContains(needle: 'list', haystack: $collections['skillCatalog']['fields']);
 	}//end testSkillListsAreInThePortalWithoutTheHiddenOnes()
+
+	/**
+	 * Scenario: the forbidden rite (REQ-RRS-004). The rulebook page lists its
+	 * skills from a collection that leaves out the ones hidden from the
+	 * rulebook, never from the unfiltered skill catalogue.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-secret-rules-stay-out-of-the-rulebook-req-rrs-004
+	 */
+	public function testTheRulebookListsNoSkillHiddenFromIt(): void {
+		$manifest    = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
+		$collections = $this->indexById(entries: $manifest['collections']);
+		$pages       = $this->indexById(entries: $manifest['pages']);
+
+		$skills = $collections['rulebookSkills'];
+		$this->assertSame(expected: 'larping_skill', actual: $skills['schema']);
+		$this->assertSame(expected: '', actual: $skills['scopeField']);
+		$this->assertSame(expected: ['hiddenFromRulebook' => false], actual: $skills['filter'], message: 'A skill hidden from the rulebook stays out of it');
+		$this->assertContains(needle: 'list', haystack: $skills['fields']);
+
+		$blocks = $this->blockNames(blocks: $pages['rulebook']['blocks']);
+		$this->assertNotContains(needle: 'collection:skillCatalog', haystack: $blocks, message: 'The unfiltered catalogue is not on the rulebook page');
+	}//end testTheRulebookListsNoSkillHiddenFromIt()
 
 	/**
 	 * Every page block names a collection or an action of this contribution.

@@ -237,6 +237,44 @@
                 "field": "order",
                 "direction": "asc"
             }
+        },
+        {
+            "id": "rulebookSkills",
+            "register": "larpinq",
+            "schema": "larping_skill",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardigheden",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "requiredSkills",
+                "requiredStats",
+                "requiredConditions",
+                "requiredEffects",
+                "requiredScore",
+                "setting",
+                "list"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Vaardigheid"
+                },
+                {
+                    "field": "list",
+                    "label": "Lijst"
+                }
+            ],
+            "defaultSort": {
+                "field": "name",
+                "direction": "asc"
+            }
         }
     ],
     "actions": [
@@ -323,7 +361,7 @@
                 },
                 {
                     "type": "collection",
-                    "collection": "skillCatalog"
+                    "collection": "rulebookSkills"
                 }
             ]
         }
