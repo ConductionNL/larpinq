@@ -28,6 +28,7 @@ use OCA\OpenRegister\Db\ObjectEntity;
 use OCA\OpenRegister\Event\ObjectCreatedEvent;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCA\OpenRegister\Event\ObjectUpdatedEvent;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindOptions;
 use OCA\OpenRegister\Event\ObjectUpdatingEvent;
 use OCP\EventDispatcher\IEventListener;
 use RuntimeException;
@@ -146,6 +147,37 @@ class InMemoryOpenRegister {
 	 *
 	 * @return object The mapper.
 	 */
+	/**
+	 * One object by id in a schema, as OpenRegister's ObjectService::find() answers it; null when absent.
+	 *
+	 * Takes openregister main's signature, so a caller still passing the
+	 * removed register:/schema: named arguments fails here as it does there.
+	 *
+	 * @param int|string             $id            The uuid.
+	 * @param ObjectFindOptions|null $options       Its schema picks the store; the rest is unused.
+	 * @param bool                   $_rbac         Recorded in $finds.
+	 * @param bool                   $_multitenancy Recorded in $finds.
+	 *
+	 * @return InMemoryObjectEntity|null
+	 */
+	public function find(int|string $id, ?ObjectFindOptions $options = null, bool $_rbac = true, bool $_multitenancy = true): ?InMemoryObjectEntity {
+		$schema = $options?->schema;
+		$this->finds[] = ['schema' => (string)$schema, 'id' => (string)$id, 'rbac' => $_rbac, 'multitenancy' => $_multitenancy];
+		$data = ($this->objects[(string)$schema][(string)$id] ?? null);
+		if ($data === null) {
+			return null;
+		}
+
+		return new InMemoryObjectEntity(schema: (string)$schema, data: $data, uuid: (string)$id);
+	}
+
+	/**
+	 * Every find() asked for.
+	 *
+	 * @var array<int, array{schema: string, id: string, rbac: bool, multitenancy: bool}>
+	 */
+	public array $finds = [];
+
 	public function getMapper($register, $schema): object {
 		$store = $this;
 		return new class($store, (string)$schema) {
