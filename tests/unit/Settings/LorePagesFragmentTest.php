@@ -93,14 +93,18 @@ class LorePagesFragmentTest extends TestCase {
 
 		$this->assertSame(
 			expected: [
+				'larpinq-writers',
 				['group' => 'gamemasters'],
 				['group' => 'larpers', 'match' => ['visibility' => 'players', 'revealFrom' => ['$lte' => '$now']]],
 			],
 			actual: $authorization['read']
 		);
-		foreach (['create', 'update', 'delete'] as $action) {
-			$this->assertSame(expected: ['gamemasters'], actual: $authorization[$action], message: "only game masters may {$action}");
+		// Story writers write lore pages; only game masters delete them (admin-staff-roles-and-invites D2).
+		foreach (['create', 'update'] as $action) {
+			$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $authorization[$action], message: "only game masters and writers may {$action}");
 		}
+
+		$this->assertSame(expected: ['gamemasters'], actual: $authorization['delete'], message: 'only game masters may delete');
 	}//end testPlayersReadOnlyRevealedPlayerPages()
 
 	/**

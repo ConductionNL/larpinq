@@ -25,6 +25,7 @@ Larpinq is a niche domain application with no applicable government or interoper
 | [Lore pages](./lore-pages.md) | Lore per world that players read once it is revealed, with game master secrets kept hidden | [lore-pages.md](./lore-pages.md) |
 | [Rulebook and spell lists](./rulebook-and-spell-lists.md) | Skill lists with their own pool, and a printable rulebook per world | [rulebook-and-spell-lists.md](./rulebook-and-spell-lists.md) |
 | [Copy a world](./copy-world.md) | Start a new world from a copy of an existing world's rules, for game masters | [copy-world.md](./copy-world.md) |
+| [Staff roles and invites](./staff-roles.md) | Story writers, rules marshals, treasurers and stewards with the rights of their work, invited with a link, and a Staff page for game masters | [staff-roles.md](./staff-roles.md) |
 | [Extra character fields](./character-custom-fields.md) | Game masters add their own fields to character sheets per world; players fill in the ones meant for them | [character-custom-fields.md](./character-custom-fields.md) |
 | [Plots and writing](./plots-and-writing.md) | Plots that run through several characters with private and player texts, and the writing progress of plots and characters | [plots-and-writing.md](./plots-and-writing.md) |
 | [Factions, groups and relationships](./factions-and-relationships.md) | Factions run by game masters, groups run by players with a leader who invites and removes members, and relationships between characters | [factions-and-relationships.md](./factions-and-relationships.md) |

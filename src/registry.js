@@ -42,6 +42,8 @@ import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
 import Rulebook from './views/Rulebook.vue'
 import SkillTree from './views/SkillTree.vue'
+import StaffInviteLanding from './views/StaffInviteLanding.vue'
+import StaffPage from './views/StaffPage.vue'
 import {
 	exportCampaignAction,
 	importCampaignAction,
@@ -129,6 +131,12 @@ export default {
 	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
 	// to its host. @spec openspec/specs/world-lore/spec.md
 	LoreArticle: { kind: 'page', component: LoreArticle },
+	// The Staff page and the page a staff invite link opens
+	// (admin-staff-roles-and-invites): members come from Nextcloud groups, not
+	// register objects, so no typed page can list them.
+	// @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md
+	StaffPage: { kind: 'page', component: StaffPage },
+	StaffInviteLanding: { kind: 'page', component: StaffInviteLanding },
 
 	// Worlds page header actions (admin-import-export): the whole campaign as
 	// one workbook out of, and back into, the larpinq register.

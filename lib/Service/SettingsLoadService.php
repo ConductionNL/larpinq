@@ -83,6 +83,7 @@ class SettingsLoadService {
 		'event' => 'larping_event',
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
+		'staffinvite' => 'larping_staff_invite',
 		'lorepage' => 'larping_lore_page',
 		'characterfield' => 'larping_character_field',
 		'faction' => 'larping_faction',
