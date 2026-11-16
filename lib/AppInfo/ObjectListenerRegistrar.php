@@ -32,6 +32,7 @@ use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
+use OCA\Larpinq\Listener\SignupFormBindingListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
@@ -73,6 +74,8 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
+			// A sign-up form binding is checked against the registration (forms-registration-is-checked-at-binding).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', SignupFormBindingListener::class);
 		}
 
 		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
@@ -89,6 +92,7 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', SignupFormBindingListener::class);
 		}
 
 		$this->registerRegistrationListeners(context: $context);
