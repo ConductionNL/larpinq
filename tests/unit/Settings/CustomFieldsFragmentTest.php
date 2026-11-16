@@ -99,10 +99,11 @@ class CustomFieldsFragmentTest extends TestCase {
 		$character = $this->schema(key: 'character');
 
 		$this->assertSame(expected: 'object', actual: $character['properties']['customFieldsPrivate']['type']);
-		$this->assertSame(expected: ['gamemasters'], actual: $character['properties']['customFieldsPrivate']['authorization']['read']);
+		// Story writers read every character field (admin-staff-roles-and-invites D2), and write none of these.
+		$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $character['properties']['customFieldsPrivate']['authorization']['read']);
 		$this->assertSame(expected: ['gamemasters'], actual: $character['properties']['customFieldsPrivate']['authorization']['update']);
 		$owner = ['gamemasters', ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]];
-		$this->assertSame(expected: $owner, actual: $character['properties']['customFields']['authorization']['read']);
+		$this->assertSame(expected: ['larpinq-writers', ...$owner], actual: $character['properties']['customFields']['authorization']['read']);
 		$this->assertSame(expected: $owner, actual: $character['properties']['customFields']['authorization']['update']);
 		// The fragment adds properties; the character keeps its own.
 		$this->assertArrayHasKey(key: 'writingStep', array: $character['properties']);
