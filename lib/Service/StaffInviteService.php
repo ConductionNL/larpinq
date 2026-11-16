@@ -33,7 +33,6 @@ use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
-use OCP\Lock\ILockingProvider;
 use OutOfBoundsException;
 
 	/**
@@ -100,14 +99,12 @@ class StaffInviteService {
 	 * @param IGroupManager $groupManager The Nextcloud groups.
 	 * @param IUserManager $userManager The Nextcloud users.
 	 * @param ITimeFactory $timeFactory The clock.
-	 * @param ILockingProvider $lockingProvider Serialises the redeems of one invite.
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $objectFetcher,
 		private readonly IGroupManager $groupManager,
 		private readonly IUserManager $userManager,
 		private readonly ITimeFactory $timeFactory,
-		private readonly ILockingProvider $lockingProvider,
 	) {
 	}//end __construct()
 
@@ -188,9 +185,7 @@ class StaffInviteService {
 	/**
 	 * Join the role of a valid invite, and the app's user group, and record the use.
 	 *
-	 * A user already in the role joins nothing new and takes no use. Redeems of
-	 * one invite run one at a time: the invite is read again under an exclusive
-	 * lock, so two concurrent redeems of a link with one use left add one user.
+	 * A user already in the role joins nothing new and takes no use.
 	 *
 	 * @param string $token The plain token from the link.
 	 * @param IUser $user The signed-in user.
@@ -199,36 +194,11 @@ class StaffInviteService {
 	 *
 	 * @throws OutOfBoundsException When no invite has this token, or its group is missing.
 	 * @throws DomainException When the invite is expired, used up or revoked; the message is the state.
-	 * @throws \OCP\Lock\LockedException When another redeem of this invite holds the lock.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
 	public function redeem(string $token, IUser $user): array {
 		$invite = $this->findByToken(token: $token);
-		$lock   = 'larpinq/staff-invite/' . self::idOf(invite: $invite);
-		$this->lockingProvider->acquireLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
-		try {
-			// Read again under the lock: a redeem that just finished may have used the last use.
-			return $this->redeemLocked(invite: $this->findByToken(token: $token), user: $user);
-		} finally {
-			$this->lockingProvider->releaseLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
-		}
-	}//end redeem()
-
-	/**
-	 * The redeem itself, run while the invite's lock is held.
-	 *
-	 * @param array<string, mixed> $invite The invite, as read under the lock.
-	 * @param IUser                $user   The signed-in user.
-	 *
-	 * @return array{role: string, joined: bool} The role and whether the user was added now.
-	 *
-	 * @throws OutOfBoundsException When the invite's group is missing.
-	 * @throws DomainException When the invite is expired, used up or revoked; the message is the state.
-	 *
-	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 */
-	private function redeemLocked(array $invite, IUser $user): array {
 		$group = $this->redeemableGroup(invite: $invite);
 		$role  = (string)($invite['role'] ?? '');
 		if ($group->inGroup($user) === true) {
@@ -243,7 +213,7 @@ class StaffInviteService {
 		}
 
 		return ['role' => $role, 'joined' => true];
-	}//end redeemLocked()
+	}//end redeem()
 
 	/**
 	 * The group a valid invite adds to.

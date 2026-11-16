@@ -29,6 +29,8 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\Lock\ILockingProvider;
+use OCP\Lock\LockedException;
 use OutOfBoundsException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\UsesClass;
@@ -42,11 +44,13 @@ use ReflectionMethod;
  */
 #[CoversClass(StaffInvitesController::class)]
 #[UsesClass(CallerAccess::class)]
+#[UsesClass(StaffInviteService::class)]
 class StaffInvitesControllerTest extends TestCase {
 
 	private const CODE = '0123456789abcdef0123456789abcdef';
 
 	private StaffInviteService&MockObject $invites;
+	private ILockingProvider&MockObject $locks;
 
 	/**
 	 * The controller for a caller in these groups, or nobody signed in.
@@ -58,6 +62,7 @@ class StaffInvitesControllerTest extends TestCase {
 	 */
 	private function controllerFor(?array $groups, array $params = []): StaffInvitesController {
 		$this->invites = $this->createMock(StaffInviteService::class);
+		$this->locks = $this->createMock(ILockingProvider::class);
 		$groupManager = $this->createMock(IGroupManager::class);
 		$groupManager->method('isInGroup')->willReturnCallback(
 			static fn (string $uid, string $group): bool => in_array($group, $groups ?? [], true)
@@ -82,6 +87,7 @@ class StaffInvitesControllerTest extends TestCase {
 			callerAccess: new CallerAccess(userSession: $session, groupManager: $groupManager),
 			urlGenerator: $urls,
 			logger: new NullLogger(),
+			lockingProvider: $this->locks,
 		);
 	}//end controllerFor()
 
@@ -219,6 +225,50 @@ class StaffInvitesControllerTest extends TestCase {
 		$this->invites->expects($this->never())->method('redeem');
 		$this->assertSame(expected: 401, actual: $controller->redeem()->getStatus());
 	}//end testRedeemRefusals()
+
+	/**
+	 * A redeem runs under an exclusive lock on the invite's token hash, taken
+	 * before the service reads the invite and released after, also when it is refused.
+	 *
+	 * @return void
+	 */
+	public function testRedeemRunsUnderTheInviteLock(): void {
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+		$key = 'larpinq/staff-invite/' . hash('sha256', self::CODE);
+		$order = [];
+		$this->locks->expects($this->once())->method('acquireLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE)
+			->willReturnCallback(static function () use (&$order): void {
+				$order[] = 'lock';
+			});
+		$this->locks->expects($this->once())->method('releaseLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE)
+			->willReturnCallback(static function () use (&$order): void {
+				$order[] = 'unlock';
+			});
+		$this->invites->method('redeem')->willReturnCallback(static function () use (&$order): array {
+			$order[] = 'redeem';
+			throw new DomainException(StaffInviteService::STATE_USED_UP);
+		});
+
+		$this->assertSame(expected: 410, actual: $controller->redeem()->getStatus());
+		$this->assertSame(expected: ['lock', 'redeem', 'unlock'], actual: $order);
+	}//end testRedeemRunsUnderTheInviteLock()
+
+	/**
+	 * While another redeem of the invite holds the lock, a redeem is answered 409 and adds nobody.
+	 *
+	 * @return void
+	 */
+	public function testARedeemWhileAnotherRunsIsAConflict(): void {
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+		$this->locks->method('acquireLock')->willThrowException(new LockedException('larpinq/staff-invite/x'));
+		$this->locks->expects($this->never())->method('releaseLock');
+		$this->invites->expects($this->never())->method('redeem');
+
+		$response = $controller->redeem();
+
+		$this->assertSame(expected: 409, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'The invite is being redeemed, try again'], actual: $response->getData());
+	}//end testARedeemWhileAnotherRunsIsAConflict()
 
 	/**
 	 * Opening and redeeming are rate limited per user, redeeming the tighter.

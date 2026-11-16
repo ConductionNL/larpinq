@@ -28,7 +28,6 @@ use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserManager;
-use OCP\Lock\ILockingProvider;
 use OutOfBoundsException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -47,7 +46,6 @@ class StaffInviteServiceTest extends TestCase {
 	private RegisterObjectFetcher&MockObject $fetcher;
 	private IGroupManager&MockObject $groupManager;
 	private IUserManager&MockObject $userManager;
-	private ILockingProvider&MockObject $locks;
 
 	/**
 	 * Groups by id, as the group manager answers them.
@@ -66,7 +64,6 @@ class StaffInviteServiceTest extends TestCase {
 		$this->groupManager = $this->createMock(IGroupManager::class);
 		$this->groupManager->method('get')->willReturnCallback(fn (string $gid): ?IGroup => $this->groups[$gid] ?? null);
 		$this->userManager = $this->createMock(IUserManager::class);
-		$this->locks = $this->createMock(ILockingProvider::class);
 		$clock = $this->createMock(ITimeFactory::class);
 		$clock->method('getDateTime')->willReturnCallback(static fn (): DateTime => new DateTime(self::NOW));
 
@@ -75,7 +72,6 @@ class StaffInviteServiceTest extends TestCase {
 			groupManager: $this->groupManager,
 			userManager: $this->userManager,
 			timeFactory: $clock,
-			lockingProvider: $this->locks,
 		);
 	}//end service()
 
@@ -305,51 +301,6 @@ class StaffInviteServiceTest extends TestCase {
 			}
 		}
 	}//end testARevokedOrExpiredInviteAddsNobody()
-
-	/**
-	 * Two redeems of a one-use link at once add one user: the second one reads
-	 * the invite again under the lock, sees the use the first one recorded and
-	 * adds nobody. The lock is taken on the invite and released after.
-	 *
-	 * @return void
-	 */
-	public function testARedeemReadsTheInviteAgainUnderTheLock(): void {
-		$service = $this->service();
-		$stewards = $this->group(gid: AppIdentity::ROLE_STEWARDS);
-		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnOnConsecutiveCalls(
-			[self::invite()],
-			[self::invite(fields: ['uses' => [['uid' => 'pieter', 'at' => self::NOW]]])]
-		);
-		$key = 'larpinq/staff-invite/' . self::ID;
-		$this->locks->expects($this->once())->method('acquireLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE);
-		$this->locks->expects($this->once())->method('releaseLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE);
-
-		$stewards->expects($this->never())->method('addUser');
-		$this->fetcher->expects($this->never())->method('saveObjectWithAppAuthority');
-
-		$this->expectException(DomainException::class);
-		$this->expectExceptionMessage('used-up');
-		$service->redeem(token: self::CODE, user: $this->user(uid: 'karel'));
-	}//end testARedeemReadsTheInviteAgainUnderTheLock()
-
-	/**
-	 * A redeem that cannot take the lock records no use and adds nobody.
-	 *
-	 * @return void
-	 */
-	public function testARedeemThatCannotLockAddsNobody(): void {
-		$service = $this->service();
-		$stewards = $this->group(gid: AppIdentity::ROLE_STEWARDS);
-		$this->lookupFinds(found: [self::invite()]);
-		$this->locks->method('acquireLock')->willThrowException(new \OCP\Lock\LockedException('larpinq/staff-invite/' . self::ID));
-		$this->locks->expects($this->never())->method('releaseLock');
-
-		$stewards->expects($this->never())->method('addUser');
-		$this->fetcher->expects($this->never())->method('saveObjectWithAppAuthority');
-
-		$this->expectException(\OCP\Lock\LockedException::class);
-		$service->redeem(token: self::CODE, user: $this->user(uid: 'karel'));
-	}//end testARedeemThatCannotLockAddsNobody()
 
 	/**
 	 * A member of the role already joins nothing new and takes no use.

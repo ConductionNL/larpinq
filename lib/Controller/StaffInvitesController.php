@@ -33,6 +33,8 @@ use OCP\AppFramework\Http\Attribute\UserRateLimit;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\IURLGenerator;
+use OCP\Lock\ILockingProvider;
+use OCP\Lock\LockedException;
 use OutOfBoundsException;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -73,6 +75,7 @@ class StaffInvitesController extends Controller {
 	 * @param CallerAccess $callerAccess The caller checks.
 	 * @param IURLGenerator $urlGenerator Builds the invite link.
 	 * @param LoggerInterface $logger The logger.
+	 * @param ILockingProvider $lockingProvider Runs the redeems of one invite one at a time.
 	 */
 	public function __construct(
 		IRequest $request,
@@ -80,6 +83,7 @@ class StaffInvitesController extends Controller {
 		private readonly CallerAccess $callerAccess,
 		private readonly IURLGenerator $urlGenerator,
 		private readonly LoggerInterface $logger,
+		private readonly ILockingProvider $lockingProvider,
 	) {
 		parent::__construct(appName: 'larpinq', request: $request);
 	}//end __construct()
@@ -150,7 +154,8 @@ class StaffInvitesController extends Controller {
 	/**
 	 * Join the role of the invite `token` opens.
 	 *
-	 * @return JSONResponse 200 with role and joined; 401, 404 for an unknown token, 410 for an expired, used-up or revoked invite.
+	 * @return JSONResponse 200 with role and joined; 401, 404 for an unknown token, 409 while another redeem of
+	 * it runs, 410 for an expired, used-up or revoked invite.
 	 *
 	 * @no-admin-idor-exempt The token is the capability (REQ-ASR-004): an
 	 * invite is found by the hash of its 128-bit token alone, the service
@@ -167,8 +172,18 @@ class StaffInvitesController extends Controller {
 			return new JSONResponse(data: ['error' => 'Not authenticated'], statusCode: Http::STATUS_UNAUTHORIZED);
 		}
 
+		$token = (string)$this->request->getParam('token', '');
+		// One redeem of an invite at a time: the service reads the invite under this
+		// lock, so concurrent redeems of a link with one use left add one user.
+		$lock = 'larpinq/staff-invite/' . StaffInviteService::hashToken(token: $token);
 		try {
-			return new JSONResponse(data: $this->invites->redeem(token: (string)$this->request->getParam('token', ''), user: $user));
+			$this->lockingProvider->acquireLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
+		} catch (LockedException) {
+			return new JSONResponse(data: ['error' => 'The invite is being redeemed, try again'], statusCode: Http::STATUS_CONFLICT);
+		}
+
+		try {
+			return new JSONResponse(data: $this->invites->redeem(token: $token, user: $user));
 		} catch (OutOfBoundsException) {
 			return new JSONResponse(data: ['error' => 'No such invite'], statusCode: Http::STATUS_NOT_FOUND);
 		} catch (DomainException $exception) {
@@ -177,6 +192,8 @@ class StaffInvitesController extends Controller {
 		} catch (Throwable $exception) {
 			$this->logger->error('[StaffInvitesController] redeeming an invite failed: ' . $exception->getMessage());
 			return new JSONResponse(data: ['error' => 'The invite could not be redeemed'], statusCode: Http::STATUS_INTERNAL_SERVER_ERROR);
+		} finally {
+			$this->lockingProvider->releaseLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
 		}
 	}//end redeem()
 
