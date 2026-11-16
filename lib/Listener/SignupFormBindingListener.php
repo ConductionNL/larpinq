@@ -54,13 +54,13 @@ class SignupFormBindingListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param SignupFormBinding $binding Judges the binding.
-	 * @param IAppConfig        $config  Holds the configured event schema.
 	 * @param LoggerInterface   $logger  Records why a binding could not be judged.
+	 * @param IAppConfig        $config  Holds the configured event schema.
 	 */
 	public function __construct(
 		private readonly SignupFormBinding $binding,
-		private readonly IAppConfig $config,
 		private readonly LoggerInterface $logger,
+		private readonly IAppConfig $config,
 	) {
 	}//end __construct()
 
@@ -74,9 +74,7 @@ class SignupFormBindingListener implements IEventListener {
 	 * @spec openspec/changes/forms-registration-is-checked-at-binding/specs/forms-registration/spec.md#requirement-a-forms-binding-must-be-valid-against-the-registration-schema-when-it-is-made
 	 */
 	public function handle(Event $event): void {
-		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
-			&& ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false
-		) {
+		if (PreWriteEvent::isPreWrite(event: $event) === false) {
 			return;
 		}
 
