@@ -59,6 +59,22 @@ final class PreWriteEvent {
 	}//end entitiesOf()
 
 	/**
+	 * Whether the event is one of OpenRegister's pre-write events (Creating or Updating).
+	 *
+	 * @param Event $event The dispatched event.
+	 *
+	 * @return bool
+	 *
+	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
+	 *
+	 * @spec openspec/changes/forms-registration-is-checked-at-binding/specs/forms-registration/spec.md#requirement-a-forms-binding-must-be-valid-against-the-registration-schema-when-it-is-made
+	 */
+	public static function isPreWrite(Event $event): bool {
+		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
+			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
+	}//end isPreWrite()
+
+	/**
 	 * Stop the write and hand OpenRegister the errors, when a rule found any.
 	 *
 	 * @param Event $event The pre-write event.

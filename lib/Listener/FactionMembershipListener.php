@@ -105,7 +105,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function handle(Event $event): void {
-		if ($this->isPreWrite(event: $event) === false) {
+		if (PreWriteEvent::isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -144,20 +144,6 @@ class FactionMembershipListener implements IEventListener {
 
 		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $old, $userId]);
 	}//end collectVeto()
-
-	/**
-	 * Whether the event is one of OpenRegister's vetoable pre-write events.
-	 *
-	 * @param Event $event The dispatched event.
-	 *
-	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
-	 *
-	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
-	 */
-	private function isPreWrite(Event $event): bool {
-		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
-			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
-	}//end isPreWrite()
 
 	/**
 	 * The signed-in user whose writes the guard checks, or null when none is checked.

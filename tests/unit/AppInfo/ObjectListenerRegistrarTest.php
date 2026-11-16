@@ -23,6 +23,7 @@ use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
+use OCA\Larpinq\Listener\SignupFormBindingListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
@@ -73,6 +74,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 				[self::CREATING, CharacterStatusListener::class],
 				[self::CREATING, XpAwardProvenanceListener::class],
 				[self::CREATING, PortalProfileListener::class],
+				[self::CREATING, SignupFormBindingListener::class],
 				[self::CREATED, PortalProfileListener::class],
 				[self::UPDATED, PlayerCareListener::class],
 				[self::UPDATING, UniqueHolderListener::class],
@@ -80,6 +82,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 				[self::UPDATING, CharacterStatusListener::class],
 				[self::UPDATING, XpAwardProvenanceListener::class],
 				[self::UPDATING, PlayerReviewListener::class],
+				[self::UPDATING, SignupFormBindingListener::class],
 				[self::CREATING, RegistrationListener::class],
 				[self::UPDATING, RegistrationListener::class],
 				[self::CREATED, RegistrationListener::class],
