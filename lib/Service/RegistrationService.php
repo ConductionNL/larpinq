@@ -26,6 +26,7 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
@@ -48,11 +49,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationService {
-
-	public const PENDING = 'pending';
-
-	public const ACCEPTED = 'accepted';
+class RegistrationService implements RegistrationServiceInterface {
 
 	public const WAITLISTED = 'waitlisted';
 

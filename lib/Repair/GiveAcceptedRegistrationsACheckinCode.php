@@ -4,7 +4,7 @@
  * GiveAcceptedRegistrationsACheckinCode repair step for Larpinq
  *
  * Gives every accepted registration without a check-in code a code
- * (events-qr-checkin, REQ-EQC-001). RegistrationService sets the code when a
+ * (events-qr-checkin, REQ-EQC-001). RegistrationServiceInterface sets the code when a
  * registration becomes accepted; registrations accepted before that existed
  * have none, and their players would arrive at the door without one.
  * Idempotent: a registration that has a code keeps it.
@@ -26,9 +26,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Repair;
 
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
 use OCA\Larpinq\Service\CheckinCode;
 use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
-use OCA\Larpinq\Service\RegistrationService;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Psr\Log\LoggerInterface;
@@ -84,7 +84,7 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 		try {
 			$accepted = $this->objectFetcher->getObjectsWithAppAuthority(
 				objectType: 'registration',
-				filters: ['status' => RegistrationService::ACCEPTED],
+				filters: ['status' => RegistrationServiceInterface::ACCEPTED],
 				limit: self::MAX_ROWS
 			);
 		} catch (Throwable $e) {

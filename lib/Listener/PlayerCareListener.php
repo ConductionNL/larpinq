@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\EventCareRecords;
+use OCA\Larpinq\Kernel\Contracts\EventCareRecordsInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -44,13 +44,13 @@ class PlayerCareListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param IAppConfig $config Holds the player schema id.
-	 * @param EventCareRecords $care Writes the copies.
+	 * @param EventCareRecordsInterface $care Writes the copies.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		private readonly IAppConfig $config,
-		private readonly EventCareRecords $care,
+		private readonly EventCareRecordsInterface $care,
 	) {
 	}//end __construct()
 
@@ -93,7 +93,7 @@ class PlayerCareListener implements IEventListener {
 	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public static function careChanged(array $before, array $after): bool {
-		foreach (EventCareRecords::FIELDS as $field) {
+		foreach (EventCareRecordsInterface::FIELDS as $field) {
 			if (($before[$field] ?? null) !== ($after[$field] ?? null)) {
 				return true;
 			}

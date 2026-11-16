@@ -26,6 +26,7 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\EventCareRecordsInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -42,14 +43,7 @@ use Throwable;
  *
  * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
-class EventCareRecords {
-
-	/**
-	 * The care fields copied from the player.
-	 *
-	 * @var array<int, string>
-	 */
-	public const FIELDS = ['allergies', 'medicalNotes', 'dietaryNeeds', 'emergencyContactName', 'emergencyContactPhone'];
+class EventCareRecords implements EventCareRecordsInterface {
 
 	/**
 	 * Days a copy is kept after the event when the event sets none.
