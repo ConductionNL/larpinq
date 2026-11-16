@@ -22,8 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Notification;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Service\FeedbackDelivery;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IURLGenerator;
 use OCP\L10N\IFactory;
 use OCP\Notification\INotification;
@@ -57,7 +57,7 @@ class Notifier implements INotifier {
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-participants-who-were-there-are-invited-once-req-eps-002
 	 */
 	public function getID(): string {
-		return Application::APP_ID;
+		return AppIdentity::APP_ID;
 	}//end getID()
 
 	/**
@@ -68,7 +68,7 @@ class Notifier implements INotifier {
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-participants-who-were-there-are-invited-once-req-eps-002
 	 */
 	public function getName(): string {
-		return $this->l10nFactory->get(Application::APP_ID)->t('Larpinq');
+		return $this->l10nFactory->get(AppIdentity::APP_ID)->t('Larpinq');
 	}//end getName()
 
 	/**
@@ -85,18 +85,18 @@ class Notifier implements INotifier {
 	 */
 	public function prepare(INotification $notification, string $languageCode): INotification {
 		$subject = $notification->getSubject();
-		if ($notification->getApp() !== Application::APP_ID
+		if ($notification->getApp() !== AppIdentity::APP_ID
 			|| in_array($subject, [FeedbackDelivery::SUBJECT_INVITATION, FeedbackDelivery::SUBJECT_REMINDER], true) === false
 		) {
 			throw new UnknownNotificationException();
 		}
 
-		$l      = $this->l10nFactory->get(Application::APP_ID, $languageCode);
+		$l      = $this->l10nFactory->get(AppIdentity::APP_ID, $languageCode);
 		$params = $notification->getSubjectParameters();
 		$text   = FeedbackDelivery::subjectText(l: $l, event: (string)($params['event'] ?? ''), reminder: $subject === FeedbackDelivery::SUBJECT_REMINDER);
 
 		$notification->setParsedSubject($text)
-			->setIcon($this->urls->getAbsoluteURL($this->urls->imagePath(Application::APP_ID, 'app-dark.svg')));
+			->setIcon($this->urls->getAbsoluteURL($this->urls->imagePath(AppIdentity::APP_ID, 'app-dark.svg')));
 		$link = (string)($params['link'] ?? '');
 		if ($link !== '') {
 			$notification->setLink($link);

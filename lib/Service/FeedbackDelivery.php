@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Service;
 
 use DateTime;
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\IURLGenerator;
 use OCP\IL10N;
 use OCP\IUser;
@@ -108,7 +108,7 @@ class FeedbackDelivery {
 		}
 
 		$notification = $this->notifications->createNotification();
-		$notification->setApp(Application::APP_ID)
+		$notification->setApp(AppIdentity::APP_ID)
 			->setUser($uid)
 			->setDateTime(new DateTime())
 			->setObject('event', (string)($event['id'] ?? ''))
@@ -136,7 +136,7 @@ class FeedbackDelivery {
 		}
 
 		[$event, $link] = [$text['event'], $text['link']];
-		$l    = $this->l10nFactory->get(Application::APP_ID, $this->l10nFactory->getUserLanguage($user));
+		$l    = $this->l10nFactory->get(AppIdentity::APP_ID, $this->l10nFactory->getUserLanguage($user));
 		$body = $l->t(
 			'Thank you for playing at %1$s. The story team would like to hear what your character did and what you plan next. Fill in the form here: %2$s',
 			[$event, $link]
