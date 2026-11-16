@@ -27,6 +27,7 @@ namespace OCA\Larpinq\Service;
 use Exception;
 use InvalidArgumentException;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectDeletion;
+use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindOptions;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindTarget;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
 use OCP\App\IAppManager;
@@ -372,7 +373,12 @@ class RegisterObjectFetcher {
 		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
 		// @var mixed $object
-		$object = $openRegister->find(id: $idLower, register: $register, schema: $schema, _rbac: false, _multitenancy: false);
+		$object = $openRegister->find(
+			id: $idLower,
+			options: new ObjectFindOptions(register: $register, schema: $schema),
+			_rbac: false,
+			_multitenancy: false,
+		);
 		if ($object === null) {
 			throw new DoesNotExistException('Object ' . $id . ' does not exist');
 		}
