@@ -24,6 +24,7 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\EventFeedbackServiceInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -35,7 +36,7 @@ use Throwable;
  *
  * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
  */
-class EventFeedbackService {
+class EventFeedbackService implements EventFeedbackServiceInterface {
 
 	/**
 	 * How long feedback stays open when the event does not say.

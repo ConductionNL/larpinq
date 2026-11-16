@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\SignupFormBinding;
+use OCA\Larpinq\Kernel\Contracts\SignupFormBindingInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -53,12 +53,12 @@ class SignupFormBindingListener implements IEventListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param SignupFormBinding $binding Judges the binding.
-	 * @param LoggerInterface   $logger  Records why a binding could not be judged.
-	 * @param IAppConfig        $config  Holds the configured event schema.
+	 * @param SignupFormBindingInterface $binding Judges the binding.
+	 * @param LoggerInterface            $logger  Records why a binding could not be judged.
+	 * @param IAppConfig                 $config  Holds the configured event schema.
 	 */
 	public function __construct(
-		private readonly SignupFormBinding $binding,
+		private readonly SignupFormBindingInterface $binding,
 		private readonly LoggerInterface $logger,
 		private readonly IAppConfig $config,
 	) {

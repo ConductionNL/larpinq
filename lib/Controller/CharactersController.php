@@ -37,9 +37,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\DocuDeskPdfRenderer;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\SkillRequirementService;
+use OCA\Larpinq\Kernel\Contracts\DocuDeskPdfRendererInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
+use OCA\Larpinq\Kernel\Contracts\SkillRequirementServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
@@ -67,18 +67,18 @@ class CharactersController extends Controller {
 	 *
 	 * @param string $appName The name of the app
 	 * @param IRequest $request The request object
-	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher
-	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF rendering helper
+	 * @param RegisterObjectFetcherInterface $objectFetcher The register object fetcher
+	 * @param DocuDeskPdfRendererInterface $pdfRenderer The shared DocuDesk PDF rendering helper
 	 * @param CallerAccess $callerAccess The signed-in caller and the admin check
-	 * @param SkillRequirementService $requirementService The skill-requirement validation service
+	 * @param SkillRequirementServiceInterface $requirementService The skill-requirement validation service
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
-		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly DocuDeskPdfRenderer $pdfRenderer,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
+		private readonly DocuDeskPdfRendererInterface $pdfRenderer,
 		private readonly CallerAccess $callerAccess,
-		private readonly SkillRequirementService $requirementService,
+		private readonly SkillRequirementServiceInterface $requirementService,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()

@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\RegistrationWriteCheckInterface;
+
 /**
  * What is checked before a registration is stored: the character a player
  * brings, then the ticket type, options and code with their price lines.
@@ -36,7 +38,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationWriteCheck {
+class RegistrationWriteCheck implements RegistrationWriteCheckInterface {
 
 	/**
 	 * Constructor.

@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\EventFeedbackService;
+use OCA\Larpinq\Kernel\Contracts\EventFeedbackServiceInterface;
 use OCA\Larpinq\Service\FeedbackDelivery;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -47,14 +47,14 @@ class EventFeedbackController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param IRequest             $request      The request.
-	 * @param EventFeedbackService $feedback     The feedback round and the event.
-	 * @param FeedbackDelivery     $delivery     Builds the link to the form's results.
-	 * @param CallerAccess         $callerAccess The caller checks.
+	 * @param IRequest                      $request      The request.
+	 * @param EventFeedbackServiceInterface $feedback     The feedback round and the event.
+	 * @param FeedbackDelivery              $delivery     Builds the link to the form's results.
+	 * @param CallerAccess                  $callerAccess The caller checks.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly EventFeedbackService $feedback,
+		private readonly EventFeedbackServiceInterface $feedback,
 		private readonly FeedbackDelivery $delivery,
 		private readonly CallerAccess $callerAccess,
 	) {

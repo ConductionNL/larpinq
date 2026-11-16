@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Service\DemoDataService;
-use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Kernel\Contracts\SettingsServiceInterface;
 use OCA\Larpinq\Settings\LarpinqAdmin;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
@@ -98,7 +98,7 @@ class SetupController extends Controller {
 	 * @param IRequest $request The request.
 	 * @param IAppConfig $appConfig App-config reader/writer.
 	 * @param DemoDataService $demoDataService Demo dataset import (ADR-111 rule 4).
-	 * @param SettingsService $settingsService Register/schema provisioning.
+	 * @param SettingsServiceInterface $settingsService Register/schema provisioning.
 	 * @param IAppManager $appManager App installed/enabled lookup.
 	 * @param LoggerInterface $logger Logger.
 	 *
@@ -108,7 +108,7 @@ class SetupController extends Controller {
 		IRequest $request,
 		private readonly IAppConfig $appConfig,
 		private readonly DemoDataService $demoDataService,
-		private readonly SettingsService $settingsService,
+		private readonly SettingsServiceInterface $settingsService,
 		private readonly IAppManager $appManager,
 		private readonly LoggerInterface $logger,
 	) {
