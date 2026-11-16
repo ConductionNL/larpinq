@@ -420,6 +420,7 @@
         "description": "Created by a game master for one role, with an expiry and a number of uses. Only a hash of the token is stored; the plain token is shown once, when the invite is created. Redeeming it adds the user to the role group and to larpers and records the use. A revoked, expired or used-up invite adds nobody. Game masters only.",
         "type": "object",
         "x-schema-org": "schema:InviteAction",
+        "x-openregister-demo-data": "Staff invites are not seeded: a demo invite would be a working join link on every demo install",
         "configuration": {
           "exportable": true
         },
@@ -479,10 +480,14 @@
               "properties": {
                 "uid": {
                   "type": "string",
+                  "title": "User",
+                  "description": "The user who joined with this invite",
                   "maxLength": 255
                 },
                 "at": {
                   "type": "string",
+                  "title": "Joined at",
+                  "description": "When the user joined (server-stamped)",
                   "format": "date-time"
                 }
               }

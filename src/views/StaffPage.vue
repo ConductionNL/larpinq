@@ -140,6 +140,8 @@ export default {
 		 * The roles to pick from.
 		 *
 		 * @return {Array<{id: string, label: string}>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		roleOptions() {
 			return STAFF_ROLES.map((id) => ({ id, label: roleLabel(id) }))
@@ -150,6 +152,8 @@ export default {
 	 * Load the team.
 	 *
 	 * @return {Promise<void>}
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 	 */
 	async mounted() {
 		await this.reload()
@@ -165,6 +169,8 @@ export default {
 		 * Read the team again.
 		 *
 		 * @return {Promise<void>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		async reload() {
 			this.team = await fetchTeam()
@@ -175,6 +181,8 @@ export default {
 		 *
 		 * @param {object} invite The invite.
 		 * @return {string} The uids, or a dash.
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		joinedNames(invite) {
 			const uses = Array.isArray(invite.uses) ? invite.uses : []
@@ -185,6 +193,8 @@ export default {
 		 * Create an invite link and show it once.
 		 *
 		 * @return {Promise<void>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		async create() {
 			this.busy = true
@@ -205,6 +215,8 @@ export default {
 		 *
 		 * @param {object} invite The invite.
 		 * @return {Promise<void>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		async revoke(invite) {
 			this.busy = true
@@ -223,6 +235,8 @@ export default {
 		 * @param {string} role The role group.
 		 * @param {{uid: string, displayName: string}} member The member.
 		 * @return {Promise<void>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		async remove(role, member) {
 			this.busy = true
@@ -241,6 +255,8 @@ export default {
 		 *
 		 * @param {string} text The message.
 		 * @param {string} type success or error.
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
 		 */
 		say(text, type) {
 			this.message = text

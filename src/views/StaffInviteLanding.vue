@@ -63,6 +63,8 @@ export default {
 		 * Why the link adds nobody.
 		 *
 		 * @return {string}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 		 */
 		refusal() {
 			switch (this.state) {
@@ -84,6 +86,8 @@ export default {
 	 * Read the invite the link opens.
 	 *
 	 * @return {Promise<void>}
+	 *
+	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 	 */
 	async mounted() {
 		const invite = await inspectInvite(String(this.$route?.params?.token || ''))
@@ -100,6 +104,8 @@ export default {
 		 * Join the role.
 		 *
 		 * @return {Promise<void>}
+		 *
+		 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
 		 */
 		async confirm() {
 			this.busy = true

@@ -17,6 +17,7 @@
 			"type": "custom",
 			"title": "Join the team",
 			"component": "StaffInviteLanding",
+			"_note": "A one-step join flow over a token from the link: it shows the invite's role and state from POST /api/staff-invites/inspect and joins on confirm; there is no list, record or widget grid to type.",
 			"config": {
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
