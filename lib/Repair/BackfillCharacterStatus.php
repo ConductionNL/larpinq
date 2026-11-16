@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Repair;
 
 use OCA\Larpinq\Service\CharacterStatusGuard;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Psr\Log\LoggerInterface;
@@ -52,13 +52,13 @@ class BackfillCharacterStatus implements IRepairStep {
 	/**
 	 * Constructor.
 	 *
-	 * @param RegisterObjectFetcher $objectFetcher Reads and writes characters through OpenRegister.
+	 * @param RegisterObjectFetcherInterface $objectFetcher Reads and writes characters through OpenRegister.
 	 * @param LoggerInterface $logger The logger.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
 		private readonly LoggerInterface $logger,
 	) {
 	}//end __construct()

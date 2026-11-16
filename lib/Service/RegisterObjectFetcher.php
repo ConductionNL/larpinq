@@ -26,6 +26,7 @@ namespace OCA\Larpinq\Service;
 
 use Exception;
 use InvalidArgumentException;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectDeletion;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindOptions;
 use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindTarget;
@@ -50,7 +51,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-38
  */
-class RegisterObjectFetcher {
+class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 
 	/**
 	 * Resolves the register and schema ids configured per object type.

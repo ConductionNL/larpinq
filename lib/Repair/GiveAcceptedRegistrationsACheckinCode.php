@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Repair;
 
 use OCA\Larpinq\Service\CheckinCode;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCA\Larpinq\Service\RegistrationService;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -51,11 +51,11 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 	/**
 	 * Constructor.
 	 *
-	 * @param RegisterObjectFetcher $objectFetcher The register.
-	 * @param LoggerInterface       $logger        The logger.
+	 * @param RegisterObjectFetcherInterface $objectFetcher The register.
+	 * @param LoggerInterface                $logger        The logger.
 	 */
 	public function __construct(
-		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
 		private readonly LoggerInterface $logger,
 	) {
 	}//end __construct()

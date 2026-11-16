@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\SignupFormBindingInterface;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 
@@ -38,7 +39,7 @@ use RuntimeException;
  *
  * @spec openspec/changes/forms-registration-is-checked-at-binding/specs/forms-registration/spec.md#requirement-a-forms-binding-must-be-valid-against-the-registration-schema-when-it-is-made
  */
-class SignupFormBinding {
+class SignupFormBinding implements SignupFormBindingInterface {
 
 	private const VALIDATOR = 'OCA\OpenRegister\Service\Form\FormDestinationValidatorInterface';
 

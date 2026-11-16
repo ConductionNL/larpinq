@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\CharacterConnectionGuardInterface;
+
 /**
  * The rules OpenRegister's row rules cannot express, because they depend on
  * the status a write moves to and on who the caller is relative to two other
@@ -34,7 +36,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/character-connections/spec.md
  */
-class CharacterConnectionGuard {
+class CharacterConnectionGuard implements CharacterConnectionGuardInterface {
 	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
-use OCA\Larpinq\Service\DocuDeskPdfRenderer;
-use OCA\Larpinq\Service\CheckinByCode;
+use OCA\Larpinq\Kernel\Contracts\DocuDeskPdfRendererInterface;
+use OCA\Larpinq\Kernel\Contracts\CheckinByCodeInterface;
 use OCA\Larpinq\Service\EventRosterService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -70,16 +70,16 @@ class EventsController extends Controller {
 	 *
 	 * @param IRequest $request The request object.
 	 * @param EventRosterService $rosterService The event participation domain service.
-	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF helper.
+	 * @param DocuDeskPdfRendererInterface $pdfRenderer The shared DocuDesk PDF helper.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
-	 * @param CheckinByCode|null $checkinByCode Check-in by a registration's code (events-qr-checkin).
+	 * @param CheckinByCodeInterface|null $checkinByCode Check-in by a registration's code (events-qr-checkin).
 	 */
 	public function __construct(
 		IRequest $request,
 		private readonly EventRosterService $rosterService,
-		private readonly DocuDeskPdfRenderer $pdfRenderer,
+		private readonly DocuDeskPdfRendererInterface $pdfRenderer,
 		private readonly CallerAccess $callerAccess,
-		private readonly ?CheckinByCode $checkinByCode = null,
+		private readonly ?CheckinByCodeInterface $checkinByCode = null,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
 	}//end __construct()

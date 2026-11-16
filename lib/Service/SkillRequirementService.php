@@ -27,6 +27,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\SkillRequirementServiceInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -45,7 +46,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
-class SkillRequirementService {
+class SkillRequirementService implements SkillRequirementServiceInterface {
 	/**
 	 * Constructor for SkillRequirementService.
 	 *

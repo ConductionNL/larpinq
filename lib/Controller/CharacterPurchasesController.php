@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Service\PurchaseRefusedException;
-use OCA\Larpinq\Service\PurchaseService;
+use OCA\Larpinq\Kernel\Contracts\PurchaseServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -42,15 +42,15 @@ class CharacterPurchasesController extends Controller {
 	/**
 	 * Constructor.
 	 *
-	 * @param IRequest        $request      The request.
-	 * @param PurchaseService $purchases    The purchase service.
-	 * @param CallerAccess    $callerAccess Who is calling and whether they are a game master.
+	 * @param IRequest                 $request      The request.
+	 * @param PurchaseServiceInterface $purchases    The purchase service.
+	 * @param CallerAccess             $callerAccess Who is calling and whether they are a game master.
 	 *
 	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly PurchaseService $purchases,
+		private readonly PurchaseServiceInterface $purchases,
 		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);
