@@ -1273,6 +1273,12 @@
 				"schema": "larping_skill",
 				"allowExport": true,
 				"showMassImport": false,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "list", "label": "List" },
+					{ "key": "effect", "label": "Effect" },
+					{ "key": "setting", "label": "World" }
+				],
 				"documentationUrl": "https://larpinq.conduction.nl"
 			}
 		},
