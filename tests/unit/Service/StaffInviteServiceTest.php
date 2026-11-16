@@ -512,4 +512,172 @@ class StaffInviteServiceTest extends TestCase {
 
 		$this->assertSame(expected: ['role' => AppIdentity::ROLE_STEWARDS, 'state' => 'valid'], actual: $service->inspect(token: self::CODE));
 	}//end testTheLookupRechecksTheHash()
+
+	/**
+	 * The edges of the ranges are allowed: 1 and 90 days, 1 and 100 uses, and the expiry follows the days.
+	 *
+	 * @return void
+	 */
+	public function testCreateAcceptsTheEdgesOfTheRanges(): void {
+		$service = $this->service();
+		$stored = [];
+		$this->fetcher->expects($this->exactly(2))->method('saveObjectWithAppAuthority')
+			->willReturnCallback(static function (string $type, array $data) use (&$stored): array {
+				$stored[] = $data;
+				return $data + ['id' => self::ID];
+			});
+
+		$service->create(role: AppIdentity::ROLE_WRITERS, days: 1, maxUses: 1, actingUid: 'gm');
+		$service->create(role: AppIdentity::GM_GROUP, days: StaffInviteService::MAX_DAYS, maxUses: StaffInviteService::MAX_USES, actingUid: 'gm');
+
+		$this->assertSame(expected: '2026-11-15T12:00:00+00:00', actual: $stored[0]['expiresAt']);
+		$this->assertSame(expected: 1, actual: $stored[0]['maxUses']);
+		$this->assertSame(expected: AppIdentity::ROLE_WRITERS, actual: $stored[0]['role']);
+		$this->assertSame(expected: '2027-02-12T12:00:00+00:00', actual: $stored[1]['expiresAt']);
+		$this->assertSame(expected: 100, actual: $stored[1]['maxUses']);
+		$this->assertSame(expected: AppIdentity::GM_GROUP, actual: $stored[1]['role']);
+	}//end testCreateAcceptsTheEdgesOfTheRanges()
+
+	/**
+	 * A refused range says what the range is.
+	 *
+	 * @return void
+	 */
+	public function testARefusedRangeNamesTheRange(): void {
+		$service = $this->service();
+		$messages = [];
+		foreach ([['admin', 7, 1], [AppIdentity::ROLE_RULES, 91, 1], [AppIdentity::ROLE_RULES, 7, 101]] as [$role, $days, $uses]) {
+			try {
+				$service->create(role: $role, days: $days, maxUses: $uses, actingUid: 'gm');
+			} catch (InvalidArgumentException $exception) {
+				$messages[] = $exception->getMessage();
+			}
+		}
+
+		$this->assertSame(
+			expected: ['Unknown role', 'An invite is valid for 1 to 90 days', 'An invite has 1 to 100 uses'],
+			actual: $messages
+		);
+	}//end testARefusedRangeNamesTheRange()
+
+	/**
+	 * An invite expires at its expiry, not a second later.
+	 *
+	 * @return void
+	 */
+	public function testAnInviteExpiresAtItsExpiry(): void {
+		$service = $this->service();
+
+		$this->assertSame(expected: 'expired', actual: $service->state(invite: self::invite(fields: ['expiresAt' => self::NOW])));
+		$this->assertSame(expected: 'valid', actual: $service->state(invite: self::invite(fields: ['expiresAt' => '2026-11-14T12:00:01+00:00'])));
+		$this->assertSame(expected: 'expired', actual: $service->state(invite: self::invite(fields: ['expiresAt' => null])));
+	}//end testAnInviteExpiresAtItsExpiry()
+
+	/**
+	 * Someone who is not in the role, or a role whose group is missing, removes nobody.
+	 *
+	 * @return void
+	 */
+	public function testRemovingSomeoneWhoIsNotThereRemovesNobody(): void {
+		$service = $this->service();
+		$stewards = $this->group(gid: AppIdentity::ROLE_STEWARDS, members: ['joris']);
+		$stewards->expects($this->never())->method('removeUser');
+		$this->userManager->method('get')->willReturnCallback(fn (string $uid): IUser => $this->user(uid: $uid));
+
+		$this->assertFalse(condition: $service->removeMember(role: AppIdentity::ROLE_STEWARDS, uid: 'lotte', actingUid: 'gm'));
+		$this->assertFalse(condition: $service->removeMember(role: AppIdentity::ROLE_RULES, uid: 'joris', actingUid: 'gm'));
+	}//end testRemovingSomeoneWhoIsNotThereRemovesNobody()
+
+	/**
+	 * A game master may remove another game master, and themself from any other role.
+	 *
+	 * @return void
+	 */
+	public function testOnlyLeavingTheGameMastersYourselfIsRefused(): void {
+		$service = $this->service();
+		$gms = $this->group(gid: AppIdentity::GM_GROUP, members: ['gm', 'anna']);
+		$writers = $this->group(gid: AppIdentity::ROLE_WRITERS, members: ['gm']);
+		$users = ['gm' => $this->user(uid: 'gm'), 'anna' => $this->user(uid: 'anna')];
+		$this->userManager->method('get')->willReturnCallback(static fn (string $uid): ?IUser => $users[$uid] ?? null);
+
+		$gms->expects($this->once())->method('removeUser')->with($users['anna']);
+		$writers->expects($this->once())->method('removeUser')->with($users['gm']);
+
+		$this->assertTrue(condition: $service->removeMember(role: AppIdentity::GM_GROUP, uid: 'anna', actingUid: 'gm'));
+		$this->assertTrue(condition: $service->removeMember(role: AppIdentity::ROLE_WRITERS, uid: 'gm', actingUid: 'gm'));
+	}//end testOnlyLeavingTheGameMastersYourselfIsRefused()
+
+	/**
+	 * The team lists members by display name regardless of case, and no invites when none are stored.
+	 *
+	 * @return void
+	 */
+	public function testTheTeamSortsMembersByNameAndMayHaveNoInvites(): void {
+		$service = $this->service();
+		$this->group(gid: AppIdentity::ROLE_STEWARDS, members: ['zoe', 'bram', 'Anna']);
+		$this->fetcher->method('getObjects')->with('staffInvite')->willReturn([]);
+
+		$team = $service->team();
+
+		$stewards = array_values(array_filter($team['roles'], static fn (array $role): bool => $role['role'] === AppIdentity::ROLE_STEWARDS));
+		$this->assertSame(expected: ['Anna', 'bram', 'zoe'], actual: array_column($stewards[0]['members'], 'uid'));
+		$this->assertSame(expected: [], actual: $team['invites']);
+	}//end testTheTeamSortsMembersByNameAndMayHaveNoInvites()
+
+	/**
+	 * A redeemer already among the larpinq users is not added there twice, and earlier uses are kept.
+	 *
+	 * @return void
+	 */
+	public function testRedeemKeepsEarlierUsesAndAddsAUserOnce(): void {
+		$service = $this->service();
+		$writers = $this->group(gid: AppIdentity::ROLE_WRITERS);
+		$larpers = $this->group(gid: AppIdentity::USERS_GROUP, members: ['pieter']);
+		$pieter = $this->user(uid: 'pieter');
+		$earlier = ['uid' => 'anna', 'at' => '2026-11-13T09:00:00+00:00'];
+		$this->lookupFinds(found: [self::invite(fields: ['role' => AppIdentity::ROLE_WRITERS, 'maxUses' => 2, 'uses' => [$earlier]])]);
+
+		$writers->expects($this->once())->method('addUser')->with($pieter);
+		$larpers->expects($this->never())->method('addUser');
+		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')
+			->with(
+				'staffInvite',
+				$this->callback(static fn (array $data): bool => $data['uses'] === [$earlier, ['uid' => 'pieter', 'at' => self::NOW]]),
+				self::ID
+			);
+
+		$this->assertSame(expected: ['role' => AppIdentity::ROLE_WRITERS, 'joined' => true], actual: $service->redeem(token: self::CODE, user: $pieter));
+	}//end testRedeemKeepsEarlierUsesAndAddsAUserOnce()
+
+	/**
+	 * An invite that names a group which is not a staff role adds nobody, even when that group exists.
+	 *
+	 * @return void
+	 */
+	public function testAnInviteForAnotherGroupAddsNobody(): void {
+		$service = $this->service();
+		$admins = $this->group(gid: 'admin');
+		$this->lookupFinds(found: [self::invite(fields: ['role' => 'admin'])]);
+
+		$admins->expects($this->never())->method('addUser');
+		$this->fetcher->expects($this->never())->method('saveObjectWithAppAuthority');
+
+		$this->expectException(OutOfBoundsException::class);
+		$service->redeem(token: self::CODE, user: $this->user(uid: 'pieter'));
+	}//end testAnInviteForAnotherGroupAddsNobody()
+
+	/**
+	 * Opening a link answers only the role and state, never the hash or who made it.
+	 *
+	 * @return void
+	 */
+	public function testInspectAnswersNothingElse(): void {
+		$service = $this->service();
+		$this->lookupFinds(found: [self::invite(fields: ['role' => AppIdentity::ROLE_TREASURERS, 'revokedAt' => self::NOW])]);
+
+		$this->assertSame(
+			expected: ['role' => AppIdentity::ROLE_TREASURERS, 'state' => 'revoked'],
+			actual: $service->inspect(token: self::CODE)
+		);
+	}//end testInspectAnswersNothingElse()
 }//end class

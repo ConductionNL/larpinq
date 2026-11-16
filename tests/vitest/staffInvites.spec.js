@@ -122,3 +122,100 @@ describe('staff invites', () => {
 		expect(await redeemInvite(CODE)).toEqual({ state: 'failed' })
 	})
 })
+
+describe('staff invites, the edges of each answer', () => {
+	afterEach(() => {
+		vi.restoreAllMocks()
+		delete globalThis.fetch
+	})
+
+	it('sends JSON headers on every call and no body on a read', async () => {
+		const fetchMock = answer(200, { roles: [], invites: [] })
+		await fetchTeam()
+
+		const init = fetchMock.mock.calls[0][1]
+		expect(init.body).toBeUndefined()
+		expect(init.headers.Accept).toBe('application/json')
+		expect(init.headers['Content-Type']).toBe('application/json')
+		expect(init.headers).toHaveProperty('requesttoken')
+	})
+
+	it('treats a signed-out read of the team as a refusal', async () => {
+		answer(401, { error: 'Not authenticated' })
+		expect(await fetchTeam()).toEqual({ state: 'refused' })
+	})
+
+	it('reads a team answer without lists as an empty team', async () => {
+		answer(200, { roles: 'none', invites: null })
+		expect(await fetchTeam()).toEqual({ state: 'ok', roles: [], invites: [] })
+
+		answer(200, null)
+		expect(await fetchTeam()).toEqual({ state: 'ok', roles: [], invites: [] })
+	})
+
+	it('survives an answer that is not JSON', async () => {
+		globalThis.fetch = vi.fn().mockResolvedValueOnce({
+			ok: false,
+			status: 502,
+			json: async () => {
+				throw new SyntaxError('Unexpected token <')
+			},
+		})
+		expect(await createInvite('larpinq-writers', 7, 1)).toEqual({ ok: false, error: 'Failed to save. Please try again.' })
+	})
+
+	it('returns an empty link and invite when a created invite lacks them', async () => {
+		answer(201, {})
+		expect(await createInvite('larpinq-writers', 1, 1)).toEqual({ ok: true, link: '', invite: {} })
+	})
+
+	it('reports a failed revoke as not revoked', async () => {
+		const fetchMock = answer(404, { error: 'Invite not found' })
+		expect(await revokeInvite('gone')).toBe(false)
+		expect(fetchMock.mock.calls[0][1].method).toBe('POST')
+		expect(fetchMock.mock.calls[0][1].body).toBeUndefined()
+	})
+
+	it('gives the general reason when a removal fails without one', async () => {
+		answer(500, null)
+		expect(await removeMember('larpinq-rules', 'anna')).toEqual({ ok: false, error: 'Failed to save. Please try again.' })
+	})
+
+	it('escapes the role and member in the removal url', async () => {
+		const fetchMock = answer(200, { removed: true })
+		await removeMember('larpinq-rules', 'anna maria/2')
+		expect(fetchMock.mock.calls[0][0]).toBe('/index.php/apps/larpinq/api/staff/larpinq-rules/members/anna%20maria%2F2')
+	})
+
+	it('tells a failed opening from an unknown link', async () => {
+		const fetchMock = answer(500, null)
+		expect(await inspectInvite(CODE)).toEqual({ state: 'failed' })
+		expect(fetchMock.mock.calls[0][0]).toBe('/index.php/apps/larpinq/api/staff-invites/inspect')
+		expect(fetchMock.mock.calls[0][1].method).toBe('POST')
+
+		answer(200, {})
+		expect(await inspectInvite(CODE)).toEqual({ state: '', role: '' })
+	})
+
+	it('reads a gone link without a state as expired', async () => {
+		answer(410, { error: 'This invite adds nobody' })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'expired' })
+		answer(410, null)
+		expect(await redeemInvite(CODE)).toEqual({ state: 'expired' })
+	})
+
+	it('redeems at its own url with the token as the body', async () => {
+		const fetchMock = answer(200, { joined: true })
+		expect(await redeemInvite(CODE)).toEqual({ state: 'joined', role: '' })
+		expect(fetchMock.mock.calls[0][0]).toBe('/index.php/apps/larpinq/api/staff-invites/redeem')
+		expect(JSON.parse(fetchMock.mock.calls[0][1].body)).toEqual({ token: CODE })
+	})
+
+	it('names each staff role apart from the others', () => {
+		const labels = STAFF_ROLES.map(roleLabel)
+		expect(new Set(labels).size).toBe(STAFF_ROLES.length)
+		expect(labels).not.toContain('')
+		expect(roleLabel('')).toBe('')
+		expect(stateLabel('')).toBe('')
+	})
+})

@@ -284,4 +284,121 @@ class StaffInvitesControllerTest extends TestCase {
 		$this->assertSame(expected: 404, actual: $controller->removeMember(role: AppIdentity::ROLE_TREASURERS, uid: 'anna')->getStatus());
 		$this->assertSame(expected: 400, actual: $controller->removeMember(role: AppIdentity::GM_GROUP, uid: 'caller')->getStatus());
 	}//end testRemoveMember()
+
+	/**
+	 * Every refused redeem names its own reason, and a state without one still adds nobody.
+	 *
+	 * @return void
+	 */
+	public function testEachRefusedRedeemSaysWhy(): void {
+		$cases = [
+			StaffInviteService::STATE_EXPIRED => 'This invite has expired',
+			StaffInviteService::STATE_REVOKED => 'This invite was revoked',
+			'odd' => 'This invite adds nobody',
+		];
+		foreach ($cases as $state => $error) {
+			$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+			$this->invites->method('redeem')->willThrowException(new DomainException($state));
+
+			$response = $controller->redeem();
+
+			$this->assertSame(expected: 410, actual: $response->getStatus(), message: $state);
+			$this->assertSame(expected: ['error' => $error, 'state' => $state], actual: $response->getData());
+		}
+	}//end testEachRefusedRedeemSaysWhy()
+
+	/**
+	 * A failure behind create, inspect, redeem or team is a 500 with a neutral message, never the exception text.
+	 *
+	 * @return void
+	 */
+	public function testAFailureBehindAnEndpointIsAServerError(): void {
+		$failure = new \RuntimeException('database is gone');
+
+		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP], params: ['role' => AppIdentity::ROLE_STEWARDS]);
+		$this->invites->method('create')->willThrowException($failure);
+		$response = $controller->create();
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'The invite could not be created'], actual: $response->getData());
+
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+		$this->invites->method('inspect')->willThrowException($failure);
+		$response = $controller->inspect();
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'The invite could not be read'], actual: $response->getData());
+
+		$controller = $this->controllerFor(groups: [], params: ['token' => self::CODE]);
+		$this->invites->method('redeem')->willThrowException($failure);
+		$response = $controller->redeem();
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'The invite could not be redeemed'], actual: $response->getData());
+
+		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
+		$this->invites->method('team')->willThrowException($failure);
+		$response = $controller->team();
+		$this->assertSame(expected: 500, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'The team could not be read'], actual: $response->getData());
+	}//end testAFailureBehindAnEndpointIsAServerError()
+
+	/**
+	 * Create hands the service the acting game master and the request's values, cast to their types.
+	 *
+	 * @return void
+	 */
+	public function testCreatePassesTheRequestOn(): void {
+		$controller = $this->controllerFor(
+			groups: [AppIdentity::GM_GROUP],
+			params: ['role' => AppIdentity::ROLE_RULES, 'days' => '14', 'maxUses' => '5']
+		);
+		$this->invites->expects($this->once())->method('create')
+			->with(AppIdentity::ROLE_RULES, 14, 5, 'caller')
+			->willReturn(['invite' => ['id' => 'i9'], 'token' => self::CODE]);
+
+		$response = $controller->create();
+
+		$this->assertSame(expected: 201, actual: $response->getStatus());
+		$this->assertSame(expected: 'https://cloud.example/apps/larpinq/staff-invite/' . self::CODE, actual: $response->getData()['link']);
+		$this->assertSame(expected: ['id' => 'i9'], actual: $response->getData()['invite']);
+	}//end testCreatePassesTheRequestOn()
+
+	/**
+	 * An unknown role in a removal is a 400 with the service's reason.
+	 *
+	 * @return void
+	 */
+	public function testRemovingFromAnUnknownRoleIsRefused(): void {
+		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
+		$this->invites->expects($this->once())->method('removeMember')
+			->with('admin', 'lotte', 'caller')
+			->willThrowException(new InvalidArgumentException('Unknown role'));
+
+		$response = $controller->removeMember(role: 'admin', uid: 'lotte');
+
+		$this->assertSame(expected: 400, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'Unknown role'], actual: $response->getData());
+	}//end testRemovingFromAnUnknownRoleIsRefused()
+
+	/**
+	 * A request without a token or role hands the service empty strings, which it refuses itself.
+	 *
+	 * @return void
+	 */
+	public function testMissingParametersReachTheServiceAsEmptyStrings(): void {
+		$controller = $this->controllerFor(groups: []);
+		$this->invites->expects($this->once())->method('inspect')->with('')->willThrowException(new OutOfBoundsException('No such invite'));
+		$this->invites->expects($this->once())->method('redeem')->with('', $this->isInstanceOf(\OCP\IUser::class))->willThrowException(new OutOfBoundsException('No such invite'));
+
+		$this->assertSame(expected: ['error' => 'No such invite'], actual: $controller->inspect()->getData());
+		$this->assertSame(expected: ['error' => 'No such invite'], actual: $controller->redeem()->getData());
+
+		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
+		$this->invites->expects($this->once())->method('create')
+			->with('', StaffInviteService::DEFAULT_DAYS, 1, 'caller')
+			->willThrowException(new InvalidArgumentException('Unknown role'));
+
+		$response = $controller->create();
+
+		$this->assertSame(expected: 400, actual: $response->getStatus());
+		$this->assertSame(expected: ['error' => 'Unknown role'], actual: $response->getData());
+	}//end testMissingParametersReachTheServiceAsEmptyStrings()
 }//end class
