@@ -27,7 +27,7 @@ namespace OCA\Larpinq\Listener;
 use DateTimeImmutable;
 use DateTimeInterface;
 use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
-use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUserManager;
@@ -202,7 +202,7 @@ class FormSubmissionListener implements IEventListener {
 		$registration = [
 			'event' => $eventId,
 			'submitterUid' => $uid,
-			'status' => RegistrationService::PENDING,
+			'status' => RegistrationServiceInterface::PENDING,
 			'submissionId' => (int)($submission['id'] ?? 0),
 			'submittedAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
 		];
