@@ -36,6 +36,7 @@ const LIMIT = 500
  *
  * @param {object} row The row.
  * @return {string}
+ * @spec exclude Data-shape helper: reads an id from either OpenRegister row shape, no domain behaviour of its own.
  */
 export function rowId(row) {
 	return String(row?.id || row?.['@self']?.id || '')
@@ -58,6 +59,7 @@ function rowsOf(body) {
  *
  * @param {object} object The object.
  * @return {boolean}
+ * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-secret-rules-stay-out-of-the-rulebook-req-rrs-004
  */
 export function isHidden(object) {
 	return object?.hiddenFromRulebook === true
@@ -103,6 +105,7 @@ function sortName(row) {
  * @param {Map<string, object>} effects The effects by id.
  * @param {Map<string, object>} abilities The abilities by id.
  * @return {Array<{amount: number, ability: string}>}
+ * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
  */
 export function skillCosts(skill, effects, abilities) {
 	const costs = []

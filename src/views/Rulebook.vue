@@ -129,12 +129,22 @@ export default {
 	},
 
 	computed: {
-		/** @return {string} The world from the route, else the active world, else '' (every world). */
+		/**
+		 * The world from the route, else the active world, else '' (every world).
+		 *
+		 * @return {string}
+		 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
+		 */
 		world() {
 			return String(this.$route?.params?.world || activeWorld.id || '')
 		},
 
-		/** @return {boolean} Whether there is nothing to read. */
+		/**
+		 * Whether there is nothing to read.
+		 *
+		 * @return {boolean}
+		 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
+		 */
 		empty() {
 			return this.book.chapters.length === 0 && this.book.lists.length === 0 && this.book.abilities.length === 0
 		},
@@ -188,6 +198,7 @@ export default {
 		 *
 		 * @param {object} skill The reference entry.
 		 * @return {string}
+		 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
 		 */
 		skillLine(skill) {
 			if (skill.costs.length === 0) return skill.name
@@ -195,14 +206,22 @@ export default {
 		},
 
 		/**
+		 * The heading of a skill list kind.
+		 *
 		 * @param {string} kind The list kind.
 		 * @return {string}
+		 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
 		 */
 		kindLabel(kind) {
 			return { skills: t('larpinq', 'Skills'), spells: t('larpinq', 'Spells'), powers: t('larpinq', 'Powers') }[kind] || kind
 		},
 
-		/** @return {void} */
+		/**
+		 * Print the rulebook, one chapter per page.
+		 *
+		 * @return {void}
+		 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
+		 */
 		print() {
 			window.print()
 		},
