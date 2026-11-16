@@ -62,14 +62,20 @@ class NotifierTest extends TestCase {
 	 * @param string $app     The app.
 	 * @param string $subject The subject.
 	 * @param array  $parsed  Collects parsed subject and link.
+	 * @param array  $params  The subject parameters.
 	 *
-	 * @return INotification
+	 * @return INotification&\PHPUnit\Framework\MockObject\MockObject
 	 */
-	private function notification(string $app, string $subject, array &$parsed): INotification {
+	private function notification(
+		string $app,
+		string $subject,
+		array &$parsed,
+		array $params = ['event' => 'Summer Siege 2025', 'link' => 'https://cloud.example.org/apps/forms/aBc123']
+	): INotification {
 		$note = $this->createMock(INotification::class);
 		$note->method('getApp')->willReturn($app);
 		$note->method('getSubject')->willReturn($subject);
-		$note->method('getSubjectParameters')->willReturn(['event' => 'Summer Siege 2025', 'link' => 'https://cloud.example.org/apps/forms/aBc123']);
+		$note->method('getSubjectParameters')->willReturn($params);
 		foreach (['setParsedSubject', 'setLink', 'setIcon'] as $setter) {
 			$note->method($setter)->willReturnCallback(function (string $value) use ($setter, $note, &$parsed): INotification {
 				$parsed[$setter] = $value;
@@ -91,6 +97,36 @@ class NotifierTest extends TestCase {
 		$parsed = [];
 		$this->notifier()->prepare($this->notification('larpinq', FeedbackDelivery::SUBJECT_REMINDER, $parsed), 'en');
 		self::assertSame('Reminder: tell us about Summer Siege 2025', $parsed['setParsedSubject']);
+	}
+
+	public function testTheNameIsTheTranslatedAppName(): void {
+		$l = $this->createMock(IL10N::class);
+		$l->expects(self::once())->method('t')->with('Larpinq')->willReturn('Larpinq (vertaald)');
+		$l10n = $this->createMock(IFactory::class);
+		$l10n->expects(self::once())->method('get')->with('larpinq')->willReturn($l);
+
+		self::assertSame('Larpinq (vertaald)', (new Notifier($l10n, $this->createMock(IURLGenerator::class)))->getName());
+	}
+
+	public function testTheSubjectIsTranslatedInTheRecipientsLanguage(): void {
+		$l = $this->createMock(IL10N::class);
+		$l->method('t')->willReturnCallback(static fn (string $text, array $params = []): string => vsprintf($text, $params));
+		$l10n = $this->createMock(IFactory::class);
+		$l10n->expects(self::once())->method('get')->with('larpinq', 'de')->willReturn($l);
+
+		$parsed = [];
+		(new Notifier($l10n, $this->createMock(IURLGenerator::class)))->prepare($this->notification('larpinq', FeedbackDelivery::SUBJECT_INVITATION, $parsed), 'de');
+		self::assertSame('Tell us about Summer Siege 2025', $parsed['setParsedSubject']);
+	}
+
+	public function testANotificationWithoutALinkGetsNone(): void {
+		$parsed = [];
+		$note = $this->notification('larpinq', FeedbackDelivery::SUBJECT_REMINDER, $parsed, ['event' => 'Winterkamp']);
+		$note->expects(self::never())->method('setLink');
+
+		self::assertSame($note, $this->notifier()->prepare($note, 'en'));
+		self::assertSame('Reminder: tell us about Winterkamp', $parsed['setParsedSubject']);
+		self::assertArrayNotHasKey('setLink', $parsed);
 	}
 
 	public function testAnotherAppsOrAnUnknownSubjectIsNotOurs(): void {
