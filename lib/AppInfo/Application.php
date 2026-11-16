@@ -33,6 +33,7 @@ use OCA\Larpinq\Middleware\ApiContractMiddleware;
 use OCA\Larpinq\Notification\Notifier;
 use OCA\Larpinq\Service\FeedbackAnswers;
 use OCA\Larpinq\Service\FormsFeedbackAnswers;
+use OCA\Larpinq\Service\ServiceContractRegistrar;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -200,6 +201,7 @@ class Application extends App implements IBootstrap {
 			);
 		}
 
+		(new ServiceContractRegistrar())->register(context: $context);
 		(new ObjectListenerRegistrar())->register(context: $context);
 	}//end register()
 

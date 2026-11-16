@@ -23,6 +23,7 @@ namespace OCA\Larpinq\Service;
 use Exception;
 use InvalidArgumentException;
 use LengthException;
+use OCA\Larpinq\Kernel\Contracts\WorldCopyServiceInterface;
 use OCP\AppFramework\Db\DoesNotExistException;
 use Throwable;
 
@@ -44,7 +45,7 @@ use Throwable;
  *
  * @spec openspec/specs/setting-management/spec.md
  */
-class WorldCopyService {
+class WorldCopyService implements WorldCopyServiceInterface {
 
 	/**
 	 * The most rule objects one copy writes (design D3).
