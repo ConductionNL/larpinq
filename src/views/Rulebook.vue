@@ -177,7 +177,7 @@ export default {
 			this.loading = true
 			this.error = false
 			try {
-				this.book = buildRulebook(await this.load(this.world), t('larpinq', 'XP'), t('larpinq', 'General skills'))
+				this.book = buildRulebook(await this.load(this.world), { xp: t('larpinq', 'XP'), general: t('larpinq', 'General skills') })
 			} catch {
 				this.error = true
 			} finally {

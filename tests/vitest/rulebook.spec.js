@@ -74,7 +74,7 @@ describe('buildRulebook', () => {
 	})
 
 	it('orders the lists, pays a list without an ability from XP and puts listless skills last', () => {
-		const book = buildRulebook(aldmoor(), 'XP', 'General skills')
+		const book = buildRulebook(aldmoor(), { xp: 'XP', general: 'General skills' })
 		expect(book.lists.map((list) => [list.name, list.pool])).toEqual([
 			['Martial skills', 'XP'],
 			['Arcane spells', 'Mana'],
@@ -102,8 +102,8 @@ describe('skillCosts', () => {
 	it('counts only effects that lower an ability', () => {
 		const data = aldmoor()
 		const byId = (rows) => new Map(rows.map((row) => [row.id, row]))
-		expect(skillCosts({ effects: ['e-boost', 'e-missing', 'e-fire'] }, byId(data.effects), byId(data.abilities))).toEqual([{ amount: 3, ability: 'Mana' }])
-		expect(skillCosts({}, new Map(), new Map())).toEqual([])
+		expect(skillCosts({ effects: ['e-boost', 'e-missing', 'e-fire'] }, { effects: byId(data.effects), abilities: byId(data.abilities) })).toEqual([{ amount: 3, ability: 'Mana' }])
+		expect(skillCosts({}, { effects: new Map(), abilities: new Map() })).toEqual([])
 	})
 })
 

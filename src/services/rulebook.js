@@ -102,31 +102,28 @@ function sortName(row) {
  * The cost of a skill: each effect it grants that lowers an ability, as "3 mana".
  *
  * @param {object} skill The skill.
- * @param {Map<string, object>} effects The effects by id.
- * @param {Map<string, object>} abilities The abilities by id.
+ * @param {{effects: Map<string, object>, abilities: Map<string, object>}} lookup The effects and the abilities by id.
  * @return {Array<{amount: number, ability: string}>}
  * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
  */
-export function skillCosts(skill, effects, abilities) {
+export function skillCosts(skill, lookup) {
 	const costs = []
 	for (const effectId of asList(skill?.effects)) {
-		const effect = effects.get(String(effectId))
-		const amount = effectCost(effect)
-		if (amount === 0) continue
-		costs.push(...abilityCosts(effect, amount, abilities))
+		costs.push(...abilityCosts(lookup.effects.get(String(effectId)), lookup.abilities))
 	}
 	return costs
 }
 
 /**
- * One cost per known ability an effect lowers.
+ * One cost per known ability an effect lowers; none for a missing or non-lowering effect.
  *
- * @param {object} effect The effect.
- * @param {number} amount How much it lowers each ability.
+ * @param {object|undefined} effect The effect.
  * @param {Map<string, object>} abilities The abilities by id.
  * @return {Array<{amount: number, ability: string}>}
  */
-function abilityCosts(effect, amount, abilities) {
+function abilityCosts(effect, abilities) {
+	const amount = effectCost(effect)
+	if (amount === 0) return []
 	return asList(effect.abilities)
 		.map((abilityId) => abilities.get(String(abilityId)))
 		.filter((ability) => ability)
@@ -168,24 +165,24 @@ function listText(list) {
  * The name of the ability a list's skills are paid from, else the default pool.
  *
  * @param {object} list The list.
- * @param {Map<string, object>} abilities The abilities by id.
- * @param {string} xpLabel The name of the default pool.
+ * @param {{abilities: Map<string, object>, xp: string}} pools The abilities by id and the name of the default pool.
  * @return {string}
  */
-function poolName(list, abilities, xpLabel) {
-	return abilities.get(String(list.costAbility || ''))?.name || xpLabel
+function poolName(list, pools) {
+	return pools.abilities.get(String(list.costAbility || ''))?.name || pools.xp
 }
 
 /**
  * The rulebook, built from what the reads returned.
  *
  * @param {object} data The rows by role, as RULEBOOK_SCHEMAS names them.
- * @param {string} xpLabel The name of the default pool ("XP").
- * @param {string} generalLabel The heading of the skills in no list.
+ * @param {{xp?: string, general?: string}} [labels] The name of the default pool ("XP") and the heading of the skills in no list ("General skills").
  * @return {{chapters: Array<object>, abilities: Array<object>, lists: Array<object>, items: Array<object>, conditions: Array<object>}}
  * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-players-read-the-rulebook-of-their-world-req-rrs-003
  */
-export function buildRulebook(data, xpLabel = 'XP', generalLabel = 'General skills') {
+export function buildRulebook(data, labels = {}) {
+	const xpLabel = labels.xp ?? 'XP'
+	const generalLabel = labels.general ?? 'General skills'
 	const index = (rows) => new Map((rows || []).map((row) => [rowId(row), row]))
 	const abilities = index(data.abilities)
 	const effects = index(data.effects)
@@ -200,7 +197,7 @@ export function buildRulebook(data, xpLabel = 'XP', generalLabel = 'General skil
 		id: rowId(skill),
 		name: skill.name || '',
 		effect: skill.effect || '',
-		costs: skillCosts(skill, effects, abilities),
+		costs: skillCosts(skill, { effects, abilities }),
 		requires: (Array.isArray(skill.requiredSkills) ? skill.requiredSkills : [])
 			.map((id) => allSkills.get(String(id))?.name)
 			.filter((name) => typeof name === 'string' && name !== ''),
@@ -217,7 +214,7 @@ export function buildRulebook(data, xpLabel = 'XP', generalLabel = 'General skil
 			return {
 				id,
 				...listText(list),
-				pool: poolName(list, abilities, xpLabel),
+				pool: poolName(list, { abilities, xp: xpLabel }),
 				skills: visibleSkills.filter((skill) => String(skill.list || '') === id).sort(byOrderThenName).map(skillEntry),
 			}
 		})
