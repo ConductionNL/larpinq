@@ -26,6 +26,7 @@ namespace OCA\Larpinq\Controller;
 use DomainException;
 use InvalidArgumentException;
 use OCA\Larpinq\Service\StaffInviteService;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -215,8 +216,12 @@ class StaffInvitesController extends Controller {
 
 		try {
 			return new JSONResponse(data: $this->invites->revoke(id: $id, actingUid: $actingUid));
-		} catch (Throwable $exception) {
+		} catch (DoesNotExistException | InvalidArgumentException) {
 			return new JSONResponse(data: ['error' => 'Invite not found'], statusCode: Http::STATUS_NOT_FOUND);
+		} catch (Throwable $exception) {
+			// A failed save is not "not found": the invite may still be valid, so say it was not revoked.
+			$this->logger->error('[StaffInvitesController] revoking an invite failed: ' . $exception->getMessage());
+			return new JSONResponse(data: ['error' => 'The invite could not be revoked'], statusCode: Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 	}//end revoke()
 

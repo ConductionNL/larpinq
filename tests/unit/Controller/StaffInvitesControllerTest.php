@@ -284,16 +284,25 @@ class StaffInvitesControllerTest extends TestCase {
 	}//end testOpeningAndRedeemingAreRateLimited()
 
 	/**
-	 * A game master revokes an invite; an unknown one is a 404.
+	 * A game master revokes an invite; an unknown or malformed one is a 404, and a
+	 * failure to save is a 500, never reported as "not found".
 	 *
 	 * @return void
 	 */
 	public function testRevoke(): void {
 		$controller = $this->controllerFor(groups: [AppIdentity::GM_GROUP]);
-		$this->invites->expects($this->exactly(2))->method('revoke')
+		$this->invites->expects($this->exactly(4))->method('revoke')
 			->willReturnCallback(static function (string $id, string $actingUid): array {
 				if ($id === 'gone') {
-					throw new \RuntimeException('not found');
+					throw new \OCP\AppFramework\Db\DoesNotExistException('not found');
+				}
+
+				if ($id === 'not-a-uuid') {
+					throw new \InvalidArgumentException('Invalid object ID: expected a UUID');
+				}
+
+				if ($id === 'broken') {
+					throw new \RuntimeException('save failed');
 				}
 
 				return ['id' => $id, 'revokedBy' => $actingUid];
@@ -301,6 +310,8 @@ class StaffInvitesControllerTest extends TestCase {
 
 		$this->assertSame(expected: ['id' => 'inv', 'revokedBy' => 'caller'], actual: $controller->revoke(id: 'inv')->getData());
 		$this->assertSame(expected: 404, actual: $controller->revoke(id: 'gone')->getStatus());
+		$this->assertSame(expected: 404, actual: $controller->revoke(id: 'not-a-uuid')->getStatus());
+		$this->assertSame(expected: 500, actual: $controller->revoke(id: 'broken')->getStatus());
 	}//end testRevoke()
 
 	/**
