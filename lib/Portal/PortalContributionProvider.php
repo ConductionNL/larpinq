@@ -125,6 +125,26 @@ class PortalContributionProvider {
 	];
 
 	/**
+	 * The columns of a skill the portal may show, in the public skill
+	 * catalogue and in the rulebook alike.
+	 *
+	 * @var array<int, string>
+	 */
+	private const SKILL_FIELDS = [
+		'name',
+		'description',
+		'effect',
+		'effects',
+		'requiredSkills',
+		'requiredStats',
+		'requiredConditions',
+		'requiredEffects',
+		'requiredScore',
+		'setting',
+		'list',
+	];
+
+	/**
 	 * The public read lists: events plus the skill, item and condition
 	 * catalogs, each projected to its non-sensitive reference columns.
 	 *
@@ -148,19 +168,7 @@ class PortalContributionProvider {
 			'id' => 'skillCatalog',
 			'schema' => 'skill',
 			'label' => 'Skills',
-			'fields' => [
-				'name',
-				'description',
-				'effect',
-				'effects',
-				'requiredSkills',
-				'requiredStats',
-				'requiredConditions',
-				'requiredEffects',
-				'requiredScore',
-				'setting',
-				'list',
-			],
+			'fields' => self::SKILL_FIELDS,
 		],
 		[
 			'id' => 'itemCatalog',
@@ -513,19 +521,7 @@ class PortalContributionProvider {
 			'filter' => ['hiddenFromRulebook' => false],
 			'label' => 'Vaardigheden',
 			'listable' => true,
-			'fields' => [
-				'name',
-				'description',
-				'effect',
-				'effects',
-				'requiredSkills',
-				'requiredStats',
-				'requiredConditions',
-				'requiredEffects',
-				'requiredScore',
-				'setting',
-				'list',
-			],
+			'fields' => self::SKILL_FIELDS,
 			'columns' => [
 				['field' => 'name', 'label' => 'Vaardigheid'],
 				['field' => 'list', 'label' => 'Lijst'],
