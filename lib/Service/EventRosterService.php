@@ -95,7 +95,7 @@ class EventRosterService {
 	 */
 	public function buildRoster(string $eventId): array {
 		[$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $eventId);
-		$characters = $this->castCharacters(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId, event: $this->getEvent(eventId: $eventId));
 		$lookup = new CastLookup(players: $this->indexPlayers(characters: $characters), attendance: $attendance);
 
 		$participants = [];
@@ -127,7 +127,7 @@ class EventRosterService {
 	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
-		$characters = $this->castCharacters(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId, event: $event);
 		$lookup = $this->runsheetLookup(eventId: $eventId, characters: $characters);
 		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
 		$this->sortByName(rows: $cast);
@@ -180,27 +180,35 @@ class EventRosterService {
 	}//end runsheetEvent()
 
 	/**
-	 * The characters cast in an event, in register order.
+	 * The characters cast in an event: those whose `events` array holds the
+	 * event, in register order, then those the event's `players` names (an
+	 * accepted registration adds its character there), the same two sources
+	 * isParticipant() accepts.
 	 *
-	 * OpenRegister narrows the read to characters whose `events` array holds
-	 * the event; the membership check here stays as the final word, so a
-	 * filter that over-matches never adds a character to the cast.
+	 * OpenRegister narrows the first read to characters whose `events` array
+	 * holds the event; the membership check here stays as the final word, so
+	 * a filter that over-matches never adds a character to the cast.
 	 *
-	 * @param string $eventId The event UUID.
+	 * @param string                   $eventId The event UUID.
+	 * @param array<string,mixed>|null $event   The event, or null when it cannot be read.
 	 *
 	 * @return list<array<string,mixed>> The cast characters.
 	 *
 	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
-	private function castCharacters(string $eventId): array {
+	private function castCharacters(string $eventId, ?array $event): array {
 		$cast = [];
 		foreach ($this->fetchCharacters(eventId: $eventId) as $character) {
 			if ($this->attendsEvent(character: $character, eventId: $eventId) === true) {
-				$cast[] = $character;
+				$cast[(string)($character['id'] ?? '')] = $character;
 			}
 		}
 
-		return $cast;
+		$listed = array_diff(array_map('strval', (array)($event['players'] ?? [])), array_keys($cast));
+		$cast += array_column($this->objectFetcher->getObjectsById(objectType: 'character', ids: $listed), null, 'id');
+
+		return array_values($cast);
 	}//end castCharacters()
 
 	/**

@@ -42,6 +42,7 @@ import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
 import EmailOutline from 'vue-material-design-icons/EmailOutline.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
+import FaceAgent from 'vue-material-design-icons/FaceAgent.vue'
 import FileDocument from 'vue-material-design-icons/FileDocument.vue'
 import FilePdfBox from 'vue-material-design-icons/FilePdfBox.vue'
 import FileSign from 'vue-material-design-icons/FileSign.vue'
@@ -49,6 +50,7 @@ import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
 import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
 import FormTextbox from 'vue-material-design-icons/FormTextbox.vue'
 import Gauge from 'vue-material-design-icons/Gauge.vue'
+import HelpCircleOutline from 'vue-material-design-icons/HelpCircleOutline.vue'
 import History from 'vue-material-design-icons/History.vue'
 import KeyVariant from 'vue-material-design-icons/KeyVariant.vue'
 import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
@@ -56,6 +58,7 @@ import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
 import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
+import MessageReplyTextOutline from 'vue-material-design-icons/MessageReplyTextOutline.vue'
 import Package from 'vue-material-design-icons/Package.vue'
 import PencilOutline from 'vue-material-design-icons/PencilOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
@@ -110,6 +113,7 @@ export default {
 	Earth,
 	EmailOutline,
 	EmoticonSickOutline,
+	FaceAgent,
 	FileDocument,
 	FilePdfBox,
 	FileSign,
@@ -117,6 +121,7 @@ export default {
 	FolderOutline,
 	FormTextbox,
 	Gauge,
+	HelpCircleOutline,
 	History,
 	KeyVariant,
 	Lightbulb,
@@ -124,6 +129,7 @@ export default {
 	MagicStaff,
 	MapMarker,
 	MapMarkerPath,
+	MessageReplyTextOutline,
 	Package,
 	PencilOutline,
 	Plus,

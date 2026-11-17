@@ -248,6 +248,24 @@
 			"order": 25
 		},
 		{
+			"id": "Help",
+			"label": "Help",
+			"icon": "HelpCircleOutline",
+			"route": "Help",
+			"order": 90
+		},
+		{
+			"id": "HelpDesk",
+			"label": "Help desk",
+			"icon": "FaceAgent",
+			"route": "Help",
+			"query": {
+				"_lens": "desk"
+			},
+			"order": 91,
+			"count": "auto"
+		},
+		{
 			"id": "TicketTypes",
 			"label": "Ticket types",
 			"icon": "TicketOutline",
@@ -276,7 +294,7 @@
 		],
 		[
 			"Dashboard",
-			"32d02e34462e6613325815711716b78a1056cb214a9869b050008c46cf191f3c"
+			"6225f2a9244a944671c02c53c3e1862f953dac86460d05972914aee6688d1ee0"
 		],
 		[
 			"Characters",
@@ -424,7 +442,7 @@
 		],
 		[
 			"MyCharacters",
-			"7bfa268a30c86bf15b92e97475149a834fadc2e21ccc4b9cd19b6198bc8e035c"
+			"02728355ee3970074cd803476b4a7f8ea74e3666de9192a1c3a7d69df4b95cc1"
 		],
 		[
 			"Cast",
@@ -437,6 +455,14 @@
 		[
 			"PlotDetail",
 			"b2eca87cf2914db942cf7ba87670358cf9b30b5b1b017b8c5111c4869d31643a"
+		],
+		[
+			"Help",
+			"5cde439724c316732fbfa04ab36f1a5c3761e004cf9538e108d603e7ad6974be"
+		],
+		[
+			"HelpQuestionDetail",
+			"95a2a5dfffcd35d29283f588ec4ede61232569b9b08df55506561a8b4a16e2cc"
 		],
 		[
 			"NewPlayers",

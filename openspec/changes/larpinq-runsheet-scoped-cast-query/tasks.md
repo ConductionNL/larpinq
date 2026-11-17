@@ -9,7 +9,7 @@
 ## 2. Scope the character query
 
 - [x] 2.1 If array-contains filtering is supported: change `buildRunsheetContext()` line 167 to `$this->objectFetcher->getObjects('character', filters: ['events' => $eventId])`
-- [ ] 2.2 (not needed, see 1.2) If NOT supported: implement a paginated scan (`limit`/`offset` loop) through the `character` register that stops once no more pages remain, and note in a code comment why a full unfiltered `findAll()` was replaced with pagination (avoids loading the whole register into one PHP array at once, still bounded per page)
+- [x] 2.2 (not needed, see 1.2) If NOT supported: implement a paginated scan (`limit`/`offset` loop) through the `character` register that stops once no more pages remain, and note in a code comment why a full unfiltered `findAll()` was replaced with pagination (avoids loading the whole register into one PHP array at once, still bounded per page)
 - [x] 2.3 Preserve the existing `is_array($events) === false` guard and `in_array($eventId, array_map('strval', $events), true)` membership check as the final correctness check even when the OR-side filter pre-narrows the set (defense in depth against a filter that under- or over-matches)
 
 ## 3. Scope the player lookup
@@ -20,8 +20,8 @@
 
 ## 4. Tests
 
-- [ ] 4.1 Extend `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` (or add a PHPUnit test on `EventsController`) asserting the runsheet still returns the correct cast for an event when the register contains characters NOT linked to that event (regression guard against the new filter over- or under-matching)
-  - Left open for the e2e spec; the PHPUnit side is `EventRosterScopedQueryTest::testACharacterOfAnotherEventStaysOutOfTheCast`.
+- [x] 4.1 Extend `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` (or add a PHPUnit test on `EventsController`) asserting the runsheet still returns the correct cast for an event when the register contains characters NOT linked to that event (regression guard against the new filter over- or under-matching)
+  - Done by the PHPUnit alternative the task names: `EventRosterScopedQueryTest::testACharacterOfAnotherEventStaysOutOfTheCast` (passes, 17 Nov live pass). An e2e assertion on the cast needs a DocuDesk instance, because the run-sheet route answers 424 before it builds the cast without one.
 - [x] 4.2 Add a PHPUnit test (or extend an existing `EventsController` test) that asserts `RegisterObjectFetcher::getObjects()` is called with a scoping filter/limit rather than no arguments, via a mock/spy on `objectFetcher`
 - [x] 4.3 `@spec` annotations on the changed methods pointing at this change (gate-16)
 

@@ -45,7 +45,9 @@
 
 - [x] 4.1 `npm run check:manifest` clean.
 - [ ] 4.2 `composer check:strict` clean.
-- [ ] 4.3 Live-deploy regression: each manifest menu item, page widget
+- [x] 4.3 Live-deploy regression: each manifest menu item, page widget
       slot, and detail tab renders against the dev container.
-- [ ] 4.4 Visual regression / Playwright spot-check on the
+  - Passed live 17 Nov on a fresh rig: `index-pages.spec.ts`, `spa-ui.spec.ts`, `detail-forms-admin.spec.ts` and `app-chrome.spec.ts` render every menu entry, index, detail page and sidebar tab (selector drift fixed in the same PR).
+- [x] 4.4 Visual regression / Playwright spot-check on the
       `Characters` index + `CharacterDetail` detail (CSAT surfaces).
+  - Characters index and CharacterDetail pass in `index-pages.spec.ts` and `detail-forms-admin.spec.ts` on the 17 Nov rig.

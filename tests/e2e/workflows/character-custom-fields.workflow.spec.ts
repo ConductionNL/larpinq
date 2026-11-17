@@ -17,6 +17,7 @@ import type { APIRequestContext } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
+import { openSidebarTab } from '../_nav.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -73,7 +74,8 @@ test.beforeAll(async () => {
 	})
 	expect(created.ok(), await created.text()).toBe(true)
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
 	worldId = ledger.track(
@@ -136,7 +138,7 @@ test.describe('extra character fields', () => {
 			order: 1,
 		})
 		await page.goto(`${BASE_URL}/index.php${BASE}/characters/${mirelaId}`)
-		await page.getByRole('tab', { name: 'Extra fields' }).click()
+		await openSidebarTab(page, 'Extra fields')
 		await expect(page.getByTestId('custom-field-bloodline')).toBeVisible()
 		await expect(page.getByTestId('custom-field-true-allegiance')).toBeVisible()
 	})

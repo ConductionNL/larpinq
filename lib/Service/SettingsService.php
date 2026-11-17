@@ -127,6 +127,12 @@ class SettingsService implements SettingsServiceInterface {
 		'eventmessage_schema',
 		'eventmessage_register',
 		'eventmessage_source',
+		'helpquestion_schema',
+		'helpquestion_register',
+		'helpquestion_source',
+		'helpmessage_schema',
+		'helpmessage_register',
+		'helpmessage_source',
 	];
 
 	/**

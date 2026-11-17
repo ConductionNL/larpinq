@@ -1,0 +1,129 @@
+{
+	"pages": [
+		{
+			"id": "Help",
+			"route": "/help",
+			"type": "index",
+			"title": "Help",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_help_question",
+				"allowExport": false,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "subject", "label": "Subject" },
+					{ "key": "event", "label": "Event" },
+					{ "key": "character", "label": "Character" },
+					{ "key": "status", "label": "Status", "widget": "badge" },
+					{ "key": "lastMessageAt", "label": "Last message", "formatter": "date" }
+				],
+				"defaultSort": [{ "field": "lastMessageAt", "order": "desc" }],
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"queryPresets": [
+					{
+						"id": "help-desk",
+						"match": { "_lens": "desk" },
+						"title": "Help desk",
+						"quickFilters": [
+							{ "label": "Waiting for an answer", "filter": { "status": "open" }, "default": true },
+							{ "label": "Answered", "filter": { "status": "answered" } },
+							{ "label": "Closed", "filter": { "status": "closed" } }
+						],
+						"columns": [
+							{ "key": "subject", "label": "Subject" },
+							{ "key": "player", "label": "Player" },
+							{ "key": "event", "label": "Event" },
+							{ "key": "status", "label": "Status", "widget": "badge" },
+							{ "key": "assignee", "label": "Assigned to" },
+							{ "key": "lastMessageAt", "label": "Last message", "widget": "age", "widgetProps": { "olderThanDays": 3 } }
+						],
+						"defaultSort": [{ "field": "lastMessageAt", "order": "asc" }]
+					}
+				]
+			}
+		},
+		{
+			"id": "HelpQuestionDetail",
+			"route": "/help/:id",
+			"type": "detail",
+			"title": "Question",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_help_question",
+				"lifecycleActions": {
+					"field": "status"
+				},
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "help-question-data",
+						"type": "data",
+						"title": "Question",
+						"icon": "HelpCircleOutline",
+						"content": {
+							"columns": 2
+						}
+					},
+					{
+						"id": "help-question-thread",
+						"type": "object-list",
+						"title": "Messages",
+						"icon": "MessageReplyTextOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_help_message",
+							"filter": {
+								"question": "@objectId"
+							},
+							"columns": [
+								{ "key": "author", "label": "Author" },
+								{ "key": "body", "label": "Message" },
+								{ "key": "createdAt", "label": "Written at" }
+							]
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "help-question-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					},
+					{
+						"id": "2",
+						"widgetId": "help-question-thread",
+						"gridX": 0,
+						"gridY": 5,
+						"gridWidth": 12,
+						"gridHeight": 6
+					}
+				],
+				"sidebar": {
+					"enabled": true,
+					"showMetadata": true
+				}
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Help",
+			"label": "Help",
+			"icon": "HelpCircleOutline",
+			"route": "Help",
+			"order": 90
+		},
+		{
+			"id": "HelpDesk",
+			"label": "Help desk",
+			"icon": "FaceAgent",
+			"route": "Help",
+			"query": { "_lens": "desk" },
+			"order": 91,
+			"count": "auto"
+		}
+	]
+}

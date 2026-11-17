@@ -389,11 +389,7 @@ test.describe('character-management', () => {
 			// discarded, so even without the TypeError this test asserted nothing
 			// while carrying a name that says it checks the name field.
 			await dialog.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {})
-			const nameField = dialog
-				.locator(
-					'input[placeholder*="name" i], input[name*="name" i], label:has-text("Name") ~ * input',
-				)
-				.first()
+			const nameField = dialog.getByRole('textbox', { name: /Character Name/i })
 			await expect(
 				nameField,
 				'the character form must offer a name field',
@@ -613,7 +609,7 @@ test.describe('admin-settings', () => {
 		// assert the panel: its heading and its Save control, both rendered by
 		// the app's own Vue component.
 		await expect(
-			page.getByText(/Administration settings: Larpinq|Larpinq/i).first(),
+			page.getByTestId('cn-admin-settings-header').getByRole('heading', { name: 'Larpinq' }),
 		).toBeVisible({ timeout: 15_000 })
 		await expect(
 			page.getByRole('button', { name: /Save All/i }).first(),
