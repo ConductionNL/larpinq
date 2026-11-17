@@ -8,16 +8,18 @@
  */
 
 import { describe, expect, it } from 'vitest'
+import mock from '../../lib/Settings/larpinq_mock_register.json'
+import register from '../../lib/Settings/register.d/worlds-maps.json'
 import fragment from '../../src/manifest.d/worlds-maps.json'
 import manifest from '../../src/manifest.json'
-import register from '../../lib/Settings/register.d/worlds-maps.json'
 
 const page = (id) => manifest.pages.find((p) => p.id === id)
 const fragmentPage = (id) => fragment.pages.find((p) => p.id === id)
 const widget = (p, id) => p.config.widgets.find((w) => w.id === id)
 const cells = (p, id) => p.config.layout.filter((cell) => cell.widgetId === id)
-const schemaBySlug = (slug) =>
-	Object.values(register.components.schemas).find((s) => s.slug === slug)
+function schemaBySlug(slug) {
+	return Object.values(register.components.schemas).find((s) => s.slug === slug)
+}
 
 describe('the Maps index (REQ-WMP-001)', () => {
 	const index = fragmentPage('Maps')
@@ -140,5 +142,51 @@ describe('the world page (REQ-WMP-001)', () => {
 	it('gives the maps cell a layout id no other cell uses', () => {
 		const ids = detail.config.layout.map((cell) => cell.id)
 		expect(new Set(ids).size).toBe(ids.length)
+	})
+})
+
+describe('the Aldmoor seed against the pages (REQ-WMP-001, REQ-WMP-003)', () => {
+	const seed = (slug) => mock.components.objects.filter((o) => o['@self'].schema === slug)
+	const pins = seed('larping_map_pin')
+	const [map] = seed('larping_world_map')
+
+	it('seeds one map and three pins of the larpinq register', () => {
+		expect(seed('larping_world_map')).toHaveLength(1)
+		expect(pins).toHaveLength(3)
+		for (const object of [map, ...pins]) {
+			expect(object['@self'].register).toBe('larpinq')
+		}
+	})
+
+	it('gives every seeded pin a value in each pin column but none it does not declare', () => {
+		const columns = widget(fragmentPage('MapDetail'), 'map-pins').content.columns.map((c) => c.key)
+		const properties = Object.keys(schemaBySlug('larping_map_pin').properties)
+		for (const pin of pins) {
+			for (const key of columns) {
+				expect(pin[key]).toBeDefined()
+			}
+			for (const key of Object.keys(pin).filter((k) => k !== '@self')) {
+				expect(properties).toContain(key)
+			}
+		}
+	})
+
+	it('only uses kinds and audiences the pin schema allows', () => {
+		const { kind, visibility } = schemaBySlug('larping_map_pin').properties
+		for (const pin of pins) {
+			expect(kind.enum).toContain(pin.kind)
+			expect(visibility.enum).toContain(pin.visibility)
+		}
+	})
+
+	it('keeps the dangerous grove for game masters on a map players may see', () => {
+		expect(map.visibility).toBe('players')
+		const grove = pins.find((p) => p.label === 'Ash grove')
+		expect(grove.visibility).toBe('gamemasters')
+		expect(grove.lorePage).toBeUndefined()
+		expect(pins.filter((p) => p.visibility === 'players').map((p) => p.label)).toEqual([
+			'Aldmoor city',
+			'North gate',
+		])
 	})
 })
