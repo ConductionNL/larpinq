@@ -1020,7 +1020,7 @@ test.describe('admin-settings — panel UI', () => {
 		// By role: a bare text match on "Larpinq" also finds the hidden rows
 		// of the notifications panel, which come first in the DOM.
 		await expect(
-			page.getByRole('heading', { name: /Larpinq/i, level: 1 }),
+			page.getByTestId('cn-admin-settings-header').getByRole('heading', { name: 'Larpinq' }),
 		).toBeVisible({ timeout: 15_000 })
 	}
 

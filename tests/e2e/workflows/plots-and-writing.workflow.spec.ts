@@ -72,15 +72,24 @@ test.beforeAll(async () => {
 	})
 	expect(created.ok(), await created.text()).toBe(true)
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
+	// A character names its player; ownerUid is derived from the player's userUid.
+	ids.annaPlayer = ledger.track(
+		'player',
+		await createObject(admin, 'player', { name: fixtureName('Anna'), userUid: annaUid }),
+	)
+	ids.otherPlayer = ledger.track(
+		'player',
+		await createObject(admin, 'player', { name: fixtureName('Bertram and Tomas') }),
+	)
 	ids.mirela = ledger.track(
 		'character',
 		await createObject(admin, 'character', {
 			name: fixtureName('Mirela the Wanderer'),
-			ocName: 'Mirela',
-			ownerUid: annaUid,
+			ocName: ids.annaPlayer,
 			writingStep: 'approved',
 			writer: 'joris',
 		}),
@@ -89,14 +98,14 @@ test.beforeAll(async () => {
 		'character',
 		await createObject(admin, 'character', {
 			name: fixtureName('Sir Bertram'),
-			ocName: 'Bertram',
+			ocName: ids.otherPlayer,
 		}),
 	)
 	ids.tomas = ledger.track(
 		'character',
 		await createObject(admin, 'character', {
 			name: fixtureName('Tomas'),
-			ocName: 'Tomas',
+			ocName: ids.otherPlayer,
 			writingStep: 'draft',
 			writer: 'sanne',
 		}),

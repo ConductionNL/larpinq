@@ -81,7 +81,8 @@ test.beforeAll(async () => {
 		})
 		expect(made.ok(), await made.text()).toBe(true)
 		as[who] = await request.newContext({
-			httpCredentials: { username: uid(who), password: `${uid(who)}-pw!9` },
+			storageState: { cookies: [], origins: [] },
+			httpCredentials: { username: uid(who), password: `${uid(who)}-pw!9`, send: 'always' },
 		})
 	}
 	worldId = ledger.track(
