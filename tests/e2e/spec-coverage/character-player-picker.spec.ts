@@ -26,6 +26,7 @@ const BASE = '/apps/larpinq'
 const OCS = { 'OCS-APIRequest': 'true', Accept: 'application/json' }
 const JSON_HEADERS = { ...OCS, 'Content-Type': 'application/json' }
 const RUN = `cpp${Date.now().toString(36)}`
+const aliceName = fixtureName('Alice')
 const alice = { username: `${RUN}-alice`, password: `Alice-${RUN}-pw!1` }
 
 let api: APIRequestContext
@@ -61,7 +62,7 @@ test.beforeAll(async () => {
 		storageState: { cookies: [], origins: [] },
 		httpCredentials: { username: alice.username, password: alice.password, send: 'always' },
 	})
-	ids.alice = (await make('player', { name: fixtureName('Alice'), userUid: alice.username })).id
+	ids.alice = (await make('player', { name: aliceName, userUid: alice.username })).id
 })
 
 test.afterAll(async () => {
@@ -87,6 +88,8 @@ test.describe.serial('a character names its player', () => {
 
 	// TC-5
 	test('approving the character notifies its owner', async () => {
+		// cron.php runs every queued job of the instance, not only this one.
+		test.setTimeout(240_000)
 		const res = await api.patch(`${OR_BASE}/larpinq/character/${ids.lancelot}`, {
 			headers: JSON_HEADERS,
 			data: { approved: 'approved' },
@@ -126,4 +129,29 @@ test('the create form picks the player from a list, hides ownerUid and shows app
 	await expect(dialog.getByRole('combobox', { name: /^Player/ })).toBeVisible()
 	await expect(dialog.getByText(/Owner UID/i)).toHaveCount(0)
 	await expect(dialog.getByRole('switch', { name: 'Approved' })).toBeVisible()
+})
+
+// TC-1 and TC-7: the form stores the picked player's uuid and the enum's "no"
+test('a character created from the form is not approved', async ({ page }) => {
+	const name = fixtureName('Form knight')
+	await page.goto(`${BASE}/characters`)
+	const add = page.locator('.app-content button').filter({ hasText: /Add Character/i }).first()
+	await expect(add).toBeVisible({ timeout: 30_000 })
+	await add.click()
+	const dialog = page.locator('[role="dialog"]').first()
+
+	await dialog.getByRole('textbox', { name: /Character Name/i }).fill(name)
+	const player = dialog.getByRole('combobox', { name: /^Player/ })
+	await player.click()
+	await page.keyboard.type(aliceName)
+	await page.getByRole('option').filter({ hasText: aliceName }).first().click()
+	await dialog.getByRole('button', { name: 'Create' }).click()
+	await expect(dialog).toBeHidden({ timeout: 15_000 })
+
+	const found = await api.get(`${OR_BASE}/larpinq/character?name=${encodeURIComponent(name)}`, { headers: JSON_HEADERS })
+	const rows = (await found.json()).results as Array<Record<string, any>>
+	expect(rows).toHaveLength(1)
+	ledger.track('character', String(rows[0].id))
+	expect(rows[0].approved).toBe('no')
+	expect(rows[0].ocName).toBe(ids.alice)
 })

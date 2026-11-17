@@ -210,15 +210,13 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 }
 
 /**
- * Open a sidebar tab of a detail page, opening the sidebar first when it is
- * closed (its open state is remembered per user, so an earlier spec may have
- * closed it).
+ * Open the sidebar of a detail page when it is closed (its open state is
+ * remembered per user, so an earlier spec may have closed it).
  *
  * @param {Page} page The page, on a detail route.
- * @param {string} tab The tab's label.
  * @return {Promise<void>}
  */
-export async function openSidebarTab(page: Page, tab: string): Promise<void> {
+export async function openSidebar(page: Page): Promise<void> {
 	const sidebar = page.getByTestId('cn-object-sidebar')
 	const opener = page.getByRole('button', { name: 'Open sidebar' })
 	// A closed sidebar stays in the DOM, hidden, so wait for either to be visible.
@@ -226,5 +224,17 @@ export async function openSidebarTab(page: Page, tab: string): Promise<void> {
 	if (await opener.isVisible()) {
 		await opener.click()
 	}
-	await sidebar.getByRole('tab', { name: tab }).click()
+	await expect(sidebar).toBeVisible()
+}
+
+/**
+ * Open a sidebar tab of a detail page, opening the sidebar first.
+ *
+ * @param {Page} page The page, on a detail route.
+ * @param {string} tab The tab's label.
+ * @return {Promise<void>}
+ */
+export async function openSidebarTab(page: Page, tab: string): Promise<void> {
+	await openSidebar(page)
+	await page.getByTestId('cn-object-sidebar').getByRole('tab', { name: tab }).click()
 }

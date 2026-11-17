@@ -47,12 +47,12 @@ function serverRoot(): string | null {
 export function runBackgroundJobs(): void {
 	const container = (process.env.NC_CONTAINER ?? '').trim()
 	if (container !== '') {
-		execSync(`docker exec -u www-data ${container} php -f /var/www/html/cron.php`, { stdio: 'pipe', timeout: 180_000 })
+		execSync(`docker exec -u www-data ${container} php -f /var/www/html/cron.php`, { stdio: 'pipe', timeout: 220_000 })
 		return
 	}
 	const root = serverRoot()
 	if (root === null) {
 		throw new Error('Cannot run background jobs: set NC_CONTAINER to the rig\'s Nextcloud container.')
 	}
-	execSync('php -f cron.php', { cwd: root, stdio: 'pipe', timeout: 180_000 })
+	execSync('php -f cron.php', { cwd: root, stdio: 'pipe', timeout: 220_000 })
 }

@@ -17,6 +17,7 @@ import type { APIRequestContext, Page } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
+import { openSidebar } from '../_nav.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -98,9 +99,7 @@ async function linkedTypes(type: string): Promise<string[]> {
  */
 async function openDetail(page: Page, path: string): Promise<void> {
 	await page.goto(`${BASE}${path}`)
-	await page
-		.getByTestId('cn-object-sidebar')
-		.waitFor({ state: 'visible', timeout: 30_000 })
+	await openSidebar(page)
 }
 
 /**

@@ -103,6 +103,8 @@ test.describe('help desk thread (communication-help-desk)', () => {
 	})
 
 	test('Joris answers: the question is answered and Anna is notified', async () => {
+		// cron.php runs every queued job of the instance, not only this one.
+		test.setTimeout(240_000)
 		const res = await asJoris.post(messages, {
 			headers: JSON_HEADERS,
 			data: { question: questionId, body: 'Only LARP-safe bows, checked at the gate.' },
