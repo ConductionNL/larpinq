@@ -1389,6 +1389,86 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_event_message",
+          "slug": "larping-event-message-winter-court-welcome",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e31"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "subject": "Welcome to {event}",
+        "body": "The gates of the Winter Court open on {date}. Bring warm kit and your character sheet.",
+        "audience": {
+          "statuses": [
+            "accepted"
+          ],
+          "checkedIn": false,
+          "paymentOpen": false,
+          "ticketRoles": [
+            "player",
+            "crew",
+            "npc"
+          ]
+        },
+        "state": "sent",
+        "recipientCount": 3,
+        "sentCount": 3,
+        "failedCount": 0,
+        "noAddressCount": 0,
+        "sentBy": "admin",
+        "sentAt": "2026-11-20T10:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event_message",
+          "slug": "larping-event-message-winter-court-payment",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e32"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "subject": "Your payment for {event}",
+        "body": "Your place at {event} is confirmed once your payment is in. Please pay before the event starts on {date}.",
+        "audience": {
+          "statuses": [
+            "accepted",
+            "pending"
+          ],
+          "checkedIn": false,
+          "paymentOpen": true,
+          "ticketRoles": []
+        },
+        "state": "sent",
+        "recipientCount": 1,
+        "sentCount": 1,
+        "failedCount": 0,
+        "noAddressCount": 0,
+        "sentBy": "admin",
+        "sentAt": "2026-11-25T09:30:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event_message",
+          "slug": "larping-event-message-winter-court-crew-briefing",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e33"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "subject": "Crew briefing for {event}",
+        "body": "Crew and NPCs: the briefing starts one hour before time-in on {date}.",
+        "audience": {
+          "statuses": [
+            "accepted"
+          ],
+          "checkedIn": false,
+          "paymentOpen": false,
+          "ticketRoles": [
+            "crew",
+            "npc"
+          ]
+        },
+        "state": "draft"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "setting",
           "slug": "setting-aldmoor"
         },
