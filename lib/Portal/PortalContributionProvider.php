@@ -154,6 +154,26 @@ class PortalContributionProvider {
 	];
 
 	/**
+	 * The columns of a skill the portal may show, in the public skill
+	 * catalogue and in the rulebook alike.
+	 *
+	 * @var array<int, string>
+	 */
+	private const SKILL_FIELDS = [
+		'name',
+		'description',
+		'effect',
+		'effects',
+		'requiredSkills',
+		'requiredStats',
+		'requiredConditions',
+		'requiredEffects',
+		'requiredScore',
+		'setting',
+		'list',
+	];
+
+	/**
 	 * The public read lists: events plus the skill, item and condition
 	 * catalogs, each projected to its non-sensitive reference columns.
 	 *
@@ -177,18 +197,7 @@ class PortalContributionProvider {
 			'id' => 'skillCatalog',
 			'schema' => 'skill',
 			'label' => 'Skills',
-			'fields' => [
-				'name',
-				'description',
-				'effect',
-				'effects',
-				'requiredSkills',
-				'requiredStats',
-				'requiredConditions',
-				'requiredEffects',
-				'requiredScore',
-				'setting',
-			],
+			'fields' => self::SKILL_FIELDS,
 		],
 		[
 			'id' => 'itemCatalog',
@@ -373,7 +382,8 @@ class PortalContributionProvider {
 				],
 				['type' => 'collection', 'collection' => 'rulebookChapters'],
 				['type' => 'detail', 'collection' => 'rulebookChapters'],
-				['type' => 'collection', 'collection' => 'skillCatalog'],
+				['type' => 'collection', 'collection' => 'skillLists'],
+				['type' => 'collection', 'collection' => 'rulebookSkills'],
 			],
 		];
 	}//end rulebookPage()
@@ -394,7 +404,13 @@ class PortalContributionProvider {
 		return array_merge(
 			[$this->characterCollection()],
 			$this->catalogCollections(),
-			[$this->profileCollection(), $this->registrationCollection(), $this->rulebookCollection()],
+			[
+				$this->profileCollection(),
+				$this->registrationCollection(),
+				$this->rulebookCollection(),
+				$this->skillListCollection(),
+				$this->rulebookSkillCollection(),
+			],
 			[$this->questionCollection(), $this->questionMessageCollection()]
 		);
 	}//end playerCollections()
@@ -592,6 +608,71 @@ class PortalContributionProvider {
 			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
 		];
 	}//end rulebookCollection()
+
+	/**
+	 * The skill lists of the rulebook: skills, spells and powers with the pool they are paid from.
+	 *
+	 * Public like the skill catalogue, whose `list` field says which list a
+	 * skill is in. A list hidden from the rulebook is left out by the filter;
+	 * the flag defaults to false on every list, which is a schema of this change.
+	 *
+	 * @return array<string, mixed> The skill list collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-the-rulebook-is-in-the-portal-req-rrs-005
+	 */
+	private function skillListCollection(): array {
+		return [
+			'id' => 'skillLists',
+			'register' => self::REGISTER,
+			'schema' => 'larping_skill_list',
+			'scopeField' => '',
+			'filter' => ['hiddenFromRulebook' => false],
+			'label' => 'Vaardighedenlijsten',
+			'listable' => true,
+			'fields' => [
+				'name',
+				'kind',
+				'description',
+				'costAbility',
+				'order',
+				'setting',
+			],
+			'columns' => [
+				['field' => 'name', 'label' => 'Lijst'],
+				['field' => 'kind', 'label' => 'Soort'],
+			],
+			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
+		];
+	}//end skillListCollection()
+
+	/**
+	 * The skills of the rulebook, without the ones hidden from it (REQ-RRS-004).
+	 *
+	 * The rulebook page lists these instead of the public skill catalogue,
+	 * which stays unfiltered because it resolves the skill references on a
+	 * player's own characters. The flag defaults to false on every skill.
+	 *
+	 * @return array<string, mixed> The rulebook skill collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-secret-rules-stay-out-of-the-rulebook-req-rrs-004
+	 */
+	private function rulebookSkillCollection(): array {
+		return [
+			'id' => 'rulebookSkills',
+			'register' => self::REGISTER,
+			'schema' => 'larping_skill',
+			'scopeField' => '',
+			'filter' => ['hiddenFromRulebook' => false],
+			'label' => 'Vaardigheden',
+			'listable' => true,
+			'fields' => self::SKILL_FIELDS,
+			'columns' => [
+				['field' => 'name', 'label' => 'Vaardigheid'],
+				['field' => 'list', 'label' => 'Lijst'],
+			],
+			'defaultSort' => ['field' => 'name', 'direction' => 'asc'],
+		];
+	}//end rulebookSkillCollection()
 
 	/**
 	 * The subject's own player profile, scoped by the portal subject itself.

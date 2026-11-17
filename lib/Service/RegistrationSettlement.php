@@ -23,6 +23,7 @@ namespace OCA\Larpinq\Service;
 use DateTimeInterface;
 use OCA\Larpinq\Event\RegistrationCreditRequested;
 use OCA\Larpinq\Event\RegistrationRefundRequested;
+use OCA\Larpinq\Kernel\Contracts\RegistrationSettlementInterface;
 use OCP\EventDispatcher\IEventDispatcher;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -40,7 +41,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationSettlement {
+class RegistrationSettlement implements RegistrationSettlementInterface {
 
 	private const CANCELLED = 'cancelled';
 

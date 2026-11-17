@@ -29,9 +29,11 @@ use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
+use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
 use OCA\Larpinq\Listener\PortalProfileListener;
 use OCA\Larpinq\Listener\RegistrationListener;
+use OCA\Larpinq\Listener\SignupFormBindingListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
@@ -73,6 +75,8 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
+			// A sign-up form binding is checked against the registration (forms-registration-is-checked-at-binding).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', SignupFormBindingListener::class);
 			// The help desk thread (communication-help-desk, REQ-CHD-002, REQ-CHD-003).
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', HelpMessageListener::class);
 		}
@@ -83,16 +87,34 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', HelpMessageListener::class);
 		}
 
+		// A player's changed care details follow into the event copies (players-care-details-and-erasure).
+		$this->registerCareListeners(context: $context);
+
 		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', SignupFormBindingListener::class);
 		}
 
 		$this->registerRegistrationListeners(context: $context);
 	}//end register()
+
+	/**
+	 * Register the listener that carries a player's changed care details into
+	 * the event copies (players-care-details-and-erasure).
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 */
+	private function registerCareListeners(IRegistrationContext $context): void {
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatedEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatedEvent', PlayerCareListener::class);
+		}
+	}//end registerCareListeners()
 
 	/**
 	 * Register the listeners that turn sign-ups into registrations and keep

@@ -32,6 +32,7 @@ import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
 import EventChoiceCounts from './views/EventChoiceCounts.vue'
+import EventFeedback from './views/EventFeedback.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
@@ -39,7 +40,10 @@ import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
+import Rulebook from './views/Rulebook.vue'
 import SkillTree from './views/SkillTree.vue'
+import StaffInviteLanding from './views/StaffInviteLanding.vue'
+import StaffPage from './views/StaffPage.vue'
 import {
 	exportCampaignAction,
 	importCampaignAction,
@@ -102,6 +106,9 @@ export default {
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	// Feedback tab on the event page (events-post-event-survey), game masters only.
+	// @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
+	EventFeedback: { kind: 'section', component: EventFeedback },
 	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
 	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
 	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
@@ -119,9 +126,17 @@ export default {
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+	// The rules of one world as a printable book (rules-rulebook-and-spell-lists D3).
+	Rulebook: { kind: 'page', component: Rulebook },
 	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
 	// to its host. @spec openspec/specs/world-lore/spec.md
 	LoreArticle: { kind: 'page', component: LoreArticle },
+	// The Staff page and the page a staff invite link opens
+	// (admin-staff-roles-and-invites): members come from Nextcloud groups, not
+	// register objects, so no typed page can list them.
+	// @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md
+	StaffPage: { kind: 'page', component: StaffPage },
+	StaffInviteLanding: { kind: 'page', component: StaffInviteLanding },
 
 	// Worlds page header actions (admin-import-export): the whole campaign as
 	// one workbook out of, and back into, the larpinq register.

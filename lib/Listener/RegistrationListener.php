@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\RegistrationService;
-use OCA\Larpinq\Service\RegistrationWriteCheck;
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationWriteCheckInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -60,8 +60,8 @@ class RegistrationListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param IAppConfig $config Config (the registration schema id).
-	 * @param RegistrationService $service Capacity, waiting list and participants.
-	 * @param RegistrationWriteCheck $writeCheck The character and the ticket choices, checked and priced.
+	 * @param RegistrationServiceInterface $service Capacity, waiting list and participants.
+	 * @param RegistrationWriteCheckInterface $writeCheck The character and the ticket choices, checked and priced.
 	 * @param IUserSession $session Who is writing.
 	 * @param IL10N $l10n Translations for refusals.
 	 * @param LoggerInterface $logger The logger.
@@ -70,8 +70,8 @@ class RegistrationListener implements IEventListener {
 	 */
 	public function __construct(
 		private readonly IAppConfig $config,
-		private readonly RegistrationService $service,
-		private readonly RegistrationWriteCheck $writeCheck,
+		private readonly RegistrationServiceInterface $service,
+		private readonly RegistrationWriteCheckInterface $writeCheck,
 		private readonly IUserSession $session,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,

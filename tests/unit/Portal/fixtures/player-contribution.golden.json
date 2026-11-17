@@ -62,7 +62,8 @@
                 "requiredConditions",
                 "requiredEffects",
                 "requiredScore",
-                "setting"
+                "setting",
+                "list"
             ]
         },
         {
@@ -201,6 +202,77 @@
             },
             "defaultSort": {
                 "field": "order",
+                "direction": "asc"
+            }
+        },
+        {
+            "id": "skillLists",
+            "register": "larpinq",
+            "schema": "larping_skill_list",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardighedenlijsten",
+            "listable": true,
+            "fields": [
+                "name",
+                "kind",
+                "description",
+                "costAbility",
+                "order",
+                "setting"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Lijst"
+                },
+                {
+                    "field": "kind",
+                    "label": "Soort"
+                }
+            ],
+            "defaultSort": {
+                "field": "order",
+                "direction": "asc"
+            }
+        },
+        {
+            "id": "rulebookSkills",
+            "register": "larpinq",
+            "schema": "larping_skill",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardigheden",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "requiredSkills",
+                "requiredStats",
+                "requiredConditions",
+                "requiredEffects",
+                "requiredScore",
+                "setting",
+                "list"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Vaardigheid"
+                },
+                {
+                    "field": "list",
+                    "label": "Lijst"
+                }
+            ],
+            "defaultSort": {
+                "field": "name",
                 "direction": "asc"
             }
         },
@@ -382,7 +454,11 @@
                 },
                 {
                     "type": "collection",
-                    "collection": "skillCatalog"
+                    "collection": "skillLists"
+                },
+                {
+                    "type": "collection",
+                    "collection": "rulebookSkills"
                 }
             ]
         },

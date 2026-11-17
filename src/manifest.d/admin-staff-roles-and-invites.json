@@ -1,0 +1,36 @@
+{
+	"pages": [
+		{
+			"id": "Staff",
+			"route": "/staff",
+			"type": "custom",
+			"title": "Staff",
+			"component": "StaffPage",
+			"_note": "Members per role come from Nextcloud groups, which no typed page reads; larpinq's /api/staff answers game masters only.",
+			"config": {
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "StaffInvite",
+			"route": "/staff-invite/:token",
+			"type": "custom",
+			"title": "Join the team",
+			"component": "StaffInviteLanding",
+			"_note": "A one-step join flow over a token from the link: it shows the invite's role and state from POST /api/staff-invites/inspect and joins on confirm; there is no list, record or widget grid to type.",
+			"config": {
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "StaffMenu",
+			"label": "Staff",
+			"icon": "AccountGroupOutline",
+			"route": "Staff",
+			"section": "settings",
+			"order": 94
+		}
+	]
+}

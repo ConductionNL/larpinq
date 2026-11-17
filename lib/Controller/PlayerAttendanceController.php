@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
-use OCA\Larpinq\Service\CharacterConnectionGuard;
-use OCA\Larpinq\Service\PlayerAttendanceService;
+use OCA\Larpinq\Kernel\Contracts\CharacterConnectionGuardInterface;
+use OCA\Larpinq\Kernel\Contracts\PlayerAttendanceServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -45,14 +45,14 @@ class PlayerAttendanceController extends Controller {
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
-	 * @param PlayerAttendanceService $history Reads the history.
-	 * @param CharacterConnectionGuard $guard Decides whether the caller is the player.
+	 * @param PlayerAttendanceServiceInterface $history Reads the history.
+	 * @param CharacterConnectionGuardInterface $guard Decides whether the caller is the player.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly PlayerAttendanceService $history,
-		private readonly CharacterConnectionGuard $guard,
+		private readonly PlayerAttendanceServiceInterface $history,
+		private readonly CharacterConnectionGuardInterface $guard,
 		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);

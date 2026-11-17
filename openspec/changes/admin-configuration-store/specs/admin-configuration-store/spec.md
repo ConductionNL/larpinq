@@ -2,24 +2,24 @@
 
 ## Purpose
 
-The Store page, where a game master installs game configurations other LARP organisations have published (a skill tree, conditions, a theme, sheet templates) into a world. OpenRegister hosts the store plane; larpinq declares the page.
+The Marketplace page, where a game master installs game configurations other LARP organisations have published (a skill tree, conditions, a theme, sheet templates) into a world. OpenRegister hosts the store plane; larpinq declares the page.
 
 ## ADDED Requirements
 
 ### Requirement: REQ-ACS-001 The store lists shared game configurations
 
-The Store page SHALL list the bundles the connected registry offers for larpinq. Each card SHALL show the title, the kind, who published it, what it contains and its version. With no registry connected, the page SHALL show the app's built-in items or say that no registry is connected, and SHALL make no call to a registry.
+The Marketplace page SHALL list the bundles the connected registry offers for larpinq. Each card SHALL show the title, the kind, who published it, what it contains and its version. With no registry connected, the page SHALL show the app's built-in items or say that no registry is connected, and SHALL make no call to a registry.
 
 #### Scenario: A game master browses the store
 
 - GIVEN a registry with the bundle "Fantasy basisregels (vaardighedenboom)" by Larpvereniging Zuiddrecht, version 2.1
-- WHEN game master Anna opens the Store page
+- WHEN game master Anna opens the Marketplace page
 - THEN she sees its card with kind Spelregels, the publisher, "28 vaardigheden, 4 eigenschappen, 12 effecten" and version 2.1
 
 #### Scenario: No registry is connected
 
 - GIVEN no registry is configured in OpenRegister
-- WHEN Anna opens the Store page
+- WHEN Anna opens the Marketplace page
 - THEN the page shows the built-in items or says no registry is connected
 - AND no request goes to a registry
 
@@ -30,7 +30,7 @@ Only an administrator SHALL see the Install action. Installing SHALL go through 
 #### Scenario: A player sees no install action
 
 - GIVEN player Sem, who is not an administrator
-- WHEN he opens the Store page
+- WHEN he opens the Marketplace page
 - THEN no card offers Install
 
 #### Scenario: Part of a bundle is refused

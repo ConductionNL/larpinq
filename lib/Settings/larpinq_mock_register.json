@@ -370,6 +370,20 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_event",
+          "slug": "larping-event-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12"
+        },
+        "name": "Winter Court 2026",
+        "description": "A weekend at the winter court.",
+        "startDate": "2026-12-11T18:00:00+00:00",
+        "endDate": "2026-12-13T16:00:00+00:00",
+        "location": "Kasteel Doorwerth",
+        "careRetentionDays": 30
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "larping_item",
           "slug": "larping-item-voorbeeld-name-1-1"
         },
@@ -1207,6 +1221,21 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-anna-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e13"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e11",
+        "submitterUid": "anna",
+        "status": "accepted",
+        "submittedAt": "2026-10-01T10:00:00+00:00",
+        "decidedAt": "2026-10-03T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "player",
           "slug": "player-alice",
           "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e01"
@@ -1236,6 +1265,308 @@
         "name": "Carol Bakker",
         "description": "Plays scout and ranger characters",
         "userUid": "carol"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-anna",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e11"
+        },
+        "name": "Anna de Vries",
+        "description": "Plays court intrigue characters",
+        "userUid": "anna",
+        "allergies": "hazelnuts",
+        "emergencyContactName": "Joost de Vries",
+        "emergencyContactPhone": "+31 6 00000000"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event_care_record",
+          "slug": "larping-event-care-record-anna-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e14"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "registration": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e13",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e11",
+        "allergies": "hazelnuts",
+        "emergencyContactName": "Joost de Vries",
+        "emergencyContactPhone": "+31 6 00000000",
+        "eventEndDate": "2026-12-13T16:00:00+00:00",
+        "eraseAfter": "2027-01-12T16:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-bram",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e15"
+        },
+        "name": "Bram Jansen",
+        "description": "Plays travelling merchant characters",
+        "userUid": "bram",
+        "dietaryNeeds": "vegetarian",
+        "emergencyContactName": "Lotte Jansen",
+        "emergencyContactPhone": "+31 6 00000001"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-bram-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e16"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e15",
+        "submitterUid": "bram",
+        "status": "accepted",
+        "submittedAt": "2026-10-02T10:00:00+00:00",
+        "decidedAt": "2026-10-03T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event_care_record",
+          "slug": "larping-event-care-record-bram-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e17"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "registration": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e16",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e15",
+        "dietaryNeeds": "vegetarian",
+        "emergencyContactName": "Lotte Jansen",
+        "emergencyContactPhone": "+31 6 00000001",
+        "eventEndDate": "2026-12-13T16:00:00+00:00",
+        "eraseAfter": "2027-01-12T16:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "player",
+          "slug": "player-sanne",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e18"
+        },
+        "name": "Sanne Visser",
+        "description": "Plays healer characters",
+        "userUid": "sanne",
+        "medicalNotes": "carries an inhaler",
+        "emergencyContactName": "Pieter Visser",
+        "emergencyContactPhone": "+31 6 00000002"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-sanne-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e19"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e18",
+        "submitterUid": "sanne",
+        "status": "accepted",
+        "submittedAt": "2026-10-02T10:00:00+00:00",
+        "decidedAt": "2026-10-03T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_event_care_record",
+          "slug": "larping-event-care-record-sanne-winter-court-2026",
+          "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e1a"
+        },
+        "event": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e12",
+        "registration": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e19",
+        "player": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e18",
+        "medicalNotes": "carries an inhaler",
+        "emergencyContactName": "Pieter Visser",
+        "emergencyContactPhone": "+31 6 00000002",
+        "eventEndDate": "2026-12-13T16:00:00+00:00",
+        "eraseAfter": "2027-01-12T16:00:00+00:00"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "setting",
+          "slug": "setting-aldmoor"
+        },
+        "name": "Aldmoor",
+        "description": "A walled trade city on the river Esk, and the world of the rulebook demo.",
+        "status": "active"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "ability",
+          "slug": "ability-aldmoor-mana"
+        },
+        "name": "Mana",
+        "description": "The arcane power a caster spends on spells.",
+        "base": 0,
+        "setting": "@ref:setting:setting-aldmoor"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill_list",
+          "slug": "skill-list-martial-skills"
+        },
+        "setting": "@ref:setting:setting-aldmoor",
+        "name": "Martial skills",
+        "kind": "skills",
+        "description": "Weapons, armour and fieldcraft, paid from XP.",
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill_list",
+          "slug": "skill-list-arcane-spells"
+        },
+        "setting": "@ref:setting:setting-aldmoor",
+        "name": "Arcane spells",
+        "kind": "spells",
+        "costAbility": "@ref:ability:ability-aldmoor-mana",
+        "description": "Spells cast from the caster's mana.",
+        "order": 2
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill_list",
+          "slug": "skill-list-divine-powers"
+        },
+        "setting": "@ref:setting:setting-aldmoor",
+        "name": "Divine powers",
+        "kind": "powers",
+        "description": "Blessings granted by the temple, paid from XP.",
+        "order": 3
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "effect",
+          "slug": "effect-firebolt-cost"
+        },
+        "name": "Firebolt costs 3 mana",
+        "description": "The mana a caster pays for Firebolt.",
+        "modifier": 3,
+        "modification": "negative",
+        "cumulative": "cumulative",
+        "abilities": [
+          "@ref:ability:ability-aldmoor-mana"
+        ],
+        "setting": "@ref:setting:setting-aldmoor"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "effect",
+          "slug": "effect-ward-cost"
+        },
+        "name": "Ward costs 2 mana",
+        "description": "The mana a caster pays for Ward.",
+        "modifier": 2,
+        "modification": "negative",
+        "cumulative": "cumulative",
+        "abilities": [
+          "@ref:ability:ability-aldmoor-mana"
+        ],
+        "setting": "@ref:setting:setting-aldmoor"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill",
+          "slug": "skill-arcane-lore"
+        },
+        "name": "Arcane lore",
+        "description": "The study of magic every caster starts with.",
+        "effect": "You may learn arcane spells.",
+        "setting": "@ref:setting:setting-aldmoor",
+        "list": "@ref:larping_skill_list:skill-list-martial-skills"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill",
+          "slug": "skill-firebolt"
+        },
+        "name": "Firebolt",
+        "description": "A bolt of fire thrown at one target.",
+        "effect": "Call \"Fire 2\" on one target within ten metres.",
+        "effects": [
+          "@ref:effect:effect-firebolt-cost"
+        ],
+        "requiredSkills": [
+          "@ref:larping_skill:skill-arcane-lore"
+        ],
+        "setting": "@ref:setting:setting-aldmoor",
+        "list": "@ref:larping_skill_list:skill-list-arcane-spells"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill",
+          "slug": "skill-ward"
+        },
+        "name": "Ward",
+        "description": "A shield of light around the caster.",
+        "effect": "Ignore the next magical call against you.",
+        "effects": [
+          "@ref:effect:effect-ward-cost"
+        ],
+        "requiredSkills": [
+          "@ref:larping_skill:skill-arcane-lore"
+        ],
+        "setting": "@ref:setting:setting-aldmoor",
+        "list": "@ref:larping_skill_list:skill-list-arcane-spells"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_skill",
+          "slug": "skill-blood-rite"
+        },
+        "name": "Blood rite",
+        "description": "A forbidden rite the players must discover in play.",
+        "effect": "Known only to the game masters.",
+        "requiredSkills": [
+          "@ref:larping_skill:skill-arcane-lore"
+        ],
+        "setting": "@ref:setting:setting-aldmoor",
+        "list": "@ref:larping_skill_list:skill-list-arcane-spells",
+        "hiddenFromRulebook": true
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-how-combat-works"
+        },
+        "title": "How combat works",
+        "body": "Every hit costs one hit point unless a call says otherwise. At zero hit points you fall and may only crawl.",
+        "setting": "@ref:setting:setting-aldmoor",
+        "category": "rules",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 1
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_lore_page",
+          "slug": "lore-page-casting-a-spell"
+        },
+        "title": "Casting a spell",
+        "body": "Say the incantation aloud, pay the mana from your sheet and make the call. A spell you cannot pay for fails.",
+        "setting": "@ref:setting:setting-aldmoor",
+        "category": "rules",
+        "visibility": "players",
+        "revealFrom": "2026-01-01T00:00:00+00:00",
+        "order": 2
       },
       {
         "@self": {

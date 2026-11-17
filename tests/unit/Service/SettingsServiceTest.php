@@ -90,9 +90,11 @@ class SettingsServiceTest extends TestCase {
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
 		// for all 23 slugs (9 original + attendance + lorepage + characterfield
 		// + faction + factionmember + relationship + characterbuild + xpaward + registration
-		// + tickettype + registrationoption + accesscode + helpquestion + helpmessage)
-		// plus the global 'register' key = 1 + 23*3 = 70.
-		$this->assertCount(expectedCount: 70, haystack: $result);
+		// + tickettype + registrationoption + accesscode + eventcarerecord + staffinvite
+		// + helpquestion + helpmessage) plus the global 'register' key = 1 + 25*3 = 76.
+		$this->assertArrayHasKey(key: 'staffinvite_schema', array: $result);
+		$this->assertArrayHasKey(key: 'eventcarerecord_schema', array: $result);
+		$this->assertCount(expectedCount: 76, haystack: $result);
 	}
 
 	/**
@@ -169,7 +171,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray(actual: $result);
-		$this->assertCount(expectedCount: 70, haystack: $result);
+		$this->assertCount(expectedCount: 76, haystack: $result);
 	}
 
 	/**
