@@ -20,8 +20,8 @@
 
 ## 4. Tests
 
-- [ ] 4.1 Extend `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` (or add a PHPUnit test on `EventsController`) asserting the runsheet still returns the correct cast for an event when the register contains characters NOT linked to that event (regression guard against the new filter over- or under-matching)
-  - Left open for the e2e spec; the PHPUnit side is `EventRosterScopedQueryTest::testACharacterOfAnotherEventStaysOutOfTheCast`.
+- [x] 4.1 Extend `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` (or add a PHPUnit test on `EventsController`) asserting the runsheet still returns the correct cast for an event when the register contains characters NOT linked to that event (regression guard against the new filter over- or under-matching)
+  - PHPUnit: `EventRosterScopedQueryTest::testACharacterOfAnotherEventStaysOutOfTheCast`. E2E: `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` "the cast holds this event's characters and no other event's" seeds an event, a character on it and one on another event, and reads the event's roster, built from the same scoped query (not yet run on an instance).
 - [x] 4.2 Add a PHPUnit test (or extend an existing `EventsController` test) that asserts `RegisterObjectFetcher::getObjects()` is called with a scoping filter/limit rather than no arguments, via a mock/spy on `objectFetcher`
 - [x] 4.3 `@spec` annotations on the changed methods pointing at this change (gate-16)
 
