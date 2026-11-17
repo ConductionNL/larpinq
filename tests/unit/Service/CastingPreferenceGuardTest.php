@@ -45,6 +45,9 @@ class CastingPreferenceGuardTest extends TestCase {
 	/** @var list<array{string, array<string, mixed>, ?int}> The list reads. */
 	private array $listReads = [];
 
+	/** Whether reading the stored rankings fails. */
+	private bool $listFails = false;
+
 	protected function setUp(): void {
 		$this->objects = [
 			'event' => [self::EVENT => ['id' => self::EVENT, 'castingDeadline' => '2026-11-01T00:00:00+00:00']],
@@ -72,6 +75,10 @@ class CastingPreferenceGuardTest extends TestCase {
 		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
 			function (string $objectType, array $filters, ?int $limit = null): array {
 				$this->listReads[] = [$objectType, $filters, $limit];
+				if ($this->listFails === true) {
+					throw new \RuntimeException('unavailable');
+				}
+
 				return $this->rankings;
 			}
 		);
@@ -166,5 +173,12 @@ class CastingPreferenceGuardTest extends TestCase {
 		$this->assertSame(expected: 'casting_too_many', actual: $errors['code'] ?? null);
 
 		$this->assertNull($this->guard()->check(candidate: $this->ranking(['id' => 'p3', 'rank' => 2]), uid: 'anna', now: $this->before()));
+	}
+
+	public function testARankingIsRefusedWhenTheStoredRankingsCannotBeRead(): void {
+		$this->listFails = true;
+
+		$errors = $this->guard()->check(candidate: $this->ranking(), uid: 'anna', now: $this->before());
+		$this->assertSame(expected: 'casting_too_many', actual: $errors['code'] ?? null);
 	}
 }

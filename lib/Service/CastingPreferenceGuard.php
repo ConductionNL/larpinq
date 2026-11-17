@@ -186,6 +186,9 @@ class CastingPreferenceGuard {
 	 * @param string $registrationId The registration.
 	 * @param string $ownId          The id of the ranking being written, or '' on a create.
 	 *
+	 * A registration whose rankings cannot be read counts as full, so the
+	 * limit is refused rather than skipped.
+	 *
 	 * @return int The count.
 	 */
 	private function otherRankings(string $registrationId, string $ownId): int {
@@ -196,7 +199,7 @@ class CastingPreferenceGuard {
 				limit: (CastingSolver::MAX_RANK + 1)
 			);
 		} catch (Throwable $e) {
-			return 0;
+			return CastingSolver::MAX_RANK;
 		}
 
 		$others = 0;
