@@ -17,7 +17,8 @@
       Help (the player's own questions), Help desk (quick filters open / answered / closed, oldest activity first, an `age` cell widget marks a question without activity for more than 3 days) and the question page with its message thread; the Dashboard stat "Open questions". `npm run check:manifest` passes and the merged manifest validates against the v2 schema; pinned by `tests/vitest/helpDeskManifest.spec.js`, `tests/vitest/ageCell.spec.js` and the re-recorded `effectiveManifest.golden.json`.
 - [x] 3.2 `askQuestion` and `myQuestions` in `PortalContributionProvider`, with the declared notification (REQ-CHD-004). Verify: provider PHPUnit shape and whitelist tests.
       `askQuestion` (create, stamped through the `ownerRef` claim; subject, body, event), `myQuestions` and `myQuestionMessages` (the answers, scoped by the `ownerRef` HelpMessageListener now copies onto each message), a portal Help page, and the `larpinq.question.answered` rule on `status` with claim-addressed recipients (portaliq REQ-NAP-012). A portal question names no player, so `player` is no longer required and the listener takes the player from the stamped `ownerRef`. Pinned by `PortalContributionProviderTest` (shape, whitelist against the register, golden) and `HelpMessageListenerTest`.
-- [ ] 3.3 Playwright `tests/e2e/help-desk.spec.ts`: Anna asks, Joris answers, Anna is notified and replies, the question reopens (REQ-CHD-001 to REQ-CHD-003). Verify: passes locally.
+- [x] 3.3 Playwright `tests/e2e/help-desk.spec.ts`: Anna asks, Joris answers, Anna is notified and replies, the question reopens (REQ-CHD-001 to REQ-CHD-003). Verify: passes locally.
+  - Passed live 17 Nov on a fresh NC 34 + OpenRegister 2.2.0-dev rig (`tests/e2e/help-desk.spec.ts`, 4 tests). It found that the asker was never notified: the rule waited for the `answer` transition while the listener moves the status by a save; the rule now fires on that update.
 
 ## 4. Strings and docs
 

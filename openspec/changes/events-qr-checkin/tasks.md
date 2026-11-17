@@ -14,7 +14,8 @@
 
 - [x] 3.1 `src/components/RegistrationQrCode.vue` with `qrcode` on My registrations, with print styles (REQ-EQC-002). Verify: vitest renders an SVG for a code; `npm run lint`.
 - [x] 3.2 Scan panel in `src/views/EventRoster.vue`: camera when supported, code field always (REQ-EQC-003). Verify: vitest with a mocked `BarcodeDetector` and without one; the nc-input-labels and semantic-controls gates pass.
-- [ ] 3.3 Playwright `tests/e2e/qr-checkin.spec.ts`: type Anna's code in the scan field, see her checked in on the roster; type it again, see "already checked in" (REQ-EQC-003, REQ-EQC-004). Verify: passes locally.
+- [x] 3.3 Playwright `tests/e2e/qr-checkin.spec.ts`: type Anna's code in the scan field, see her checked in on the roster; type it again, see "already checked in" (REQ-EQC-003, REQ-EQC-004). Verify: passes locally.
+  - Passed live 17 Nov (`tests/e2e/qr-checkin.spec.ts`). It found two defects: OpenRegister refuses a filter on the reveal-only code (now read in its trusted reveal scope), and an accepted registration's character was missing from the roster (the cast now also takes the event's `players`).
 
 ## 4. Strings and docs
 
