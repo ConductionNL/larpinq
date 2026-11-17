@@ -261,6 +261,8 @@ for (const { slug, nav, entity } of INDEX_PAGES) {
 				.locator(
 					'.app-content .empty-content, .app-content [class*="empty"], .app-content table, .app-content [role="table"], .app-content ul, .app-content [class*="list"]',
 				)
+				// A closed select's listbox is an empty, hidden `ul` and can come first.
+				.filter({ visible: true })
 				.first()
 			await expect(listOrEmpty).toBeVisible({ timeout: 10_000 })
 		})

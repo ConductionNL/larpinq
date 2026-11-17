@@ -208,3 +208,23 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 }
+
+/**
+ * Open a sidebar tab of a detail page, opening the sidebar first when it is
+ * closed (its open state is remembered per user, so an earlier spec may have
+ * closed it).
+ *
+ * @param {Page} page The page, on a detail route.
+ * @param {string} tab The tab's label.
+ * @return {Promise<void>}
+ */
+export async function openSidebarTab(page: Page, tab: string): Promise<void> {
+	const sidebar = page.getByTestId('cn-object-sidebar')
+	const opener = page.getByRole('button', { name: 'Open sidebar' })
+	// A closed sidebar stays in the DOM, hidden, so wait for either to be visible.
+	await expect(sidebar.or(opener).filter({ visible: true }).first()).toBeVisible({ timeout: 30_000 })
+	if (await opener.isVisible()) {
+		await opener.click()
+	}
+	await sidebar.getByRole('tab', { name: tab }).click()
+}
