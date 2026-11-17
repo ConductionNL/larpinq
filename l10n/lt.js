@@ -864,6 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
         "Open sheet": "Atidaryti lapą",
+        "Language": "Kalba",
+        "Could not change the language.": "Nepavyko pakeisti kalbos.",
         "History entry": "Istorijos įrašas",
         "How the date is told in the world": "Kaip data vadinama pasaulyje",
         "In-game date": "Data žaidime",

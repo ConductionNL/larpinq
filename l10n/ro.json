@@ -863,6 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fișa personajului meu",
         "Open sheet": "Deschide fișa",
+        "Language": "Limbă",
+        "Could not change the language.": "Limba nu a putut fi schimbată.",
         "History entry": "Intrare de istorie",
         "How the date is told in the world": "Cum este spusă data în lume",
         "In-game date": "Data în joc",
