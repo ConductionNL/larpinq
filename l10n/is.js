@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Heimurinn sem þessi listi tilheyrir. Autt þýðir sameiginlegur öllum heimum.",
         "What the list is for, shown in the rulebook.": "Til hvers listinn er, birt í reglubókinni.",
         "Where the list comes in the rulebook; lower comes first.": "Hvar listinn kemur í reglubókinni; lægra kemur fyrst.",
-        "Whether the list holds skills, spells or powers.": "Hvort listinn inniheldur hæfni, galdra eða krafta."
+        "Whether the list holds skills, spells or powers.": "Hvort listinn inniheldur hæfni, galdra eða krafta.",
+        "XP history": "XP-saga",
+        "{skill} removed: {xp} XP returned": "{skill} fjarlægð: {xp} XP skilað",
+        "Unknown skill": "Óþekkt færni"
     },
     "nplurals=2; plural=(n != 1);"
 )

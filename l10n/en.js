@@ -913,7 +913,10 @@ OC.L10N.register(
         "Gold pieces the item costs": "Gold pieces the item costs",
         "Silver pieces the item costs": "Silver pieces the item costs",
         "Copper pieces the item costs": "Copper pieces the item costs",
-        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page"
+        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page",
+        "XP history": "XP history",
+        "{skill} removed: {xp} XP returned": "{skill} removed: {xp} XP returned",
+        "Unknown skill": "Unknown skill"
     },
     "nplurals=2; plural=(n != 1);"
 )

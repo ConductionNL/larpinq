@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Verdenen, denne liste hører til. Tom betyder delt mellem alle verdener.",
         "What the list is for, shown in the rulebook.": "Hvad listen er til, vist i regelbogen.",
         "Where the list comes in the rulebook; lower comes first.": "Hvor listen står i regelbogen; lavere kommer først.",
-        "Whether the list holds skills, spells or powers.": "Om listen indeholder færdigheder, besværgelser eller kræfter."
+        "Whether the list holds skills, spells or powers.": "Om listen indeholder færdigheder, besværgelser eller kræfter.",
+        "XP history": "XP-historik",
+        "{skill} removed: {xp} XP returned": "{skill} fjernet: {xp} XP tilbagegivet",
+        "Unknown skill": "Ukendt færdighed"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Maailm, kuhu see nimekiri kuulub. Tühi tähendab kõigi maailmade ühist.",
         "What the list is for, shown in the rulebook.": "Milleks nimekiri on, kuvatakse reeglistikus.",
         "Where the list comes in the rulebook; lower comes first.": "Nimekirja koht reeglistikus; väiksem tuleb enne.",
-        "Whether the list holds skills, spells or powers.": "Kas nimekirjas on oskused, loitsud või võimed."
+        "Whether the list holds skills, spells or powers.": "Kas nimekirjas on oskused, loitsud või võimed.",
+        "XP history": "XP ajalugu",
+        "{skill} removed: {xp} XP returned": "{skill} eemaldatud: {xp} XP tagastatud",
+        "Unknown skill": "Tundmatu oskus"
     },
     "nplurals=2; plural=(n != 1);"
 )

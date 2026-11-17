@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Bota së cilës i përket kjo listë. Bosh do të thotë e përbashkët për të gjitha botët.",
         "What the list is for, shown in the rulebook.": "Për çfarë shërben lista, shfaqet në librin e rregullave.",
         "Where the list comes in the rulebook; lower comes first.": "Ku del lista në librin e rregullave; më e ulëta vjen e para.",
-        "Whether the list holds skills, spells or powers.": "Nëse lista përmban aftësi, magji apo fuqi."
+        "Whether the list holds skills, spells or powers.": "Nëse lista përmban aftësi, magji apo fuqi.",
+        "XP history": "Historiku i XP",
+        "{skill} removed: {xp} XP returned": "{skill} u hoq: u kthyen {xp} XP",
+        "Unknown skill": "Aftësi e panjohur"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -944,7 +944,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Svet, do ktorého tento zoznam patrí. Prázdne znamená zdieľaný všetkými svetmi.",
         "What the list is for, shown in the rulebook.": "Na čo zoznam slúži, zobrazené v pravidlách.",
         "Where the list comes in the rulebook; lower comes first.": "Kde sa zoznam v pravidlách zobrazí; nižšie je skôr.",
-        "Whether the list holds skills, spells or powers.": "Či zoznam obsahuje zručnosti, kúzla alebo schopnosti."
+        "Whether the list holds skills, spells or powers.": "Či zoznam obsahuje zručnosti, kúzla alebo schopnosti.",
+        "XP history": "História XP",
+        "{skill} removed: {xp} XP returned": "{skill} odobraná: vrátených {xp} XP",
+        "Unknown skill": "Neznáma zručnosť"
     },
     "plurals": {}
 }

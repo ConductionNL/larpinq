@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Pasaulis, kuriam priklauso šis sąrašas. Tuščia reiškia bendras visiems pasauliams.",
         "What the list is for, shown in the rulebook.": "Kam skirtas sąrašas, rodoma taisyklių knygoje.",
         "Where the list comes in the rulebook; lower comes first.": "Kur sąrašas yra taisyklių knygoje; mažesnis eina pirmas.",
-        "Whether the list holds skills, spells or powers.": "Ar sąraše yra įgūdžiai, burtai ar galios."
+        "Whether the list holds skills, spells or powers.": "Ar sąraše yra įgūdžiai, burtai ar galios.",
+        "XP history": "XP istorija",
+        "{skill} removed: {xp} XP returned": "{skill} pašalintas: grąžinta {xp} XP",
+        "Unknown skill": "Nežinomas įgūdis"
     },
     "nplurals=2; plural=(n != 1);"
 )

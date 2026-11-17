@@ -944,7 +944,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Lumea căreia îi aparține această listă. Gol înseamnă partajată de toate lumile.",
         "What the list is for, shown in the rulebook.": "La ce servește lista, afișat în cartea de reguli.",
         "Where the list comes in the rulebook; lower comes first.": "Unde apare lista în cartea de reguli; cea mai mică vine prima.",
-        "Whether the list holds skills, spells or powers.": "Dacă lista conține abilități, vrăji sau puteri."
+        "Whether the list holds skills, spells or powers.": "Dacă lista conține abilități, vrăji sau puteri.",
+        "XP history": "Istoric XP",
+        "{skill} removed: {xp} XP returned": "{skill} eliminată: {xp} XP returnate",
+        "Unknown skill": "Abilitate necunoscută"
     },
     "plurals": {}
 }
