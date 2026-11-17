@@ -26,7 +26,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Command;
 
-use OCA\Larpinq\Service\UniqueHolderConflictFinder;
+use OCA\Larpinq\Kernel\Contracts\UniqueHolderConflictFinderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,12 +47,12 @@ class UniqueHoldersCheck extends Command {
 	/**
 	 * Constructor.
 	 *
-	 * @param UniqueHolderConflictFinder $finder The conflict finder.
+	 * @param UniqueHolderConflictFinderInterface $finder The conflict finder.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly UniqueHolderConflictFinder $finder,
+		private readonly UniqueHolderConflictFinderInterface $finder,
 	) {
 		parent::__construct();
 	}//end __construct()

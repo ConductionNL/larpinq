@@ -26,6 +26,7 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\XpAwardBatchServiceInterface;
 
 /**
  * The award roster of an event and the batch award.
@@ -38,7 +39,7 @@ use DateTimeInterface;
  *
  * @spec openspec/specs/event-xp-awards/spec.md
  */
-class XpAwardBatchService {
+class XpAwardBatchService implements XpAwardBatchServiceInterface {
 
 	/**
 	 * The object type (and config key prefix) of an XP award.

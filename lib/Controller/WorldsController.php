@@ -24,7 +24,7 @@ use InvalidArgumentException;
 use LengthException;
 use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\WorldCopyFailedException;
-use OCA\Larpinq\Service\WorldCopyService;
+use OCA\Larpinq\Kernel\Contracts\WorldCopyServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
@@ -51,13 +51,13 @@ class WorldsController extends Controller {
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
-	 * @param WorldCopyService $worldCopy The copy service.
+	 * @param WorldCopyServiceInterface $worldCopy The copy service.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 * @param LoggerInterface $logger The logger.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly WorldCopyService $worldCopy,
+		private readonly WorldCopyServiceInterface $worldCopy,
 		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {

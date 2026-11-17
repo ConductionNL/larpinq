@@ -1,0 +1,41 @@
+{
+  "$comment": "forms-registration-is-checked-at-binding: which question of the event's sign-up form fills which registration property. A binding is checked against the registration schema when it is saved, and refused with findings.",
+  "components": {
+    "schemas": {
+      "event": {
+        "slug": "larping_event",
+        "properties": {
+          "signupFormMapping": {
+            "type": "array",
+            "title": "Sign-up form questions",
+            "description": "Which question of the sign-up form fills which registration field. Checked against the registration when saved.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "title": "Question",
+                  "description": "The id of the question in Nextcloud Forms"
+                },
+                "type": {
+                  "type": "string",
+                  "title": "Question type",
+                  "description": "The Nextcloud Forms question type, such as short, long, date or multiple"
+                },
+                "property": {
+                  "type": "string",
+                  "title": "Registration field",
+                  "description": "The registration property the answer fills"
+                }
+              },
+              "required": [
+                "field",
+                "property"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

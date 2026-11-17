@@ -26,8 +26,8 @@ namespace OCA\Larpinq\Listener;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUserManager;
@@ -69,14 +69,14 @@ class FormSubmissionListener implements IEventListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param RegisterObjectFetcher $fetcher Reads events and players, writes the registration.
+	 * @param RegisterObjectFetcherInterface $fetcher Reads events and players, writes the registration.
 	 * @param IUserManager $users Tells an account from an anonymous answer.
 	 * @param LoggerInterface $logger The logger.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly RegisterObjectFetcher $fetcher,
+		private readonly RegisterObjectFetcherInterface $fetcher,
 		private readonly IUserManager $users,
 		private readonly LoggerInterface $logger,
 	) {
@@ -202,7 +202,7 @@ class FormSubmissionListener implements IEventListener {
 		$registration = [
 			'event' => $eventId,
 			'submitterUid' => $uid,
-			'status' => RegistrationService::PENDING,
+			'status' => RegistrationServiceInterface::PENDING,
 			'submissionId' => (int)($submission['id'] ?? 0),
 			'submittedAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
 		];

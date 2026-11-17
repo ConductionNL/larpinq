@@ -68,6 +68,11 @@ final class AppIdentity {
 	public const ROLE_STEWARDS = 'larpinq-stewards';
 
 	/**
+	 * The group whose members use the app; a staff invite adds its user here too (REQ-ASR-004).
+	 */
+	public const USERS_GROUP = 'larpers';
+
+	/**
 	 * The four staff role groups, next to the single game master group.
 	 */
 	public const STAFF_ROLES = [self::ROLE_WRITERS, self::ROLE_RULES, self::ROLE_TREASURERS, self::ROLE_STEWARDS];
