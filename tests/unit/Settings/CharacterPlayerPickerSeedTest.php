@@ -76,6 +76,24 @@ class CharacterPlayerPickerSeedTest extends TestCase {
 	}//end testTheSchemasDeclareTheChain()
 
 	/**
+	 * The owner hears of the approval when an update sets `approved`: the
+	 * character page approves through the data editor, a plain update, so a
+	 * rule on the lifecycle's `approved` transition never fires (TC-5).
+	 *
+	 * @return void
+	 */
+	public function testTheOwnerIsNotifiedOnTheApprovingUpdate(): void {
+		$rule = $this->schemas()['character']['x-openregister-notifications']['character-approved'];
+
+		$this->assertSame(expected: 'updated', actual: $rule['trigger']['type']);
+		$this->assertSame(
+			expected: ['field' => 'approved', 'operator' => 'equals', 'from' => 'no', 'value' => 'approved'],
+			actual: $rule['trigger']['condition']
+		);
+		$this->assertSame(expected: [['kind' => 'field', 'field' => 'ownerUid']], actual: $rule['recipients']);
+	}//end testTheOwnerIsNotifiedOnTheApprovingUpdate()
+
+	/**
 	 * Three seeded players each name a Nextcloud user.
 	 *
 	 * @return void

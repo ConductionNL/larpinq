@@ -33,6 +33,8 @@ import {
 const JSON_HEADERS = {
 	Accept: 'application/json',
 	'Content-Type': 'application/json',
+	// Basic auth without a session passes Nextcloud's CSRF check only with this header.
+	'OCS-APIRequest': 'true',
 }
 const subject = `portal-subject-${RUN_ID}`
 

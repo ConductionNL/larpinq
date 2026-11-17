@@ -71,7 +71,8 @@ test.beforeAll(async () => {
 	})
 	expect(created.ok(), await created.text()).toBe(true)
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
 	const annaPlayer = ledger.track(
