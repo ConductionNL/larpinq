@@ -397,7 +397,7 @@
 						"type": "stat",
 						"content": {
 							"label": "Open questions",
-							"route": { "name": "HelpDesk" },
+							"route": { "name": "Help", "query": { "_lens": "desk" } },
 							"icon": "HelpCircleOutline",
 							"format": { "style": "number" },
 							"source": {

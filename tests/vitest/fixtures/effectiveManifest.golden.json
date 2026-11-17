@@ -258,7 +258,10 @@
 			"id": "HelpDesk",
 			"label": "Help desk",
 			"icon": "FaceAgent",
-			"route": "HelpDesk",
+			"route": "Help",
+			"query": {
+				"_lens": "desk"
+			},
 			"order": 91,
 			"count": "auto"
 		},
@@ -291,7 +294,7 @@
 		],
 		[
 			"Dashboard",
-			"ed0140ec5be00a60910d2470ed28accdcc5376ad509ef979eb1b52d1863fcd1c"
+			"6225f2a9244a944671c02c53c3e1862f953dac86460d05972914aee6688d1ee0"
 		],
 		[
 			"Characters",
@@ -455,11 +458,7 @@
 		],
 		[
 			"Help",
-			"a9e9444f87daf5feb5c7dde91fba3d22be477b2ad9439de4daafa1ea0ee4bead"
-		],
-		[
-			"HelpDesk",
-			"2f760ba1e162185fadd1d259d77e0ccb5937a9be5d899c6d7ff834c95ae05b8a"
+			"5cde439724c316732fbfa04ab36f1a5c3761e004cf9538e108d603e7ad6974be"
 		],
 		[
 			"HelpQuestionDetail",

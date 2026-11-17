@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: EUPL-1.2
  *
  * The manifest wiring of communication-help-desk: the player's Help page, the
- * game masters' Help desk (oldest activity first, marked after 3 days), the
+ * game masters' Help desk (a query preset of the same page, reached by its menu
+ * entry: oldest activity first, marked after 3 days), the
  * question page with its thread, and the open-question count on the
  * Dashboard (REQ-CHD-001, REQ-CHD-002, REQ-CHD-003).
  */
@@ -33,26 +34,34 @@ describe('the Help page (REQ-CHD-001)', () => {
 })
 
 describe('the Help desk (REQ-CHD-002)', () => {
-	const desk = page('HelpDesk')
+	// One index page over the questions (ADR-097 D5): the desk is a query
+	// preset of the Help page, chosen by its menu entry's query.
+	const desk = page('Help').config.queryPresets.find((p) => p.id === 'help-desk')
+
+	it('is no second index page over the questions', () => {
+		const indexes = fragment.pages.filter((p) => p.type === 'index' && p.config.schema === 'larping_help_question')
+		expect(indexes.map((p) => p.id)).toEqual(['Help'])
+		expect(desk.match).toEqual({ _lens: 'desk' })
+		expect(desk.title).toBe('Help desk')
+	})
 
 	it('shows open questions first and can switch to answered and closed ones', () => {
-		expect(desk.config.schema).toBe('larping_help_question')
-		expect(desk.config.quickFilters.map((f) => f.filter.status)).toEqual(['open', 'answered', 'closed'])
-		expect(desk.config.quickFilters[0].default).toBe(true)
+		expect(desk.quickFilters.map((f) => f.filter.status)).toEqual(['open', 'answered', 'closed'])
+		expect(desk.quickFilters[0].default).toBe(true)
 	})
 
 	it('sorts by the oldest activity and marks a question waiting more than 3 days', () => {
-		expect(desk.config.defaultSort).toEqual([{ field: 'lastMessageAt', order: 'asc' }])
-		const last = desk.config.columns.find((c) => c.key === 'lastMessageAt')
+		expect(desk.defaultSort).toEqual([{ field: 'lastMessageAt', order: 'asc' }])
+		const last = desk.columns.find((c) => c.key === 'lastMessageAt')
 		expect(last.widget).toBe('age')
 		expect(last.widgetProps).toEqual({ olderThanDays: 3 })
-		expect(desk.config.columns.map((c) => c.key)).toContain('assignee')
+		expect(desk.columns.map((c) => c.key)).toContain('assignee')
 	})
 
-	it('has menu entries for both pages', () => {
-		expect(fragment.menu.map((m) => [m.id, m.route])).toEqual([
-			['Help', 'Help'],
-			['HelpDesk', 'HelpDesk'],
+	it('has menu entries for both, the desk one opening the preset', () => {
+		expect(fragment.menu.map((m) => [m.id, m.route, m.query])).toEqual([
+			['Help', 'Help', undefined],
+			['HelpDesk', 'Help', desk.match],
 		])
 	})
 })
@@ -83,7 +92,7 @@ describe('the Dashboard count (REQ-CHD-002)', () => {
 	it('counts the open questions and leads to the Help desk', () => {
 		const stat = dashboard.config.widgets.find((w) => w.id === 'kpi-open-questions')
 		expect(stat.type).toBe('stat')
-		expect(stat.content.route).toEqual({ name: 'HelpDesk' })
+		expect(stat.content.route).toEqual({ name: 'Help', query: { _lens: 'desk' } })
 		expect(stat.content.source).toEqual({
 			register: 'larpinq',
 			schema: 'larping_help_question',
