@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mana tēla lapa",
         "Open sheet": "Atvērt lapu",
-        "Check out": "Reģistrēt aiziešanu",
-        "Checked out": "Aizgājis",
-        "Checked out {day} {time}": "Aizgājis {day} {time}",
-        "On site now: {count}": "Pašlaik uz vietas: {count}",
-        "Checked Out At": "Aiziešana reģistrēta",
-        "Checked Out By": "Aiziešanu reģistrēja",
+        "Language": "Valoda",
+        "Could not change the language.": "Valodu neizdevās nomainīt.",
         "History entry": "Vēstures ieraksts",
         "How the date is told in the world": "Kā datumu sauc pasaulē",
         "In-game date": "Datums spēlē",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Pasaule, kurai pieder šis saraksts. Tukšs nozīmē kopīgs visām pasaulēm.",
         "What the list is for, shown in the rulebook.": "Kam saraksts paredzēts, rāda noteikumu grāmatā.",
         "Where the list comes in the rulebook; lower comes first.": "Kur saraksts atrodas noteikumu grāmatā; mazākais ir pirmais.",
-        "Whether the list holds skills, spells or powers.": "Vai sarakstā ir prasmes, burvestības vai spēki."
+        "Whether the list holds skills, spells or powers.": "Vai sarakstā ir prasmes, burvestības vai spēki.",
+        "Check out": "Reģistrēt aiziešanu",
+        "Checked out": "Aizgājis",
+        "Checked out {day} {time}": "Aizgājis {day} {time}",
+        "On site now: {count}": "Pašlaik uz vietas: {count}",
+        "Checked Out At": "Aiziešana reģistrēta",
+        "Checked Out By": "Aiziešanu reģistrēja"
     },
     "nplurals=2; plural=(n != 1);"
 )

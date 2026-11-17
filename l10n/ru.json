@@ -863,12 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой лист персонажа",
         "Open sheet": "Открыть лист",
-        "Check out": "Зарегистрировать уход",
-        "Checked out": "Ушёл",
-        "Checked out {day} {time}": "Ушёл {day} {time}",
-        "On site now: {count}": "Сейчас на месте: {count}",
-        "Checked Out At": "Уход отмечен",
-        "Checked Out By": "Уход отметил",
+        "Language": "Язык",
+        "Could not change the language.": "Не удалось изменить язык.",
         "History entry": "Запись истории",
         "How the date is told in the world": "Как дата называется в мире",
         "In-game date": "Дата в игре",
@@ -908,7 +904,13 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Мир, к которому относится этот список. Пусто означает общий для всех миров.",
         "What the list is for, shown in the rulebook.": "Для чего нужен список, отображается в книге правил.",
         "Where the list comes in the rulebook; lower comes first.": "Где список стоит в книге правил; меньшее значение идёт первым.",
-        "Whether the list holds skills, spells or powers.": "Содержит ли список навыки, заклинания или силы."
+        "Whether the list holds skills, spells or powers.": "Содержит ли список навыки, заклинания или силы.",
+        "Check out": "Зарегистрировать уход",
+        "Checked out": "Ушёл",
+        "Checked out {day} {time}": "Ушёл {day} {time}",
+        "On site now: {count}": "Сейчас на месте: {count}",
+        "Checked Out At": "Уход отмечен",
+        "Checked Out By": "Уход отметил"
     },
     "plurals": {}
 }

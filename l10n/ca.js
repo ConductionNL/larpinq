@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La meva fitxa de personatge",
         "Open sheet": "Obre la fitxa",
-        "Check out": "Registra la sortida",
-        "Checked out": "Ha sortit",
-        "Checked out {day} {time}": "Ha sortit {day} {time}",
-        "On site now: {count}": "Ara al lloc: {count}",
-        "Checked Out At": "Sortida registrada el",
-        "Checked Out By": "Sortida registrada per",
+        "Language": "Idioma",
+        "Could not change the language.": "No s'ha pogut canviar l'idioma.",
         "History entry": "Entrada d'història",
         "How the date is told in the world": "Com es diu la data al món",
         "In-game date": "Data al joc",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "El món a què pertany aquesta llista. Buit vol dir compartida per tots els mons.",
         "What the list is for, shown in the rulebook.": "Per a què serveix la llista, es mostra al llibre de regles.",
         "Where the list comes in the rulebook; lower comes first.": "On apareix la llista al llibre de regles; la més baixa va primer.",
-        "Whether the list holds skills, spells or powers.": "Si la llista conté habilitats, encanteris o poders."
+        "Whether the list holds skills, spells or powers.": "Si la llista conté habilitats, encanteris o poders.",
+        "Check out": "Registra la sortida",
+        "Checked out": "Ha sortit",
+        "Checked out {day} {time}": "Ha sortit {day} {time}",
+        "On site now: {count}": "Ara al lloc: {count}",
+        "Checked Out At": "Sortida registrada el",
+        "Checked Out By": "Sortida registrada per"
     },
     "nplurals=2; plural=(n != 1);"
 )

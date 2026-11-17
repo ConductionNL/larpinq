@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mo bhileog charachtair",
         "Open sheet": "Oscail an bhileog",
-        "Check out": "Cláraigh amach",
-        "Checked out": "Cláraithe amach",
-        "Checked out {day} {time}": "Cláraithe amach {day} {time}",
-        "On site now: {count}": "Ar an láthair anois: {count}",
-        "Checked Out At": "Clárú amach ar",
-        "Checked Out By": "Cláraithe amach ag",
+        "Language": "Teanga",
+        "Could not change the language.": "Níorbh fhéidir an teanga a athrú.",
         "History entry": "Iontráil staire",
         "How the date is told in the world": "Conas a deirtear an dáta sa domhan",
         "In-game date": "Dáta sa chluiche",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "An domhan lena mbaineann an liosta seo. Ciallaíonn folamh go bhfuil sé roinnte idir gach domhan.",
         "What the list is for, shown in the rulebook.": "Cad chuige an liosta, taispeántar sa leabhar rialacha é.",
         "Where the list comes in the rulebook; lower comes first.": "Cá háit a bhfuil an liosta sa leabhar rialacha; tagann an ceann is ísle ar dtús.",
-        "Whether the list holds skills, spells or powers.": "Cé acu an bhfuil scileanna, geasa nó cumhachtaí sa liosta."
+        "Whether the list holds skills, spells or powers.": "Cé acu an bhfuil scileanna, geasa nó cumhachtaí sa liosta.",
+        "Check out": "Cláraigh amach",
+        "Checked out": "Cláraithe amach",
+        "Checked out {day} {time}": "Cláraithe amach {day} {time}",
+        "On site now: {count}": "Ar an láthair anois: {count}",
+        "Checked Out At": "Clárú amach ar",
+        "Checked Out By": "Cláraithe amach ag"
     },
     "nplurals=2; plural=(n != 1);"
 )

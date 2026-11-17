@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Ma fiche de personnage",
         "Open sheet": "Ouvrir la fiche",
-        "Check out": "Enregistrer le départ",
-        "Checked out": "Parti",
-        "Checked out {day} {time}": "Parti {day} {time}",
-        "On site now: {count}": "Sur place maintenant : {count}",
-        "Checked Out At": "Départ enregistré le",
-        "Checked Out By": "Départ enregistré par",
+        "Language": "Langue",
+        "Could not change the language.": "Impossible de changer la langue.",
         "History entry": "Entrée d'histoire",
         "How the date is told in the world": "Comment la date est dite dans le monde",
         "In-game date": "Date dans le jeu",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Le monde auquel appartient cette liste. Vide signifie partagée entre tous les mondes.",
         "What the list is for, shown in the rulebook.": "L'usage de la liste, affiché dans le livre de règles.",
         "Where the list comes in the rulebook; lower comes first.": "La place de la liste dans le livre de règles ; la plus basse vient en premier.",
-        "Whether the list holds skills, spells or powers.": "Si la liste contient des compétences, des sorts ou des pouvoirs."
+        "Whether the list holds skills, spells or powers.": "Si la liste contient des compétences, des sorts ou des pouvoirs.",
+        "Check out": "Enregistrer le départ",
+        "Checked out": "Parti",
+        "Checked out {day} {time}": "Parti {day} {time}",
+        "On site now: {count}": "Sur place maintenant : {count}",
+        "Checked Out At": "Départ enregistré le",
+        "Checked Out By": "Départ enregistré par"
     },
     "nplurals=2; plural=(n != 1);"
 )

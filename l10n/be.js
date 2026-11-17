@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мой аркуш персанажа",
         "Open sheet": "Адкрыць аркуш",
-        "Check out": "Зарэгістраваць ад'езд",
-        "Checked out": "Выехаў",
-        "Checked out {day} {time}": "Выехаў {day} {time}",
-        "On site now: {count}": "Цяпер на месцы: {count}",
-        "Checked Out At": "Ад'езд зафіксаваны",
-        "Checked Out By": "Ад'езд зафіксаваў",
+        "Language": "Мова",
+        "Could not change the language.": "Не ўдалося змяніць мову.",
         "History entry": "Запіс гісторыі",
         "How the date is told in the world": "Як дата называецца ў свеце",
         "In-game date": "Дата ў гульні",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Свет, да якога належыць гэты спіс. Пуста азначае агульны для ўсіх светаў.",
         "What the list is for, shown in the rulebook.": "Для чаго патрэбны спіс, паказваецца ў кнізе правілаў.",
         "Where the list comes in the rulebook; lower comes first.": "Дзе спіс стаіць у кнізе правілаў; меншае значэнне ідзе першым.",
-        "Whether the list holds skills, spells or powers.": "Ці змяшчае спіс навыкі, заклёны або сілы."
+        "Whether the list holds skills, spells or powers.": "Ці змяшчае спіс навыкі, заклёны або сілы.",
+        "Check out": "Зарэгістраваць ад'езд",
+        "Checked out": "Выехаў",
+        "Checked out {day} {time}": "Выехаў {day} {time}",
+        "On site now: {count}": "Цяпер на месцы: {count}",
+        "Checked Out At": "Ад'езд зафіксаваны",
+        "Checked Out By": "Ад'езд зафіксаваў"
     },
     "nplurals=2; plural=(n != 1);"
 )

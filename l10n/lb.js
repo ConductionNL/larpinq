@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mäi Personnageblat",
         "Open sheet": "Blat opmaachen",
-        "Check out": "Ofmellen",
-        "Checked out": "Ofgemellt",
-        "Checked out {day} {time}": "Ofgemellt {day} {time}",
-        "On site now: {count}": "Elo op der Plaz: {count}",
-        "Checked Out At": "Ofgemellt den",
-        "Checked Out By": "Ofgemellt vun",
+        "Language": "Sprooch",
+        "Could not change the language.": "D'Sprooch konnt net geännert ginn.",
         "History entry": "Geschichtsentrag",
         "How the date is told in the world": "Wéi den Datum an der Welt genannt gëtt",
         "In-game date": "Datum am Spill",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "D'Welt, zu där dës Lëscht gehéiert. Eidel heescht vun alle Welte gedeelt.",
         "What the list is for, shown in the rulebook.": "Wofir d'Lëscht ass, am Reegelbuch gewisen.",
         "Where the list comes in the rulebook; lower comes first.": "Wou d'Lëscht am Reegelbuch steet; méi niddreg kënnt als éischt.",
-        "Whether the list holds skills, spells or powers.": "Ob d'Lëscht Fäegkeeten, Zauberspréch oder Kräften enthält."
+        "Whether the list holds skills, spells or powers.": "Ob d'Lëscht Fäegkeeten, Zauberspréch oder Kräften enthält.",
+        "Check out": "Ofmellen",
+        "Checked out": "Ofgemellt",
+        "Checked out {day} {time}": "Ofgemellt {day} {time}",
+        "On site now: {count}": "Elo op der Plaz: {count}",
+        "Checked Out At": "Ofgemellt den",
+        "Checked Out By": "Ofgemellt vun"
     },
     "nplurals=2; plural=(n != 1);"
 )

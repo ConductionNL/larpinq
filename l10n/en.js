@@ -858,12 +858,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "My character sheet",
         "Open sheet": "Open sheet",
-        "Check out": "Check out",
-        "Checked out": "Checked out",
-        "Checked out {day} {time}": "Checked out {day} {time}",
-        "On site now: {count}": "On site now: {count}",
-        "Checked Out At": "Checked Out At",
-        "Checked Out By": "Checked Out By",
+        "Language": "Language",
+        "Could not change the language.": "Could not change the language.",
         "History entry": "History entry",
         "How the date is told in the world": "How the date is told in the world",
         "In-game date": "In-game date",
@@ -877,7 +873,13 @@ OC.L10N.register(
         "Gold pieces the item costs": "Gold pieces the item costs",
         "Silver pieces the item costs": "Silver pieces the item costs",
         "Copper pieces the item costs": "Copper pieces the item costs",
-        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page"
+        "What the item costs in in-game money; a character buys it from the character page": "What the item costs in in-game money; a character buys it from the character page",
+        "Check out": "Check out",
+        "Checked out": "Checked out",
+        "Checked out {day} {time}": "Checked out {day} {time}",
+        "On site now: {count}": "On site now: {count}",
+        "Checked Out At": "Checked Out At",
+        "Checked Out By": "Checked Out By"
     },
     "nplurals=2; plural=(n != 1);"
 )

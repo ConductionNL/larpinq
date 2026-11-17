@@ -863,12 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fișa personajului meu",
         "Open sheet": "Deschide fișa",
-        "Check out": "Înregistrează plecarea",
-        "Checked out": "Plecat",
-        "Checked out {day} {time}": "Plecat {day} {time}",
-        "On site now: {count}": "Acum la fața locului: {count}",
-        "Checked Out At": "Plecare înregistrată la",
-        "Checked Out By": "Plecare înregistrată de",
+        "Language": "Limbă",
+        "Could not change the language.": "Limba nu a putut fi schimbată.",
         "History entry": "Intrare de istorie",
         "How the date is told in the world": "Cum este spusă data în lume",
         "In-game date": "Data în joc",
@@ -908,7 +904,13 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Lumea căreia îi aparține această listă. Gol înseamnă partajată de toate lumile.",
         "What the list is for, shown in the rulebook.": "La ce servește lista, afișat în cartea de reguli.",
         "Where the list comes in the rulebook; lower comes first.": "Unde apare lista în cartea de reguli; cea mai mică vine prima.",
-        "Whether the list holds skills, spells or powers.": "Dacă lista conține abilități, vrăji sau puteri."
+        "Whether the list holds skills, spells or powers.": "Dacă lista conține abilități, vrăji sau puteri.",
+        "Check out": "Înregistrează plecarea",
+        "Checked out": "Plecat",
+        "Checked out {day} {time}": "Plecat {day} {time}",
+        "On site now: {count}": "Acum la fața locului: {count}",
+        "Checked Out At": "Plecare înregistrată la",
+        "Checked Out By": "Plecare înregistrată de"
     },
     "plurals": {}
 }

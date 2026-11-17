@@ -863,12 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "A minha ficha de personagem",
         "Open sheet": "Abrir ficha",
-        "Check out": "Registar saída",
-        "Checked out": "Saiu",
-        "Checked out {day} {time}": "Saiu {day} {time}",
-        "On site now: {count}": "No local agora: {count}",
-        "Checked Out At": "Saída registada em",
-        "Checked Out By": "Saída registada por",
+        "Language": "Idioma",
+        "Could not change the language.": "Não foi possível alterar o idioma.",
         "History entry": "Entrada de história",
         "How the date is told in the world": "Como a data é dita no mundo",
         "In-game date": "Data no jogo",
@@ -908,7 +904,13 @@
         "The world this list belongs to. Empty means shared across all worlds.": "O mundo a que esta lista pertence. Vazio significa partilhada por todos os mundos.",
         "What the list is for, shown in the rulebook.": "Para que serve a lista, mostrado no livro de regras.",
         "Where the list comes in the rulebook; lower comes first.": "Onde a lista aparece no livro de regras; o valor mais baixo vem primeiro.",
-        "Whether the list holds skills, spells or powers.": "Se a lista contém perícias, feitiços ou poderes."
+        "Whether the list holds skills, spells or powers.": "Se a lista contém perícias, feitiços ou poderes.",
+        "Check out": "Registar saída",
+        "Checked out": "Saiu",
+        "Checked out {day} {time}": "Saiu {day} {time}",
+        "On site now: {count}": "No local agora: {count}",
+        "Checked Out At": "Saída registada em",
+        "Checked Out By": "Saída registada por"
     },
     "plurals": {}
 }

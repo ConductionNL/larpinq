@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Persónublaðið mitt",
         "Open sheet": "Opna blað",
-        "Check out": "Skrá brottför",
-        "Checked out": "Farinn",
-        "Checked out {day} {time}": "Farinn {day} {time}",
-        "On site now: {count}": "Á staðnum núna: {count}",
-        "Checked Out At": "Brottför skráð þann",
-        "Checked Out By": "Brottför skráð af",
+        "Language": "Tungumál",
+        "Could not change the language.": "Ekki tókst að breyta tungumálinu.",
         "History entry": "Söguleg færsla",
         "How the date is told in the world": "Hvernig dagsetningin er sögð í heiminum",
         "In-game date": "Dagsetning í leiknum",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Heimurinn sem þessi listi tilheyrir. Autt þýðir sameiginlegur öllum heimum.",
         "What the list is for, shown in the rulebook.": "Til hvers listinn er, birt í reglubókinni.",
         "Where the list comes in the rulebook; lower comes first.": "Hvar listinn kemur í reglubókinni; lægra kemur fyrst.",
-        "Whether the list holds skills, spells or powers.": "Hvort listinn inniheldur hæfni, galdra eða krafta."
+        "Whether the list holds skills, spells or powers.": "Hvort listinn inniheldur hæfni, galdra eða krafta.",
+        "Check out": "Skrá brottför",
+        "Checked out": "Farinn",
+        "Checked out {day} {time}": "Farinn {day} {time}",
+        "On site now: {count}": "Á staðnum núna: {count}",
+        "Checked Out At": "Brottför skráð þann",
+        "Checked Out By": "Brottför skráð af"
     },
     "nplurals=2; plural=(n != 1);"
 )

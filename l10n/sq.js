@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Fleta e personazhit tim",
         "Open sheet": "Hap fletën",
-        "Check out": "Regjistro largimin",
-        "Checked out": "Është larguar",
-        "Checked out {day} {time}": "U largua {day} {time}",
-        "On site now: {count}": "Tani në vend: {count}",
-        "Checked Out At": "Largimi u regjistrua më",
-        "Checked Out By": "Largimi u regjistrua nga",
+        "Language": "Gjuha",
+        "Could not change the language.": "Gjuha nuk u ndryshua dot.",
         "History entry": "Hyrje historie",
         "How the date is told in the world": "Si thuhet data në botë",
         "In-game date": "Data në lojë",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Bota së cilës i përket kjo listë. Bosh do të thotë e përbashkët për të gjitha botët.",
         "What the list is for, shown in the rulebook.": "Për çfarë shërben lista, shfaqet në librin e rregullave.",
         "Where the list comes in the rulebook; lower comes first.": "Ku del lista në librin e rregullave; më e ulëta vjen e para.",
-        "Whether the list holds skills, spells or powers.": "Nëse lista përmban aftësi, magji apo fuqi."
+        "Whether the list holds skills, spells or powers.": "Nëse lista përmban aftësi, magji apo fuqi.",
+        "Check out": "Regjistro largimin",
+        "Checked out": "Është larguar",
+        "Checked out {day} {time}": "U largua {day} {time}",
+        "On site now: {count}": "Tani në vend: {count}",
+        "Checked Out At": "Largimi u regjistrua më",
+        "Checked Out By": "Largimi u regjistrua nga"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
         "Open sheet": "Otvori list",
-        "Check out": "Prijavi odlazak",
-        "Checked out": "Otišao",
-        "Checked out {day} {time}": "Otišao {day} {time}",
-        "On site now: {count}": "Sada na lokaciji: {count}",
-        "Checked Out At": "Odlazak zabilježen",
-        "Checked Out By": "Odlazak zabilježio",
+        "Language": "Jezik",
+        "Could not change the language.": "Jezik nije bilo moguće promijeniti.",
         "History entry": "Povijesni zapis",
         "How the date is told in the world": "Kako se datum zove u svijetu",
         "In-game date": "Datum u igri",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Svijet kojem ovaj popis pripada. Prazno znači zajednički za sve svjetove.",
         "What the list is for, shown in the rulebook.": "Čemu popis služi, prikazano u knjizi pravila.",
         "Where the list comes in the rulebook; lower comes first.": "Gdje popis stoji u knjizi pravila; manje ide prvo.",
-        "Whether the list holds skills, spells or powers.": "Sadrži li popis vještine, čarolije ili moći."
+        "Whether the list holds skills, spells or powers.": "Sadrži li popis vještine, čarolije ili moći.",
+        "Check out": "Prijavi odlazak",
+        "Checked out": "Otišao",
+        "Checked out {day} {time}": "Otišao {day} {time}",
+        "On site now: {count}": "Sada na lokaciji: {count}",
+        "Checked Out At": "Odlazak zabilježen",
+        "Checked Out By": "Odlazak zabilježio"
     },
     "nplurals=2; plural=(n != 1);"
 )

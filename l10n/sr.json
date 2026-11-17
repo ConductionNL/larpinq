@@ -863,12 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мој лист лика",
         "Open sheet": "Отвори лист",
-        "Check out": "Пријави одлазак",
-        "Checked out": "Отишао",
-        "Checked out {day} {time}": "Отишао {day} {time}",
-        "On site now: {count}": "Сада на локацији: {count}",
-        "Checked Out At": "Одлазак забележен",
-        "Checked Out By": "Одлазак забележио",
+        "Language": "Језик",
+        "Could not change the language.": "Језик није било могуће променити.",
         "History entry": "Историјски запис",
         "How the date is told in the world": "Како се датум зове у свету",
         "In-game date": "Датум у игри",
@@ -908,7 +904,13 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Свет коме ова листа припада. Празно значи заједничка за све светове.",
         "What the list is for, shown in the rulebook.": "Чему листа служи, приказано у књизи правила.",
         "Where the list comes in the rulebook; lower comes first.": "Где листа стоји у књизи правила; мање иде прво.",
-        "Whether the list holds skills, spells or powers.": "Да ли листа садржи вештине, чини или моћи."
+        "Whether the list holds skills, spells or powers.": "Да ли листа садржи вештине, чини или моћи.",
+        "Check out": "Пријави одлазак",
+        "Checked out": "Отишао",
+        "Checked out {day} {time}": "Отишао {day} {time}",
+        "On site now: {count}": "Сада на локацији: {count}",
+        "Checked Out At": "Одлазак забележен",
+        "Checked Out By": "Одлазак забележио"
     },
     "plurals": {}
 }

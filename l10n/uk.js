@@ -864,12 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мій аркуш персонажа",
         "Open sheet": "Відкрити аркуш",
-        "Check out": "Зареєструвати відбуття",
-        "Checked out": "Відбув",
-        "Checked out {day} {time}": "Відбув {day} {time}",
-        "On site now: {count}": "Зараз на місці: {count}",
-        "Checked Out At": "Відбуття зафіксовано",
-        "Checked Out By": "Відбуття зафіксував",
+        "Language": "Мова",
+        "Could not change the language.": "Не вдалося змінити мову.",
         "History entry": "Запис історії",
         "How the date is told in the world": "Як дата називається у світі",
         "In-game date": "Дата в грі",
@@ -909,7 +905,13 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Світ, до якого належить цей список. Порожньо означає спільний для всіх світів.",
         "What the list is for, shown in the rulebook.": "Для чого призначений список, показується в книзі правил.",
         "Where the list comes in the rulebook; lower comes first.": "Де список стоїть у книзі правил; менше значення йде першим.",
-        "Whether the list holds skills, spells or powers.": "Чи містить список навички, закляття або сили."
+        "Whether the list holds skills, spells or powers.": "Чи містить список навички, закляття або сили.",
+        "Check out": "Зареєструвати відбуття",
+        "Checked out": "Відбув",
+        "Checked out {day} {time}": "Відбув {day} {time}",
+        "On site now: {count}": "Зараз на місці: {count}",
+        "Checked Out At": "Відбуття зафіксовано",
+        "Checked Out By": "Відбуття зафіксував"
     },
     "nplurals=2; plural=(n != 1);"
 )
