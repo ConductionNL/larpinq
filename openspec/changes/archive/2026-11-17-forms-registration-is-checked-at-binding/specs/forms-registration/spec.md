@@ -1,8 +1,3 @@
-# forms-registration Delta: forms-registration-is-checked-at-binding
-
-**Status**: draft
-**Scope**: Nextcloud Forms bindings for event registration. Implements hydra `form-submits-into-its-destination-object`.
-
 ## ADDED Requirements
 
 ### Requirement: A Forms binding MUST be valid against the registration schema when it is made

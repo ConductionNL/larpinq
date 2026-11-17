@@ -69,7 +69,7 @@ class CharacterStatsController extends Controller {
 	 *
 	 * @param string $id The character UUID.
 	 *
-	 * @return JSONResponse `{abilities: [...], xp: {...}|null}`, or 404.
+	 * @return JSONResponse `{abilities: [...], xp: {..., history: [...]}|null}`, or 404.
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -77,6 +77,7 @@ class CharacterStatsController extends Controller {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 *
 	 * @spec openspec/specs/character-management/spec.md
+	 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
 	 *
 	 * @no-admin-idor-exempt OR-delegated read via
 	 * RegisterObjectFetcher::getObject (ADR-022), which reads with RBAC on as
@@ -94,6 +95,13 @@ class CharacterStatsController extends Controller {
 			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
 		}
 
-		return new JSONResponse(data: $this->statSheet->present(stats: $this->statSheet->stats(character: $character)));
+		$sheet = $this->statSheet->present(stats: $this->statSheet->stats(character: $character));
+		if ($sheet['xp'] !== null) {
+			// REQ-CSP-006: the refunds, read from the audit trail. Reading them
+			// changes nothing: XP left is the engine's figure above.
+			$sheet['xp']['history'] = $this->statSheet->xpHistory(character: $character);
+		}
+
+		return new JSONResponse(data: $sheet);
 	}//end show()
 }//end class
