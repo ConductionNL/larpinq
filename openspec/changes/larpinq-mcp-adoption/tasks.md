@@ -36,8 +36,8 @@
 - **files**: `CHANGELOG.md`
 - **acceptance_criteria**:
   - GIVEN `CHANGELOG.md` WHEN this change is applied THEN a new entry describes the 9-schema MCP dialect adoption (6 read-only + 3 bounded writes) under an "Unreleased" or next-version heading
-- [ ] Implement
-- [ ] Test
+- [x] Implement
+- [x] Test
 
 ## Verification
 - [ ] All tasks checked off

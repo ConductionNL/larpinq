@@ -864,6 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Minu tegelaskaart",
         "Open sheet": "Ava kaart",
+        "Language": "Keel",
+        "Could not change the language.": "Keelt ei õnnestunud muuta.",
         "History entry": "Ajaloo kirje",
         "How the date is told in the world": "Kuidas kuupäeva maailmas öeldakse",
         "In-game date": "Mängusisene kuupäev",

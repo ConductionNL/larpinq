@@ -863,6 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Oma hahmolomake",
         "Open sheet": "Avaa lomake",
+        "Language": "Kieli",
+        "Could not change the language.": "Kieltä ei voitu vaihtaa.",
         "History entry": "Historiamerkintä",
         "How the date is told in the world": "Miten päivämäärä sanotaan maailmassa",
         "In-game date": "Pelinsisäinen päivämäärä",
