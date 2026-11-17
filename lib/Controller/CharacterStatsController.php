@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\CharacterStatSheet;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
@@ -50,16 +50,16 @@ class CharacterStatsController extends Controller {
 	 *
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
-	 * @param RegisterObjectFetcher $objectFetcher Reads the character as the calling user.
-	 * @param CharacterStatSheet $statSheet Computes and shapes the sheet.
+	 * @param RegisterObjectFetcherInterface $objectFetcher Reads the character as the calling user.
+	 * @param CharacterStatSheetInterface $statSheet Computes and shapes the sheet.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly CharacterStatSheet $statSheet,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
+		private readonly CharacterStatSheetInterface $statSheet,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()

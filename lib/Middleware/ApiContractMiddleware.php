@@ -26,8 +26,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Middleware;
 
-use OCA\Larpinq\AppInfo\Application;
 use OCA\Larpinq\Middleware\Support\ApiPathAliases;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
@@ -144,7 +144,7 @@ class ApiContractMiddleware extends Middleware {
 			return $response;
 		}
 
-		$response->addHeader(name: 'API-Version', value: $this->appManager->getAppVersion(appId: Application::APP_ID));
+		$response->addHeader(name: 'API-Version', value: $this->appManager->getAppVersion(appId: AppIdentity::APP_ID));
 		$this->announceSuccessor(response: $response);
 		if ($response instanceof JSONResponse) {
 			$this->decorateError(response: $response);

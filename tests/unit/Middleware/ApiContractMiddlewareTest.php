@@ -289,6 +289,85 @@ class ApiContractMiddlewareTest extends TestCase {
 	}//end testStatusBelow400IsNotAProblem()
 
 	/**
+	 * An explicit `detail` is kept as it was, in the detail slot ahead of `error` and `message`.
+	 *
+	 * @return void
+	 */
+	public function testExplicitDetailIsKeptInTheDetailSlot(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['error' => 'E', 'message' => 'M', 'detail' => 'D'], statusCode: 409)
+		);
+
+		$this->assertSame(
+			expected: [
+				'type'    => 'about:blank',
+				'title'   => 'Conflict',
+				'status'  => 409,
+				'detail'  => 'D',
+				'error'   => 'E',
+				'message' => 'M',
+			],
+			actual: $response->getData()
+		);
+	}//end testExplicitDetailIsKeptInTheDetailSlot()
+
+	/**
+	 * A JSON error whose body is not an array keeps its body and its JSON content type.
+	 *
+	 * @return void
+	 */
+	public function testNonArrayErrorBodyIsLeftAlone(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: 'plain failure', statusCode: 500)
+		);
+		$headers  = $this->headersOf(response: $response);
+
+		$this->assertSame(expected: 'plain failure', actual: $response->getData());
+		$this->assertSame(expected: 'application/json; charset=utf-8', actual: $headers['Content-Type']);
+		$this->assertSame(expected: '1.2.3', actual: $headers['API-Version']);
+	}//end testNonArrayErrorBodyIsLeftAlone()
+
+	/**
+	 * A body that uses `type` or `title` with another value is not rewritten.
+	 *
+	 * @return void
+	 */
+	public function testConflictingTypeOrTitleIsLeftAlone(): void {
+		$typed = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['type' => 'validation', 'error' => 'Bad'], statusCode: 400)
+		);
+		$this->assertSame(expected: ['type' => 'validation', 'error' => 'Bad'], actual: $typed->getData());
+		$this->assertSame(expected: 'application/json; charset=utf-8', actual: $this->headersOf(response: $typed)['Content-Type']);
+
+		$titled = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['title' => 'Oops', 'status' => 404], statusCode: 404)
+		);
+		$this->assertSame(expected: ['title' => 'Oops', 'status' => 404], actual: $titled->getData());
+	}//end testConflictingTypeOrTitleIsLeftAlone()
+
+	/**
+	 * A body whose problem members agree with the status is completed, keeping its own order after them.
+	 *
+	 * @return void
+	 */
+	public function testAgreeingStatusMemberIsCompleted(): void {
+		$response = $this->decorate(
+			path: '/apps/larpinq/api/v1/things',
+			response: new JSONResponse(data: ['status' => 401, 'message' => 'Log in'], statusCode: 401)
+		);
+
+		$this->assertSame(
+			expected: ['type' => 'about:blank', 'title' => 'Unauthorized', 'status' => 401, 'detail' => 'Log in', 'message' => 'Log in'],
+			actual: $response->getData()
+		);
+		$this->assertSame(expected: ApiContractMiddleware::PROBLEM_CONTENT_TYPE, actual: $this->headersOf(response: $response)['Content-Type']);
+	}//end testAgreeingStatusMemberIsCompleted()
+
+	/**
 	 * The headers a response set, read without the server container that
 	 * Response::getHeaders() needs.
 	 *

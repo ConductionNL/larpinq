@@ -249,6 +249,10 @@ export default {
 	font-size: 0.9em;
 }
 
+.character-stat-sheet {
+	container-type: inline-size;
+}
+
 .character-stat-sheet__list {
 	list-style: none;
 	padding: 0;
@@ -283,5 +287,26 @@ export default {
 
 .character-stat-sheet__change--positive {
 	color: var(--color-success-text, var(--color-success));
+}
+
+/*
+ * Phone layout (admin-phone-friendly-pages, REQ-APF-001): each ability is one
+ * stacked row; long names wrap instead of pushing the page sideways, and a
+ * row is a full tap target.
+ */
+@container (max-width: 600px) {
+	.character-stat-sheet__row {
+		min-height: 44px;
+		align-items: center;
+	}
+
+	.character-stat-sheet__name {
+		overflow-wrap: anywhere;
+	}
+
+	.character-stat-sheet__modifiers {
+		padding-inline-start: calc(var(--default-grid-baseline, 4px) * 4);
+		overflow-wrap: anywhere;
+	}
 }
 </style>

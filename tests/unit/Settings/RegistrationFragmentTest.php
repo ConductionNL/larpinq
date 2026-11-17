@@ -119,18 +119,20 @@ class RegistrationFragmentTest extends TestCase {
 			$this->assertContains(needle: $rule, haystack: $registration['authorization']['read']);
 		}
 		$this->assertSame(expected: ['gamemasters'], actual: $registration['authorization']['create']);
-		$this->assertSame(expected: [['group' => 'gamemasters'], $own], actual: $registration['authorization']['update']);
+		// Treasurers update a registration too, for its payment state alone (admin-staff-roles-and-invites D2).
+		$this->assertSame(expected: ['larpinq-treasurers', ['group' => 'gamemasters'], $own], actual: $registration['authorization']['update']);
 		$this->assertSame(expected: ['gamemasters'], actual: $registration['authorization']['delete']);
 		foreach (array_keys($registration['properties']) as $name) {
 			// The player's own choices (registration-ticket-types-and-options adds the ticket type, options and code;
 			// registration-payments-through-shillinq adds the invoice request).
 			if (in_array($name, ['character', 'ticketType', 'options', 'code', 'invoiceRequested'], true) === true) {
-				$this->assertArrayNotHasKey(key: 'authorization', array: $registration['properties'][$name]);
+				// The same rule as the row's own update, so a treasurer cannot change them.
+				$this->assertSame(expected: ['gamemasters', $own], actual: $registration['properties'][$name]['authorization']['update'] ?? null, message: "the player changes {$name}");
 				continue;
 			}
 
 			$this->assertSame(
-				expected: ['gamemasters'],
+				expected: $name === 'paymentState' ? ['larpinq-treasurers', 'gamemasters'] : ['gamemasters'],
 				actual: $registration['properties'][$name]['authorization']['update'] ?? null,
 				message: "only game masters change {$name}"
 			);
