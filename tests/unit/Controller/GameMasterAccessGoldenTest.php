@@ -161,6 +161,11 @@ class GameMasterAccessGoldenTest extends TestCase {
 	private function recording(string $type): MockObject {
 		$mock = $this->createMock(originalClassName: $type);
 		$short = substr((string)strrchr('\\'.$type, '\\'), 1);
+		if (str_starts_with($type, 'OCA\\Larpinq\\Kernel\\Contracts\\') === true) {
+			// A Kernel contract records under the name of the class that implements it.
+			$short = substr($short, 0, -strlen('Interface'));
+		}
+
 		$mock->method($this->anything())->will($this->recorder(name: $short));
 		return $mock;
 	}//end recording()

@@ -416,6 +416,50 @@ class RegistrationServiceTest extends TestCase {
 	}//end testAGameMasterAcceptsWhenAPlaceIsFreeAndWaitlistsWhenNot()
 
 	/**
+	 * REQ-EQC-001: an accepted registration gets a check-in code; a pending or waitlisted one does not.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 */
+	public function testAnAcceptedRegistrationGetsACheckinCode(): void {
+		$this->event(capacity: 1, approval: true);
+		$anna = $this->signUp(player: self::ANNA, uid: 'anna');
+		$sanne = $this->signUp(player: self::SANNE, uid: 'sanne');
+		$this->assertArrayNotHasKey('checkinCode', $this->registration(id: $anna['id']), 'a pending registration has no code');
+
+		$this->signedIn = 'gm';
+		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $anna['id']);
+		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $sanne['id']);
+
+		$code = (string)($this->registration(id: $anna['id'])['checkinCode'] ?? '');
+		$this->assertMatchesRegularExpression('/^[A-Z2-7]{26}$/', $code);
+		$this->assertSame('waitlisted', $this->registration(id: $sanne['id'])['status']);
+		$this->assertSame('', (string)($this->registration(id: $sanne['id'])['checkinCode'] ?? ''), 'a waitlisted registration has no code');
+
+		// Leaving and coming back keeps the code it already has.
+		$this->fetcher()->saveObject('registration', ['status' => 'declined'], $anna['id']);
+		$this->fetcher()->saveObject('registration', ['status' => 'accepted'], $anna['id']);
+		$this->assertSame($code, $this->registration(id: $anna['id'])['checkinCode']);
+	}//end testAnAcceptedRegistrationGetsACheckinCode()
+
+	/**
+	 * REQ-EQC-001: a sign-up accepted straight away gets its code at once, each one different.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 */
+	public function testAnAutomaticallyAcceptedSignUpGetsItsOwnCode(): void {
+		$first = $this->registration(id: $this->signUp(player: self::ANNA, uid: 'anna')['id']);
+		$second = $this->registration(id: $this->signUp(player: self::PIETER, uid: 'pieter')['id']);
+
+		$this->assertSame('accepted', $first['status']);
+		$this->assertMatchesRegularExpression('/^[A-Z2-7]{26}$/', $first['checkinCode']);
+		$this->assertNotSame($first['checkinCode'], $second['checkinCode']);
+	}//end testAnAutomaticallyAcceptedSignUpGetsItsOwnCode()
+
+	/**
 	 * A declined registration is stamped and takes no place.
 	 *
 	 * @return void

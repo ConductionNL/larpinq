@@ -29,7 +29,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Kernel\Contracts\SettingsServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
@@ -84,7 +84,7 @@ class SettingsController extends Controller {
 	 * @param IRequest $request The request.
 	 * @param ContainerInterface $container The container.
 	 * @param IAppManager $appManager The app manager.
-	 * @param SettingsService $settingsService The settings service.
+	 * @param SettingsServiceInterface $settingsService The settings service.
 	 * @param CallerAccess $callerAccess The signed-in caller and the admin check.
 	 * @param LoggerInterface $logger The logger.
 	 *
@@ -94,7 +94,7 @@ class SettingsController extends Controller {
 		IRequest $request,
 		private readonly ContainerInterface $container,
 		private readonly IAppManager $appManager,
-		private readonly SettingsService $settingsService,
+		private readonly SettingsServiceInterface $settingsService,
 		private readonly CallerAccess $callerAccess,
 		private readonly LoggerInterface $logger,
 	) {

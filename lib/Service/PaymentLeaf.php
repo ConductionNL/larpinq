@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\PaymentLeafInterface;
 use OCP\IAppConfig;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -42,7 +43,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class PaymentLeaf {
+class PaymentLeaf implements PaymentLeafInterface {
 
 	/**
 	 * The leaf id shillinq registers.

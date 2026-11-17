@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\RegistrationPaymentServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\IGroupManager;
 use Psr\Log\LoggerInterface;
@@ -43,7 +44,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationPaymentService {
+class RegistrationPaymentService implements RegistrationPaymentServiceInterface {
 
 	public const NOT_NEEDED = 'not-needed';
 

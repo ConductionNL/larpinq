@@ -26,8 +26,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
-use OCA\Larpinq\Service\CharacterStatSheet;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -60,16 +60,16 @@ class CharacterBuildsController extends Controller {
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
-	 * @param RegisterObjectFetcher $objectFetcher Reads the build and its character as the calling user.
-	 * @param CharacterStatSheet $statSheet The stat sheet and requirement report of the build.
+	 * @param RegisterObjectFetcherInterface $objectFetcher Reads the build and its character as the calling user.
+	 * @param CharacterStatSheetInterface $statSheet The stat sheet and requirement report of the build.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly CharacterStatSheet $statSheet,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
+		private readonly CharacterStatSheetInterface $statSheet,
 		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);

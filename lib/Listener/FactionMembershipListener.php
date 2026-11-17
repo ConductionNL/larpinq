@@ -28,7 +28,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\Support\AppIdentity;
-use OCA\Larpinq\Service\CharacterConnectionGuard;
+use OCA\Larpinq\Kernel\Contracts\CharacterConnectionGuardInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -73,7 +73,7 @@ class FactionMembershipListener implements IEventListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param CharacterConnectionGuard $guard The rules.
+	 * @param CharacterConnectionGuardInterface $guard The rules.
 	 * @param IAppConfig $config Config (schema id resolution).
 	 * @param IUserSession $userSession The current user session.
 	 * @param IGroupManager $groupManager The group manager (game master check).
@@ -82,7 +82,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly CharacterConnectionGuard $guard,
+		private readonly CharacterConnectionGuardInterface $guard,
 		private readonly IAppConfig $config,
 		private readonly IUserSession $userSession,
 		private readonly IGroupManager $groupManager,
@@ -105,7 +105,7 @@ class FactionMembershipListener implements IEventListener {
 	 * @spec openspec/specs/character-connections/spec.md
 	 */
 	public function handle(Event $event): void {
-		if ($this->isPreWrite(event: $event) === false) {
+		if (PreWriteEvent::isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -144,20 +144,6 @@ class FactionMembershipListener implements IEventListener {
 
 		return $this->verdict(kind: $kind, write: [(array)$entity->getObject(), $old, $userId]);
 	}//end collectVeto()
-
-	/**
-	 * Whether the event is one of OpenRegister's vetoable pre-write events.
-	 *
-	 * @param Event $event The dispatched event.
-	 *
-	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
-	 *
-	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
-	 */
-	private function isPreWrite(Event $event): bool {
-		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
-			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
-	}//end isPreWrite()
 
 	/**
 	 * The signed-in user whose writes the guard checks, or null when none is checked.
