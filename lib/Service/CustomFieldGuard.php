@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\CustomFieldGuardInterface;
+
 /**
  * The custom field check the character pre-write listener runs
  * (characters-custom-fields REQ-CCF-004).
@@ -30,7 +32,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/character-custom-fields/spec.md
  */
-class CustomFieldGuard {
+class CustomFieldGuard implements CustomFieldGuardInterface {
 
 	/**
 	 * The most definitions one world is read with.

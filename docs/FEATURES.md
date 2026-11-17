@@ -33,7 +33,7 @@ Players submit character backgrounds for game master review. Built-in approval w
 Track experience points (XP) and character advancement. Define XP costs for skills and abilities. Restrictions are enforced server-authoritatively: a character write that adds a skill with unmet prerequisites, or that drives the computed XP ability below zero, is rejected at the OpenRegister write boundary with an itemised list of what is unmet — unless a game master attaches an explicit, audited override (with a reason). The same checks are available on demand via `GET /api/characters/{id}/requirement-report`.
 
 ### PDF Character Sheets
-Generate printable PDF character sheets with all stats, skills, items, and background information. Ready for table use at events.
+Generate printable PDF character sheets with all stats, skills, items, and background information. Ready for table use at events. Game masters and administrators can download any character's sheet; a player can download the sheet of a character they own (its `ownerUid`), without the game master's private notes.
 
 ### GM Run-sheet / Cast List
 Game masters download a per-event run-sheet (cast list) as a PDF: the whole cast on the field with player names, types, approval status, computed stats, conditions, unique items in play, and GM notes — sorted by character name. Rendered through DocuDesk on the same pipeline as the character sheet, GM-group restricted, and degrades gracefully when DocuDesk is not installed.

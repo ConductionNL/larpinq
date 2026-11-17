@@ -87,11 +87,14 @@ class SettingsServiceTest extends TestCase {
 		// The event messages are read and written by this key.
 		$this->assertArrayHasKey(key: 'eventmessage_schema', array: $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 22 slugs (9 original + attendance + lorepage + characterfield
+		// for all 24 slugs (9 original + attendance + lorepage + characterfield
 		// + faction + factionmember + relationship + characterbuild + xpaward + registration
-		// + tickettype + registrationoption + accesscode + eventmessage)
-		// plus the global 'register' key = 1 + 22*3 = 67.
-		$this->assertCount(expectedCount: 67, haystack: $result);
+		// + tickettype + registrationoption + accesscode + eventcarerecord + staffinvite + eventmessage)
+		// plus the global 'register' key = 1 + 24*3 = 73.
+		$this->assertArrayHasKey(key: 'staffinvite_schema', array: $result);
+		$this->assertArrayHasKey(key: 'eventcarerecord_schema', array: $result);
+		$this->assertArrayHasKey(key: 'eventmessage_schema', array: $result);
+		$this->assertCount(expectedCount: 73, haystack: $result);
 	}
 
 	/**
@@ -168,7 +171,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray(actual: $result);
-		$this->assertCount(expectedCount: 67, haystack: $result);
+		$this->assertCount(expectedCount: 73, haystack: $result);
 	}
 
 	/**

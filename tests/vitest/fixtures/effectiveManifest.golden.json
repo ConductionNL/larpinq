@@ -103,6 +103,13 @@
 					"icon": "MagicStaff",
 					"route": "Effects",
 					"order": 80
+				},
+				{
+					"id": "SkillLists",
+					"label": "Skill lists",
+					"icon": "MagicStaff",
+					"route": "SkillLists",
+					"order": 57
 				}
 			]
 		},
@@ -140,6 +147,13 @@
 					"icon": "BookOpenVariantOutline",
 					"route": "Lore",
 					"order": 50
+				},
+				{
+					"id": "Rulebook",
+					"label": "Rulebook",
+					"icon": "BookOpenVariantOutline",
+					"route": "Rulebook",
+					"order": 55
 				},
 				{
 					"id": "MyRegistrations",
@@ -181,7 +195,7 @@
 		},
 		{
 			"id": "StoreMenu",
-			"label": "Store",
+			"label": "Marketplace",
 			"icon": "StoreOutline",
 			"route": "Store",
 			"section": "footer",
@@ -210,6 +224,14 @@
 			"route": "Flows",
 			"section": "settings",
 			"order": 96
+		},
+		{
+			"id": "StaffMenu",
+			"label": "Staff",
+			"icon": "AccountGroupOutline",
+			"route": "Staff",
+			"section": "settings",
+			"order": 94
 		},
 		{
 			"id": "MyCharacters",
@@ -250,7 +272,7 @@
 	"pages": [
 		[
 			"Store",
-			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
 		],
 		[
 			"Dashboard",
@@ -282,7 +304,7 @@
 		],
 		[
 			"Skills",
-			"406c9aaede1e622900f770ee452d823865dc4ff327336ad8816e03a70c88b81d"
+			"b1b686e5866ec27c55ae69a5605ca9954312660c1338eb37e524186cdf9afbbb"
 		],
 		[
 			"SkillTree",
@@ -294,7 +316,7 @@
 		],
 		[
 			"Items",
-			"b59d60bb65ec944b116e372abc55adb48d3ce5568116d496d2c03ef37e6573c8"
+			"221da49f33af286e1565c8d10461810e9e1615536eb44b9099e599b1c391a005"
 		],
 		[
 			"ItemDetail",
@@ -318,11 +340,11 @@
 		],
 		[
 			"Events",
-			"31076f408e47da19ffcb18ce6580f59c5e0600d3356c1c028a0e84fd2889bc63"
+			"1f72b008b20b4913306bd728b959c2c3b657c021de101a45494ead361446d2d0"
 		],
 		[
 			"EventDetail",
-			"168965863600a20a8a81f2f6853c112d7a1630d9a896385577e9e7b87799e79b"
+			"0ade6b9efe5a373db762cde835d1acc3ea637b9e2280791c3e7dbe4677692cff"
 		],
 		[
 			"Settings",
@@ -367,6 +389,14 @@
 		[
 			"FlowDetail",
 			"bb3dc4a080270f99df2c5d33a8d33a82478723f31a807d2a5bfa83fb8092ecaf"
+		],
+		[
+			"Staff",
+			"70fee7612033d8709a453da371f535f193e4451e260896b1414e1367a967d6bf"
+		],
+		[
+			"StaffInvite",
+			"f33b6ad2c78dd104750ba6cc42d44df1b7ab5a2eedba8700da2d97ea4a8bc9b3"
 		],
 		[
 			"CharacterFields",
@@ -418,7 +448,7 @@
 		],
 		[
 			"MyRegistrations",
-			"f326769feaabf627a97c2d783155e908ed9d170f2a1dee5f1f90e1a93015077e"
+			"f1ed2f43ab2a58e4cdfe012383f612f44c41259ac8d6c967a103a6bc0650ffab"
 		],
 		[
 			"RegistrationDetail",
@@ -447,6 +477,18 @@
 		[
 			"AccessCodeDetail",
 			"e8c4b0fe1df0b1d886df0e903d5fdb6397003ad5988513b63465b0f1a8dab555"
+		],
+		[
+			"SkillLists",
+			"88521983c1c5d0765e5e80a08cb2b0e0931374b4f0093d17a552879a62e24a14"
+		],
+		[
+			"SkillListDetail",
+			"31db53ebb89f27f979a963e53d4f8ba6089b63ca880c48d58649d715e57e224e"
+		],
+		[
+			"Rulebook",
+			"ef41efd3c49cf916894bcfa7675d4b5dd66b985da4917b63115a1152735a0447"
 		],
 		[
 			"Lore",

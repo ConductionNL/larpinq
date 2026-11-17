@@ -144,7 +144,8 @@ class TicketChoicesFragmentTest extends TestCase {
 		$this->assertSame(expected: 'uuid', actual: $properties['options']['items']['format']);
 		$this->assertSame(expected: 'string', actual: $properties['code']['type']);
 		foreach (['ticketType', 'options', 'code'] as $choice) {
-			$this->assertArrayNotHasKey(key: 'authorization', array: $properties[$choice], message: "a player chooses {$choice} on their own registration");
+			// The row's own update rule, repeated so a treasurer cannot change it (admin-staff-roles-and-invites D2).
+			$this->assertSame(expected: ['gamemasters', ['group' => 'larpers', 'match' => ['playerUid' => '$userId']]], actual: $properties[$choice]['authorization']['update'], message: "a player chooses {$choice} on their own registration");
 		}
 
 		foreach (['lines', 'accessCode'] as $written) {

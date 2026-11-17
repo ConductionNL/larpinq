@@ -13,11 +13,15 @@
 
 ## Phase 2 — Replace mount
 
-- [ ] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
+- [x] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
       `manifest` + `registry` props; drop the legacy `Vue.use(...)` +
       `CnPageRenderer` boilerplate.
   - **acceptance_criteria**: Boot path is `CnAppRoot.mount(...)`; no
     further bespoke setup remains.
+  - Done with the library's one-call boot `mountCnApp(...)`
+    (nextcloud-vue 2.181.0), which builds the router from the manifest
+    and mounts CnAppRoot; App.vue stays the root wrapper for the
+    `#sidebar` and `#user-settings` slots.
 
 - [x] 2.2 Remove `src/customComponents.js`.
   - **acceptance_criteria**: `grep -rn customComponents src/` returns no

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\TicketChoiceService;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
+use OCA\Larpinq\Kernel\Contracts\TicketChoiceServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -49,14 +49,14 @@ class RegistrationChoicesController extends Controller {
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
-	 * @param TicketChoiceService $choices The offer and the counts.
-	 * @param RegisterObjectFetcher $fetcher Reads the registration as the signed-in user.
+	 * @param TicketChoiceServiceInterface $choices The offer and the counts.
+	 * @param RegisterObjectFetcherInterface $fetcher Reads the registration as the signed-in user.
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly TicketChoiceService $choices,
-		private readonly RegisterObjectFetcher $fetcher,
+		private readonly TicketChoiceServiceInterface $choices,
+		private readonly RegisterObjectFetcherInterface $fetcher,
 		private readonly CallerAccess $callerAccess,
 	) {
 		parent::__construct(appName: AppIdentity::APP_ID, request: $request);

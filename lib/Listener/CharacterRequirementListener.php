@@ -29,8 +29,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\CustomFieldGuard;
-use OCA\Larpinq\Service\SkillRequirementService;
+use OCA\Larpinq\Kernel\Contracts\CustomFieldGuardInterface;
+use OCA\Larpinq\Kernel\Contracts\SkillRequirementServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -103,22 +103,22 @@ class CharacterRequirementListener implements IEventListener {
 	/**
 	 * Constructor for CharacterRequirementListener.
 	 *
-	 * @param SkillRequirementService $requirementService The validation service.
+	 * @param SkillRequirementServiceInterface $requirementService The validation service.
 	 * @param IAppConfig $config Config (schema id resolution).
 	 * @param IUserSession $userSession The current user session.
 	 * @param IGroupManager $groupManager The group manager (GM override check).
 	 * @param LoggerInterface $logger The logger.
-	 * @param CustomFieldGuard $customFields Checks extra field values against their definitions.
+	 * @param CustomFieldGuardInterface $customFields Checks extra field values against their definitions.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly SkillRequirementService $requirementService,
+		private readonly SkillRequirementServiceInterface $requirementService,
 		private readonly IAppConfig $config,
 		private readonly IUserSession $userSession,
 		private readonly IGroupManager $groupManager,
 		private readonly LoggerInterface $logger,
-		private readonly CustomFieldGuard $customFields,
+		private readonly CustomFieldGuardInterface $customFields,
 	) {
 	}//end __construct()
 
@@ -490,7 +490,7 @@ class CharacterRequirementListener implements IEventListener {
 	/**
 	 * Build the structured OR rejection payload from the validation result.
 	 *
-	 * @param array<string,mixed> $result The SkillRequirementService result.
+	 * @param array<string,mixed> $result The SkillRequirementServiceInterface result.
 	 *
 	 * @return array<string,mixed> The errors payload.
 	 */
@@ -507,13 +507,21 @@ class CharacterRequirementListener implements IEventListener {
 			$payload['message'] = 'Insufficient XP and/or unmet skill requirements.';
 		}
 
+		// Every overspent pool, XP or a list's own ability such as Mana, with
+		// its shortfall (rules-rulebook-and-spell-lists REQ-RRS-002).
+		$overspent = (array)($result['overspentPools'] ?? []);
+		if ($overspent !== []) {
+			$payload['budgets'] = $overspent;
+			$payload['message'] = 'Not enough points in a pool and/or unmet skill requirements.';
+		}
+
 		return $payload;
 	}//end buildErrorPayload()
 
 	/**
 	 * The requirement entries of a validation result that are unmet or unresolvable.
 	 *
-	 * @param array<string,mixed> $result The SkillRequirementService result.
+	 * @param array<string,mixed> $result The SkillRequirementServiceInterface result.
 	 *
 	 * @return array<int,array<string,mixed>> The failing entries, in order.
 	 */
