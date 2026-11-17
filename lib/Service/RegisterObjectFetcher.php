@@ -298,6 +298,45 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	}//end getObjectsWithAppAuthority()
 
 	/**
+	 * Read objects with the app's authority by the value of a property that
+	 * OpenRegister shows only on request (`"reveal": "explicit"`).
+	 *
+	 * OpenRegister refuses a filter on such a property and masks it in what a
+	 * list returns, except inside its explicit-reveal service's trusted scope,
+	 * which server code that needs the value on purpose may open. This read
+	 * runs in that scope, so the filter is applied and the rows carry the
+	 * stored value. The rules of getObjectsWithAppAuthority() apply.
+	 *
+	 * @param string                    $objectType The object type (e.g. 'registration').
+	 * @param array<string, string|int> $filters    Equality filters; at least one, non-empty.
+	 * @param int|null                  $limit      Maximum number of objects to retrieve.
+	 *
+	 * @return array<int, array<string, mixed>> The objects as arrays, values unmasked.
+	 *
+	 * @throws InvalidArgumentException If no scoping filter is given.
+	 * @throws Exception If OpenRegister is not available or type is not configured.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+	 */
+	public function getObjectsByRevealedValue(string $objectType, array $filters, ?int $limit = null): array {
+		$read = fn (): array => $this->getObjectsWithAppAuthority(objectType: $objectType, filters: $filters, limit: $limit);
+
+		try {
+			$reveal = $this->container->get('OCA\OpenRegister\Service\Rbac\ExplicitRevealInterface');
+		} catch (\Throwable $e) {
+			return $read();
+		}
+
+		if (is_object($reveal) === false || method_exists($reveal, 'trustedDuring') === false) {
+			return $read();
+		}
+
+		// @var array<int, array<string, mixed>> $rows
+		$rows = $reveal->trustedDuring($read);
+		return $rows;
+	}//end getObjectsByRevealedValue()
+
+	/**
 	 * Get a single object by type and ID from OpenRegister.
 	 *
 	 * The `$id` parameter must be a valid UUID. URI-format IDs (full URLs) are

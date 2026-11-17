@@ -582,4 +582,71 @@ class RegisterObjectFetcherTest extends TestCase {
 			}
 		}
 	}//end testGetObjectOfTypeRefusesAnObjectOfAnotherSchema()
+
+	/**
+	 * A read by a reveal-only value runs inside OpenRegister's trusted reveal
+	 * scope, where the filter is allowed and the value is not masked; without
+	 * that service it is a plain read with the app's authority.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+	 *
+	 * @return void
+	 */
+	public function testARevealedValueReadRunsInTheTrustedScope(): void {
+		$reveal = new class {
+			public bool $trusted = false;
+
+			public function trustedDuring(callable $operation): mixed {
+				$this->trusted = true;
+				try {
+					return $operation();
+				} finally {
+					$this->trusted = false;
+				}
+			}
+		};
+		$objects = new class($reveal) {
+			public array $seen = [];
+
+			public function __construct(private object $reveal) {
+			}
+
+			public function findAll(array $config, bool $_rbac, bool $_multitenancy): array {
+				$this->seen[] = ['trusted' => $this->reveal->trusted, 'filters' => $config['filters'], 'rbac' => $_rbac];
+				return [['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']];
+			}
+		};
+
+		foreach ([true, false] as $withReveal) {
+			$this->setUp();
+			$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+			$this->config->method('getValueString')->willReturnCallback(
+				fn (string $app, string $key, string $default = ''): string => $key
+			);
+			$this->container->method('get')->willReturnCallback(
+				function (string $id) use ($objects, $reveal, $withReveal): object {
+					if ($id === 'OCA\OpenRegister\Service\ObjectService') {
+						return $objects;
+					}
+
+					if ($id === 'OCA\OpenRegister\Service\Rbac\ExplicitRevealInterface' && $withReveal === true) {
+						return $reveal;
+					}
+
+					throw new \RuntimeException('not bound: ' . $id);
+				}
+			);
+
+			$rows = $this->service->getObjectsByRevealedValue(objectType: 'registration', filters: ['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'], limit: 1);
+
+			self::assertSame(expected: [['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']], actual: $rows);
+		}
+
+		self::assertCount(expectedCount: 2, haystack: $objects->seen);
+		self::assertTrue(condition: $objects->seen[0]['trusted']);
+		self::assertFalse(condition: $objects->seen[0]['rbac']);
+		self::assertSame(expected: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', actual: $objects->seen[0]['filters']['checkinCode']);
+		self::assertFalse(condition: $objects->seen[1]['trusted']);
+		self::assertFalse(condition: $reveal->trusted);
+	}//end testARevealedValueReadRunsInTheTrustedScope()
 }//end class
