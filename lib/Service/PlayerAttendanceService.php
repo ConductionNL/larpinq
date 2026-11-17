@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\PlayerAttendanceServiceInterface;
+
 /**
  * Lists a player's check-ins across characters and years, newest first.
  *
@@ -32,7 +34,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/events-players/spec.md
  */
-class PlayerAttendanceService {
+class PlayerAttendanceService implements PlayerAttendanceServiceInterface {
 	use \OCA\Larpinq\Support\ReadsRelationId;
 
 	/**

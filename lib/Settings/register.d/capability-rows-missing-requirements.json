@@ -1,0 +1,38 @@
+{
+	"components": {
+		"schemas": {
+			"item": {
+				"properties": {
+					"price": {
+						"type": "object",
+						"title": "Price",
+						"description": "What the item costs in in-game money; a character buys it from the character page",
+						"properties": {
+							"gold": {
+								"type": "integer",
+								"minimum": 0,
+								"default": 0,
+								"title": "Gold",
+								"description": "Gold pieces the item costs"
+							},
+							"silver": {
+								"type": "integer",
+								"minimum": 0,
+								"default": 0,
+								"title": "Silver",
+								"description": "Silver pieces the item costs"
+							},
+							"copper": {
+								"type": "integer",
+								"minimum": 0,
+								"default": 0,
+								"title": "Copper",
+								"description": "Copper pieces the item costs"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

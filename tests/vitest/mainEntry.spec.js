@@ -4,9 +4,13 @@
  *
  * The app entry (src/main.js): builds the effective manifest from the bundled
  * manifest, the manifest.d fragments and the menu layout, gates the imports
- * for a user who may not import, turns every page into a route, picks the
- * router base from the URL the visitor actually used, and mounts the app on
- * #content with the t / n mixin, pinia and the router installed.
+ * for a user who may not import, and boots on CnAppRoot in one call through
+ * the library's mountCnApp, with App.vue as the root, the kind-tagged
+ * registry, the library's page types, the app's icons, pinia and vue-router's
+ * factories. The router, its base, the icon and translation registration and
+ * the t / n mixin are mountCnApp's work and are tested in the library.
+ *
+ * @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md#requirement-cnapproot-shall-be-the-boot-entry-point
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -21,19 +25,17 @@ const seen = vi.hoisted(() => ({}))
 function reset(options = {}) {
 	Object.assign(seen, {
 		widgets: 0,
-		icons: [],
-		translations: 0,
-		translationsThrow: options.translationsThrow ?? 0,
 		loadTranslations: options.loadTranslations ?? (() => Promise.reject(new Error('404'))),
 		builds: [],
-		histories: [],
-		routers: [],
-		apps: [],
+		mounts: [],
 		gameMaster: options.gameMaster ?? false,
 		warnings: [],
 	})
 }
 reset()
+
+const createRouter = vi.hoisted(() => () => ({}))
+const createWebHistory = vi.hoisted(() => () => ({}))
 
 vi.mock('@conduction/nextcloud-vue', () => ({
 	buildManifest: (bundled, fragments, layout) => {
@@ -46,20 +48,13 @@ vi.mock('@conduction/nextcloud-vue', () => ({
 			],
 		}
 	},
-	CnPageRenderer: Object.freeze({ name: 'CnPageRenderer' }),
 	defaultPageTypes: Object.freeze({ index: 'IndexType' }),
+	mountCnApp: (target, options) => {
+		seen.mounts.push({ target, options })
+		return { app: {}, router: {} }
+	},
 	registerBuiltinDashboardWidgets: () => {
 		seen.widgets++
-	},
-	registerIcons: (icons) => {
-		seen.icons.push(icons)
-	},
-	registerTranslations: () => {
-		seen.translations++
-		if (seen.translationsThrow > 0) {
-			seen.translationsThrow--
-			throw new Error('no catalogue')
-		}
 	},
 }))
 vi.mock('@conduction/nextcloud-vue/css/index.css', () => ({}))
@@ -73,52 +68,15 @@ vi.mock('@nextcloud/initial-state', () => ({
 }))
 vi.mock('@nextcloud/l10n', () => ({
 	loadTranslations: (app, callback) => seen.loadTranslations(app, callback),
-	translate: (app, text) => `t:${app}:${text}`,
-	translatePlural: (app, one, many, count) => `n:${app}:${count === 1 ? one : many}`,
 }))
-vi.mock('vue-router', () => ({
-	createWebHistory: (base) => {
-		seen.histories.push(base)
-		return { base }
-	},
-	createRouter: (options) => {
-		const router = { options }
-		seen.routers.push(router)
-		return router
-	},
-}))
-vi.mock('vue', async (importOriginal) => {
-	const vue = await importOriginal()
-	return {
-		...vue,
-		createApp: (root) => {
-			const app = { root, mixins: [], plugins: [], mountedOn: null }
-			app.mixin = (mixin) => {
-				app.mixins.push(mixin)
-				return app
-			}
-			app.use = (plugin) => {
-				app.plugins.push(plugin)
-				return app
-			}
-			app.mount = (selector) => {
-				app.mountedOn = selector
-				return app
-			}
-			seen.apps.push(app)
-			return app
-		},
-	}
-})
+vi.mock('vue-router', () => ({ createRouter, createWebHistory }))
 
 /**
- * Load src/main.js afresh, as a page load at the given path.
+ * Load src/main.js afresh, as a page load.
  *
- * @param {string} pathname The location pathname of the page load.
- * @return {Promise<object>} The created app.
+ * @return {Promise<object>} The one mountCnApp call: its target and options.
  */
-async function loadEntry(pathname) {
-	vi.stubGlobal('window', { location: { pathname } })
+async function loadEntry() {
 	const fragments = {
 		'./b.json': { id: 'b' },
 		'./a.json': { id: 'a' },
@@ -142,7 +100,7 @@ async function loadEntry(pathname) {
 	vi.resetModules()
 	await import('../../src/main.js')
 	await Promise.resolve()
-	return seen.apps[0]
+	return seen.mounts[0]
 }
 
 describe('main entry', () => {
@@ -152,29 +110,14 @@ describe('main entry', () => {
 
 	afterEach(() => {
 		delete Function.prototype.context
-		vi.unstubAllGlobals()
 		vi.restoreAllMocks()
 	})
 
-	it('registers the widget catalogue, the icons and the library translations twice', async () => {
-		await loadEntry('/apps/larpinq/')
+	it('registers the widget catalogue once and warns about nothing', async () => {
+		await loadEntry()
 
 		expect(seen.widgets).toBe(1)
-		expect(seen.icons).toEqual([{ Account: 'mdi-account' }])
-		expect(seen.translations).toBe(2)
 		expect(seen.warnings).toEqual([])
-	})
-
-	it('warns and carries on when registering the library translations fails', async () => {
-		reset({ translationsThrow: 2 })
-		const app = await loadEntry('/apps/larpinq/')
-
-		expect(seen.warnings.map((args) => args[0])).toEqual([
-			'[larpinq] registerTranslations failed; falling back to English',
-			'[larpingapp] registerTranslations failed; falling back to English',
-		])
-		expect(seen.warnings[0][1]).toBeInstanceOf(Error)
-		expect(app.mountedOn).toBe('#content')
 	})
 
 	it('loads the app translations whether they resolve, reject, throw or return nothing', async () => {
@@ -185,7 +128,7 @@ describe('main entry', () => {
 				return Promise.reject(new Error('404'))
 			},
 		})
-		await loadEntry('/apps/larpinq/')
+		await loadEntry()
 		expect(calls).toEqual([['larpinq', 'function']])
 
 		reset({
@@ -193,11 +136,10 @@ describe('main entry', () => {
 				throw new Error('offline')
 			},
 		})
-		const app = await loadEntry('/apps/larpinq/')
-		expect(app.mountedOn).toBe('#content')
+		expect((await loadEntry()).target).toBe('#content')
 
 		reset({ loadTranslations: () => undefined })
-		expect((await loadEntry('/apps/larpinq/')).mountedOn).toBe('#content')
+		expect((await loadEntry()).target).toBe('#content')
 
 		reset({
 			loadTranslations: (app, callback) => {
@@ -205,11 +147,11 @@ describe('main entry', () => {
 				return Promise.resolve()
 			},
 		})
-		expect((await loadEntry('/apps/larpinq/')).mountedOn).toBe('#content')
+		expect((await loadEntry()).target).toBe('#content')
 	})
 
 	it('builds the manifest from the bundled manifest, the sorted fragments and the menu layout', async () => {
-		await loadEntry('/apps/larpinq/')
+		await loadEntry()
 
 		expect(seen.context).toEqual({ dir: './manifest.d', deep: false, pattern: /\.json$/ })
 		expect(seen.builds).toHaveLength(1)
@@ -219,71 +161,32 @@ describe('main entry', () => {
 	})
 
 	it('removes the imports for a user who may not import', async () => {
-		const app = await loadEntry('/apps/larpinq/')
-		const manifest = app.root.render().props.manifest
+		const { options } = await loadEntry()
 
-		expect(manifest.pages[1].config).toEqual({ showMassImport: false, headerActions: [{ id: 'export' }] })
+		expect(options.manifest.pages[1].config).toEqual({ showMassImport: false, headerActions: [{ id: 'export' }] })
 	})
 
 	it('keeps the imports for a game master', async () => {
 		reset({ gameMaster: true })
-		const app = await loadEntry('/apps/larpinq/')
-		const manifest = app.root.render().props.manifest
+		const { options } = await loadEntry()
 
-		expect(manifest.pages[1].config).toEqual({ showMassImport: true, headerActions: [{ id: 'import-campaign' }, { id: 'export' }] })
+		expect(options.manifest.pages[1].config).toEqual({ showMassImport: true, headerActions: [{ id: 'import-campaign' }, { id: 'export' }] })
 	})
 
-	it('turns every page into a route, with props only for parameterised routes, plus a catch-all', async () => {
-		await loadEntry('/apps/larpinq/')
-		const routes = seen.routers[0].options.routes
-
-		expect(routes.map(({ name, path, props, redirect }) => JSON.parse(JSON.stringify({ name, path, props, redirect })))).toEqual([
-			{ name: 'dashboard', path: '/', props: false },
-			{ name: 'characters', path: '/characters', props: false },
-			{ name: 'character', path: '/characters/:id', props: true },
-			{ path: '/:pathMatch(.*)*', redirect: '/' },
-		])
-		expect(routes[0].component).toEqual({ name: 'CnPageRenderer' })
-		expect(Object.isExtensible(routes[0].component)).toBe(true)
-		expect(routes[1].component).toBe(routes[0].component)
-	})
-
-	it('takes the router base from the URL the visitor used', async () => {
-		await loadEntry('/index.php/apps/larpinq/characters/5')
-		expect(seen.histories).toEqual(['/index.php/apps/larpinq'])
-		expect(seen.routers[0].options.history).toEqual({ base: '/index.php/apps/larpinq' })
-
-		reset()
-		await loadEntry('/apps/larpinq')
-		expect(seen.histories).toEqual(['/apps/larpinq'])
-	})
-
-	it('falls back to the generated app URL outside the app path', async () => {
-		await loadEntry('/apps/larpinqx/')
-
-		expect(seen.histories).toEqual(['/index.php/apps/larpinq'])
-	})
-
-	it('mounts one app on #content with extensible page types and registry', async () => {
-		const app = await loadEntry('/apps/larpinq/')
-
-		expect(seen.apps).toHaveLength(1)
-		expect(app.mountedOn).toBe('#content')
-		const vnode = app.root.render()
-		expect(vnode.type).toEqual({ name: 'AppStub' })
-		expect(vnode.props.pageTypes).toEqual({ index: 'IndexType' })
-		expect(Object.isExtensible(vnode.props.pageTypes)).toBe(true)
-		expect(vnode.props.registry).toEqual({ WorldSwitcher: { kind: 'section' } })
-		expect(Object.isExtensible(vnode.props.registry)).toBe(true)
-	})
-
-	it('installs the t / n mixin, then pinia, then the router', async () => {
-		const app = await loadEntry('/apps/larpinq/')
+	it('boots once on #content through mountCnApp, with App.vue as the root', async () => {
+		const { target, options } = await loadEntry()
 		const pinia = (await import('../../src/pinia.js')).default
 
-		expect(app.mixins).toHaveLength(1)
-		expect(app.mixins[0].methods.t('larpinq', 'Save')).toBe('t:larpinq:Save')
-		expect(app.mixins[0].methods.n('larpinq', 'one world', '%n worlds', 2)).toBe('n:larpinq:%n worlds')
-		expect(app.plugins).toEqual([pinia, seen.routers[0]])
+		expect(seen.mounts).toHaveLength(1)
+		expect(target).toBe('#content')
+		expect(options.appId).toBe('larpinq')
+		expect(options.rootComponent).toEqual({ name: 'AppStub' })
+		expect(options.registry).toEqual({ WorldSwitcher: { kind: 'section' } })
+		expect(options.pageTypes).toEqual({ index: 'IndexType' })
+		expect(options.icons).toEqual({ Account: 'mdi-account' })
+		expect(options.plugins).toEqual([pinia])
+		expect(options.vueRouter).toEqual({ createRouter, createWebHistory })
+		expect(options.router).toBeUndefined()
+		expect(options.manifest.pages.map((page) => page.id)).toEqual(['dashboard', 'characters', 'character'])
 	})
 })

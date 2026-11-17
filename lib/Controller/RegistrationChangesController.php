@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
+use OCA\Larpinq\Kernel\Contracts\RegistrationChangeServiceInterface;
+use OCA\Larpinq\Kernel\Contracts\TransferOffersInterface;
 use OCA\Larpinq\Service\RegistrationChangeRefusedException;
-use OCA\Larpinq\Service\RegistrationChangeService;
-use OCA\Larpinq\Service\TransferOffers;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -49,16 +49,16 @@ class RegistrationChangesController extends Controller {
 	 *
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
-	 * @param RegistrationChangeService $changes Cancelling and booking.
-	 * @param TransferOffers $transfers Handing over.
+	 * @param RegistrationChangeServiceInterface $changes Cancelling and booking.
+	 * @param TransferOffersInterface $transfers Handing over.
 	 * @param IUserSession $userSession The user session.
 	 * @param IL10N $l10n Translations for refusals.
 	 */
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private readonly RegistrationChangeService $changes,
-		private readonly TransferOffers $transfers,
+		private readonly RegistrationChangeServiceInterface $changes,
+		private readonly TransferOffersInterface $transfers,
 		private readonly IUserSession $userSession,
 		private readonly IL10N $l10n,
 	) {

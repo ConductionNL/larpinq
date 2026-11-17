@@ -19,6 +19,7 @@ vi.mock('@nextcloud/l10n', () => ({
 	getCanonicalLocale: () => 'en-US',
 }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({ default: {} }))
+vi.mock('@nextcloud/vue/components/NcTextField', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcLoadingIcon', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcNoteCard', () => ({ default: {} }))
 vi.mock('@nextcloud/vue/components/NcEmptyContent', () => ({ default: {} }))

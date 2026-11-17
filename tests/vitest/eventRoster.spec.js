@@ -19,6 +19,7 @@ vi.mock('@nextcloud/l10n', () => ({
 	getCanonicalLocale: () => 'nl-NL',
 }))
 vi.mock('@nextcloud/vue/components/NcButton', () => ({ default: {} }))
+vi.mock('@nextcloud/vue/components/NcTextField', () => ({ default: {} }))
 vi.mock('@conduction/nextcloud-vue', () => ({
 	CnDataTable: {},
 	CnIcon: {},

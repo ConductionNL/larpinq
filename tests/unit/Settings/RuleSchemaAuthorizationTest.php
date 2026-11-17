@@ -60,6 +60,13 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	private const RULE_SCHEMAS = ['player', 'ability', 'skill', 'item', 'condition', 'effect', 'event', 'setting'];
 
 	/**
+	 * The schemas a rules marshal writes.
+	 *
+	 * @var list<string>
+	 */
+	private const RULES_MARSHAL_SCHEMAS = ['ability', 'skill', 'item', 'condition', 'effect'];
+
+	/**
 	 * The block each of the eight declares.
 	 *
 	 * @var array<string, list<string>>
@@ -229,7 +236,17 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	public function testEveryRuleSchemaDeclaresItsOwnRules(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (self::RULE_SCHEMAS as $key) {
-			$this->assertSame(expected: self::RULE_BLOCK, actual: $schemas[$key]['authorization'] ?? null, message: "{$key} must declare its own rules");
+			$expected = self::RULE_BLOCK;
+			if (in_array($key, self::RULES_MARSHAL_SCHEMAS, true) === true) {
+				// Rules marshals write the five rule schemas (admin-staff-roles-and-invites D2).
+				$expected['create'] = [Application::ROLE_RULES, Application::GM_GROUP];
+				$expected['update'] = [Application::ROLE_RULES, Application::GM_GROUP];
+			}
+
+			$actual = $schemas[$key]['authorization'] ?? [];
+			ksort($expected);
+			ksort($actual);
+			$this->assertSame(expected: $expected, actual: $actual, message: "{$key} must declare its own rules");
 		}
 	}//end testEveryRuleSchemaDeclaresItsOwnRules()
 
@@ -337,13 +354,20 @@ class RuleSchemaAuthorizationTest extends TestCase {
 	public function testXpAwardsAndAttendanceDeclareGameMastersAsTheirReaders(): void {
 		$schemas = $this->mergedRegister()['components']['schemas'];
 		foreach (self::RECORD_SCHEMAS as $key) {
+			// Attendance is also read and written by stewards at the gate
+			// (admin-staff-roles-and-invites D3); XP awards stay game masters only.
+			$expected = [Application::GM_GROUP];
+			if ($key === 'attendance') {
+				$expected[] = Application::ROLE_STEWARDS;
+			}
+
 			$this->assertSame(
-				expected: [Application::GM_GROUP],
+				expected: $expected,
 				actual: ($schemas[$key]['authorization']['read'] ?? null),
 				message: "{$key} is read by game masters"
 			);
 			$this->assertSame(
-				expected: [Application::GM_GROUP],
+				expected: $expected,
 				actual: ($schemas[$key]['authorization']['create'] ?? null),
 				message: "{$key} is written by game masters"
 			);

@@ -23,8 +23,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Service;
 
 use Exception;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCP\App\IAppManager;
+use OCA\Larpinq\Service\RegisterSchemaLookup;
 use OCP\IAppConfig;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -143,16 +142,11 @@ class RegisterObjectFetcherResolverTest extends TestCase {
 		$container->method('get')->willReturn($resolver);
 		$config = $this->createMock(originalClassName: IAppConfig::class);
 		$config->expects($this->never())->method('getValueString');
-		$fetcher = new RegisterObjectFetcher(
-			container: $container,
-			appManager: $this->createMock(originalClassName: IAppManager::class),
-			config: $config,
-			logger: new NullLogger()
-		);
-		$resolve = new ReflectionMethod(objectOrMethod: $fetcher, method: 'resolveThroughResolver');
+		$lookup = new RegisterSchemaLookup(container: $container, config: $config, logger: new NullLogger());
+		$resolve = new ReflectionMethod(objectOrMethod: $lookup, method: 'resolveThroughResolver');
 
 		try {
-			return $resolve->invoke($fetcher, $resolver, 'character');
+			return $resolve->invoke($lookup, $resolver, 'character');
 		} catch (Exception $e) {
 			return [get_class($e), $e->getMessage(), $e->getPrevious()?->getMessage()];
 		}
