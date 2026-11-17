@@ -74,6 +74,13 @@ class PortalContributionProvider {
 	private const REGISTER = 'larpinq';
 
 	/**
+	 * The instance-local receiver of the `createCharacter` endpoint action.
+	 *
+	 * @var string
+	 */
+	public const CREATE_CHARACTER_ENDPOINT = '/index.php/apps/larpinq/api/portal/characters';
+
+	/**
 	 * The portal menu group the larpinq pages sit in (board LrPortaal).
 	 *
 	 * @var string
@@ -411,8 +418,9 @@ class PortalContributionProvider {
 	 *   ownership array.
 	 *
 	 * Create surface: `createPlayerProfile` (a new player's own profile) and
-	 * `createCharacter` (the writer stamps `ownerRef` with the player uuid from
-	 * the account's claim, so the record is owned by the player). Only intake
+	 * `createCharacter` (forwarded to larpinq, which writes `ownerRef` and
+	 * `ocName` with the player uuid from the account's claim, so the record is
+	 * owned and played by the player). Only intake
 	 * fields are accepted; every game-master / economy / lifecycle field stays
 	 * server-authoritative. See playerActions().
 	 *
@@ -817,12 +825,16 @@ class PortalContributionProvider {
 	/**
 	 * The whitelisted create-action the `player` audience may perform.
 	 *
-	 * `createCharacter`: the writer stamps `ownerRef` with the account's
+	 * `createCharacter`: an endpoint action. portaliq resolves the account's
 	 * `ownerRef` claim (the player uuid larpinq records when the profile is
-	 * made), never with the subject reference, which is not a uuid and which
-	 * `character.ownerRef` refuses. Without the claim the create is refused
-	 * (fail closed). `ocName` is not accepted: PortalProfileListener sets it to
-	 * the owner, so the character is played by the player who made it.
+	 * made) and forwards the form to PortalCharacterController with a signed
+	 * assertion carrying that claim; without the claim nothing is forwarded
+	 * (fail closed). The receiver writes the player uuid into BOTH `ownerRef`
+	 * and the required `ocName`, so the character is played by the player who
+	 * made it. A declarative create could stamp `ownerRef` only, and
+	 * OpenRegister refuses the missing `ocName` before PortalProfileListener
+	 * can fill it; that listener stays as a fallback. The client sends only
+	 * `name` and `background`.
 	 *
 	 * `createPlayerProfile`: a signed-up visitor makes their own player, stamped
 	 * with their portal subject; PortalProfileListener refuses a second one and
@@ -847,15 +859,17 @@ class PortalContributionProvider {
 		return [
 			[
 				'id' => 'createCharacter',
-				'type' => 'create',
 				'label' => 'Create a character',
-				'register' => self::REGISTER,
-				'schema' => 'character',
-				'scopeField' => 'ownerRef',
+				'endpoint' => self::CREATE_CHARACTER_ENDPOINT,
+				'method' => 'POST',
 				'scopeClaim' => 'ownerRef',
 				'fields' => [
 					'name',
 					'background',
+				],
+				'fieldConfigs' => [
+					'name' => ['label' => 'Character name', 'required' => true],
+					'background' => ['label' => 'Background story', 'size' => 'large'],
 				],
 			],
 			[

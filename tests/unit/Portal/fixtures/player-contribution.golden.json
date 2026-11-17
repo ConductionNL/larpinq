@@ -363,16 +363,24 @@
     "actions": [
         {
             "id": "createCharacter",
-            "type": "create",
             "label": "Create a character",
-            "register": "larpinq",
-            "schema": "character",
-            "scopeField": "ownerRef",
+            "endpoint": "/index.php/apps/larpinq/api/portal/characters",
+            "method": "POST",
             "scopeClaim": "ownerRef",
             "fields": [
                 "name",
                 "background"
-            ]
+            ],
+            "fieldConfigs": {
+                "name": {
+                    "label": "Character name",
+                    "required": true
+                },
+                "background": {
+                    "label": "Background story",
+                    "size": "large"
+                }
+            }
         },
         {
             "id": "createPlayerProfile",

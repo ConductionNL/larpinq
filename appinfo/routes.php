@@ -32,6 +32,8 @@ declare(strict_types=1);
 $extra = [
 	// Page routes
 	['name' => 'dashboard#page', 'url' => '/', 'verb' => 'GET'],
+	// Portal createCharacter: portaliq forwards it with a signed X-Portal-Subject assertion.
+	['name' => 'portalCharacter#create', 'url' => '/api/portal/characters', 'verb' => 'POST'],
 	['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
 	['name' => 'characters#pdfTemplates', 'url' => '/api/pdf/templates', 'verb' => 'GET'],
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],

@@ -36,6 +36,7 @@ use OCA\Larpinq\Kernel\Contracts\IdListNormaliserInterface;
 use OCA\Larpinq\Kernel\Contracts\PaymentFollowUpInterface;
 use OCA\Larpinq\Kernel\Contracts\PaymentLeafInterface;
 use OCA\Larpinq\Kernel\Contracts\PlayerAttendanceServiceInterface;
+use OCA\Larpinq\Kernel\Contracts\PortalAssertionVerifierInterface;
 use OCA\Larpinq\Kernel\Contracts\PurchaseServiceInterface;
 use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCA\Larpinq\Kernel\Contracts\RegistrationChangeServiceInterface;
@@ -93,6 +94,7 @@ final class ServiceContractRegistrar {
 		$context->registerServiceAlias(PaymentFollowUpInterface::class, PaymentFollowUp::class);
 		$context->registerServiceAlias(PaymentLeafInterface::class, PaymentLeaf::class);
 		$context->registerServiceAlias(PlayerAttendanceServiceInterface::class, PlayerAttendanceService::class);
+		$context->registerServiceAlias(PortalAssertionVerifierInterface::class, PortalAssertionVerifier::class);
 		$context->registerServiceAlias(PurchaseServiceInterface::class, PurchaseService::class);
 		$context->registerServiceAlias(RegisterObjectFetcherInterface::class, RegisterObjectFetcher::class);
 		$context->registerServiceAlias(RegistrationChangeServiceInterface::class, RegistrationChangeService::class);

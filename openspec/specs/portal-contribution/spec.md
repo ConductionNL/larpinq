@@ -94,7 +94,7 @@ Larpinq MUST expose exactly one portal contribution class at the convention FQCN
 
 ### Requirement: Player Audience Contribution
 
-For a subject with `audience = 'player'`, `getContribution()` MUST return a manifest whose collections are exactly `myCharacters` (schema `character`, `scopeField: ownerRef`, `scopeClaim: ownerRef`, field-projected), `events` (schema `event`, `scopeField: ''`), `skillCatalog`/`itemCatalog`/`conditionCatalog` (schemas `skill`/`item`/`condition`, `scopeField: ''`), and whose actions whitelist exactly one `create` action: `createCharacter` (schema `character`, `scopeField: ownerRef`) with fields `name`, `ocName`, `background`. Characters MUST be scoped by `ownerRef` (the uuid domain ref) and NEVER by `ownerUid` (a Nextcloud user id).
+For a subject with `audience = 'player'`, `getContribution()` MUST return a manifest whose collections are exactly `myCharacters` (schema `character`, `scopeField: ownerRef`, `scopeClaim: ownerRef`, field-projected), `events` (schema `event`, `scopeField: ''`), `skillCatalog`/`itemCatalog`/`conditionCatalog` (schemas `skill`/`item`/`condition`, `scopeField: ''`), and whose `createCharacter` action is an endpoint action (endpoint `/index.php/apps/larpinq/api/portal/characters`, `scopeClaim: ownerRef`) with fields `name`, `background`. Its receiver writes the claimed player uuid into both `ownerRef` and the required `ocName` (Ruben decision 17 Nov: OpenRegister validates required fields before ObjectCreatingEvent, so the portal create sends `ocName` itself; PortalProfileListener's fill stays as a fallback). Characters MUST be scoped by `ownerRef` (the uuid domain ref) and NEVER by `ownerUid` (a Nextcloud user id).
 
 #### Scenario: Player sees own characters scoped by the domain ref
 
@@ -120,18 +120,18 @@ For a subject with `audience = 'player'`, `getContribution()` MUST return a mani
 - **AND** `itemCatalog` and `conditionCatalog` MUST NOT project the `characters` ownership array, and `events` MUST NOT project `players` or `effects`
 - `@e2e exclude` declarative manifest data; pinned by PHPUnit
 
-#### Scenario: The only action is a conservative create-character whitelist
+#### Scenario: The create-character action is a conservative whitelist
 
 - **GIVEN** a resolved subject with `audience = 'player'`
 - **WHEN** `getContribution($subject)` is called
-- **THEN** the manifest actions MUST be exactly `create character` with fields `name`, `ocName`, `background` and `scopeField: ownerRef`
+- **THEN** the `createCharacter` action MUST accept exactly the fields `name` and `background` and declare `scopeClaim: ownerRef`; `ocName` and `ownerRef` come from the claim, never from the client
 - **AND** no action field list may include `approved`, `slNotesPrivate`, `gold`, `silver`, `copper`, `ownerUid`, or any lifecycle property
 - **AND** the manifest MUST declare `notifications: []` and MUST NOT contain a `kind: inbox` collection (Larpinq has no per-player message collection; event signup is delegated to Nextcloud Forms)
 - `@e2e exclude` whitelist is declarative data enforced portaliq-side; pinned by PHPUnit
 
 ### Requirement: Fail-Closed Contribution
 
-`getContribution()` MUST return `null` for any subject whose `audience` is not `player` (including a missing audience key), MUST branch only on server-derived subject data (`subjectRef`, `audience`, `organisation`, `trust`) — never on client-supplied input — and MUST declare no `endpoint` actions in this wave.
+`getContribution()` MUST return `null` for any subject whose `audience` is not `player` (including a missing audience key), MUST branch only on server-derived subject data (`subjectRef`, `audience`, `organisation`, `trust`) — never on client-supplied input — and MUST declare no `endpoint` action other than `createCharacter`, whose receiver accepts only a verified portaliq `X-Portal-Subject` assertion for the `player` audience.
 
 #### Scenario: Unknown or missing audience yields null
 
@@ -139,11 +139,17 @@ For a subject with `audience = 'player'`, `getContribution()` MUST return a mani
 - **THEN** it MUST return `null` in every case
 - `@e2e exclude` negative-path data contract; asserted by PHPUnit
 
-#### Scenario: No endpoint actions in this wave
+#### Scenario: createCharacter is the only endpoint action
 
 - **WHEN** `getContribution()` is called for the `player` audience
-- **THEN** every declared action MUST have `type = 'create'` (receiver-side assertion verification does not exist yet)
+- **THEN** every declared action other than `createCharacter` MUST have `type = 'create'`
 - `@e2e exclude` static manifest property; asserted by PHPUnit
+
+#### Scenario: The receiver refuses a call without a valid assertion
+
+- **WHEN** the createCharacter receiver is called without an `X-Portal-Subject` assertion, or with one portaliq did not sign
+- **THEN** it MUST answer 401 and write nothing
+- **AND** an assertion for another audience, or without the `ownerRef` claim, MUST be answered 403
 
 ### Requirement: The player has a Mijn larp page in the portal
 
