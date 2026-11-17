@@ -36,6 +36,13 @@ class EventRosterScopedQueryTest extends TestCase {
 	private array $reads = [];
 
 	/**
+	 * Characters the event's `players` names, readable by id.
+	 *
+	 * @var list<array<string,mixed>>
+	 */
+	private array $registered = [];
+
+	/**
 	 * A service over a fetcher that answers the character read with these rows, whatever the filter.
 	 *
 	 * @param list<array<string,mixed>> $characters The rows the character read answers.
@@ -65,8 +72,39 @@ class EventRosterScopedQueryTest extends TestCase {
 			}
 		);
 
+		$fetcher->method('getObject')->willReturnCallback(
+			fn (string $objectType, string $id): array => ['id' => self::EVENT, 'players' => array_column($this->registered, 'id')]
+		);
+		$fetcher->method('getObjectsById')->willReturnCallback(
+			fn (string $objectType, array $ids): array => array_values(array_filter(
+				$this->registered,
+				static fn (array $character): bool => in_array($character['id'], $ids, true)
+			))
+		);
+
 		return new EventRosterService(objectFetcher: $fetcher);
 	}//end service()
+
+	/**
+	 * A character an accepted registration added to the event's `players`
+	 * is on the roster and in the cast, though its own `events` does not
+	 * name the event; one in both lists is listed once.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 *
+	 * @return void
+	 */
+	public function testARegisteredCharacterIsOnTheRosterOnce(): void {
+		$lancelot = ['id' => 'c1', 'name' => 'Lancelot', 'events' => [self::EVENT], 'ocName' => self::ALICE];
+		$this->registered = [['id' => 'c4', 'name' => 'Mirela', 'events' => []], $lancelot];
+		$service = $this->service(characters: [$lancelot]);
+
+		$roster = $service->buildRoster(eventId: self::EVENT);
+		$this->assertSame(expected: ['Lancelot', 'Mirela'], actual: array_column($roster['participants'], 'name'));
+
+		$context = $service->buildRunsheetContext(event: ['name' => 'Winter Court', 'players' => ['c4', 'c1']], eventId: self::EVENT);
+		$this->assertSame(expected: 2, actual: $context['castCount']);
+	}//end testARegisteredCharacterIsOnTheRosterOnce()
 
 	/**
 	 * The character read is scoped to the event and no player register is read whole.
