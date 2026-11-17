@@ -29,4 +29,6 @@
 ## 5. Quality
 
 - [ ] 5.1 `composer check:strict` green
-- [ ] 5.2 Hydra gates green on the diff
+  - Run 17 Nov on this branch merged with development: lint, phpcs (0 errors) and test:all (1243 tests, OK) pass; phpmd, psalm (8) and phpstan (1) report findings only in files this change does not touch (Application, StaffInvitesController, the listeners, CharacterStatsController, the MCP and form stubs), so they are inherited from development and stay open here.
+- [x] 5.2 Hydra gates green on the diff
+  - 17 Nov: green after pointing the e2e spec's `@spec` anchor at `#4-tests` (gate-46 found `#4-verification`, a heading this file does not have).

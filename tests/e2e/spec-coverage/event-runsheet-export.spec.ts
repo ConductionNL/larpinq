@@ -23,7 +23,7 @@
  * stay out, a character of this event must be in.
  *
  * @spec openspec/specs/pdf-export/spec.md
- * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#4-verification
+ * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#4-tests
  */
 
 import type { APIRequestContext } from '@playwright/test'
