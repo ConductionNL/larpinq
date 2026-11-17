@@ -1223,6 +1223,57 @@
         "@self": {
           "register": "larpinq",
           "schema": "larping_registration",
+          "slug": "larping-registration-casting-pieter"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "pieter",
+        "playerUid": "pieter",
+        "status": "accepted",
+        "submissionId": 6,
+        "submittedAt": "2026-09-02T11:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000001",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-crew-joris"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "joris",
+        "playerUid": "joris",
+        "status": "accepted",
+        "submissionId": 7,
+        "submittedAt": "2026-09-07T10:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000002",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
+          "slug": "larping-registration-npc-lotte"
+        },
+        "event": "00000000-0000-4000-8000-000000000000",
+        "player": "00000000-0000-4000-8000-000000000000",
+        "submitterUid": "lotte",
+        "playerUid": "lotte",
+        "status": "accepted",
+        "submissionId": 8,
+        "submittedAt": "2026-09-08T10:00:00+00:00",
+        "ticketType": "00000000-0000-4000-8000-000000000003",
+        "decidedAt": "2026-09-10T09:00:00+00:00",
+        "decidedBy": "gm-voorbeeld"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_registration",
           "slug": "larping-registration-anna-winter-court-2026",
           "uuid": "5d0c6f0e-7a1b-4c3d-9e2f-1a2b3c4d5e13"
         },
@@ -1636,57 +1687,6 @@
         "silver": 0,
         "copper": 0,
         "castingEvent": "00000000-0000-4000-8000-000000000000"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "larping_registration",
-          "slug": "larping-registration-casting-pieter"
-        },
-        "event": "00000000-0000-4000-8000-000000000000",
-        "player": "00000000-0000-4000-8000-000000000000",
-        "submitterUid": "pieter",
-        "playerUid": "pieter",
-        "status": "accepted",
-        "submissionId": 6,
-        "submittedAt": "2026-09-02T11:00:00+00:00",
-        "ticketType": "00000000-0000-4000-8000-000000000001",
-        "decidedAt": "2026-09-10T09:00:00+00:00",
-        "decidedBy": "gm-voorbeeld"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "larping_registration",
-          "slug": "larping-registration-crew-joris"
-        },
-        "event": "00000000-0000-4000-8000-000000000000",
-        "player": "00000000-0000-4000-8000-000000000000",
-        "submitterUid": "joris",
-        "playerUid": "joris",
-        "status": "accepted",
-        "submissionId": 7,
-        "submittedAt": "2026-09-07T10:00:00+00:00",
-        "ticketType": "00000000-0000-4000-8000-000000000002",
-        "decidedAt": "2026-09-10T09:00:00+00:00",
-        "decidedBy": "gm-voorbeeld"
-      },
-      {
-        "@self": {
-          "register": "larpinq",
-          "schema": "larping_registration",
-          "slug": "larping-registration-npc-lotte"
-        },
-        "event": "00000000-0000-4000-8000-000000000000",
-        "player": "00000000-0000-4000-8000-000000000000",
-        "submitterUid": "lotte",
-        "playerUid": "lotte",
-        "status": "accepted",
-        "submissionId": 8,
-        "submittedAt": "2026-09-08T10:00:00+00:00",
-        "ticketType": "00000000-0000-4000-8000-000000000003",
-        "decidedAt": "2026-09-10T09:00:00+00:00",
-        "decidedBy": "gm-voorbeeld"
       },
       {
         "@self": {
