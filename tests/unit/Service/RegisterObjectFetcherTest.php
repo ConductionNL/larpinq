@@ -649,4 +649,47 @@ class RegisterObjectFetcherTest extends TestCase {
 		self::assertFalse(condition: $objects->seen[1]['trusted']);
 		self::assertFalse(condition: $reveal->trusted);
 	}//end testARevealedValueReadRunsInTheTrustedScope()
+
+	/**
+	 * An update with the app's authority merges the given fields over the
+	 * stored object, because OpenRegister replaces an object with what it is
+	 * given; a create is sent as given.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAnAppAuthorityUpdateKeepsTheFieldsItDoesNotName(): void {
+		$objects = new class {
+			public array $saved = [];
+
+			public function find(string $id, object $options, bool $_rbac, bool $_multitenancy): array {
+				return ['@self' => ['id' => $id], 'id' => $id, 'name' => 'Winter Court 2026', 'capacity' => 5, 'players' => ['a']];
+			}
+
+			public function saveObject(array $object, object $options, bool $_rbac, bool $_multitenancy): array {
+				$this->saved[] = $object;
+				return $object;
+			}
+		};
+		$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+		$this->config->method('getValueString')->willReturnCallback(
+			fn (string $app, string $key, string $default = ''): string => $key
+		);
+		$this->container->method('get')->willReturnCallback(
+			function (string $id) use ($objects): object {
+				if ($id === 'OCA\\OpenRegister\\Service\\ObjectService') {
+					return $objects;
+				}
+
+				throw new \RuntimeException('not bound: ' . $id);
+			}
+		);
+
+		$this->service->saveObjectWithAppAuthority(objectType: 'event', data: ['players' => ['a', 'b']], uuid: '00000000-0000-4000-8000-000000000001');
+		$this->service->saveObjectWithAppAuthority(objectType: 'player', data: ['name' => 'Karel']);
+
+		self::assertSame(expected: ['name' => 'Winter Court 2026', 'capacity' => 5, 'players' => ['a', 'b']], actual: $objects->saved[0]);
+		self::assertSame(expected: ['name' => 'Karel'], actual: $objects->saved[1]);
+	}//end testAnAppAuthorityUpdateKeepsTheFieldsItDoesNotName()
 }//end class

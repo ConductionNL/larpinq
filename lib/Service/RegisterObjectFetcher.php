@@ -337,6 +337,30 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	}//end getObjectsByRevealedValue()
 
 	/**
+	 * Read objects of a type by id, as the caller, skipping the ids that
+	 * cannot be read (missing, not readable, or not a uuid).
+	 *
+	 * @param string            $objectType The object type (e.g. 'character').
+	 * @param array<int,string> $ids        The object UUIDs.
+	 *
+	 * @return list<array<string, mixed>> The readable objects, in the order of `$ids`.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	public function getObjectsById(string $objectType, array $ids): array {
+		$objects = [];
+		foreach (array_unique(array_filter($ids)) as $id) {
+			try {
+				$objects[] = $this->getObject(objectType: $objectType, id: $id);
+			} catch (Exception $e) {
+				continue;
+			}
+		}
+
+		return $objects;
+	}//end getObjectsById()
+
+	/**
 	 * Get a single object by type and ID from OpenRegister.
 	 *
 	 * The `$id` parameter must be a valid UUID. URI-format IDs (full URLs) are
@@ -531,8 +555,12 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * event's participants a registration decision changes. Callers decide
 	 * first whether the write is due; this method does not check rights.
 	 *
+	 * An update merges `$data` over the stored object: OpenRegister replaces
+	 * an object with what it is given, so a partial payload would drop (and
+	 * fail validation on) every field it leaves out.
+	 *
 	 * @param string $objectType The object type (e.g. 'registration').
-	 * @param array<string,mixed> $data The object payload to persist.
+	 * @param array<string,mixed> $data The fields to persist; on an update only those that change.
 	 * @param string|null $uuid The UUID to update, or null to create.
 	 *
 	 * @return array<string,mixed> The persisted object as an array.
@@ -545,6 +573,10 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
+		if ($uuid !== null && $uuid !== '') {
+			$data = array_merge($this->storedFields(objectType: $objectType, uuid: $uuid), $data);
+		}
+
 		$openRegister = $this->getOpenRegisterService();
 		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
@@ -561,6 +593,26 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 
 		return $this->toArray(object: $saved);
 	}//end saveObjectWithAppAuthority()
+
+	/**
+	 * The stored fields of an object, without its `@self` metadata, or none
+	 * when it cannot be read.
+	 *
+	 * @param string $objectType The object type.
+	 * @param string $uuid       The object UUID.
+	 *
+	 * @return array<string,mixed>
+	 */
+	private function storedFields(string $objectType, string $uuid): array {
+		try {
+			$stored = $this->getObjectWithAppAuthority(objectType: $objectType, id: $uuid);
+		} catch (Exception $e) {
+			return [];
+		}
+
+		unset($stored['@self'], $stored['id']);
+		return $stored;
+	}//end storedFields()
 
 	/**
 	 * Delete an object of a given type from OpenRegister, with RBAC on.
