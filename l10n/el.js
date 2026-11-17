@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Ο κόσμος στον οποίο ανήκει αυτή η λίστα. Κενό σημαίνει κοινή για όλους τους κόσμους.",
         "What the list is for, shown in the rulebook.": "Σε τι χρησιμεύει η λίστα, εμφανίζεται στο βιβλίο κανόνων.",
         "Where the list comes in the rulebook; lower comes first.": "Πού εμφανίζεται η λίστα στο βιβλίο κανόνων· η μικρότερη τιμή έρχεται πρώτη.",
-        "Whether the list holds skills, spells or powers.": "Αν η λίστα περιέχει δεξιότητες, ξόρκια ή δυνάμεις."
+        "Whether the list holds skills, spells or powers.": "Αν η λίστα περιέχει δεξιότητες, ξόρκια ή δυνάμεις.",
+        "XP history": "Ιστορικό XP",
+        "{skill} removed: {xp} XP returned": "{skill} αφαιρέθηκε: επιστράφηκαν {xp} XP",
+        "Unknown skill": "Άγνωστη δεξιότητα"
     },
     "nplurals=2; plural=(n != 1);"
 )

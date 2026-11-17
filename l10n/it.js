@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Il mondo a cui appartiene questo elenco. Vuoto significa condiviso tra tutti i mondi.",
         "What the list is for, shown in the rulebook.": "A cosa serve l'elenco, mostrato nel regolamento.",
         "Where the list comes in the rulebook; lower comes first.": "Dove compare l'elenco nel regolamento; il più basso viene prima.",
-        "Whether the list holds skills, spells or powers.": "Se l'elenco contiene abilità, incantesimi o poteri."
+        "Whether the list holds skills, spells or powers.": "Se l'elenco contiene abilità, incantesimi o poteri.",
+        "XP history": "Cronologia XP",
+        "{skill} removed: {xp} XP returned": "{skill} rimossa: {xp} XP restituiti",
+        "Unknown skill": "Abilità sconosciuta"
     },
     "nplurals=2; plural=(n != 1);"
 )

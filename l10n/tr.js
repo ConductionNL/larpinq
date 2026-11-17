@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Bu listenin ait olduğu dünya. Boş, tüm dünyalarca paylaşılan anlamına gelir.",
         "What the list is for, shown in the rulebook.": "Listenin ne için olduğu, kural kitabında gösterilir.",
         "Where the list comes in the rulebook; lower comes first.": "Listenin kural kitabındaki yeri; küçük olan önce gelir.",
-        "Whether the list holds skills, spells or powers.": "Listenin yetenek, büyü veya güç içerip içermediği."
+        "Whether the list holds skills, spells or powers.": "Listenin yetenek, büyü veya güç içerip içermediği.",
+        "XP history": "XP geçmişi",
+        "{skill} removed: {xp} XP returned": "{skill} kaldırıldı: {xp} XP iade edildi",
+        "Unknown skill": "Bilinmeyen beceri"
     },
     "nplurals=2; plural=(n != 1);"
 )

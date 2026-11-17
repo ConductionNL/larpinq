@@ -944,7 +944,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "An domhan lena mbaineann an liosta seo. Ciallaíonn folamh go bhfuil sé roinnte idir gach domhan.",
         "What the list is for, shown in the rulebook.": "Cad chuige an liosta, taispeántar sa leabhar rialacha é.",
         "Where the list comes in the rulebook; lower comes first.": "Cá háit a bhfuil an liosta sa leabhar rialacha; tagann an ceann is ísle ar dtús.",
-        "Whether the list holds skills, spells or powers.": "Cé acu an bhfuil scileanna, geasa nó cumhachtaí sa liosta."
+        "Whether the list holds skills, spells or powers.": "Cé acu an bhfuil scileanna, geasa nó cumhachtaí sa liosta.",
+        "XP history": "Stair XP",
+        "{skill} removed: {xp} XP returned": "Baineadh {skill}: tugadh {xp} XP ar ais",
+        "Unknown skill": "Scil anaithnid"
     },
     "plurals": {}
 }

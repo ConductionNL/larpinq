@@ -944,7 +944,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Världen som listan hör till. Tom betyder delad mellan alla världar.",
         "What the list is for, shown in the rulebook.": "Vad listan är till för, visas i regelboken.",
         "Where the list comes in the rulebook; lower comes first.": "Var listan står i regelboken; lägre kommer först.",
-        "Whether the list holds skills, spells or powers.": "Om listan innehåller färdigheter, besvärjelser eller krafter."
+        "Whether the list holds skills, spells or powers.": "Om listan innehåller färdigheter, besvärjelser eller krafter.",
+        "XP history": "XP-historik",
+        "{skill} removed: {xp} XP returned": "{skill} borttagen: {xp} XP återlämnade",
+        "Unknown skill": "Okänd färdighet"
     },
     "plurals": {}
 }

@@ -944,7 +944,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "El mundo al que pertenece esta lista. Vacío significa compartida por todos los mundos.",
         "What the list is for, shown in the rulebook.": "Para qué sirve la lista, se muestra en el reglamento.",
         "Where the list comes in the rulebook; lower comes first.": "Dónde aparece la lista en el reglamento; la más baja va primero.",
-        "Whether the list holds skills, spells or powers.": "Si la lista contiene habilidades, hechizos o poderes."
+        "Whether the list holds skills, spells or powers.": "Si la lista contiene habilidades, hechizos o poderes.",
+        "XP history": "Historial de XP",
+        "{skill} removed: {xp} XP returned": "{skill} eliminada: {xp} XP devueltos",
+        "Unknown skill": "Habilidad desconocida"
     },
     "plurals": {}
 }

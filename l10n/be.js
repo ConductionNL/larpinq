@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Свет, да якога належыць гэты спіс. Пуста азначае агульны для ўсіх светаў.",
         "What the list is for, shown in the rulebook.": "Для чаго патрэбны спіс, паказваецца ў кнізе правілаў.",
         "Where the list comes in the rulebook; lower comes first.": "Дзе спіс стаіць у кнізе правілаў; меншае значэнне ідзе першым.",
-        "Whether the list holds skills, spells or powers.": "Ці змяшчае спіс навыкі, заклёны або сілы."
+        "Whether the list holds skills, spells or powers.": "Ці змяшчае спіс навыкі, заклёны або сілы.",
+        "XP history": "Гісторыя XP",
+        "{skill} removed: {xp} XP returned": "{skill} выдалена: вернута {xp} XP",
+        "Unknown skill": "Невядомы навык"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "D'Welt, zu där dës Lëscht gehéiert. Eidel heescht vun alle Welte gedeelt.",
         "What the list is for, shown in the rulebook.": "Wofir d'Lëscht ass, am Reegelbuch gewisen.",
         "Where the list comes in the rulebook; lower comes first.": "Wou d'Lëscht am Reegelbuch steet; méi niddreg kënnt als éischt.",
-        "Whether the list holds skills, spells or powers.": "Ob d'Lëscht Fäegkeeten, Zauberspréch oder Kräften enthält."
+        "Whether the list holds skills, spells or powers.": "Ob d'Lëscht Fäegkeeten, Zauberspréch oder Kräften enthält.",
+        "XP history": "XP-Verlaf",
+        "{skill} removed: {xp} XP returned": "{skill} ewechgeholl: {xp} XP zeréckginn",
+        "Unknown skill": "Onbekannt Fäegkeet"
     },
     "nplurals=2; plural=(n != 1);"
 )

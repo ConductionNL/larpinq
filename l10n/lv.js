@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Pasaule, kurai pieder šis saraksts. Tukšs nozīmē kopīgs visām pasaulēm.",
         "What the list is for, shown in the rulebook.": "Kam saraksts paredzēts, rāda noteikumu grāmatā.",
         "Where the list comes in the rulebook; lower comes first.": "Kur saraksts atrodas noteikumu grāmatā; mazākais ir pirmais.",
-        "Whether the list holds skills, spells or powers.": "Vai sarakstā ir prasmes, burvestības vai spēki."
+        "Whether the list holds skills, spells or powers.": "Vai sarakstā ir prasmes, burvestības vai spēki.",
+        "XP history": "XP vēsture",
+        "{skill} removed: {xp} XP returned": "{skill} noņemta: atgriezti {xp} XP",
+        "Unknown skill": "Nezināma prasme"
     },
     "nplurals=2; plural=(n != 1);"
 )

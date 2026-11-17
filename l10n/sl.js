@@ -945,7 +945,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Svet, ki mu ta seznam pripada. Prazno pomeni skupen vsem svetovom.",
         "What the list is for, shown in the rulebook.": "Čemu je seznam namenjen, prikazano v pravilniku.",
         "Where the list comes in the rulebook; lower comes first.": "Kje je seznam v pravilniku; nižje je prej.",
-        "Whether the list holds skills, spells or powers.": "Ali seznam vsebuje veščine, uroke ali moči."
+        "Whether the list holds skills, spells or powers.": "Ali seznam vsebuje veščine, uroke ali moči.",
+        "XP history": "Zgodovina XP",
+        "{skill} removed: {xp} XP returned": "{skill} odstranjena: vrnjenih {xp} XP",
+        "Unknown skill": "Neznana veščina"
     },
     "nplurals=2; plural=(n != 1);"
 )
