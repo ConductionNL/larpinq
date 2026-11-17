@@ -1,0 +1,26 @@
+{
+	"_comment": "events-qr-checkin (REQ-EQC-001). An accepted registration carries a check-in code, set by larpinq (RegistrationService on acceptance, GiveAcceptedRegistrationsACheckinCode for those accepted before). Only game masters and the registration's player read it; nobody but a game master may change it.",
+	"components": {
+		"schemas": {
+			"registration": {
+				"slug": "larping_registration",
+				"properties": {
+					"checkinCode": {
+						"type": "string",
+						"title": "Check-in code",
+						"description": "The code a steward scans or types at the door, set by larpinq when the registration is accepted. Kept when the registration moves to another player.",
+						"pattern": "^[A-Z2-7]{26}$",
+						"authorization": {
+							"read": [
+								{"group": "gamemasters"},
+								{"group": "larpers", "match": {"playerUid": "$userId"}}
+							],
+							"update": ["gamemasters"],
+							"reveal": "explicit"
+						}
+					}
+				}
+			}
+		}
+	}
+}

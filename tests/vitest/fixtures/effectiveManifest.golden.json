@@ -103,6 +103,13 @@
 					"icon": "MagicStaff",
 					"route": "Effects",
 					"order": 80
+				},
+				{
+					"id": "SkillLists",
+					"label": "Skill lists",
+					"icon": "MagicStaff",
+					"route": "SkillLists",
+					"order": 57
 				}
 			]
 		},
@@ -140,6 +147,13 @@
 					"icon": "BookOpenVariantOutline",
 					"route": "Lore",
 					"order": 50
+				},
+				{
+					"id": "Rulebook",
+					"label": "Rulebook",
+					"icon": "BookOpenVariantOutline",
+					"route": "Rulebook",
+					"order": 55
 				},
 				{
 					"id": "MyRegistrations",
@@ -181,7 +195,7 @@
 		},
 		{
 			"id": "StoreMenu",
-			"label": "Store",
+			"label": "Marketplace",
 			"icon": "StoreOutline",
 			"route": "Store",
 			"section": "footer",
@@ -212,6 +226,14 @@
 			"order": 96
 		},
 		{
+			"id": "StaffMenu",
+			"label": "Staff",
+			"icon": "AccountGroupOutline",
+			"route": "Staff",
+			"section": "settings",
+			"order": 94
+		},
+		{
 			"id": "MyCharacters",
 			"label": "My character sheet",
 			"icon": "CardAccountDetailsOutline",
@@ -224,6 +246,24 @@
 			"icon": "DramaMasks",
 			"route": "Cast",
 			"order": 25
+		},
+		{
+			"id": "Help",
+			"label": "Help",
+			"icon": "HelpCircleOutline",
+			"route": "Help",
+			"order": 90
+		},
+		{
+			"id": "HelpDesk",
+			"label": "Help desk",
+			"icon": "FaceAgent",
+			"route": "Help",
+			"query": {
+				"_lens": "desk"
+			},
+			"order": 91,
+			"count": "auto"
 		},
 		{
 			"id": "TicketTypes",
@@ -250,11 +290,11 @@
 	"pages": [
 		[
 			"Store",
-			"1f6623676b566a96f8cccc6b992eaa5224bbfdd84bee2f67e57c3234aaf2f4c5"
+			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
 		],
 		[
 			"Dashboard",
-			"32d02e34462e6613325815711716b78a1056cb214a9869b050008c46cf191f3c"
+			"6225f2a9244a944671c02c53c3e1862f953dac86460d05972914aee6688d1ee0"
 		],
 		[
 			"Characters",
@@ -282,7 +322,7 @@
 		],
 		[
 			"Skills",
-			"406c9aaede1e622900f770ee452d823865dc4ff327336ad8816e03a70c88b81d"
+			"b1b686e5866ec27c55ae69a5605ca9954312660c1338eb37e524186cdf9afbbb"
 		],
 		[
 			"SkillTree",
@@ -322,7 +362,7 @@
 		],
 		[
 			"EventDetail",
-			"ace56ec90a7976a8855e52f9cf694a50bb8b5d613c953b07e99779fd1c614916"
+			"4c47acf90204ba2c22511b77d9c3937f31f27cad4561ea943104859c369c1ea1"
 		],
 		[
 			"Settings",
@@ -369,6 +409,14 @@
 			"bb3dc4a080270f99df2c5d33a8d33a82478723f31a807d2a5bfa83fb8092ecaf"
 		],
 		[
+			"Staff",
+			"70fee7612033d8709a453da371f535f193e4451e260896b1414e1367a967d6bf"
+		],
+		[
+			"StaffInvite",
+			"f33b6ad2c78dd104750ba6cc42d44df1b7ab5a2eedba8700da2d97ea4a8bc9b3"
+		],
+		[
 			"CharacterFields",
 			"16204efedd0ad714bdf89ef8d68a33d8ca08848c2430047148642030e84f0955"
 		],
@@ -394,7 +442,7 @@
 		],
 		[
 			"MyCharacters",
-			"7bfa268a30c86bf15b92e97475149a834fadc2e21ccc4b9cd19b6198bc8e035c"
+			"02728355ee3970074cd803476b4a7f8ea74e3666de9192a1c3a7d69df4b95cc1"
 		],
 		[
 			"Cast",
@@ -409,6 +457,14 @@
 			"b2eca87cf2914db942cf7ba87670358cf9b30b5b1b017b8c5111c4869d31643a"
 		],
 		[
+			"Help",
+			"5cde439724c316732fbfa04ab36f1a5c3761e004cf9538e108d603e7ad6974be"
+		],
+		[
+			"HelpQuestionDetail",
+			"95a2a5dfffcd35d29283f588ec4ede61232569b9b08df55506561a8b4a16e2cc"
+		],
+		[
 			"NewPlayers",
 			"6db432de346558630b0c1bd02075cdfb4a7c46e377ed89f2f9d1d9faf111da0f"
 		],
@@ -418,7 +474,7 @@
 		],
 		[
 			"MyRegistrations",
-			"f326769feaabf627a97c2d783155e908ed9d170f2a1dee5f1f90e1a93015077e"
+			"f1ed2f43ab2a58e4cdfe012383f612f44c41259ac8d6c967a103a6bc0650ffab"
 		],
 		[
 			"RegistrationDetail",
@@ -447,6 +503,18 @@
 		[
 			"AccessCodeDetail",
 			"e8c4b0fe1df0b1d886df0e903d5fdb6397003ad5988513b63465b0f1a8dab555"
+		],
+		[
+			"SkillLists",
+			"88521983c1c5d0765e5e80a08cb2b0e0931374b4f0093d17a552879a62e24a14"
+		],
+		[
+			"SkillListDetail",
+			"31db53ebb89f27f979a963e53d4f8ba6089b63ca880c48d58649d715e57e224e"
+		],
+		[
+			"Rulebook",
+			"ef41efd3c49cf916894bcfa7675d4b5dd66b985da4917b63115a1152735a0447"
 		],
 		[
 			"Lore",

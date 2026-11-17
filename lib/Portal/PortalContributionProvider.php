@@ -125,6 +125,166 @@ class PortalContributionProvider {
 	];
 
 	/**
+	 * The columns of the player's own help questions the portal may show:
+	 * what they asked and where it stands. The assignee and the internal
+	 * identity fields stay behind (communication-help-desk REQ-CHD-004).
+	 *
+	 * @var array<int, string>
+	 */
+	private const QUESTION_FIELDS = [
+		'subject',
+		'body',
+		'event',
+		'character',
+		'status',
+		'lastMessageAt',
+	];
+
+	/**
+	 * The columns of the messages under the player's own questions the portal
+	 * may show: the answers and the player's own replies.
+	 *
+	 * @var array<int, string>
+	 */
+	private const QUESTION_MESSAGE_FIELDS = [
+		'question',
+		'fromOrganiser',
+		'body',
+		'createdAt',
+	];
+
+	/**
+	 * The player's help page in the portal: their questions with the answers,
+	 * and a new question (communication-help-desk REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const HELP_PAGE = [
+		'id' => 'help',
+		'label' => 'Vragen aan de spelleiding',
+		'group' => self::GROUP_CLUB,
+		'icon' => 'HelpCircleOutline',
+		'blocks' => [
+			[
+				'type' => 'richText',
+				'markdown' => 'Stel hier uw vraag aan de spelleiding. U ziet uw vragen, de antwoorden en of een vraag nog open staat.',
+			],
+			['type' => 'collection', 'collection' => 'myQuestions'],
+			['type' => 'detail', 'collection' => 'myQuestions'],
+			['type' => 'collection', 'collection' => 'myQuestionMessages'],
+			['type' => 'action', 'action' => 'askQuestion'],
+		],
+	];
+
+	/**
+	 * The player's own help questions, scoped by the `ownerRef` claim and
+	 * projected to the question and its state (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const QUESTION_COLLECTION = [
+		'id' => 'myQuestions',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_question',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'label' => 'Mijn vragen',
+		'listable' => true,
+		'fields' => self::QUESTION_FIELDS,
+		'columns' => [
+			['field' => 'subject', 'label' => 'Onderwerp'],
+			['field' => 'status', 'label' => 'Status', 'render' => 'badge'],
+			['field' => 'lastMessageAt', 'label' => 'Laatste bericht', 'render' => 'date'],
+		],
+		'detail' => [
+			'layout' => 'card',
+			'fields' => ['subject', 'body', 'event', 'character', 'status', 'lastMessageAt'],
+		],
+		'defaultSort' => ['field' => 'lastMessageAt', 'direction' => 'desc'],
+	];
+
+	/**
+	 * The messages under the player's own questions, scoped by the same
+	 * `ownerRef` claim (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const QUESTION_MESSAGE_COLLECTION = [
+		'id' => 'myQuestionMessages',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_message',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'label' => 'Antwoorden',
+		'listable' => true,
+		'fields' => self::QUESTION_MESSAGE_FIELDS,
+		'columns' => [
+			['field' => 'body', 'label' => 'Bericht'],
+			['field' => 'fromOrganiser', 'label' => 'Van de spelleiding', 'render' => 'badge'],
+			['field' => 'createdAt', 'label' => 'Geschreven op', 'render' => 'date'],
+		],
+		'defaultSort' => ['field' => 'createdAt', 'direction' => 'asc'],
+	];
+
+	/**
+	 * The portal notifications of the `player` audience: a player hears when
+	 * the state of one of their questions changes (REQ-CHD-004).
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	private const PLAYER_NOTIFICATIONS = [
+		[
+			'ruleKey' => 'larpinq.question.answered',
+			'collection' => 'myQuestions',
+			'on' => ['field' => 'status', 'operator' => 'changed'],
+			'recipients' => ['field' => 'ownerRef', 'claim' => 'ownerRef'],
+			'titleField' => 'subject',
+		],
+	];
+
+	/**
+	 * The portal's `askQuestion` action: a question to the game masters,
+	 * stamped with the linked player's uuid through the `ownerRef` claim
+	 * (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const ASK_QUESTION_ACTION = [
+		'id' => 'askQuestion',
+		'type' => 'create',
+		'label' => 'Ask a question',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_question',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'fields' => [
+			'subject',
+			'body',
+			'event',
+		],
+	];
+
+	/**
+	 * The columns of a skill the portal may show, in the public skill
+	 * catalogue and in the rulebook alike.
+	 *
+	 * @var array<int, string>
+	 */
+	private const SKILL_FIELDS = [
+		'name',
+		'description',
+		'effect',
+		'effects',
+		'requiredSkills',
+		'requiredStats',
+		'requiredConditions',
+		'requiredEffects',
+		'requiredScore',
+		'setting',
+		'list',
+	];
+
+	/**
 	 * The public read lists: events plus the skill, item and condition
 	 * catalogs, each projected to its non-sensitive reference columns.
 	 *
@@ -148,18 +308,7 @@ class PortalContributionProvider {
 			'id' => 'skillCatalog',
 			'schema' => 'skill',
 			'label' => 'Skills',
-			'fields' => [
-				'name',
-				'description',
-				'effect',
-				'effects',
-				'requiredSkills',
-				'requiredStats',
-				'requiredConditions',
-				'requiredEffects',
-				'requiredScore',
-				'setting',
-			],
+			'fields' => self::SKILL_FIELDS,
 		],
 		[
 			'id' => 'itemCatalog',
@@ -285,8 +434,8 @@ class PortalContributionProvider {
 			'label' => 'Larpinq',
 			'collections' => $this->playerCollections(),
 			'actions' => $this->playerActions(),
-			'pages' => [$this->myLarpPage(), $this->rulebookPage()],
-			'notifications' => [],
+			'pages' => [$this->myLarpPage(), $this->rulebookPage(), $this->helpPage()],
+			'notifications' => $this->playerNotifications(),
 		];
 	}//end playerContribution()
 
@@ -344,7 +493,8 @@ class PortalContributionProvider {
 				],
 				['type' => 'collection', 'collection' => 'rulebookChapters'],
 				['type' => 'detail', 'collection' => 'rulebookChapters'],
-				['type' => 'collection', 'collection' => 'skillCatalog'],
+				['type' => 'collection', 'collection' => 'skillLists'],
+				['type' => 'collection', 'collection' => 'rulebookSkills'],
 			],
 		];
 	}//end rulebookPage()
@@ -365,9 +515,73 @@ class PortalContributionProvider {
 		return array_merge(
 			[$this->characterCollection()],
 			$this->catalogCollections(),
-			[$this->profileCollection(), $this->registrationCollection(), $this->rulebookCollection()]
+			[
+				$this->profileCollection(),
+				$this->registrationCollection(),
+				$this->rulebookCollection(),
+				$this->skillListCollection(),
+				$this->rulebookSkillCollection(),
+			],
+			[$this->questionCollection(), $this->questionMessageCollection()]
 		);
 	}//end playerCollections()
+
+	/**
+	 * The player's help page in the portal: their questions with the answers,
+	 * and a new question (communication-help-desk REQ-CHD-004).
+	 *
+	 * @return array<string, mixed> The page.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	private function helpPage(): array {
+		return self::HELP_PAGE;
+	}//end helpPage()
+
+	/**
+	 * The player's own help questions, scoped by the `ownerRef` claim.
+	 *
+	 * `helpQuestion.ownerRef` holds the asking player's uuid, the value the
+	 * account's `ownerRef` claim carries, so the scoping matches
+	 * `myCharacters`. Projected to the question and its state.
+	 *
+	 * @return array<string, mixed> The owner-scoped question collection.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	private function questionCollection(): array {
+		return self::QUESTION_COLLECTION;
+	}//end questionCollection()
+
+	/**
+	 * The messages under the player's own questions: the answers of the game
+	 * masters and the player's replies, scoped by the same `ownerRef` claim
+	 * (HelpMessageListener copies the question's `ownerRef` onto each message).
+	 *
+	 * @return array<string, mixed> The owner-scoped message collection.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	private function questionMessageCollection(): array {
+		return self::QUESTION_MESSAGE_COLLECTION;
+	}//end questionMessageCollection()
+
+	/**
+	 * The portal notifications of the `player` audience: a portal player hears
+	 * when the state of one of their questions changes, for instance when a
+	 * game master answers it (REQ-CHD-004).
+	 *
+	 * `myQuestions` is read through the `ownerRef` claim, so the rule names
+	 * its recipients by that claim: the accounts whose `ownerRef` claim equals
+	 * the question's `ownerRef`.
+	 *
+	 * @return array<int, array<string, mixed>> The declared notification rules.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
+	 */
+	private function playerNotifications(): array {
+		return self::PLAYER_NOTIFICATIONS;
+	}//end playerNotifications()
 
 	/**
 	 * The player's own registrations, scoped by the `player` reference.
@@ -448,6 +662,71 @@ class PortalContributionProvider {
 			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
 		];
 	}//end rulebookCollection()
+
+	/**
+	 * The skill lists of the rulebook: skills, spells and powers with the pool they are paid from.
+	 *
+	 * Public like the skill catalogue, whose `list` field says which list a
+	 * skill is in. A list hidden from the rulebook is left out by the filter;
+	 * the flag defaults to false on every list, which is a schema of this change.
+	 *
+	 * @return array<string, mixed> The skill list collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-the-rulebook-is-in-the-portal-req-rrs-005
+	 */
+	private function skillListCollection(): array {
+		return [
+			'id' => 'skillLists',
+			'register' => self::REGISTER,
+			'schema' => 'larping_skill_list',
+			'scopeField' => '',
+			'filter' => ['hiddenFromRulebook' => false],
+			'label' => 'Vaardighedenlijsten',
+			'listable' => true,
+			'fields' => [
+				'name',
+				'kind',
+				'description',
+				'costAbility',
+				'order',
+				'setting',
+			],
+			'columns' => [
+				['field' => 'name', 'label' => 'Lijst'],
+				['field' => 'kind', 'label' => 'Soort'],
+			],
+			'defaultSort' => ['field' => 'order', 'direction' => 'asc'],
+		];
+	}//end skillListCollection()
+
+	/**
+	 * The skills of the rulebook, without the ones hidden from it (REQ-RRS-004).
+	 *
+	 * The rulebook page lists these instead of the public skill catalogue,
+	 * which stays unfiltered because it resolves the skill references on a
+	 * player's own characters. The flag defaults to false on every skill.
+	 *
+	 * @return array<string, mixed> The rulebook skill collection.
+	 *
+	 * @spec openspec/changes/rules-rulebook-and-spell-lists/specs/rulebook/spec.md#requirement-secret-rules-stay-out-of-the-rulebook-req-rrs-004
+	 */
+	private function rulebookSkillCollection(): array {
+		return [
+			'id' => 'rulebookSkills',
+			'register' => self::REGISTER,
+			'schema' => 'larping_skill',
+			'scopeField' => '',
+			'filter' => ['hiddenFromRulebook' => false],
+			'label' => 'Vaardigheden',
+			'listable' => true,
+			'fields' => self::SKILL_FIELDS,
+			'columns' => [
+				['field' => 'name', 'label' => 'Vaardigheid'],
+				['field' => 'list', 'label' => 'Lijst'],
+			],
+			'defaultSort' => ['field' => 'name', 'direction' => 'asc'],
+		];
+	}//end rulebookSkillCollection()
 
 	/**
 	 * The subject's own player profile, scoped by the portal subject itself.
@@ -549,6 +828,11 @@ class PortalContributionProvider {
 	 * with their portal subject; PortalProfileListener refuses a second one and
 	 * asks portaliq for the claim.
 	 *
+	 * `askQuestion`: a question to the game masters, stamped with the linked
+	 * player's uuid through the `ownerRef` claim; HelpMessageListener names that
+	 * player on the question (communication-help-desk REQ-CHD-004). Status,
+	 * assignee and the asker's account stay server-authoritative.
+	 *
 	 * Only intake fields are accepted: no game-master, economy, lifecycle or
 	 * review property. Event signup is delegated to Nextcloud Forms and is not
 	 * duplicated here; there are no `endpoint` actions in this wave.
@@ -557,6 +841,7 @@ class PortalContributionProvider {
 	 *
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 * @spec openspec/specs/portal-contribution/spec.md
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function playerActions(): array {
 		return [
@@ -585,6 +870,7 @@ class PortalContributionProvider {
 					'description',
 				],
 			],
+			self::ASK_QUESTION_ACTION,
 		];
 	}//end playerActions()
 }//end class

@@ -26,8 +26,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\DemoDataService;
-use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Kernel\Contracts\DemoDataServiceInterface;
+use OCA\Larpinq\Kernel\Contracts\SettingsServiceInterface;
 use OCA\Larpinq\Settings\LarpinqAdmin;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
@@ -97,8 +97,8 @@ class SetupController extends Controller {
 	 *
 	 * @param IRequest $request The request.
 	 * @param IAppConfig $appConfig App-config reader/writer.
-	 * @param DemoDataService $demoDataService Demo dataset import (ADR-111 rule 4).
-	 * @param SettingsService $settingsService Register/schema provisioning.
+	 * @param DemoDataServiceInterface $demoDataService Demo dataset import (ADR-111 rule 4).
+	 * @param SettingsServiceInterface $settingsService Register/schema provisioning.
 	 * @param IAppManager $appManager App installed/enabled lookup.
 	 * @param LoggerInterface $logger Logger.
 	 *
@@ -107,8 +107,8 @@ class SetupController extends Controller {
 	public function __construct(
 		IRequest $request,
 		private readonly IAppConfig $appConfig,
-		private readonly DemoDataService $demoDataService,
-		private readonly SettingsService $settingsService,
+		private readonly DemoDataServiceInterface $demoDataService,
+		private readonly SettingsServiceInterface $settingsService,
 		private readonly IAppManager $appManager,
 		private readonly LoggerInterface $logger,
 	) {
@@ -308,8 +308,8 @@ class SetupController extends Controller {
 			return new DataResponse(['success' => false, 'message' => 'Pick a dataset first.']);
 		}
 
-		if ($picked === DemoDataService::NONE_DATASET) {
-			$this->recordDataset(dataset: DemoDataService::NONE_DATASET, decided: 'skipped');
+		if ($picked === DemoDataServiceInterface::NONE_DATASET) {
+			$this->recordDataset(dataset: DemoDataServiceInterface::NONE_DATASET, decided: 'skipped');
 			return new DataResponse(['success' => true, 'message' => 'No example data was loaded.']);
 		}
 
@@ -338,7 +338,7 @@ class SetupController extends Controller {
 		// The legacy id carries no answer, so it means the shipped dataset. A
 		// caller that posts it has said which one by posting it.
 		if ($actionId === 'install-demo-data' && $picked === '') {
-			return DemoDataService::DEMO_DATASET;
+			return DemoDataServiceInterface::DEMO_DATASET;
 		}
 
 		return $picked;
@@ -422,7 +422,7 @@ class SetupController extends Controller {
 	private function skipDemoData(): DataResponse {
 		// Skipping IS choosing "None", so both keys are written: an older
 		// runbook may read either one.
-		$this->recordDataset(dataset: DemoDataService::NONE_DATASET, decided: 'skipped');
+		$this->recordDataset(dataset: DemoDataServiceInterface::NONE_DATASET, decided: 'skipped');
 
 		return new DataResponse(
 			[

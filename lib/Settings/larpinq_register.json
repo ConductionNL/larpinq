@@ -3,7 +3,7 @@
   "info": {
     "title": "Larpinq Register",
     "description": "Live Action Role Playing character management register for the Larpinq Nextcloud app. Manages characters, players, abilities, skills, items, conditions, effects, events, and worlds. v1.3.0 renames the `skill` schema slug to `larping_skill`. Pipelinq also ships a `skill`, an agent competence used for routing, and slugs are global on a shared OpenRegister. The prefix follows this register's own `larping_item` and `larping_event`. The object type stays `skill`; only the slug it maps to changes.",
-    "version": "1.3.0"
+    "version": "1.4.0"
   },
   "x-openregister": {
     "type": "application",
@@ -958,6 +958,12 @@
             "format": "date-time",
             "description": "When the award was granted (server-stamped)",
             "title": "Awarded At"
+          },
+          "awardedVia": {
+            "type": "string",
+            "enum": ["ui", "mcp"],
+            "title": "Awarded via",
+            "description": "How the award was made: `mcp` when an agent made it through the awardXpToAttendees tool after a game master approved it. Set by the server; absent on awards made before this field existed."
           }
         },
         "authorization": {

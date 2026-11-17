@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\TicketChoiceServiceInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -47,7 +48,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class TicketChoiceService {
+class TicketChoiceService implements TicketChoiceServiceInterface {
 
 	/**
 	 * The event's ticket types, options and codes.

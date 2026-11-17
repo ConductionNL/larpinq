@@ -278,8 +278,8 @@
 		}
 	},
 	"CharacterStatSheet": {
-		"templateRenderSha256": "5afc6ef58f3328e9ed3d8e9474356fa75b9bb2917df1cabb25954116e6f932d3",
-		"styleSha256": "1acd931759ee6bcf1f2e87fbede687d8213539c6345553a8023882ada9202b92",
+		"templateRenderSha256": "088998a463d78c0459b93d496d4c26fb08bb116e63fa905bbe3cdb8aa2c1f2f6",
+		"styleSha256": "da5de784b9afa02b471a10e6c136e2a5d4b4ba2e92a48a4b5e18347bef3e4293",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",
@@ -556,8 +556,8 @@
 		}
 	},
 	"EventRoster": {
-		"templateRenderSha256": "359edc96d57b2a2c2bd1ac43d12c45ca1e4e7dc7965850f21bbdf3244bf330c8",
-		"styleSha256": "a0919414a7da8bc50866a11dbf863bd04562a0747330416ca6c9c42016102fa2",
+		"templateRenderSha256": "94530759e6e768c011900652321f1da41b7684785fc08f4c8d72a913c5e34e2c",
+		"styleSha256": "69589561919e05c34fa58b73ac39a662aed9ebe951bb6f1ab9bad976e9b1dbe2",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",

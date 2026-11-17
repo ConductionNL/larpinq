@@ -26,6 +26,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\DocuDeskPdfRendererInterface;
 use OCA\Larpinq\Support\FleetAppId;
 use OCP\App\IAppManager;
 use Psr\Container\ContainerInterface;
@@ -44,7 +45,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/specs/pdf-export/spec.md
  */
-class DocuDeskPdfRenderer {
+class DocuDeskPdfRenderer implements DocuDeskPdfRendererInterface {
 
 	/**
 	 * The document-app namespace larpinq's templates live under. Frozen on the

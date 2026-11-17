@@ -17,7 +17,7 @@
 
 ---
 
-Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
+Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud. Install it from the [Nextcloud App Store](https://apps.nextcloud.com/apps/larpinq).
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 
@@ -261,6 +261,10 @@ All dependencies (PHP and JavaScript) are automatically checked against an appro
 - **Font licenses:** OFL-1.0, OFL-1.1
 
 Dependencies with licenses not on this list will fail CI unless explicitly approved in `.license-overrides.json` with a documented justification.
+
+Runtime dependencies added for a feature, with their licence:
+
+- [`qrcode`](https://github.com/soldair/node-qrcode) (MIT): draws a registration's check-in code as a QR code on My registrations (events-qr-checkin).
 ## Authors
 
 Built by [Conduction](https://conduction.nl) — open-source software for Dutch government and public sector organizations.

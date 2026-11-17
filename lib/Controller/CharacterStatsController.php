@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\CharacterStatSheet;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
@@ -50,16 +50,16 @@ class CharacterStatsController extends Controller {
 	 *
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
-	 * @param RegisterObjectFetcher $objectFetcher Reads the character as the calling user.
-	 * @param CharacterStatSheet $statSheet Computes and shapes the sheet.
+	 * @param RegisterObjectFetcherInterface $objectFetcher Reads the character as the calling user.
+	 * @param CharacterStatSheetInterface $statSheet Computes and shapes the sheet.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly CharacterStatSheet $statSheet,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
+		private readonly CharacterStatSheetInterface $statSheet,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -69,7 +69,7 @@ class CharacterStatsController extends Controller {
 	 *
 	 * @param string $id The character UUID.
 	 *
-	 * @return JSONResponse `{abilities: [...], xp: {...}|null}`, or 404.
+	 * @return JSONResponse `{abilities: [...], xp: {..., history: [...]}|null}`, or 404.
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
@@ -77,6 +77,7 @@ class CharacterStatsController extends Controller {
 	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 *
 	 * @spec openspec/specs/character-management/spec.md
+	 * @spec openspec/changes/characters-skill-refund/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
 	 *
 	 * @no-admin-idor-exempt OR-delegated read via
 	 * RegisterObjectFetcher::getObject (ADR-022), which reads with RBAC on as
@@ -94,6 +95,13 @@ class CharacterStatsController extends Controller {
 			return new JSONResponse(data: ['error' => 'Character not found'], statusCode: 404);
 		}
 
-		return new JSONResponse(data: $this->statSheet->present(stats: $this->statSheet->stats(character: $character)));
+		$sheet = $this->statSheet->present(stats: $this->statSheet->stats(character: $character));
+		if ($sheet['xp'] !== null) {
+			// REQ-CSP-006: the refunds, read from the audit trail. Reading them
+			// changes nothing: XP left is the engine's figure above.
+			$sheet['xp']['history'] = $this->statSheet->xpHistory(character: $character);
+		}
+
+		return new JSONResponse(data: $sheet);
 	}//end show()
 }//end class

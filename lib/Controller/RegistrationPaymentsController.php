@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Service\PaymentRequestRefusedException;
-use OCA\Larpinq\Service\RegistrationPaymentService;
+use OCA\Larpinq\Kernel\Contracts\RegistrationPaymentServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -49,14 +49,14 @@ class RegistrationPaymentsController extends Controller {
 	 *
 	 * @param string $appName The app name.
 	 * @param IRequest $request The request.
-	 * @param RegistrationPaymentService $payments Raises the request.
+	 * @param RegistrationPaymentServiceInterface $payments Raises the request.
 	 * @param IUserSession $userSession The user session.
 	 * @param IL10N $l10n Translations for refusals.
 	 */
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private readonly RegistrationPaymentService $payments,
+		private readonly RegistrationPaymentServiceInterface $payments,
 		private readonly IUserSession $userSession,
 		private readonly IL10N $l10n,
 	) {

@@ -84,12 +84,17 @@ class SettingsServiceTest extends TestCase {
 		$this->assertArrayHasKey(key: 'tickettype_schema', array: $result);
 		$this->assertArrayHasKey(key: 'registrationoption_schema', array: $result);
 		$this->assertArrayHasKey(key: 'accesscode_schema', array: $result);
+		// The help desk reads its questions and messages by these keys.
+		$this->assertArrayHasKey(key: 'helpquestion_schema', array: $result);
+		$this->assertArrayHasKey(key: 'helpmessage_schema', array: $result);
 		// CONFIG_KEYS now includes {slug}_schema + {slug}_register + {slug}_source
-		// for all 21 slugs (9 original + attendance + lorepage + characterfield
+		// for all 23 slugs (9 original + attendance + lorepage + characterfield
 		// + faction + factionmember + relationship + characterbuild + xpaward + registration
-		// + tickettype + registrationoption + accesscode)
-		// plus the global 'register' key = 1 + 21*3 = 64.
-		$this->assertCount(expectedCount: 64, haystack: $result);
+		// + tickettype + registrationoption + accesscode + eventcarerecord + staffinvite
+		// + helpquestion + helpmessage) plus the global 'register' key = 1 + 25*3 = 76.
+		$this->assertArrayHasKey(key: 'staffinvite_schema', array: $result);
+		$this->assertArrayHasKey(key: 'eventcarerecord_schema', array: $result);
+		$this->assertCount(expectedCount: 76, haystack: $result);
 	}
 
 	/**
@@ -166,7 +171,7 @@ class SettingsServiceTest extends TestCase {
 		$result = $this->service->updateSettings(['register' => 'reg-1']);
 
 		$this->assertIsArray(actual: $result);
-		$this->assertCount(expectedCount: 64, haystack: $result);
+		$this->assertCount(expectedCount: 76, haystack: $result);
 	}
 
 	/**

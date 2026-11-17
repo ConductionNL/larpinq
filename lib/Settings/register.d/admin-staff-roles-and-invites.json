@@ -1,0 +1,533 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_staff_invite"
+        ]
+      }
+    },
+    "schemas": {
+      "character": {
+        "authorization": {
+          "read": [
+            "larpinq-writers",
+            "larpinq-stewards"
+          ],
+          "update": [
+            "larpinq-writers"
+          ]
+        },
+        "properties": {
+          "ocName": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "ownerUid": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "background": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "type": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "ownerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "gold": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "silver": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "copper": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "faith": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "slNotesPublic": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "slNotesPrivate": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "card": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "itemsAndMoney": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "notice": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "skills": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "items": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "conditions": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "events": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "setting": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "ownerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "requirementOverrides": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "customFields": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "customFieldsPrivate": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "ownerRef": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "ownerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "writer": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          },
+          "writingStep": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          }
+        }
+      },
+      "plot": {
+        "authorization": {
+          "read": [
+            "larpinq-writers"
+          ],
+          "create": [
+            "larpinq-writers"
+          ],
+          "update": [
+            "larpinq-writers"
+          ]
+        }
+      },
+      "plotPart": {
+        "authorization": {
+          "read": [
+            "larpinq-writers"
+          ],
+          "create": [
+            "larpinq-writers"
+          ],
+          "update": [
+            "larpinq-writers"
+          ]
+        },
+        "properties": {
+          "privateText": {
+            "authorization": {
+              "read": [
+                "larpinq-writers"
+              ],
+              "update": [
+                "larpinq-writers"
+              ]
+            }
+          }
+        }
+      },
+      "lorePage": {
+        "authorization": {
+          "read": [
+            "larpinq-writers"
+          ],
+          "create": [
+            "larpinq-writers"
+          ],
+          "update": [
+            "larpinq-writers"
+          ]
+        }
+      },
+      "ability": {
+        "authorization": {
+          "create": [
+            "larpinq-rules"
+          ],
+          "update": [
+            "larpinq-rules"
+          ]
+        }
+      },
+      "skill": {
+        "authorization": {
+          "create": [
+            "larpinq-rules"
+          ],
+          "update": [
+            "larpinq-rules"
+          ]
+        }
+      },
+      "item": {
+        "authorization": {
+          "create": [
+            "larpinq-rules"
+          ],
+          "update": [
+            "larpinq-rules"
+          ]
+        }
+      },
+      "condition": {
+        "authorization": {
+          "create": [
+            "larpinq-rules"
+          ],
+          "update": [
+            "larpinq-rules"
+          ]
+        }
+      },
+      "effect": {
+        "authorization": {
+          "create": [
+            "larpinq-rules"
+          ],
+          "update": [
+            "larpinq-rules"
+          ]
+        }
+      },
+      "registration": {
+        "authorization": {
+          "read": [
+            "larpinq-treasurers",
+            "larpinq-stewards"
+          ],
+          "update": [
+            "larpinq-treasurers"
+          ]
+        },
+        "properties": {
+          "character": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "playerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "paymentState": {
+            "authorization": {
+              "update": [
+                "larpinq-treasurers"
+              ]
+            }
+          },
+          "invoiceRequested": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "playerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "ticketType": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "playerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "options": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "playerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "code": {
+            "authorization": {
+              "update": [
+                "gamemasters",
+                {
+                  "group": "larpers",
+                  "match": {
+                    "playerUid": "$userId"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "staffInvite": {
+        "slug": "larping_staff_invite",
+        "title": "Staff invite",
+        "icon": "AccountPlusOutline",
+        "version": "1.0.0",
+        "summary": "A link that lets a signed-in user join one staff role",
+        "description": "Created by a game master for one role, with an expiry and a number of uses. Only a hash of the token is stored; the plain token is shown once, when the invite is created. Redeeming it adds the user to the role group and to larpers and records the use. A revoked, expired or used-up invite adds nobody. Game masters only.",
+        "type": "object",
+        "x-schema-org": "schema:InviteAction",
+        "x-openregister-demo-data": "Staff invites are not seeded: a demo invite would be a working join link on every demo install",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "role",
+          "tokenHash",
+          "expiresAt",
+          "maxUses"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "The group the invite joins",
+            "enum": [
+              "gamemasters",
+              "larpinq-writers",
+              "larpinq-rules",
+              "larpinq-treasurers",
+              "larpinq-stewards"
+            ],
+            "x-enum-labels": {
+              "gamemasters": "Game master",
+              "larpinq-writers": "Story writer",
+              "larpinq-rules": "Rules marshal",
+              "larpinq-treasurers": "Treasurer",
+              "larpinq-stewards": "Steward"
+            },
+            "facetable": true
+          },
+          "tokenHash": {
+            "type": "string",
+            "title": "Token hash",
+            "description": "SHA-256 of the invite token; the plain token is never stored, and larpinq never returns the hash",
+            "maxLength": 64
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires at",
+            "description": "After this moment the invite adds nobody"
+          },
+          "maxUses": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1,
+            "title": "Uses",
+            "description": "How many people may join with this invite"
+          },
+          "uses": {
+            "type": "array",
+            "title": "Joined",
+            "description": "Who joined with this invite, and when (server-stamped)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uid": {
+                  "type": "string",
+                  "title": "User",
+                  "description": "The user who joined with this invite",
+                  "maxLength": 255
+                },
+                "at": {
+                  "type": "string",
+                  "title": "Joined at",
+                  "description": "When the user joined (server-stamped)",
+                  "format": "date-time"
+                }
+              }
+            },
+            "default": []
+          },
+          "createdBy": {
+            "type": "string",
+            "title": "Created by",
+            "description": "Nextcloud uid of the game master who created the invite (server-stamped)",
+            "maxLength": 255
+          },
+          "revokedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Revoked at",
+            "description": "When a game master revoked the invite; a revoked invite adds nobody"
+          },
+          "revokedBy": {
+            "type": "string",
+            "title": "Revoked by",
+            "description": "Nextcloud uid of the game master who revoked the invite",
+            "maxLength": 255
+          }
+        },
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      }
+    }
+  }
+}
