@@ -863,9 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Minu tegelaskaart",
         "Open sheet": "Ava kaart",
-        "XP history": "XP ajalugu",
-        "{skill} removed: {xp} XP returned": "{skill} eemaldatud: {xp} XP tagastatud",
-        "Unknown skill": "Tundmatu oskus",
+        "Language": "Keel",
+        "Could not change the language.": "Keelt ei õnnestunud muuta.",
         "History entry": "Ajaloo kirje",
         "How the date is told in the world": "Kuidas kuupäeva maailmas öeldakse",
         "In-game date": "Mängusisene kuupäev",
@@ -905,7 +904,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Maailm, kuhu see nimekiri kuulub. Tühi tähendab kõigi maailmade ühist.",
         "What the list is for, shown in the rulebook.": "Milleks nimekiri on, kuvatakse reeglistikus.",
         "Where the list comes in the rulebook; lower comes first.": "Nimekirja koht reeglistikus; väiksem tuleb enne.",
-        "Whether the list holds skills, spells or powers.": "Kas nimekirjas on oskused, loitsud või võimed."
+        "Whether the list holds skills, spells or powers.": "Kas nimekirjas on oskused, loitsud või võimed.",
+        "XP history": "XP ajalugu",
+        "{skill} removed: {xp} XP returned": "{skill} eemaldatud: {xp} XP tagastatud",
+        "Unknown skill": "Tundmatu oskus"
     },
     "plurals": {}
 }

@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakterlapom",
         "Open sheet": "Lap megnyitása",
-        "XP history": "XP-előzmények",
-        "{skill} removed: {xp} XP returned": "{skill} eltávolítva: {xp} XP visszaadva",
-        "Unknown skill": "Ismeretlen képesség",
+        "Language": "Nyelv",
+        "Could not change the language.": "A nyelvet nem sikerült módosítani.",
         "History entry": "Történeti bejegyzés",
         "How the date is told in the world": "Hogyan mondják a dátumot a világban",
         "In-game date": "Játékbeli dátum",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "A világ, amelyhez ez a lista tartozik. Az üres azt jelenti, hogy minden világ közös listája.",
         "What the list is for, shown in the rulebook.": "Mire való a lista, a szabálykönyvben jelenik meg.",
         "Where the list comes in the rulebook; lower comes first.": "Hol szerepel a lista a szabálykönyvben; a kisebb érték kerül előre.",
-        "Whether the list holds skills, spells or powers.": "Képességeket, varázslatokat vagy erőket tartalmaz-e a lista."
+        "Whether the list holds skills, spells or powers.": "Képességeket, varázslatokat vagy erőket tartalmaz-e a lista.",
+        "XP history": "XP-előzmények",
+        "{skill} removed: {xp} XP returned": "{skill} eltávolítva: {xp} XP visszaadva",
+        "Unknown skill": "Ismeretlen képesség"
     },
     "nplurals=2; plural=(n != 1);"
 )

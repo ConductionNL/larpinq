@@ -863,9 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Oma hahmolomake",
         "Open sheet": "Avaa lomake",
-        "XP history": "XP-historia",
-        "{skill} removed: {xp} XP returned": "{skill} poistettu: {xp} XP palautettu",
-        "Unknown skill": "Tuntematon taito",
+        "Language": "Kieli",
+        "Could not change the language.": "Kieltä ei voitu vaihtaa.",
         "History entry": "Historiamerkintä",
         "How the date is told in the world": "Miten päivämäärä sanotaan maailmassa",
         "In-game date": "Pelinsisäinen päivämäärä",
@@ -905,7 +904,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Maailma, johon tämä luettelo kuuluu. Tyhjä tarkoittaa kaikkien maailmojen yhteistä.",
         "What the list is for, shown in the rulebook.": "Mihin luettelo on tarkoitettu, näytetään sääntökirjassa.",
         "Where the list comes in the rulebook; lower comes first.": "Luettelon paikka sääntökirjassa; pienempi tulee ensin.",
-        "Whether the list holds skills, spells or powers.": "Sisältääkö luettelo taitoja, loitsuja vai voimia."
+        "Whether the list holds skills, spells or powers.": "Sisältääkö luettelo taitoja, loitsuja vai voimia.",
+        "XP history": "XP-historia",
+        "{skill} removed: {xp} XP returned": "{skill} poistettu: {xp} XP palautettu",
+        "Unknown skill": "Tuntematon taito"
     },
     "plurals": {}
 }

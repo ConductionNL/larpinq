@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Karakter sayfam",
         "Open sheet": "Sayfayı aç",
-        "XP history": "XP geçmişi",
-        "{skill} removed: {xp} XP returned": "{skill} kaldırıldı: {xp} XP iade edildi",
-        "Unknown skill": "Bilinmeyen beceri",
+        "Language": "Dil",
+        "Could not change the language.": "Dil değiştirilemedi.",
         "History entry": "Tarih kaydı",
         "How the date is told in the world": "Tarihin dünyada nasıl söylendiği",
         "In-game date": "Oyun içi tarih",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Bu listenin ait olduğu dünya. Boş, tüm dünyalarca paylaşılan anlamına gelir.",
         "What the list is for, shown in the rulebook.": "Listenin ne için olduğu, kural kitabında gösterilir.",
         "Where the list comes in the rulebook; lower comes first.": "Listenin kural kitabındaki yeri; küçük olan önce gelir.",
-        "Whether the list holds skills, spells or powers.": "Listenin yetenek, büyü veya güç içerip içermediği."
+        "Whether the list holds skills, spells or powers.": "Listenin yetenek, büyü veya güç içerip içermediği.",
+        "XP history": "XP geçmişi",
+        "{skill} removed: {xp} XP returned": "{skill} kaldırıldı: {xp} XP iade edildi",
+        "Unknown skill": "Bilinmeyen beceri"
     },
     "nplurals=2; plural=(n != 1);"
 )

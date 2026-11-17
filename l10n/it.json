@@ -863,9 +863,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "La mia scheda personaggio",
         "Open sheet": "Apri scheda",
-        "XP history": "Cronologia XP",
-        "{skill} removed: {xp} XP returned": "{skill} rimossa: {xp} XP restituiti",
-        "Unknown skill": "Abilità sconosciuta",
+        "Language": "Lingua",
+        "Could not change the language.": "Impossibile cambiare la lingua.",
         "History entry": "Voce di storia",
         "How the date is told in the world": "Come si dice la data nel mondo",
         "In-game date": "Data nel gioco",
@@ -905,7 +904,10 @@
         "The world this list belongs to. Empty means shared across all worlds.": "Il mondo a cui appartiene questo elenco. Vuoto significa condiviso tra tutti i mondi.",
         "What the list is for, shown in the rulebook.": "A cosa serve l'elenco, mostrato nel regolamento.",
         "Where the list comes in the rulebook; lower comes first.": "Dove compare l'elenco nel regolamento; il più basso viene prima.",
-        "Whether the list holds skills, spells or powers.": "Se l'elenco contiene abilità, incantesimi o poteri."
+        "Whether the list holds skills, spells or powers.": "Se l'elenco contiene abilità, incantesimi o poteri.",
+        "XP history": "Cronologia XP",
+        "{skill} removed: {xp} XP returned": "{skill} rimossa: {xp} XP restituiti",
+        "Unknown skill": "Abilità sconosciuta"
     },
     "plurals": {}
 }

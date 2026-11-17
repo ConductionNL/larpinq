@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mano veikėjo lapas",
         "Open sheet": "Atidaryti lapą",
-        "XP history": "XP istorija",
-        "{skill} removed: {xp} XP returned": "{skill} pašalintas: grąžinta {xp} XP",
-        "Unknown skill": "Nežinomas įgūdis",
+        "Language": "Kalba",
+        "Could not change the language.": "Nepavyko pakeisti kalbos.",
         "History entry": "Istorijos įrašas",
         "How the date is told in the world": "Kaip data vadinama pasaulyje",
         "In-game date": "Data žaidime",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Pasaulis, kuriam priklauso šis sąrašas. Tuščia reiškia bendras visiems pasauliams.",
         "What the list is for, shown in the rulebook.": "Kam skirtas sąrašas, rodoma taisyklių knygoje.",
         "Where the list comes in the rulebook; lower comes first.": "Kur sąrašas yra taisyklių knygoje; mažesnis eina pirmas.",
-        "Whether the list holds skills, spells or powers.": "Ar sąraše yra įgūdžiai, burtai ar galios."
+        "Whether the list holds skills, spells or powers.": "Ar sąraše yra įgūdžiai, burtai ar galios.",
+        "XP history": "XP istorija",
+        "{skill} removed: {xp} XP returned": "{skill} pašalintas: grąžinta {xp} XP",
+        "Unknown skill": "Nežinomas įgūdis"
     },
     "nplurals=2; plural=(n != 1);"
 )

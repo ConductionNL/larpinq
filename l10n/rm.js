@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mia fegl da persunagi",
         "Open sheet": "Avrir il fegl",
-        "XP history": "Istorgia dad XP",
-        "{skill} removed: {xp} XP returned": "{skill} allontanà: {xp} XP restituids",
-        "Unknown skill": "Abilitad nunenconuschenta",
+        "Language": "Lingua",
+        "Could not change the language.": "I n'è betg reussì da midar la lingua.",
         "History entry": "Inscripziun d'istorgia",
         "How the date is told in the world": "Co che la data vegn numnada en il mund",
         "In-game date": "Data en il gieu",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Il mund al qual questa glista tutga. Vid signifitga cumina per tut ils munds.",
         "What the list is for, shown in the rulebook.": "Per tge che la glista è, mussà en il cudesch da reglas.",
         "Where the list comes in the rulebook; lower comes first.": "Nua che la glista stat en il cudesch da reglas; pli bass vegn l'emprim.",
-        "Whether the list holds skills, spells or powers.": "Sche la glista cuntegna abilitads, striegnas u forzas."
+        "Whether the list holds skills, spells or powers.": "Sche la glista cuntegna abilitads, striegnas u forzas.",
+        "XP history": "Istorgia dad XP",
+        "{skill} removed: {xp} XP returned": "{skill} allontanà: {xp} XP restituids",
+        "Unknown skill": "Abilitad nunenconuschenta"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mitt karakterark",
         "Open sheet": "Åpne ark",
-        "XP history": "XP-historikk",
-        "{skill} removed: {xp} XP returned": "{skill} fjernet: {xp} XP tilbakeført",
-        "Unknown skill": "Ukjent ferdighet",
+        "Language": "Språk",
+        "Could not change the language.": "Språket kunne ikke endres.",
         "History entry": "Historisk oppføring",
         "How the date is told in the world": "Hvordan datoen sies i verdenen",
         "In-game date": "Dato i spillet",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Verdenen denne listen hører til. Tom betyr delt mellom alle verdener.",
         "What the list is for, shown in the rulebook.": "Hva listen er til, vist i regelboken.",
         "Where the list comes in the rulebook; lower comes first.": "Hvor listen står i regelboken; lavere kommer først.",
-        "Whether the list holds skills, spells or powers.": "Om listen inneholder ferdigheter, trylleformler eller krefter."
+        "Whether the list holds skills, spells or powers.": "Om listen inneholder ferdigheter, trylleformler eller krefter.",
+        "XP history": "XP-historikk",
+        "{skill} removed: {xp} XP returned": "{skill} fjernet: {xp} XP tilbakeført",
+        "Unknown skill": "Ukjent ferdighet"
     },
     "nplurals=2; plural=(n != 1);"
 )

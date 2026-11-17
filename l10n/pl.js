@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moja karta postaci",
         "Open sheet": "Otwórz kartę",
-        "XP history": "Historia XP",
-        "{skill} removed: {xp} XP returned": "Usunięto {skill}: zwrócono {xp} XP",
-        "Unknown skill": "Nieznana umiejętność",
+        "Language": "Język",
+        "Could not change the language.": "Nie udało się zmienić języka.",
         "History entry": "Wpis historii",
         "How the date is told in the world": "Jak data jest podawana w świecie",
         "In-game date": "Data w grze",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Świat, do którego należy ta lista. Puste oznacza wspólną dla wszystkich światów.",
         "What the list is for, shown in the rulebook.": "Do czego służy lista, pokazywane w podręczniku zasad.",
         "Where the list comes in the rulebook; lower comes first.": "Miejsce listy w podręczniku zasad; niższa wartość jest pierwsza.",
-        "Whether the list holds skills, spells or powers.": "Czy lista zawiera umiejętności, zaklęcia czy moce."
+        "Whether the list holds skills, spells or powers.": "Czy lista zawiera umiejętności, zaklęcia czy moce.",
+        "XP history": "Historia XP",
+        "{skill} removed: {xp} XP returned": "Usunięto {skill}: zwrócono {xp} XP",
+        "Unknown skill": "Nieznana umiejętność"
     },
     "nplurals=2; plural=(n != 1);"
 )

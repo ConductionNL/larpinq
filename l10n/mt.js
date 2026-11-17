@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Il-folja tal-karattru tiegħi",
         "Open sheet": "Iftaħ il-folja",
-        "XP history": "Storja tal-XP",
-        "{skill} removed: {xp} XP returned": "{skill} tneħħiet: ingħataw lura {xp} XP",
-        "Unknown skill": "Ħila mhux magħrufa",
+        "Language": "Lingwa",
+        "Could not change the language.": "Il-lingwa ma setgħetx tinbidel.",
         "History entry": "Daħla tal-istorja",
         "How the date is told in the world": "Kif tingħad id-data fid-dinja",
         "In-game date": "Data fil-logħba",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Id-dinja li tagħha tappartjeni din il-lista. Vojt ifisser maqsuma bejn id-dinjiet kollha.",
         "What the list is for, shown in the rulebook.": "Għal xiex hi l-lista, murija fil-ktieb tar-regoli.",
         "Where the list comes in the rulebook; lower comes first.": "Fejn tidher il-lista fil-ktieb tar-regoli; l-iktar baxx jiġi l-ewwel.",
-        "Whether the list holds skills, spells or powers.": "Jekk il-lista fihiex ħiliet, perjodi maġiċi jew poteri."
+        "Whether the list holds skills, spells or powers.": "Jekk il-lista fihiex ħiliet, perjodi maġiċi jew poteri.",
+        "XP history": "Storja tal-XP",
+        "{skill} removed: {xp} XP returned": "{skill} tneħħiet: ingħataw lura {xp} XP",
+        "Unknown skill": "Ħila mhux magħrufa"
     },
     "nplurals=2; plural=(n != 1);"
 )

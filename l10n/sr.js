@@ -864,9 +864,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мој лист лика",
         "Open sheet": "Отвори лист",
-        "XP history": "Историја XP-а",
-        "{skill} removed: {xp} XP returned": "{skill} уклоњена: враћено {xp} XP",
-        "Unknown skill": "Непозната вештина",
+        "Language": "Језик",
+        "Could not change the language.": "Језик није било могуће променити.",
         "History entry": "Историјски запис",
         "How the date is told in the world": "Како се датум зове у свету",
         "In-game date": "Датум у игри",
@@ -906,7 +905,10 @@ OC.L10N.register(
         "The world this list belongs to. Empty means shared across all worlds.": "Свет коме ова листа припада. Празно значи заједничка за све светове.",
         "What the list is for, shown in the rulebook.": "Чему листа служи, приказано у књизи правила.",
         "Where the list comes in the rulebook; lower comes first.": "Где листа стоји у књизи правила; мање иде прво.",
-        "Whether the list holds skills, spells or powers.": "Да ли листа садржи вештине, чини или моћи."
+        "Whether the list holds skills, spells or powers.": "Да ли листа садржи вештине, чини или моћи.",
+        "XP history": "Историја XP-а",
+        "{skill} removed: {xp} XP returned": "{skill} уклоњена: враћено {xp} XP",
+        "Unknown skill": "Непозната вештина"
     },
     "nplurals=2; plural=(n != 1);"
 )
