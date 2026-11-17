@@ -8,6 +8,8 @@
  */
 
 import { describe, expect, it } from 'vitest'
+import en from '../../l10n/en.json'
+import nl from '../../l10n/nl.json'
 import mock from '../../lib/Settings/larpinq_mock_register.json'
 import register from '../../lib/Settings/register.d/worlds-maps.json'
 import fragment from '../../src/manifest.d/worlds-maps.json'
@@ -188,5 +190,33 @@ describe('the Aldmoor seed against the pages (REQ-WMP-001, REQ-WMP-003)', () => 
 			'Aldmoor city',
 			'North gate',
 		])
+	})
+})
+
+describe('the maps pages in the catalogues', () => {
+	const columnLabels = (columns) => (Array.isArray(columns) ? columns.map((c) => c.label) : [])
+	const labels = new Set(fragment.menu.map((m) => m.label))
+	for (const p of fragment.pages) {
+		labels.add(p.title)
+		columnLabels(p.config.columns).forEach((label) => labels.add(label))
+		for (const w of p.config.widgets ?? []) {
+			labels.add(w.title)
+			columnLabels(w.content.columns).forEach((label) => labels.add(label))
+		}
+	}
+
+	it('has every title, menu label and column label in the English and Dutch catalogues', () => {
+		expect(labels.size).toBeGreaterThan(0)
+		for (const label of labels) {
+			expect(en.translations[label], label).toBeDefined()
+			expect(nl.translations[label], label).toBeTruthy()
+		}
+	})
+
+	it('has the world page list title in both catalogues', () => {
+		const title = widget(page('SettingDetail'), 'setting-maps').title
+		expect(en.translations[title]).toBe(title)
+		expect(nl.translations[title]).toBeTruthy()
+		expect(nl.translations[title]).not.toBe(title)
 	})
 })
