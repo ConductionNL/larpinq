@@ -20,3 +20,7 @@ larpinq's part of decision 179 (Ruben, 10 October 2026): "when building a form w
 ## Rollback
 
 The check refuses from the first release (decision 181). An existing binding with findings must be fixed before it can be saved again; it keeps working until then. Rolling back means reverting this change.
+
+## Scope
+
+Nextcloud Forms bindings for event registration (delta spec `forms-registration`, status draft). Implements hydra `form-submits-into-its-destination-object`.
