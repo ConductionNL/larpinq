@@ -263,6 +263,151 @@ class HelpMessageListenerTest extends TestCase {
 	}
 
 	/**
+	 * A player reference written as an object with a uuid names that player too.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerReferencedByItsUuidGivesTheAsker(): void {
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => ['uuid' => ' ' . self::PLAYER . ' '], 'subject' => 'Bow?']));
+
+		$this->listener()->handle($event);
+
+		$this->assertSame(['askerUid' => 'anna', 'ownerRef' => self::PLAYER], $event->getModifiedData());
+	}
+
+	/**
+	 * A player reference that is no text, or an empty one, names nobody.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerReferenceThatIsNoTextNamesNobody(): void {
+		foreach ([42, ['name' => 'Anna'], '   ', null] as $reference) {
+			$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => $reference, 'subject' => 'Bow?']));
+			$this->listener()->handle($event);
+			$this->assertFalse($event->isPropagationStopped());
+			$this->assertSame([], $event->getModifiedData());
+		}
+	}
+
+	/**
+	 * A game master may file a question for any player: the asker is still the player's own user.
+	 *
+	 * @return void
+	 */
+	public function testAGameMasterFilesAQuestionForAPlayer(): void {
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => self::PLAYER, 'subject' => 'Lost and found', 'askerUid' => 'joris']));
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(['askerUid' => 'anna', 'ownerRef' => self::PLAYER], $event->getModifiedData());
+	}
+
+	/**
+	 * An import (nobody signed in) keeps the asker the player names, without a refusal.
+	 *
+	 * @return void
+	 */
+	public function testAnImportedQuestionTakesItsAskerFromThePlayer(): void {
+		$this->signedIn = null;
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => self::PLAYER, 'subject' => 'Bow?']));
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(['askerUid' => 'anna', 'ownerRef' => self::PLAYER], $event->getModifiedData());
+	}
+
+	/**
+	 * A message naming an unknown question, or none, is refused as having no question.
+	 *
+	 * @return void
+	 */
+	public function testAMessageWithoutAReadableQuestionIsRefused(): void {
+		foreach (['99999999-9999-4999-8999-999999999999', '', null] as $question) {
+			$creating = new ObjectCreatingEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => $question, 'body' => 'Hello?']));
+
+			$this->listener()->handle($creating);
+
+			$this->assertTrue($creating->isPropagationStopped());
+			$this->assertSame([422, 'larpinq.help.no_question'], [$creating->getErrors()['status'], $creating->getErrors()['code']]);
+			$this->assertSame([], $creating->getModifiedData());
+		}
+	}
+
+	/**
+	 * A message naming its question by an object reference is stamped like any other.
+	 *
+	 * @return void
+	 */
+	public function testAMessageNamingItsQuestionByObjectIsStamped(): void {
+		$creating = new ObjectCreatingEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => ['id' => self::QUESTION], 'body' => 'Noted.']));
+
+		$this->listener()->handle($creating);
+
+		$modified = $creating->getModifiedData();
+		$this->assertSame(['joris', true, 'anna', self::PLAYER], [$modified['author'], $modified['fromOrganiser'], $modified['askerUid'], $modified['ownerRef']]);
+	}
+
+	/**
+	 * A stored message whose question is gone moves nothing.
+	 *
+	 * @return void
+	 */
+	public function testAStoredMessageWithoutItsQuestionMovesNothing(): void {
+		$this->listener()->handle(new ObjectCreatedEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => '99999999-9999-4999-8999-999999999999', 'fromOrganiser' => true])));
+
+		$this->assertSame([], $this->saved);
+	}
+
+	/**
+	 * A message that moves no status still records when the thread last moved, and keeps the question's fields.
+	 *
+	 * @return void
+	 */
+	public function testAMessageThatKeepsTheStatusStillRecordsTheLastMessage(): void {
+		$this->question['status'] = 'answered';
+		$this->question['id'] = 'internal-id';
+
+		$this->listener()->handle(new ObjectCreatedEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => self::QUESTION, 'fromOrganiser' => true, 'createdAt' => '2026-09-22T10:00:00+00:00'])));
+
+		$this->assertCount(1, $this->saved);
+		[$type, $data, $uuid] = $this->saved[0];
+		$this->assertSame(['helpquestion', self::QUESTION], [$type, $uuid]);
+		$this->assertSame('answered', $data['status']);
+		$this->assertSame('2026-09-22T10:00:00+00:00', $data['lastMessageAt']);
+		$this->assertArrayNotHasKey('id', $data);
+		$this->assertArrayNotHasKey('@self', $data);
+	}
+
+	/**
+	 * A message stored without a time stamps the thread with now.
+	 *
+	 * @return void
+	 */
+	public function testAMessageWithoutATimeStampsTheThreadWithNow(): void {
+		$before = time();
+
+		$this->listener()->handle(new ObjectCreatedEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => self::QUESTION, 'fromOrganiser' => true])));
+
+		$this->assertSame('answered', $this->saved[0][1]['status']);
+		$this->assertGreaterThanOrEqual($before, strtotime($this->saved[0][1]['lastMessageAt']));
+	}
+
+	/**
+	 * Only a real `true` counts as a game master's message when the thread moves on.
+	 *
+	 * @return void
+	 */
+	public function testOnlyATrueFromOrganiserAnswersTheQuestion(): void {
+		foreach (['1', 1, 'true'] as $flag) {
+			$this->saved = [];
+			$this->listener()->handle(new ObjectCreatedEvent(new HelpObjectEntity(self::MESSAGE_SCHEMA, ['question' => self::QUESTION, 'fromOrganiser' => $flag, 'createdAt' => '2026-09-22T10:00:00+00:00'])));
+			$this->assertSame('open', $this->saved[0][1]['status']);
+		}
+	}
+
+	/**
 	 * The listener over mocks of its collaborators.
 	 *
 	 * @return HelpMessageListener
