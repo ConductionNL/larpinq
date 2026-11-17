@@ -105,7 +105,7 @@ class HelpMessageListener implements IEventListener {
 			// @phpstan-ignore-next-line
 			$entity = $event->getObject();
 			if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
-				$this->merge(event: $event, data: $this->askerOf(question: (array)$entity->getObject()));
+				$this->prepareQuestion(event: $event, question: (array)$entity->getObject());
 			} else if ($this->isOf(entity: $entity, key: 'helpmessage_schema') === true) {
 				$this->prepareMessage(event: $event, message: (array)$entity->getObject());
 			}
@@ -121,6 +121,66 @@ class HelpMessageListener implements IEventListener {
 			}
 		}
 	}//end handle()
+
+	/**
+	 * Name the asker of a new question, refusing a question asked as someone else.
+	 *
+	 * A signed-in player who is not a game master asks as their own player: a
+	 * question naming another player is refused, and one naming no readable
+	 * player takes the signed-in user as its asker, whatever asker fields it
+	 * carried. Game masters may ask on a player's behalf; writes without a
+	 * signed-in user (the portal, an import) keep what they carry.
+	 *
+	 * @param Event               $event    The creating event.
+	 * @param array<string,mixed> $question The question as written.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-players-ask-questions-req-chd-001
+	 */
+	private function prepareQuestion(Event $event, array $question): void {
+		$asker = $this->askerOf(question: $question);
+		$user  = $this->userSession->getUser();
+		$uid   = '';
+		if ($user !== null) {
+			$uid = $user->getUID();
+		}
+
+		if ($uid === '' || $this->groupManager->isInGroup($uid, self::ORGANISERS) === true) {
+			$this->merge(event: $event, data: $asker);
+			return;
+		}
+
+		$refusal = self::askRefusal(asker: $asker, uid: $uid);
+		if ($refusal !== null) {
+			PreWriteEvent::refuseOnErrors(event: $event, errors: $refusal);
+			return;
+		}
+
+		if ($asker === []) {
+			$asker = ['askerUid' => $uid, 'ownerRef' => ''];
+		}
+
+		$this->merge(event: $event, data: $asker);
+	}//end prepareQuestion()
+
+	/**
+	 * Why a signed-in player may not ask this question, or null when they may.
+	 *
+	 * @param array<string,string> $asker The asker fields taken from the named player; empty when none was read.
+	 * @param string               $uid   The signed-in player's user id.
+	 *
+	 * @return array{status:int,code:string,message:string}|null The refusal, or null.
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-players-ask-questions-req-chd-001
+	 */
+	public static function askRefusal(array $asker, string $uid): ?array {
+		if ($asker !== [] && ($asker['askerUid'] ?? '') !== $uid) {
+			return ['status' => 403, 'code' => 'larpinq.help.not_own_player', 'message' => 'You can only ask a question as your own player.'];
+		}
+
+		return null;
+	}//end askRefusal()
 
 	/**
 	 * The asker and owner reference of a question, copied from the player it names.

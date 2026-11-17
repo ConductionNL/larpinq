@@ -175,6 +175,43 @@ class HelpMessageListenerTest extends TestCase {
 	}
 
 	/**
+	 * A player who names another player on their question is refused.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerCannotAskAsAnotherPlayer(): void {
+		$this->signedIn = 'mallory';
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => self::PLAYER, 'subject' => 'Bow?']));
+
+		$this->listener()->handle($event);
+
+		$this->assertTrue($event->isPropagationStopped());
+		$this->assertSame([403, 'larpinq.help.not_own_player'], [$event->getErrors()['status'], $event->getErrors()['code']]);
+		$this->assertSame([], $event->getModifiedData());
+	}
+
+	/**
+	 * A player's question naming no readable player is theirs, whatever asker it carried;
+	 * their own player is taken as before.
+	 *
+	 * @return void
+	 */
+	public function testAPlayersQuestionWithoutAPlayerIsTheirOwn(): void {
+		$this->signedIn = 'mallory';
+		$event = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['subject' => 'Bow?', 'askerUid' => 'anna', 'ownerRef' => '99999999-9999-4999-8999-999999999999']));
+
+		$this->listener()->handle($event);
+
+		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(['askerUid' => 'mallory', 'ownerRef' => ''], $event->getModifiedData());
+
+		$this->signedIn = 'anna';
+		$own = new ObjectCreatingEvent(new HelpObjectEntity(self::QUESTION_SCHEMA, ['player' => self::PLAYER, 'subject' => 'Bow?']));
+		$this->listener()->handle($own);
+		$this->assertSame(['askerUid' => 'anna', 'ownerRef' => self::PLAYER], $own->getModifiedData());
+	}
+
+	/**
 	 * Someone who is neither the asker nor a game master cannot write in the thread.
 	 *
 	 * @return void

@@ -89,6 +89,7 @@ export default {
 		 * and the browser catalogue carries no plural forms.
 		 *
 		 * @return {string}
+		 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-game-masters-answer-from-one-list-req-chd-002
 		 */
 		marker() {
 			return t('larpinq', 'Waiting too long')
@@ -101,6 +102,7 @@ export default {
 		 *
 		 * @param {unknown} value The value.
 		 * @return {number|null}
+		 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-game-masters-answer-from-one-list-req-chd-002
 		 */
 		timeOf(value) {
 			if (typeof value !== 'string' && typeof value !== 'number') {
