@@ -136,6 +136,7 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 
 	<background-jobs>
 		<job>OCA\Larpinq\BackgroundJob\RegistrationPaymentJob</job>
+		<job>OCA\Larpinq\BackgroundJob\EventFeedbackJob</job>
 	</background-jobs>
 
 	<!-- THE TWO Migrate* STEPS CARRY THE `larpingapp` -> `larpinq` APP-ID RENAME
@@ -205,11 +206,16 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     the app never enables. -->
 			<step>OCA\Larpinq\Repair\MigrateSchemaApplicationId</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
+			<!-- After the import, which adds registration.checkinCode: accepted
+			     registrations stored before it get a code (events-qr-checkin). -->
+			<step>OCA\Larpinq\Repair\GiveAcceptedRegistrationsACheckinCode</step>
 			<!-- After the import, which adds character.status: characters stored
 			     before it get status active, so the event participant picker
 			     (x-relation-filter status = active) keeps offering them.
 			     Idempotent; logs and continues. -->
 			<step>OCA\Larpinq\Repair\BackfillCharacterStatus</step>
+			<!-- admin-staff-roles-and-invites: creates the four staff role groups when missing; adds nobody. -->
+			<step>OCA\Larpinq\Repair\CreateStaffRoleGroups</step>
 		</post-migration>
 		<install>
 			<step>OCA\Larpinq\Repair\MigrateAppConfigKeys</step>
@@ -253,6 +259,10 @@ Maak een [featureverzoek](https://github.com/ConductionNL/larpinq/issues)
 			     the app never enables. -->
 			<step>OCA\Larpinq\Repair\MigrateSchemaApplicationId</step>
 			<step>OCA\Larpinq\Repair\InitializeRegister</step>
+			<!-- After the import, which adds registration.checkinCode: accepted
+			     registrations stored before it get a code (events-qr-checkin). -->
+			<step>OCA\Larpinq\Repair\GiveAcceptedRegistrationsACheckinCode</step>
+			<step>OCA\Larpinq\Repair\CreateStaffRoleGroups</step>
 		</install>
 	</repair-steps>
 

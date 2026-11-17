@@ -1,0 +1,144 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_skill_list"
+        ]
+      }
+    },
+    "schemas": {
+      "skillList": {
+        "slug": "larping_skill_list",
+        "title": "Skill list",
+        "icon": "FormatListBulletedType",
+        "version": "1.0.0",
+        "summary": "A group of skills of one kind, paid from one ability",
+        "description": "A list of skills, spells or powers for one world. The skills in it are paid from the list's own ability, such as Mana, instead of XP.",
+        "type": "object",
+        "configuration": {
+          "exportable": true
+        },
+        "required": [
+          "name",
+          "kind"
+        ],
+        "authorization": {
+          "read": [
+            "gamemasters",
+            "larpinq-rules",
+            "larpers"
+          ],
+          "create": [
+            "gamemasters",
+            "larpinq-rules"
+          ],
+          "update": [
+            "gamemasters",
+            "larpinq-rules"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        },
+        "properties": {
+          "setting": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "setting",
+            "title": "World",
+            "description": "The world this list belongs to. Empty means shared across all worlds.",
+            "visible": false
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name players see, such as Arcane spells.",
+            "visible": true
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "skills",
+              "spells",
+              "powers"
+            ],
+            "default": "skills",
+            "title": "Kind",
+            "description": "Whether the list holds skills, spells or powers.",
+            "visible": true,
+            "facetable": true
+          },
+          "costAbility": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "ability",
+            "title": "Paid from",
+            "description": "The ability the costs of these skills are paid from, such as Mana. Empty means XP.",
+            "visible": true
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "What the list is for, shown in the rulebook.",
+            "visible": true
+          },
+          "order": {
+            "type": "integer",
+            "default": 0,
+            "title": "Order",
+            "description": "Where the list comes in the rulebook; lower comes first.",
+            "visible": false
+          },
+          "hiddenFromRulebook": {
+            "type": "boolean",
+            "default": false,
+            "title": "Hidden from the rulebook",
+            "description": "Leave this out of the players' rulebook, for example a secret ability."
+          }
+        }
+      },
+      "skill": {
+        "version": "1.3.0",
+        "properties": {
+          "list": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "skillList",
+            "title": "List",
+            "description": "The list this skill belongs to. A skill without a list is a general skill paid from XP.",
+            "visible": true
+          },
+          "hiddenFromRulebook": {
+            "type": "boolean",
+            "default": false,
+            "title": "Hidden from the rulebook",
+            "description": "Leave this out of the players' rulebook, for example a secret ability."
+          }
+        }
+      },
+      "item": {
+        "version": "2.2.0",
+        "properties": {
+          "hiddenFromRulebook": {
+            "type": "boolean",
+            "default": false,
+            "title": "Hidden from the rulebook",
+            "description": "Leave this out of the players' rulebook, for example a secret ability."
+          }
+        }
+      },
+      "condition": {
+        "version": "1.3.0",
+        "properties": {
+          "hiddenFromRulebook": {
+            "type": "boolean",
+            "default": false,
+            "title": "Hidden from the rulebook",
+            "description": "Leave this out of the players' rulebook, for example a secret ability."
+          }
+        }
+      }
+    }
+  }
+}

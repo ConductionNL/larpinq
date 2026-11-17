@@ -22,7 +22,7 @@ namespace OCA\Larpinq\Controller;
 
 use OCA\Larpinq\Support\AppIdentity;
 use OCA\Larpinq\Service\EventRosterService;
-use OCA\Larpinq\Service\XpAwardBatchService;
+use OCA\Larpinq\Kernel\Contracts\XpAwardBatchServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
@@ -45,13 +45,13 @@ class XpAwardsController extends Controller {
 	 * Constructor.
 	 *
 	 * @param IRequest $request The request.
-	 * @param XpAwardBatchService $batch The batch award.
+	 * @param XpAwardBatchServiceInterface $batch The batch award.
 	 * @param EventRosterService $rosterService The event roster (event lookup).
 	 * @param CallerAccess $callerAccess The signed-in caller and the game master check.
 	 */
 	public function __construct(
 		IRequest $request,
-		private readonly XpAwardBatchService $batch,
+		private readonly XpAwardBatchServiceInterface $batch,
 		private readonly EventRosterService $rosterService,
 		private readonly CallerAccess $callerAccess,
 	) {

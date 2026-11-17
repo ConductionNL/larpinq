@@ -33,6 +33,7 @@ use OCA\Larpinq\Controller\CharacterBuildsController;
 use OCA\Larpinq\Controller\CharactersController;
 use OCA\Larpinq\Controller\SettingsController;
 use OCA\Larpinq\Service\CharacterService;
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
 use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
 use OCA\Larpinq\Service\SkillRequirementService;
@@ -161,6 +162,11 @@ class CallerAccessGoldenTest extends TestCase {
 	private function recording(string $type): MockObject {
 		$mock = $this->createMock(originalClassName: $type);
 		$short = substr((string)strrchr('\\'.$type, '\\'), 1);
+		if (str_starts_with($type, 'OCA\\Larpinq\\Kernel\\Contracts\\') === true) {
+			// A Kernel contract records under the name of the class that implements it.
+			$short = substr($short, 0, -strlen('Interface'));
+		}
+
 		$mock->method($this->anything())->will($this->recorder(name: $short));
 		return $mock;
 	}//end recording()
@@ -233,7 +239,8 @@ class CallerAccessGoldenTest extends TestCase {
 				$typeName === IGroupManager::class => $groups,
 				$typeName === 'OCA\Larpinq\Controller\CallerAccess' => new $typeName($session, $groups),
 				$typeName === IRequest::class => $this->recording(type: IRequest::class),
-				$typeName === CharacterStatSheet::class => new CharacterStatSheet(
+				$typeName === CharacterStatSheet::class,
+				$typeName === CharacterStatSheetInterface::class => new CharacterStatSheet(
 					characterService: $this->recording(type: CharacterService::class),
 					requirementService: $this->recording(type: SkillRequirementService::class),
 					presenter: $this->recording(type: CharacterStatsPresenter::class)

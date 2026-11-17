@@ -1,0 +1,94 @@
+{
+	"pages": [
+		{
+			"id": "SkillLists",
+			"route": "/skill-lists",
+			"type": "index",
+			"title": "Skill lists",
+			"headerComponent": "WorldSwitcher",
+			"config": {
+				"filter": { "setting": "@workspace.activeWorld?" },
+				"register": "larpinq",
+				"schema": "larping_skill_list",
+				"rowRoute": "SkillListDetail",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "name", "label": "Name" },
+					{ "key": "kind", "label": "Kind" },
+					{ "key": "costAbility", "label": "Paid from" },
+					{ "key": "setting", "label": "World" },
+					{ "key": "order", "label": "Order" }
+				],
+				"defaultSort": [{ "field": "order" }],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "SkillListDetail",
+			"route": "/skill-lists/:id",
+			"type": "detail",
+			"title": "Skill list",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_skill_list",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"_note": "A skill list is read as what it is and what is in it: its kind, the ability its costs are paid from and its description, then the skills placed in it (skill.list is @objectId), each opening its own Skill page.",
+				"widgets": [
+					{ "id": "skill-list-data", "type": "data", "title": "Skill list", "icon": "MagicStaff", "content": { "columns": 2 } },
+					{
+						"id": "skill-list-skills",
+						"type": "object-list",
+						"title": "Skills in this list",
+						"icon": "School",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_skill",
+							"filter": { "list": "@objectId" },
+							"columns": [
+								{ "key": "name", "label": "Name" },
+								{ "key": "effect", "label": "Effect" },
+								{ "key": "hiddenFromRulebook", "label": "Hidden from the rulebook" }
+							],
+							"limit": 100,
+							"rowRoute": "SkillDetail",
+							"allowCreate": false,
+							"emptyText": "No skill is in this list yet"
+						}
+					}
+				],
+				"layout": [
+					{ "id": "1", "widgetId": "skill-list-data", "gridX": 0, "gridY": 0, "gridWidth": 12, "gridHeight": 4 },
+					{ "id": "2", "widgetId": "skill-list-skills", "gridX": 0, "gridY": 4, "gridWidth": 12, "gridHeight": 6 }
+				]
+			}
+		},
+		{
+			"id": "Rulebook",
+			"route": "/rulebook/:world?",
+			"type": "custom",
+			"title": "Rulebook",
+			"component": "Rulebook",
+			"_note": "No page type composes a book: Rulebook reads the rules chapters (lore pages of category rules, under the lore read rule) of one world in order, then a reference built from abilities, skill lists with their skills, items and conditions, leaving out what is hidden from the rulebook, with a print stylesheet that starts each chapter on its own page (rules-rulebook-and-spell-lists D3).",
+			"config": {
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "SkillLists",
+			"label": "Skill lists",
+			"icon": "MagicStaff",
+			"route": "SkillLists",
+			"order": 57
+		},
+		{
+			"id": "Rulebook",
+			"label": "Rulebook",
+			"icon": "BookOpenVariantOutline",
+			"route": "Rulebook",
+			"order": 55
+		}
+	]
+}

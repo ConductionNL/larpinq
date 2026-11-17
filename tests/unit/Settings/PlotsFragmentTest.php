@@ -79,9 +79,12 @@ class PlotsFragmentTest extends TestCase {
 		$plot = $this->schema(key: 'plot');
 		$this->assertSame(expected: 'larping_plot', actual: $plot['slug']);
 		$this->assertTrue(condition: $plot['configuration']['exportable']);
-		foreach (['read', 'create', 'update', 'delete'] as $action) {
-			$this->assertSame(expected: ['gamemasters'], actual: $plot['authorization'][$action], message: "only game masters may {$action} a plot");
+		// Story writers read and write plots; only game masters delete them (admin-staff-roles-and-invites D2).
+		foreach (['read', 'create', 'update'] as $action) {
+			$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $plot['authorization'][$action], message: "only game masters and writers may {$action} a plot");
 		}
+
+		$this->assertSame(expected: ['gamemasters'], actual: $plot['authorization']['delete'], message: 'only game masters may delete a plot');
 
 		$this->assertSame(expected: 'larping_plot_part', actual: $this->schema(key: 'plotPart')['slug']);
 		$this->assertTrue(condition: $this->schema(key: 'plotPart')['configuration']['exportable']);
@@ -112,14 +115,16 @@ class PlotsFragmentTest extends TestCase {
 		$part = $this->schema(key: 'plotPart');
 
 		$this->assertSame(
-			expected: [['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
+			expected: ['larpinq-writers', ['group' => 'gamemasters'], ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
 			actual: $part['authorization']['read']
 		);
-		$this->assertSame(expected: ['gamemasters'], actual: $part['properties']['privateText']['authorization']['read']);
+		$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $part['properties']['privateText']['authorization']['read']);
 		$this->assertArrayNotHasKey(key: 'authorization', array: $part['properties']['playerText']);
-		foreach (['create', 'update', 'delete'] as $action) {
-			$this->assertSame(expected: ['gamemasters'], actual: $part['authorization'][$action]);
+		foreach (['create', 'update'] as $action) {
+			$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $part['authorization'][$action]);
 		}
+
+		$this->assertSame(expected: ['gamemasters'], actual: $part['authorization']['delete']);
 	}//end testAPlayerReadsOnlyTheirOwnPartWithoutThePrivateText()
 
 	/**
@@ -157,8 +162,8 @@ class PlotsFragmentTest extends TestCase {
 		$this->assertSame(expected: ['draft', 'ready', 'approved'], actual: $character['properties']['writingStep']['enum']);
 		$this->assertSame(expected: 'draft', actual: $character['properties']['writingStep']['default']);
 		foreach (['writer', 'writingStep'] as $field) {
-			$this->assertSame(expected: ['gamemasters'], actual: $character['properties'][$field]['authorization']['read']);
-			$this->assertSame(expected: ['gamemasters'], actual: $character['properties'][$field]['authorization']['update']);
+			$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $character['properties'][$field]['authorization']['read']);
+			$this->assertSame(expected: ['larpinq-writers', 'gamemasters'], actual: $character['properties'][$field]['authorization']['update']);
 		}
 		$this->assertSame(expected: 'approved', actual: $character['configuration']['x-openregister-lifecycle']['field']);
 	}//end testACharacterHasAWriterAndAWritingStep()

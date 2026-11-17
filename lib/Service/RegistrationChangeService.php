@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Service;
 
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationChangeServiceInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 
 /**
@@ -38,7 +39,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationChangeService {
+class RegistrationChangeService implements RegistrationChangeServiceInterface {
 
 	private const CANCELLABLE = ['pending', 'accepted', 'waitlisted'];
 

@@ -164,7 +164,7 @@ jobs:
       # Pinned to `development`, NOT `main`: this app tracks `development`, and
       # pinning the foundation to `main` is what makes a CI instance behave
       # unlike any environment the app is actually developed against.
-      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"development"}]'
+      additional-apps: '[{"repo":"ConductionNL/openregister","app":"openregister","ref":"main"}]'
 
       # ── E2E browser tests ────────────────────────────────────────────────
       # Previously OFF, which made the shared workflow report

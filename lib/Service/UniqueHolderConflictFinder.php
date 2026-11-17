@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\UniqueHolderConflictFinderInterface;
+
 /**
  * Finds unique items and conditions with more than one holder.
  *
@@ -36,7 +38,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/rpg-system/spec.md
  */
-class UniqueHolderConflictFinder {
+class UniqueHolderConflictFinder implements UniqueHolderConflictFinderInterface {
 
 	/**
 	 * Constructor.
