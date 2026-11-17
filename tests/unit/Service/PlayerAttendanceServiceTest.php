@@ -43,16 +43,22 @@ class PlayerAttendanceServiceTest extends TestCase {
 	 * @param list<array<string, mixed>>               $characters The player's characters
 	 * @param array<string, list<array<string, mixed>>> $attendance Checked-in records per character id
 	 * @param array<string, array<string, mixed>>      $events     Events by id; a missing id throws
+	 * @param array<string, mixed>                     $player     The player object read as the user
 	 *
 	 * @return PlayerAttendanceService
 	 */
-	private function service(array $characters, array $attendance, array $events): PlayerAttendanceService {
+	private function service(array $characters, array $attendance, array $events, array $player = ['userUid' => 'anna']): PlayerAttendanceService {
+		$filter = ['ownerUid' => 'anna'];
+		if (($player['userUid'] ?? '') === '') {
+			$filter = ['ocName' => 'player-1'];
+		}
+
 		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
 		$this->fetcher->method('getObjects')->willReturnCallback(
-			static function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($characters): array {
+			static function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($characters, $filter): array {
 				self::assertSame('character', $objectType);
 				self::assertSame(500, $limit);
-				self::assertSame(['ocName' => 'player-1'], $filters);
+				self::assertSame($filter, $filters);
 				return $characters;
 			}
 		);
@@ -65,7 +71,12 @@ class PlayerAttendanceServiceTest extends TestCase {
 			}
 		);
 		$this->fetcher->method('getObject')->willReturnCallback(
-			static function (string $objectType, string $id) use ($events): array {
+			static function (string $objectType, string $id) use ($events, $player): array {
+				if ($objectType === 'player') {
+					self::assertSame('player-1', $id);
+					return $player;
+				}
+
 				self::assertSame('event', $objectType);
 				if (isset($events[$id]) === false) {
 					throw new RuntimeException('not found');
@@ -135,13 +146,30 @@ class PlayerAttendanceServiceTest extends TestCase {
 			['char-a' => [['id' => 'att-1', 'event' => 'ev-1'], ['id' => 'att-2', 'event' => 'ev-1'], ['id' => 'att-3', 'event' => 'ev-gone']]],
 			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']]
 		);
-		$this->fetcher->expects(self::exactly(2))->method('getObject');
+		$this->fetcher->expects(self::exactly(3))->method('getObject');
 
 		$history = $service->history(playerId: 'player-1');
 
 		self::assertSame(2, $history['count']);
 
 	}//end testEachEventIsReadOnce()
+
+	/**
+	 * A player without an account has its characters read by `ocName`, as a game master may.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerWithoutAnAccountIsReadByOcName(): void {
+		$service = $this->service(
+			[['id' => 'char-a', 'name' => 'Aldric']],
+			['char-a' => [['id' => 'att-1', 'event' => 'ev-1']]],
+			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']],
+			['name' => 'Anna']
+		);
+
+		self::assertSame(['att-1'], array_column($service->history(playerId: 'player-1')['events'], 'id'));
+
+	}//end testAPlayerWithoutAnAccountIsReadByOcName()
 
 	/**
 	 * An unreadable event still lists the record, without a name or date.
