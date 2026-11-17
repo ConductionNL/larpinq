@@ -97,6 +97,8 @@ class SettingsLoadService {
 		'accesscode' => 'larping_access_code',
 		'skilllist' => 'larping_skill_list',
 		'eventcarerecord' => 'larping_event_care_record',
+		'helpquestion' => 'larping_help_question',
+		'helpmessage' => 'larping_help_message',
 	];
 
 	/**

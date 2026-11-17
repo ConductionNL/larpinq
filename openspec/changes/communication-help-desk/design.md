@@ -56,6 +56,12 @@ the same `answered` change on `myQuestions` for portal players.
   "Ask a question", and the thread on the detail page.
 - `HelpDesk` (fragment, game masters): open and answered questions sorted by
   `lastMessageAt`, filters on status and assignee, marking older than 3 days.
+  It is not a second index page over the questions (ADR-097 D5, gate-68): it
+  is the `help-desk` query preset of `Help` (`config.queryPresets`, match
+  `{ _lens: desk }`), which its menu entry and the Dashboard stat open with
+  that query. An underscore key filters no records, so the preset changes
+  only lenses, columns, sort and title; the rows each user may read are the
+  same row rules as on `Help`.
 - Dashboard (in place): a stats entry "Open questions" for game masters.
 - Portal: `askQuestion` (`type: create`, `scopeField: ownerRef`, fields
   subject, body, event) and `myQuestions` (`scopeClaim: ownerRef`).

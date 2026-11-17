@@ -88,6 +88,7 @@ import { loadState } from '@nextcloud/initial-state'
 import { translate as ncT } from '@nextcloud/l10n'
 import { NcAppSettingsSection } from '@nextcloud/vue'
 import { provide, reactive } from 'vue'
+import AgeCell from './components/cells/AgeCell.vue'
 import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
 import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import { startActiveWorld } from './services/activeWorld.js'
@@ -256,7 +257,8 @@ export default {
 			// shows the value with the "(translated from …)" badge
 			// (larpinq-adopt-or-abstractions, Phase 3). `checkinQr` shows an
 			// accepted registration's check-in code as a QR code (events-qr-checkin).
-			cellWidgets: { translatedName: TranslatedNameCell, checkinQr: RegistrationQrCode },
+			// `age` marks a date that lies too long in the past (communication-help-desk, REQ-CHD-002).
+			cellWidgets: { translatedName: TranslatedNameCell, checkinQr: RegistrationQrCode, age: AgeCell },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,
