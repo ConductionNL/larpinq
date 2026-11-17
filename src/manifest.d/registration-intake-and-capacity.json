@@ -108,6 +108,11 @@
 					{
 						"key": "submittedAt",
 						"label": "Signed up on"
+					},
+					{
+						"key": "checkinCode",
+						"label": "Check-in code",
+						"widget": "checkinQr"
 					}
 				],
 				"documentationUrl": "https://larpinq.conduction.nl"

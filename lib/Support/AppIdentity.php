@@ -46,4 +46,34 @@ final class AppIdentity {
 	 * The group whose members are the game masters.
 	 */
 	public const GM_GROUP = 'gamemasters';
+
+	/**
+	 * Story writers: plots, plot parts, lore pages and the story fields of characters (REQ-ASR-001).
+	 */
+	public const ROLE_WRITERS = 'larpinq-writers';
+
+	/**
+	 * Rules marshals: abilities, skills, items, conditions and effects (REQ-ASR-001).
+	 */
+	public const ROLE_RULES = 'larpinq-rules';
+
+	/**
+	 * Treasurers: registrations with their payment state (REQ-ASR-001).
+	 */
+	public const ROLE_TREASURERS = 'larpinq-treasurers';
+
+	/**
+	 * Stewards: the roster and check-in at the gate (REQ-ASR-001, REQ-ASR-003).
+	 */
+	public const ROLE_STEWARDS = 'larpinq-stewards';
+
+	/**
+	 * The group whose members use the app; a staff invite adds its user here too (REQ-ASR-004).
+	 */
+	public const USERS_GROUP = 'larpers';
+
+	/**
+	 * The four staff role groups, next to the single game master group.
+	 */
+	public const STAFF_ROLES = [self::ROLE_WRITERS, self::ROLE_RULES, self::ROLE_TREASURERS, self::ROLE_STEWARDS];
 }//end class

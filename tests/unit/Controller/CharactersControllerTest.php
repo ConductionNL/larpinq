@@ -133,11 +133,18 @@ class CharactersControllerTest extends TestCase {
 	}
 
 	/**
-	 * Download PDF returns403 for non admin user.
+	 * Download PDF returns 403 for a non-admin user who does not own the character.
+	 *
+	 * The template is a valid UUID and DocuDesk is present, so the request
+	 * reaches the access decision after the fetch (player-character-sheet-access).
 	 *
 	 * @return void
 	 */
 	public function testDownloadPdfReturns403ForNonAdminUser(): void {
+		$this->appManager->method('isInstalled')->willReturn(true);
+		$this->appManager->method('isEnabledForUser')->willReturn(true);
+		$this->objectFetcher->method('getObject')->willReturn(['id' => 'char-1', 'name' => 'Mirela', 'ownerUid' => 'someone-else']);
+
 		$nonAdminUser = $this->createMock(originalClassName: IUser::class);
 		$nonAdminUser->method('getUID')->willReturn('player1');
 
@@ -156,7 +163,7 @@ class CharactersControllerTest extends TestCase {
 			requirementService: $this->requirementService,
 		);
 
-		$result = $controller->downloadPdf('char-1', 'tpl-1');
+		$result = $controller->downloadPdf('char-1', '00000000-0000-4000-8000-000000000010');
 
 		self::assertInstanceOf(expected: JSONResponse::class, actual: $result);
 		self::assertSame(expected: 403, actual: $result->getStatus());

@@ -261,6 +261,10 @@ All dependencies (PHP and JavaScript) are automatically checked against an appro
 - **Font licenses:** OFL-1.0, OFL-1.1
 
 Dependencies with licenses not on this list will fail CI unless explicitly approved in `.license-overrides.json` with a documented justification.
+
+Runtime dependencies added for a feature, with their licence:
+
+- [`qrcode`](https://github.com/soldair/node-qrcode) (MIT): draws a registration's check-in code as a QR code on My registrations (events-qr-checkin).
 ## Authors
 
 Built by [Conduction](https://conduction.nl) — open-source software for Dutch government and public sector organizations.

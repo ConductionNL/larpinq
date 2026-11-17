@@ -25,6 +25,7 @@ namespace OCA\Larpinq\Service;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\PaymentFollowUpInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -43,7 +44,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class PaymentFollowUp {
+class PaymentFollowUp implements PaymentFollowUpInterface {
 
 	/**
 	 * Shillinq's states that mean the money came.

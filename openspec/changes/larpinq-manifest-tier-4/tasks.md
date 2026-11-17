@@ -13,25 +13,29 @@
 
 ## Phase 2 — Replace mount
 
-- [ ] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
+- [x] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
       `manifest` + `registry` props; drop the legacy `Vue.use(...)` +
       `CnPageRenderer` boilerplate.
   - **acceptance_criteria**: Boot path is `CnAppRoot.mount(...)`; no
     further bespoke setup remains.
+  - Done with the library's one-call boot `mountCnApp(...)`
+    (nextcloud-vue 2.181.0), which builds the router from the manifest
+    and mounts CnAppRoot; App.vue stays the root wrapper for the
+    `#sidebar` and `#user-settings` slots.
 
-- [ ] 2.2 Remove `src/customComponents.js`.
+- [x] 2.2 Remove `src/customComponents.js`.
   - **acceptance_criteria**: `grep -rn customComponents src/` returns no
     hits.
 
 ## Phase 3 — Registry audit
 
-- [ ] 3.1 Audit every entry in `src/registry.js`. For each non-page
+- [x] 3.1 Audit every entry in `src/registry.js`. For each non-page
       entry, set `kind:` to one of `'widget'` / `'tab'` / `'header'` /
       `'actions'` / `'section'`. Page entries keep `kind:'page'`.
   - **acceptance_criteria**: Every entry has a `kind:` field; ADR-036
     resolver finds each by lookup.
 
-- [ ] 3.2 Drop any `Vue.component(...)` calls that
+- [x] 3.2 Drop any `Vue.component(...)` calls that
       `customComponents.js` previously made (these are now resolved
       from `registry.js` via the `kind:`-tagged entries).
   - **acceptance_criteria**: No leftover ad-hoc `Vue.component` calls
@@ -39,7 +43,7 @@
 
 ## Phase 4 — Verification
 
-- [ ] 4.1 `npm run check:manifest` clean.
+- [x] 4.1 `npm run check:manifest` clean.
 - [ ] 4.2 `composer check:strict` clean.
 - [ ] 4.3 Live-deploy regression: each manifest menu item, page widget
       slot, and detail tab renders against the dev container.
