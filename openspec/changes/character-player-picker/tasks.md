@@ -72,7 +72,7 @@
 ## Tests (company-wide ADR-009)
 - No PHP business logic changes in this change — pure JSON schema edit; PHPUnit N/A
 - Newman/Postman N/A — no new/changed API endpoints
-- Browser tests (Playwright MCP) covering TC-1 through TC-7 from test-plan.md
+- Browser tests (Playwright MCP) covering TC-1 through TC-7 from test-plan.md: `tests/e2e/workflows/character-player-picker.workflow.spec.ts` is written (TC-1, TC-2, TC-7 through the character dialogs; TC-3 to TC-6 through the object and notifications APIs); not yet run against a live instance, so the Test lines of Tasks 1 to 5 stay open.
 - `openspec validate` and register JSON re-import (TC-8) pass
 
 ## Documentation (company-wide ADR-010)
