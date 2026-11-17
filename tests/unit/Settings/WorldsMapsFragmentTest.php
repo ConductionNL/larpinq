@@ -23,6 +23,7 @@ namespace OCA\Larpinq\Tests\Unit\Settings;
 
 use OCA\Larpinq\Service\ConfigFileLoaderService;
 use Opis\JsonSchema\Validator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -152,6 +153,131 @@ class WorldsMapsFragmentTest extends TestCase {
 	}//end testTheSeedValidates()
 
 	/**
+	 * Players read a map or pin only when it is meant for players; only game
+	 * masters read the rest and write anything (REQ-WMP-003).
+	 *
+	 * @return void
+	 */
+	public function testPlayersReadOnlyWhatIsMeantForPlayers(): void {
+		$schemas = $this->mergedRegister()['components']['schemas'];
+
+		foreach (['worldMap', 'mapPin'] as $name) {
+			$authorization = $schemas[$name]['authorization'];
+			$this->assertSame(
+				expected: [
+					['group' => 'gamemasters'],
+					['group' => 'larpers', 'match' => ['visibility' => 'players']],
+				],
+				actual: $authorization['read'],
+				message: $name . ' must let players read only what is meant for players'
+			);
+			foreach (['create', 'update', 'delete'] as $action) {
+				$this->assertSame(expected: ['gamemasters'], actual: $authorization[$action], message: $name . ' ' . $action . ' is for game masters only');
+			}
+		}
+	}//end testPlayersReadOnlyWhatIsMeantForPlayers()
+
+	/**
+	 * A new map or pin is hidden from players until a game master says otherwise.
+	 *
+	 * @return void
+	 */
+	public function testANewMapOrPinStartsHiddenFromPlayers(): void {
+		$schemas = $this->mergedRegister()['components']['schemas'];
+
+		foreach (['worldMap', 'mapPin'] as $name) {
+			$visibility = $schemas[$name]['properties']['visibility'];
+			$this->assertSame(expected: 'gamemasters', actual: $visibility['default'], message: $name);
+			$this->assertSame(expected: ['gamemasters', 'players'], actual: $visibility['enum'], message: $name);
+			$this->assertContains(needle: 'visibility', haystack: $schemas[$name]['required'], message: $name);
+		}
+	}//end testANewMapOrPinStartsHiddenFromPlayers()
+
+	/**
+	 * The relations point at the world, the map and the lore page.
+	 *
+	 * @return void
+	 */
+	public function testTheRelationsPointAtTheirSchemas(): void {
+		$schemas = $this->mergedRegister()['components']['schemas'];
+
+		$this->assertSame(expected: 'setting', actual: $schemas['worldMap']['properties']['setting']['$ref']);
+		$this->assertSame(expected: 'larping_world_map', actual: $schemas['mapPin']['properties']['map']['$ref']);
+		$this->assertSame(expected: 'larping_lore_page', actual: $schemas['mapPin']['properties']['lorePage']['$ref']);
+		$this->assertSame(expected: 'file', actual: $schemas['worldMap']['properties']['image']['type']);
+		$this->assertNotContains(needle: 'lorePage', haystack: $schemas['mapPin']['required'], message: 'a pin may have no lore page');
+	}//end testTheRelationsPointAtTheirSchemas()
+
+	/**
+	 * Pins the schema refuses.
+	 *
+	 * @return array<string, array{0: array<string, mixed>}>
+	 */
+	public static function refusedPins(): array {
+		$pin = [
+			'map'        => '00000000-0000-4000-8000-000000000000',
+			'label'      => 'Aldmoor city',
+			'x'          => 10,
+			'y'          => 20,
+			'kind'       => 'town',
+			'visibility' => 'players',
+		];
+		return [
+			'left of the map'     => [array_merge($pin, ['x' => -1])],
+			'above the map'       => [array_merge($pin, ['y' => -1])],
+			'a fractional x'      => [array_merge($pin, ['x' => 1.5])],
+			'an unknown kind'     => [array_merge($pin, ['kind' => 'castle'])],
+			'an unknown audience' => [array_merge($pin, ['visibility' => 'everyone'])],
+			'no label'            => [array_diff_key($pin, ['label' => true])],
+			'no map'              => [array_diff_key($pin, ['map' => true])],
+			'a label too long'    => [array_merge($pin, ['label' => str_repeat('a', 256)])],
+		];
+	}//end refusedPins()
+
+	/**
+	 * The pin schema refuses a pin off the map, of an unknown kind or audience,
+	 * or without its required fields.
+	 *
+	 * @param array<string, mixed> $pin The pin.
+	 *
+	 * @return void
+	 */
+	#[DataProvider('refusedPins')]
+	public function testThePinSchemaRefuses(array $pin): void {
+		$this->assertFalse(condition: $this->validates(schema: 'mapPin', object: $pin));
+	}//end testThePinSchemaRefuses()
+
+	/**
+	 * A pin at the corner of the map, without a lore page, is accepted.
+	 *
+	 * @return void
+	 */
+	public function testThePinSchemaAcceptsAPinAtTheCorner(): void {
+		$pin = ['map' => '00000000-0000-4000-8000-000000000000', 'label' => 'Corner', 'x' => 0, 'y' => 0, 'visibility' => 'gamemasters'];
+
+		$this->assertTrue(condition: $this->validates(schema: 'mapPin', object: $pin));
+	}//end testThePinSchemaAcceptsAPinAtTheCorner()
+
+	/**
+	 * The map schema refuses a map without a title, with no size or for an
+	 * unknown audience.
+	 *
+	 * @return void
+	 */
+	public function testTheMapSchemaRefusesAMapWithoutTitleOrSize(): void {
+		$map = ['title' => 'The valley of Aldmoor', 'width' => 2400, 'height' => 1600, 'visibility' => 'players'];
+
+		$this->assertTrue(condition: $this->validates(schema: 'worldMap', object: $map));
+		$this->assertFalse(condition: $this->validates(schema: 'worldMap', object: array_diff_key($map, ['title' => true])), message: 'no title');
+		$this->assertFalse(condition: $this->validates(schema: 'worldMap', object: array_merge($map, ['width' => 0])), message: 'zero width');
+		$this->assertFalse(condition: $this->validates(schema: 'worldMap', object: array_merge($map, ['height' => 0])), message: 'zero height');
+		$this->assertFalse(
+			condition: $this->validates(schema: 'worldMap', object: array_merge($map, ['visibility' => 'public'])),
+			message: 'unknown audience'
+		);
+	}//end testTheMapSchemaRefusesAMapWithoutTitleOrSize()
+
+	/**
 	 * The schema as OpenRegister hands it to Opis: a `$ref` relation accepts a
 	 * UUID string, a file property is not JSON Schema, and the
 	 * OpenRegister-only keys are left out.
@@ -171,4 +297,19 @@ class WorldsMapsFragmentTest extends TestCase {
 		unset($schema['authorization'], $schema['configuration']);
 		return $schema;
 	}//end forOpis()
+
+	/**
+	 * Whether an object validates against one merged register schema, as
+	 * OpenRegister hands it to Opis.
+	 *
+	 * @param string               $schema The schema key in the register.
+	 * @param array<string, mixed> $object The object.
+	 *
+	 * @return bool True when it validates.
+	 */
+	private function validates(string $schema, array $object): bool {
+		$jsonSchema = json_decode((string)json_encode($this->forOpis(schema: $this->mergedRegister()['components']['schemas'][$schema])));
+
+		return (new Validator())->validate(json_decode((string)json_encode($object)), $jsonSchema)->isValid();
+	}//end validates()
 }//end class
