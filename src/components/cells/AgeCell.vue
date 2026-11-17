@@ -23,6 +23,7 @@
 
 <script>
 import { translate as t } from '@nextcloud/l10n'
+import { cellContextProps, formattedText } from './cellValue.js'
 
 /** One day in milliseconds. */
 const DAY = 24 * 60 * 60 * 1000
@@ -37,17 +38,7 @@ export default {
 			default: null,
 		},
 
-		/** The value as the column's formatter rendered it, when there is one. */
-		formatted: {
-			type: [String, Number],
-			default: null,
-		},
-
-		/** The whole row. */
-		row: {
-			type: Object,
-			default: null,
-		},
+		...cellContextProps,
 
 		/** Mark the value when it is more than this many days old; 0 never marks. */
 		olderThanDays: {
@@ -64,8 +55,9 @@ export default {
 		 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-game-masters-answer-from-one-list-req-chd-002
 		 */
 		shown() {
-			if (this.formatted !== null && this.formatted !== undefined && this.formatted !== '') {
-				return String(this.formatted)
+			const text = formattedText(this.formatted)
+			if (text !== null) {
+				return text
 			}
 			const time = this.timeOf(this.value)
 			if (time === null) {

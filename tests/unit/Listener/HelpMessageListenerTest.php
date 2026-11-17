@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Listener;
 
+use OCA\Larpinq\Listener\HelpDeskCaller;
 use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\OpenRegister\Db\ObjectEntity;
@@ -305,6 +306,6 @@ class HelpMessageListenerTest extends TestCase {
 			}
 		);
 
-		return new HelpMessageListener(objects: $objects, config: $config, userSession: $session, groupManager: $groups, logger: $this->createMock(LoggerInterface::class));
+		return new HelpMessageListener(objects: $objects, config: $config, caller: new HelpDeskCaller(userSession: $session, groupManager: $groups), logger: $this->createMock(LoggerInterface::class));
 	}
 }

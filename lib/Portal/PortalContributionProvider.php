@@ -154,6 +154,117 @@ class PortalContributionProvider {
 	];
 
 	/**
+	 * The player's help page in the portal: their questions with the answers,
+	 * and a new question (communication-help-desk REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const HELP_PAGE = [
+		'id' => 'help',
+		'label' => 'Vragen aan de spelleiding',
+		'group' => self::GROUP_CLUB,
+		'icon' => 'HelpCircleOutline',
+		'blocks' => [
+			[
+				'type' => 'richText',
+				'markdown' => 'Stel hier uw vraag aan de spelleiding. U ziet uw vragen, de antwoorden en of een vraag nog open staat.',
+			],
+			['type' => 'collection', 'collection' => 'myQuestions'],
+			['type' => 'detail', 'collection' => 'myQuestions'],
+			['type' => 'collection', 'collection' => 'myQuestionMessages'],
+			['type' => 'action', 'action' => 'askQuestion'],
+		],
+	];
+
+	/**
+	 * The player's own help questions, scoped by the `ownerRef` claim and
+	 * projected to the question and its state (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const QUESTION_COLLECTION = [
+		'id' => 'myQuestions',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_question',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'label' => 'Mijn vragen',
+		'listable' => true,
+		'fields' => self::QUESTION_FIELDS,
+		'columns' => [
+			['field' => 'subject', 'label' => 'Onderwerp'],
+			['field' => 'status', 'label' => 'Status', 'render' => 'badge'],
+			['field' => 'lastMessageAt', 'label' => 'Laatste bericht', 'render' => 'date'],
+		],
+		'detail' => [
+			'layout' => 'card',
+			'fields' => ['subject', 'body', 'event', 'character', 'status', 'lastMessageAt'],
+		],
+		'defaultSort' => ['field' => 'lastMessageAt', 'direction' => 'desc'],
+	];
+
+	/**
+	 * The messages under the player's own questions, scoped by the same
+	 * `ownerRef` claim (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const QUESTION_MESSAGE_COLLECTION = [
+		'id' => 'myQuestionMessages',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_message',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'label' => 'Antwoorden',
+		'listable' => true,
+		'fields' => self::QUESTION_MESSAGE_FIELDS,
+		'columns' => [
+			['field' => 'body', 'label' => 'Bericht'],
+			['field' => 'fromOrganiser', 'label' => 'Van de spelleiding', 'render' => 'badge'],
+			['field' => 'createdAt', 'label' => 'Geschreven op', 'render' => 'date'],
+		],
+		'defaultSort' => ['field' => 'createdAt', 'direction' => 'asc'],
+	];
+
+	/**
+	 * The portal notifications of the `player` audience: a player hears when
+	 * the state of one of their questions changes (REQ-CHD-004).
+	 *
+	 * @var array<int, array<string, mixed>>
+	 */
+	private const PLAYER_NOTIFICATIONS = [
+		[
+			'ruleKey' => 'larpinq.question.answered',
+			'collection' => 'myQuestions',
+			'on' => ['field' => 'status', 'operator' => 'changed'],
+			'recipients' => ['field' => 'ownerRef', 'claim' => 'ownerRef'],
+			'titleField' => 'subject',
+		],
+	];
+
+	/**
+	 * The portal's `askQuestion` action: a question to the game masters,
+	 * stamped with the linked player's uuid through the `ownerRef` claim
+	 * (REQ-CHD-004).
+	 *
+	 * @var array<string, mixed>
+	 */
+	private const ASK_QUESTION_ACTION = [
+		'id' => 'askQuestion',
+		'type' => 'create',
+		'label' => 'Ask a question',
+		'register' => self::REGISTER,
+		'schema' => 'larping_help_question',
+		'scopeField' => 'ownerRef',
+		'scopeClaim' => 'ownerRef',
+		'fields' => [
+			'subject',
+			'body',
+			'event',
+		],
+	];
+
+	/**
 	 * The columns of a skill the portal may show, in the public skill
 	 * catalogue and in the rulebook alike.
 	 *
@@ -424,22 +535,7 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function helpPage(): array {
-		return [
-			'id' => 'help',
-			'label' => 'Vragen aan de spelleiding',
-			'group' => self::GROUP_CLUB,
-			'icon' => 'HelpCircleOutline',
-			'blocks' => [
-				[
-					'type' => 'richText',
-					'markdown' => 'Stel hier uw vraag aan de spelleiding. U ziet uw vragen, de antwoorden en of een vraag nog open staat.',
-				],
-				['type' => 'collection', 'collection' => 'myQuestions'],
-				['type' => 'detail', 'collection' => 'myQuestions'],
-				['type' => 'collection', 'collection' => 'myQuestionMessages'],
-				['type' => 'action', 'action' => 'askQuestion'],
-			],
-		];
+		return self::HELP_PAGE;
 	}//end helpPage()
 
 	/**
@@ -454,26 +550,7 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function questionCollection(): array {
-		return [
-			'id' => 'myQuestions',
-			'register' => self::REGISTER,
-			'schema' => 'larping_help_question',
-			'scopeField' => 'ownerRef',
-			'scopeClaim' => 'ownerRef',
-			'label' => 'Mijn vragen',
-			'listable' => true,
-			'fields' => self::QUESTION_FIELDS,
-			'columns' => [
-				['field' => 'subject', 'label' => 'Onderwerp'],
-				['field' => 'status', 'label' => 'Status', 'render' => 'badge'],
-				['field' => 'lastMessageAt', 'label' => 'Laatste bericht', 'render' => 'date'],
-			],
-			'detail' => [
-				'layout' => 'card',
-				'fields' => ['subject', 'body', 'event', 'character', 'status', 'lastMessageAt'],
-			],
-			'defaultSort' => ['field' => 'lastMessageAt', 'direction' => 'desc'],
-		];
+		return self::QUESTION_COLLECTION;
 	}//end questionCollection()
 
 	/**
@@ -486,22 +563,7 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function questionMessageCollection(): array {
-		return [
-			'id' => 'myQuestionMessages',
-			'register' => self::REGISTER,
-			'schema' => 'larping_help_message',
-			'scopeField' => 'ownerRef',
-			'scopeClaim' => 'ownerRef',
-			'label' => 'Antwoorden',
-			'listable' => true,
-			'fields' => self::QUESTION_MESSAGE_FIELDS,
-			'columns' => [
-				['field' => 'body', 'label' => 'Bericht'],
-				['field' => 'fromOrganiser', 'label' => 'Van de spelleiding', 'render' => 'badge'],
-				['field' => 'createdAt', 'label' => 'Geschreven op', 'render' => 'date'],
-			],
-			'defaultSort' => ['field' => 'createdAt', 'direction' => 'asc'],
-		];
+		return self::QUESTION_MESSAGE_COLLECTION;
 	}//end questionMessageCollection()
 
 	/**
@@ -518,15 +580,7 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-portal-players-use-the-help-desk-too-req-chd-004
 	 */
 	private function playerNotifications(): array {
-		return [
-			[
-				'ruleKey' => 'larpinq.question.answered',
-				'collection' => 'myQuestions',
-				'on' => ['field' => 'status', 'operator' => 'changed'],
-				'recipients' => ['field' => 'ownerRef', 'claim' => 'ownerRef'],
-				'titleField' => 'subject',
-			],
-		];
+		return self::PLAYER_NOTIFICATIONS;
 	}//end playerNotifications()
 
 	/**
@@ -816,20 +870,7 @@ class PortalContributionProvider {
 					'description',
 				],
 			],
-			[
-				'id' => 'askQuestion',
-				'type' => 'create',
-				'label' => 'Ask a question',
-				'register' => self::REGISTER,
-				'schema' => 'larping_help_question',
-				'scopeField' => 'ownerRef',
-				'scopeClaim' => 'ownerRef',
-				'fields' => [
-					'subject',
-					'body',
-					'event',
-				],
-			],
+			self::ASK_QUESTION_ACTION,
 		];
 	}//end playerActions()
 }//end class

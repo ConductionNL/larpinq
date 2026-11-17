@@ -30,8 +30,6 @@ use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
-use OCP\IGroupManager;
-use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -67,13 +65,23 @@ class HelpMessageListener implements IEventListener {
 	public const ORGANISERS = 'gamemasters';
 
 	/**
+	 * The status a message moves its question to, keyed by whether a game
+	 * master wrote it (1) or the asker (0) and the question's status.
+	 *
+	 * @var array<string, string>
+	 */
+	private const NEXT_STATUS = [
+		'1:open'     => 'answered',
+		'0:answered' => 'open',
+	];
+
+	/**
 	 * Constructor.
 	 *
-	 * @param RegisterObjectFetcher $objects      Reads players and questions, and writes the question's status.
-	 * @param IAppConfig            $config       Config (question and message schema ids).
-	 * @param IUserSession          $userSession  The acting user.
-	 * @param IGroupManager         $groupManager Tells game masters apart.
-	 * @param LoggerInterface       $logger       The logger.
+	 * @param RegisterObjectFetcher $objects Reads players and questions, and writes the question's status.
+	 * @param IAppConfig            $config  Config (question and message schema ids).
+	 * @param HelpDeskCaller        $caller  The acting user, and whether they are a game master.
+	 * @param LoggerInterface       $logger  The logger.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 *
@@ -82,8 +90,7 @@ class HelpMessageListener implements IEventListener {
 	public function __construct(
 		private readonly RegisterObjectFetcher $objects,
 		private readonly IAppConfig $config,
-		private readonly IUserSession $userSession,
-		private readonly IGroupManager $groupManager,
+		private readonly HelpDeskCaller $caller,
 		private readonly LoggerInterface $logger,
 	) {
 	}//end __construct()
@@ -102,14 +109,7 @@ class HelpMessageListener implements IEventListener {
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-			// @phpstan-ignore-next-line
-			$entity = $event->getObject();
-			if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
-				$this->prepareQuestion(event: $event, question: (array)$entity->getObject());
-			} else if ($this->isOf(entity: $entity, key: 'helpmessage_schema') === true) {
-				$this->prepareMessage(event: $event, message: (array)$entity->getObject());
-			}
-
+			$this->onCreating(event: $event);
 			return;
 		}
 
@@ -121,6 +121,26 @@ class HelpMessageListener implements IEventListener {
 			}
 		}
 	}//end handle()
+
+	/**
+	 * Before a question or a message is stored: prepare or refuse it.
+	 *
+	 * @param Event $event The creating event.
+	 *
+	 * @return void
+	 *
+	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
+	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
+	 */
+	private function onCreating(Event $event): void {
+		// @phpstan-ignore-next-line
+		$entity = $event->getObject();
+		if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
+			$this->prepareQuestion(event: $event, question: (array)$entity->getObject());
+		} else if ($this->isOf(entity: $entity, key: 'helpmessage_schema') === true) {
+			$this->prepareMessage(event: $event, message: (array)$entity->getObject());
+		}
+	}//end onCreating()
 
 	/**
 	 * Name the asker of a new question, refusing a question asked as someone else.
@@ -140,13 +160,8 @@ class HelpMessageListener implements IEventListener {
 	 */
 	private function prepareQuestion(Event $event, array $question): void {
 		$asker = $this->askerOf(question: $question);
-		$user  = $this->userSession->getUser();
-		$uid   = '';
-		if ($user !== null) {
-			$uid = $user->getUID();
-		}
-
-		if ($uid === '' || $this->groupManager->isInGroup($uid, self::ORGANISERS) === true) {
+		$uid   = $this->caller->uid();
+		if ($uid === '' || $this->caller->isOrganiser(uid: $uid) === true) {
 			$this->merge(event: $event, data: $asker);
 			return;
 		}
@@ -157,12 +172,25 @@ class HelpMessageListener implements IEventListener {
 			return;
 		}
 
+		$this->merge(event: $event, data: self::ownAsker(asker: $asker, uid: $uid));
+	}//end prepareQuestion()
+
+	/**
+	 * The asker fields of a signed-in player's own question: those of the
+	 * player it names, else the signed-in user with no owner reference.
+	 *
+	 * @param array<string,string> $asker The asker fields taken from the named player; empty when none was read.
+	 * @param string               $uid   The signed-in player's user id.
+	 *
+	 * @return array<string,string>
+	 */
+	private static function ownAsker(array $asker, string $uid): array {
 		if ($asker === []) {
-			$asker = ['askerUid' => $uid, 'ownerRef' => ''];
+			return ['askerUid' => $uid, 'ownerRef' => ''];
 		}
 
-		$this->merge(event: $event, data: $asker);
-	}//end prepareQuestion()
+		return $asker;
+	}//end ownAsker()
 
 	/**
 	 * Why a signed-in player may not ask this question, or null when they may.
@@ -203,19 +231,33 @@ class HelpMessageListener implements IEventListener {
 			$fields['player'] = $playerId;
 		}
 
-		if ($playerId === '') {
-			return [];
-		}
-
-		try {
-			$player = $this->objects->getObject(objectType: 'player', id: $playerId);
-		} catch (\Throwable $e) {
-			$this->logger->info('Larpinq: the player of a help question could not be read', ['player' => $playerId, 'exception' => $e->getMessage()]);
+		$player = $this->playerOf(playerId: $playerId);
+		if ($player === null) {
 			return [];
 		}
 
 		return $fields + ['askerUid' => (string)($player['userUid'] ?? ''), 'ownerRef' => $playerId];
 	}//end askerOf()
+
+	/**
+	 * The player a question names, or null when it names none or the player cannot be read.
+	 *
+	 * @param string $playerId The player's uuid, or ''.
+	 *
+	 * @return array<string,mixed>|null
+	 */
+	private function playerOf(string $playerId): ?array {
+		if ($playerId === '') {
+			return null;
+		}
+
+		try {
+			return $this->objects->getObject(objectType: 'player', id: $playerId);
+		} catch (\Throwable $e) {
+			$this->logger->info('Larpinq: the player of a help question could not be read', ['player' => $playerId, 'exception' => $e->getMessage()]);
+			return null;
+		}
+	}//end playerOf()
 
 	/**
 	 * Refuse a message on a closed question or from an outsider; otherwise fill in what the server decides.
@@ -226,14 +268,9 @@ class HelpMessageListener implements IEventListener {
 	 * @return void
 	 */
 	private function prepareMessage(Event $event, array $message): void {
-		$question = $this->questionOf(message: $message);
-		$user     = $this->userSession->getUser();
-		$uid      = '';
-		if ($user !== null) {
-			$uid = $user->getUID();
-		}
-
-		$organiser = ($uid !== '' && $this->groupManager->isInGroup($uid, self::ORGANISERS) === true);
+		$question  = $this->questionOf(message: $message);
+		$uid       = $this->caller->uid();
+		$organiser = $this->caller->isOrganiser(uid: $uid);
 		$refusal   = self::refusal(question: $question, uid: $uid, organiser: $organiser);
 		if ($refusal !== null) {
 			PreWriteEvent::refuseOnErrors(event: $event, errors: $refusal);
@@ -245,17 +282,24 @@ class HelpMessageListener implements IEventListener {
 			return;
 		}
 
-		$this->merge(
-			event: $event,
-			data: [
-				'author'        => $uid,
-				'fromOrganiser' => $organiser,
-				'askerUid'      => (string)($question['askerUid'] ?? ''),
-				'ownerRef'      => (string)($question['ownerRef'] ?? ''),
-				'createdAt'     => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			]
-		);
+		$this->merge(event: $event, data: ['author' => $uid, 'fromOrganiser' => $organiser] + self::threadOf(question: (array)$question));
 	}//end prepareMessage()
+
+	/**
+	 * The thread fields a new message takes from its question: the asker, the
+	 * owner reference and the time it is written.
+	 *
+	 * @param array<string,mixed> $question The question.
+	 *
+	 * @return array<string,string>
+	 */
+	private static function threadOf(array $question): array {
+		return [
+			'askerUid'  => (string)($question['askerUid'] ?? ''),
+			'ownerRef'  => (string)($question['ownerRef'] ?? ''),
+			'createdAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+		];
+	}//end threadOf()
 
 	/**
 	 * Why a message may not be stored, or null when it may.
@@ -277,12 +321,27 @@ class HelpMessageListener implements IEventListener {
 			return ['status' => 422, 'code' => 'larpinq.help.closed', 'message' => 'This question is closed and takes no new messages.'];
 		}
 
+		return self::writerRefusal(question: $question, uid: $uid, organiser: $organiser);
+	}//end refusal()
+
+	/**
+	 * Refuse a signed-in writer who is neither a game master nor the asker.
+	 *
+	 * @param array<string,mixed> $question  The question.
+	 * @param string              $uid       The acting user, empty for a system write.
+	 * @param bool                $organiser Whether the acting user is a game master.
+	 *
+	 * @return array{status:int,code:string,message:string}|null
+	 *
+	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-the-asker-can-reply-until-the-question-is-closed-req-chd-003
+	 */
+	private static function writerRefusal(array $question, string $uid, bool $organiser): ?array {
 		if ($uid !== '' && $organiser === false && $uid !== (string)($question['askerUid'] ?? '')) {
 			return ['status' => 403, 'code' => 'larpinq.help.not_asker', 'message' => 'Only the asker and the game masters write in this thread.'];
 		}
 
 		return null;
-	}//end refusal()
+	}//end writerRefusal()
 
 	/**
 	 * After a message is stored, move the question's status and last-message time.
@@ -297,19 +356,33 @@ class HelpMessageListener implements IEventListener {
 			return;
 		}
 
+		$id = self::idOf(value: ($message['question'] ?? null));
+		try {
+			$data = array_merge(self::fieldsOf(question: $question), self::followUp(question: $question, message: $message));
+			$this->objects->saveObjectWithAppAuthority(objectType: 'helpquestion', data: $data, uuid: $id);
+		} catch (\Throwable $e) {
+			$this->logger->warning('Larpinq: a help question did not follow its thread', ['question' => $id, 'exception' => $e->getMessage()]);
+		}
+	}//end followThread()
+
+	/**
+	 * The fields a stored message changes on its question: the last-message
+	 * time, and the status when the message moves it.
+	 *
+	 * @param array<string,mixed> $question The question.
+	 * @param array<string,mixed> $message  The stored message.
+	 *
+	 * @return array<string,string>
+	 */
+	private static function followUp(array $question, array $message): array {
 		$next = self::statusAfter(status: (string)($question['status'] ?? ''), fromOrganiser: (($message['fromOrganiser'] ?? false) === true));
 		$data = ['lastMessageAt' => (string)($message['createdAt'] ?? (new DateTimeImmutable())->format(DateTimeInterface::ATOM))];
 		if ($next !== null) {
 			$data['status'] = $next;
 		}
 
-		$id = self::idOf(value: ($message['question'] ?? null));
-		try {
-			$this->objects->saveObjectWithAppAuthority(objectType: 'helpquestion', data: array_merge(self::fieldsOf(question: $question), $data), uuid: $id);
-		} catch (\Throwable $e) {
-			$this->logger->warning('Larpinq: a help question did not follow its thread', ['question' => $id, 'exception' => $e->getMessage()]);
-		}
-	}//end followThread()
+		return $data;
+	}//end followUp()
 
 	/**
 	 * The status a message leaves its question in, or null when it stays.
@@ -322,15 +395,7 @@ class HelpMessageListener implements IEventListener {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-game-masters-answer-from-one-list-req-chd-002
 	 */
 	public static function statusAfter(string $status, bool $fromOrganiser): ?string {
-		if ($fromOrganiser === true && $status === 'open') {
-			return 'answered';
-		}
-
-		if ($fromOrganiser === false && $status === 'answered') {
-			return 'open';
-		}
-
-		return null;
+		return (self::NEXT_STATUS[(int)$fromOrganiser . ':' . $status] ?? null);
 	}//end statusAfter()
 
 	/**
