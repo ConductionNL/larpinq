@@ -97,7 +97,8 @@ test.beforeAll(async () => {
 		})
 		expect(made.ok(), await made.text()).toBe(true)
 		as[p] = await request.newContext({
-			httpCredentials: { username: uid(p), password: `${uid(p)}-pw!9` },
+			storageState: { cookies: [], origins: [] },
+			httpCredentials: { username: uid(p), password: `${uid(p)}-pw!9`, send: 'always' },
 		})
 	}
 

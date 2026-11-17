@@ -90,7 +90,8 @@ test.beforeAll(async () => {
 		})
 		expect(made.ok(), await made.text()).toBe(true)
 		as[p] = await request.newContext({
-			httpCredentials: { username: uid(p), password: `${uid(p)}-pw!9` },
+			storageState: { cookies: [], origins: [] },
+			httpCredentials: { username: uid(p), password: `${uid(p)}-pw!9`, send: 'always' },
 		})
 	}
 
@@ -127,15 +128,23 @@ test.beforeAll(async () => {
 	ids.herb = await skill('Herbalism', 10)
 	ids.potion = await skill('Potion brewing', 10)
 	ids.riding = await skill('Riding', 35)
+	// ownerUid is derived from the player's userUid; a character names its player.
+	ids.anna = await make('player', { name: fixtureName('Anna de Vries'), userUid: uid('anna') })
 	ids.mirela = await make('character', {
 		name: fixtureName('Mirela the Wanderer'),
 		setting: ids.world,
-		ownerUid: uid('anna'),
-		skills: [ids.sword],
+		ocName: ids.anna,
 	})
+	ids.event = await make('larping_event', { name: fixtureName('Summer Siege'), setting: ids.world })
 	for (const reason of ['Summer Siege', 'Winter Moot']) {
-		await make('xpAward', { character: ids.mirela, amount: 20, reason })
+		await make('xpAward', { event: ids.event, character: ids.mirela, amount: 20, reason })
 	}
+	// Swordsmanship costs 10 XP, so it is learned once the awards are in.
+	const learned = await admin.patch(`${OBJECTS}/character/${ids.mirela}`, {
+		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
+		data: { skills: [ids.sword] },
+	})
+	expect(learned.ok(), await learned.text()).toBe(true)
 })
 
 test.afterAll(async () => {

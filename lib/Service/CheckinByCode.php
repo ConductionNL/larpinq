@@ -194,7 +194,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 		}
 
 		try {
-			$found = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['checkinCode' => $code], limit: 1);
+			$found = $this->fetcher->getObjectsByRevealedValue(objectType: 'registration', filters: ['checkinCode' => $code], limit: 1);
 		} catch (Throwable $e) {
 			return null;
 		}

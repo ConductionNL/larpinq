@@ -23,6 +23,7 @@
 
 <script>
 import { CnTranslatedBadge } from '@conduction/nextcloud-vue'
+import { cellContextProps, formattedText } from './cellValue.js'
 
 export default {
 	name: 'TranslatedNameCell',
@@ -38,17 +39,7 @@ export default {
 			default: null,
 		},
 
-		/** The value as the column's formatter rendered it, when there is one. */
-		formatted: {
-			type: [String, Number],
-			default: null,
-		},
-
-		/** The whole row: the object, carrying `_translationMeta`. */
-		row: {
-			type: Object,
-			default: null,
-		},
+		...cellContextProps,
 	},
 
 	computed: {
@@ -59,8 +50,9 @@ export default {
 		 * @spec openspec/changes/larpinq-adopt-or-abstractions/specs/larpinq-adopt-or-abstractions/spec.md#requirement-larpinq-lists-must-display-translated-from-lang-badge-when-served-language-differs-from-source
 		 */
 		shown() {
-			if (this.formatted !== null && this.formatted !== undefined && this.formatted !== '') {
-				return String(this.formatted)
+			const text = formattedText(this.formatted)
+			if (text !== null) {
+				return text
 			}
 			if (this.value === null || this.value === undefined || typeof this.value === 'object') {
 				return ''

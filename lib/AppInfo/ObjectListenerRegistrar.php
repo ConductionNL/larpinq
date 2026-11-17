@@ -28,6 +28,7 @@ use OCA\Larpinq\Listener\CastingPreferenceListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
@@ -78,11 +79,14 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
 			// A sign-up form binding is checked against the registration (forms-registration-is-checked-at-binding).
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', SignupFormBindingListener::class);
+			// The help desk thread (communication-help-desk, REQ-CHD-002, REQ-CHD-003).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', HelpMessageListener::class);
 		}
 
 		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', HelpMessageListener::class);
 		}
 
 		// A player's changed care details follow into the event copies (players-care-details-and-erasure).

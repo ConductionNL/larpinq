@@ -133,6 +133,12 @@ class SettingsService implements SettingsServiceInterface {
 		'eventcarerecord_schema',
 		'eventcarerecord_register',
 		'eventcarerecord_source',
+		'helpquestion_schema',
+		'helpquestion_register',
+		'helpquestion_source',
+		'helpmessage_schema',
+		'helpmessage_register',
+		'helpmessage_source',
 	];
 
 	/**
