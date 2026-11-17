@@ -2,7 +2,7 @@
 
 ## 1. Built behaviour
 
-- [ ] 1.1 Confirm the world page shows the description, the player page shows the account and the characters, the event page shows the Deck tab, and a player picks a choice per registration option (REQ-SMD-001, REQ-EPL-001, REQ-EPL-002, REQ-LFI-001, REQ-RTO-007). Verify: Playwright `tests/e2e/spec-coverage/` covers each scenario or carries an `@e2e exclude` reason.
+- [ ] 1.1 Confirm the world page shows the description, the player page shows the account and the characters, the event page shows the Deck tab, and a player picks a choice per registration option (REQ-SMD-001, REQ-EPL-001, REQ-EPL-002, REQ-LFI-001, REQ-RTO-007). Verify: Playwright `tests/e2e/spec-coverage/` covers each scenario or carries an `@e2e exclude` reason. Written in `tests/e2e/spec-coverage/capability-rows-missing-requirements.spec.ts` (world description, timeline, player account and characters, the override); the Deck milestone and the registration choice name the workflows that cover them. Needs a running instance to run.
 
 ## 2. World timeline
 

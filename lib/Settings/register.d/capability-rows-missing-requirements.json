@@ -49,6 +49,7 @@
 						"authorization": {
 							"read": [
 								"gamemasters",
+								"larpinq-writers",
 								{
 									"group": "larpers",
 									"match": {

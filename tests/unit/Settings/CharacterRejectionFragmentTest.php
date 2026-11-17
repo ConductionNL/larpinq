@@ -59,7 +59,8 @@ class CharacterRejectionFragmentTest extends TestCase {
 	}//end testApprovalHasARejectedState()
 
 	/**
-	 * The reason is text that only game masters write, read by them and the owner only.
+	 * The reason is text that only game masters write, read by them, by writers (who read
+	 * every character field, staff roles) and by the owner, and by no other player.
 	 *
 	 * @return void
 	 */
@@ -69,7 +70,7 @@ class CharacterRejectionFragmentTest extends TestCase {
 		self::assertSame(expected: 'string', actual: $reason['type']);
 		self::assertSame(expected: ['gamemasters'], actual: $reason['authorization']['update']);
 		self::assertSame(
-			expected: ['gamemasters', ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
+			expected: ['gamemasters', 'larpinq-writers', ['group' => 'larpers', 'match' => ['ownerUid' => '$userId']]],
 			actual: $reason['authorization']['read']
 		);
 	}//end testTheReasonIsWrittenByGameMastersOnly()
