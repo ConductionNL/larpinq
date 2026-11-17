@@ -903,6 +903,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Мој лист лика",
         "Open sheet": "Отвори лист",
+        "Language": "Језик",
+        "Could not change the language.": "Језик није било могуће променити.",
         "History entry": "Историјски запис",
         "How the date is told in the world": "Како се датум зове у свету",
         "In-game date": "Датум у игри",

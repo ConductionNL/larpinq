@@ -904,6 +904,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Mana tēla lapa",
         "Open sheet": "Atvērt lapu",
+        "Language": "Valoda",
+        "Could not change the language.": "Valodu neizdevās nomainīt.",
         "History entry": "Vēstures ieraksts",
         "How the date is told in the world": "Kā datumu sauc pasaulē",
         "In-game date": "Datums spēlē",

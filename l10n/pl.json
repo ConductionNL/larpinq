@@ -903,6 +903,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moja karta postaci",
         "Open sheet": "Otwórz kartę",
+        "Language": "Język",
+        "Could not change the language.": "Nie udało się zmienić języka.",
         "History entry": "Wpis historii",
         "How the date is told in the world": "Jak data jest podawana w świecie",
         "In-game date": "Data w grze",

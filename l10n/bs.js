@@ -904,6 +904,8 @@ OC.L10N.register(
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Moj list lika",
         "Open sheet": "Otvori list",
+        "Language": "Jezik",
+        "Could not change the language.": "Jezik nije bilo moguće promijeniti.",
         "History entry": "Historijski zapis",
         "How the date is told in the world": "Kako se datum zove u svijetu",
         "In-game date": "Datum u igri",

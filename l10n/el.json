@@ -903,6 +903,8 @@
         "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.": "Where Larpinq keeps the data of your game. Pick a source per kind, and for Open Register the register and schema.",
         "My character sheet": "Το φύλλο του χαρακτήρα μου",
         "Open sheet": "Άνοιγμα φύλλου",
+        "Language": "Γλώσσα",
+        "Could not change the language.": "Δεν ήταν δυνατή η αλλαγή της γλώσσας.",
         "History entry": "Καταχώριση ιστορίας",
         "How the date is told in the world": "Πώς λέγεται η ημερομηνία στον κόσμο",
         "In-game date": "Ημερομηνία στο παιχνίδι",
