@@ -16,6 +16,7 @@
 
 - [x] 3.1 `src/views/EventCasting.vue` as a registered section and the Casting tab on EventDetail in `src/manifest.json`; ranking on My registrations (REQ-ECC-001 to REQ-ECC-004). Verify: `npm run check:manifest`; vitest for the proposal table.
 - [ ] 3.2 Playwright `tests/e2e/event-casting.spec.ts`: three players rank, the game master proposes and confirms, Anna owns "The Heir" (REQ-ECC-001 to REQ-ECC-003). Verify: passes locally.
+  - 17 Nov: the spec is written (3 tests: three players rank on their registration in their own contexts, a player is refused the proposal with 403, the game master confirms and The Heir goes to Anna); not run yet, needs a live instance.
 
 ## 4. Strings and docs
 
