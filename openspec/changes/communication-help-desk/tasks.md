@@ -18,6 +18,7 @@
 - [x] 3.2 `askQuestion` and `myQuestions` in `PortalContributionProvider`, with the declared notification (REQ-CHD-004). Verify: provider PHPUnit shape and whitelist tests.
       `askQuestion` (create, stamped through the `ownerRef` claim; subject, body, event), `myQuestions` and `myQuestionMessages` (the answers, scoped by the `ownerRef` HelpMessageListener now copies onto each message), a portal Help page, and the `larpinq.question.answered` rule on `status` with claim-addressed recipients (portaliq REQ-NAP-012). A portal question names no player, so `player` is no longer required and the listener takes the player from the stamped `ownerRef`. Pinned by `PortalContributionProviderTest` (shape, whitelist against the register, golden) and `HelpMessageListenerTest`.
 - [ ] 3.3 Playwright `tests/e2e/help-desk.spec.ts`: Anna asks, Joris answers, Anna is notified and replies, the question reopens (REQ-CHD-001 to REQ-CHD-003). Verify: passes locally.
+      Written: `tests/e2e/help-desk.spec.ts` (4 tests). Anna (larpers) and Joris (gamemasters) are made per run and write through OpenRegister as themselves. The spec checks the Help page in a fresh context per user, the notifications when the notifications app is present, and the closed-question refusal. Not run here: it needs a live instance.
 
 ## 4. Strings and docs
 
