@@ -908,7 +908,12 @@
         "Payment method": "Método de pagamento",
         "Bank transfer": "Transferência bancária",
         "How the payment came in": "Como o pagamento foi recebido",
-        "Upload and match a bank statement": "Carregar e conciliar um extrato bancário"
+        "Upload and match a bank statement": "Carregar e conciliar um extrato bancário",
+        "Download invoice": "Transferir fatura",
+        "Invoice": "Fatura",
+        "Invoice link": "Ligação da fatura",
+        "The invoice shillinq issued for this registration, set by larpinq": "A fatura que o shillinq emitiu para esta inscrição, definida pelo larpinq",
+        "Where the invoice is downloaded, from shillinq": "Onde a fatura é transferida, a partir do shillinq"
     },
     "plurals": {}
 }

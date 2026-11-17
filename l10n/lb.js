@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Bezuelmethod",
         "Bank transfer": "Bankiwwerweisung",
         "How the payment came in": "Wéi d'Bezuelung erakomm ass",
-        "Upload and match a bank statement": "Kontoauszuch eroplueden an ofgläichen"
+        "Upload and match a bank statement": "Kontoauszuch eroplueden an ofgläichen",
+        "Download invoice": "Rechnung eroflueden",
+        "Invoice": "Rechnung",
+        "Invoice link": "Rechnungslink",
+        "The invoice shillinq issued for this registration, set by larpinq": "D'Rechnung, déi shillinq fir dës Umeldung ausgestallt huet, vu larpinq gesat",
+        "Where the invoice is downloaded, from shillinq": "Wou d'Rechnung erofgeluede gëtt, aus shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

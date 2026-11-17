@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Τρόπος πληρωμής",
         "Bank transfer": "Τραπεζική μεταφορά",
         "How the payment came in": "Πώς έγινε η πληρωμή",
-        "Upload and match a bank statement": "Μεταφόρτωση και αντιστοίχιση αντιγράφου κίνησης λογαριασμού"
+        "Upload and match a bank statement": "Μεταφόρτωση και αντιστοίχιση αντιγράφου κίνησης λογαριασμού",
+        "Download invoice": "Λήψη τιμολογίου",
+        "Invoice": "Τιμολόγιο",
+        "Invoice link": "Σύνδεσμος τιμολογίου",
+        "The invoice shillinq issued for this registration, set by larpinq": "Το τιμολόγιο που εξέδωσε το shillinq για αυτή την εγγραφή, ορίζεται από το larpinq",
+        "Where the invoice is downloaded, from shillinq": "Από πού γίνεται λήψη του τιμολογίου, από το shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

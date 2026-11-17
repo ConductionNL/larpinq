@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Metodu tal-ħlas",
         "Bank transfer": "Trasferiment bankarju",
         "How the payment came in": "Kif daħal il-ħlas",
-        "Upload and match a bank statement": "Tella' u qabbel dikjarazzjoni tal-bank"
+        "Upload and match a bank statement": "Tella' u qabbel dikjarazzjoni tal-bank",
+        "Download invoice": "Niżżel il-fattura",
+        "Invoice": "Fattura",
+        "Invoice link": "Link tal-fattura",
+        "The invoice shillinq issued for this registration, set by larpinq": "Il-fattura li ħareġ shillinq għal din ir-reġistrazzjoni, issettjata minn larpinq",
+        "Where the invoice is downloaded, from shillinq": "Minn fejn titniżżel il-fattura, minn shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

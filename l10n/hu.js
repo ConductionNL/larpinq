@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Fizetési mód",
         "Bank transfer": "Banki átutalás",
         "How the payment came in": "Hogyan érkezett a fizetés",
-        "Upload and match a bank statement": "Bankszámlakivonat feltöltése és párosítása"
+        "Upload and match a bank statement": "Bankszámlakivonat feltöltése és párosítása",
+        "Download invoice": "Számla letöltése",
+        "Invoice": "Számla",
+        "Invoice link": "Számla hivatkozása",
+        "The invoice shillinq issued for this registration, set by larpinq": "A számla, amelyet a shillinq ehhez a jelentkezéshez kiállított, a larpinq állítja be",
+        "Where the invoice is downloaded, from shillinq": "Honnan tölthető le a számla, a shillinqből"
     },
     "nplurals=2; plural=(n != 1);"
 )

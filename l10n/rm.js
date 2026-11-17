@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Metoda da pajament",
         "Bank transfer": "Transfer bancar",
         "How the payment came in": "Co il pajament è entrà",
-        "Upload and match a bank statement": "Chargiar si ed attribuir in extract da conto"
+        "Upload and match a bank statement": "Chargiar si ed attribuir in extract da conto",
+        "Download invoice": "Telechargiar il quint",
+        "Invoice": "Quint",
+        "Invoice link": "Link dal quint",
+        "The invoice shillinq issued for this registration, set by larpinq": "Il quint che shillinq ha emess per questa annunzia, fixà da larpinq",
+        "Where the invoice is downloaded, from shillinq": "Nua ch'il quint vegn telechargià, or da shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

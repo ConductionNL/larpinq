@@ -908,7 +908,12 @@
         "Payment method": "Ödeme yöntemi",
         "Bank transfer": "Banka havalesi",
         "How the payment came in": "Ödemenin nasıl geldiği",
-        "Upload and match a bank statement": "Banka hesap özeti yükle ve eşleştir"
+        "Upload and match a bank statement": "Banka hesap özeti yükle ve eşleştir",
+        "Download invoice": "Faturayı indir",
+        "Invoice": "Fatura",
+        "Invoice link": "Fatura bağlantısı",
+        "The invoice shillinq issued for this registration, set by larpinq": "shillinq'in bu kayıt için düzenlediği fatura, larpinq tarafından ayarlanır",
+        "Where the invoice is downloaded, from shillinq": "Faturanın indirildiği yer, shillinq'ten"
     },
     "plurals": {}
 }

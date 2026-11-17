@@ -908,7 +908,12 @@
         "Payment method": "Način plačila",
         "Bank transfer": "Bančno nakazilo",
         "How the payment came in": "Kako je plačilo prispelo",
-        "Upload and match a bank statement": "Naloži in uskladi bančni izpisek"
+        "Upload and match a bank statement": "Naloži in uskladi bančni izpisek",
+        "Download invoice": "Prenesi račun",
+        "Invoice": "Račun",
+        "Invoice link": "Povezava do računa",
+        "The invoice shillinq issued for this registration, set by larpinq": "Račun, ki ga je shillinq izdal za to prijavo, nastavi larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kje se račun prenese, iz shillinq"
     },
     "plurals": {}
 }

@@ -908,7 +908,12 @@
         "Payment method": "Спосаб аплаты",
         "Bank transfer": "Банкаўскі перавод",
         "How the payment came in": "Як паступіла аплата",
-        "Upload and match a bank statement": "Загрузіць і супаставіць банкаўскую выпіску"
+        "Upload and match a bank statement": "Загрузіць і супаставіць банкаўскую выпіску",
+        "Download invoice": "Спампаваць рахунак",
+        "Invoice": "Рахунак",
+        "Invoice link": "Спасылка на рахунак",
+        "The invoice shillinq issued for this registration, set by larpinq": "Рахунак, які shillinq выставіў за гэтую рэгістрацыю, задае larpinq",
+        "Where the invoice is downloaded, from shillinq": "Дзе спампаваць рахунак, з shillinq"
     },
     "plurals": {}
 }

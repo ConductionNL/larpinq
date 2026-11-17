@@ -908,7 +908,12 @@
         "Payment method": "Maksājuma veids",
         "Bank transfer": "Bankas pārskaitījums",
         "How the payment came in": "Kā maksājums tika saņemts",
-        "Upload and match a bank statement": "Augšupielādēt un saskaņot bankas izrakstu"
+        "Upload and match a bank statement": "Augšupielādēt un saskaņot bankas izrakstu",
+        "Download invoice": "Lejupielādēt rēķinu",
+        "Invoice": "Rēķins",
+        "Invoice link": "Rēķina saite",
+        "The invoice shillinq issued for this registration, set by larpinq": "Rēķins, ko shillinq izrakstīja šai reģistrācijai, iestata larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kur rēķinu lejupielādēt, no shillinq"
     },
     "plurals": {}
 }

@@ -98,6 +98,14 @@
 						"label": "Pay by"
 					},
 					{
+						"key": "invoiceUrl",
+						"label": "Invoice",
+						"widget": "link",
+						"widgetProps": { "href": "{invoiceUrl}" },
+						"formatter": "invoiceDownload",
+						"_note": "registration-payments-through-shillinq REQ-RPS-006: the invoice shillinq issued on request, shown as a download link once it is there (RegistrationInvoice)."
+					},
+					{
 						"key": "transferStatus",
 						"label": "Transfer"
 					},
@@ -180,6 +188,14 @@
 					]
 				},
 				"headerActions": [
+					{
+						"id": "download-invoice",
+						"label": "Download invoice",
+						"icon": "FilePdfBox",
+						"href": "/apps/shillinq/api/v1/invoices/@object.invoiceId/pdf",
+						"target": "_blank",
+						"visibleWhen": { "field": "invoiceId", "op": "notEmpty" }
+					},
 					{
 						"id": "request-payment",
 						"type": "api-call",

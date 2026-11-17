@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Greiðslumáti",
         "Bank transfer": "Millifærsla",
         "How the payment came in": "Hvernig greiðslan barst",
-        "Upload and match a bank statement": "Hlaða upp og para bankayfirlit"
+        "Upload and match a bank statement": "Hlaða upp og para bankayfirlit",
+        "Download invoice": "Sækja reikning",
+        "Invoice": "Reikningur",
+        "Invoice link": "Tengill á reikning",
+        "The invoice shillinq issued for this registration, set by larpinq": "Reikningurinn sem shillinq gaf út fyrir þessa skráningu, settur af larpinq",
+        "Where the invoice is downloaded, from shillinq": "Hvar reikningurinn er sóttur, úr shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

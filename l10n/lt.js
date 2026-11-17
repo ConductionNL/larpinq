@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Mokėjimo būdas",
         "Bank transfer": "Banko pavedimas",
         "How the payment came in": "Kaip gautas mokėjimas",
-        "Upload and match a bank statement": "Įkelti ir sugretinti banko išrašą"
+        "Upload and match a bank statement": "Įkelti ir sugretinti banko išrašą",
+        "Download invoice": "Atsisiųsti sąskaitą faktūrą",
+        "Invoice": "Sąskaita faktūra",
+        "Invoice link": "Sąskaitos faktūros nuoroda",
+        "The invoice shillinq issued for this registration, set by larpinq": "Sąskaita faktūra, kurią shillinq išrašė šiai registracijai, nustato larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kur atsisiunčiama sąskaita faktūra, iš shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

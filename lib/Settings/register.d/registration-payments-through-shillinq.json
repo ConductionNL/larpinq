@@ -147,6 +147,29 @@
 								"gamemasters"
 							]
 						}
+					},
+					"invoiceId": {
+						"type": "string",
+						"format": "uuid",
+						"title": "Invoice",
+						"description": "The invoice shillinq issued for this registration, set by larpinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"invoiceUrl": {
+						"type": "string",
+						"format": "uri",
+						"maxLength": 2048,
+						"title": "Invoice link",
+						"description": "Where the invoice is downloaded, from shillinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
 					}
 				},
 				"x-openregister-notifications": {

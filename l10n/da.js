@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Betalingsmetode",
         "Bank transfer": "Bankoverførsel",
         "How the payment came in": "Hvordan betalingen kom ind",
-        "Upload and match a bank statement": "Upload og afstem et kontoudtog"
+        "Upload and match a bank statement": "Upload og afstem et kontoudtog",
+        "Download invoice": "Download faktura",
+        "Invoice": "Faktura",
+        "Invoice link": "Fakturalink",
+        "The invoice shillinq issued for this registration, set by larpinq": "Fakturaen, som shillinq har udstedt for denne tilmelding, angivet af larpinq",
+        "Where the invoice is downloaded, from shillinq": "Hvor fakturaen downloades, fra shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

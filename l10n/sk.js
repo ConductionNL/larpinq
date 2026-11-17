@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Spôsob platby",
         "Bank transfer": "Bankový prevod",
         "How the payment came in": "Ako platba prišla",
-        "Upload and match a bank statement": "Nahrať a spárovať bankový výpis"
+        "Upload and match a bank statement": "Nahrať a spárovať bankový výpis",
+        "Download invoice": "Stiahnuť faktúru",
+        "Invoice": "Faktúra",
+        "Invoice link": "Odkaz na faktúru",
+        "The invoice shillinq issued for this registration, set by larpinq": "Faktúra, ktorú shillinq vystavil pre túto prihlášku, nastavuje larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kde sa faktúra sťahuje, zo shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

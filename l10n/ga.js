@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Modh íocaíochta",
         "Bank transfer": "Aistriú bainc",
         "How the payment came in": "Conas a tháinig an íocaíocht isteach",
-        "Upload and match a bank statement": "Uaslódáil agus meaitseáil ráiteas bainc"
+        "Upload and match a bank statement": "Uaslódáil agus meaitseáil ráiteas bainc",
+        "Download invoice": "Íoslódáil an sonrasc",
+        "Invoice": "Sonrasc",
+        "Invoice link": "Nasc an tsonraisc",
+        "The invoice shillinq issued for this registration, set by larpinq": "An sonrasc a d'eisigh shillinq don chlárú seo, socraithe ag larpinq",
+        "Where the invoice is downloaded, from shillinq": "Cá n-íoslódáiltear an sonrasc, ó shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

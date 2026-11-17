@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Método de pago",
         "Bank transfer": "Transferencia bancaria",
         "How the payment came in": "Cómo llegó el pago",
-        "Upload and match a bank statement": "Subir y conciliar un extracto bancario"
+        "Upload and match a bank statement": "Subir y conciliar un extracto bancario",
+        "Download invoice": "Descargar factura",
+        "Invoice": "Factura",
+        "Invoice link": "Enlace de la factura",
+        "The invoice shillinq issued for this registration, set by larpinq": "La factura que shillinq emitió para esta inscripción, la indica larpinq",
+        "Where the invoice is downloaded, from shillinq": "Dónde se descarga la factura, desde shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

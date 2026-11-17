@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Maksutapa",
         "Bank transfer": "Pankkisiirto",
         "How the payment came in": "Miten maksu saapui",
-        "Upload and match a bank statement": "Lataa ja täsmäytä tiliote"
+        "Upload and match a bank statement": "Lataa ja täsmäytä tiliote",
+        "Download invoice": "Lataa lasku",
+        "Invoice": "Lasku",
+        "Invoice link": "Laskun linkki",
+        "The invoice shillinq issued for this registration, set by larpinq": "Lasku, jonka shillinq laati tälle ilmoittautumiselle, larpinqin asettama",
+        "Where the invoice is downloaded, from shillinq": "Mistä lasku ladataan, shillinqistä"
     },
     "nplurals=2; plural=(n != 1);"
 )

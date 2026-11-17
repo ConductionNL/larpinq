@@ -909,7 +909,12 @@ OC.L10N.register(
         "Payment method": "Спосіб оплати",
         "Bank transfer": "Банківський переказ",
         "How the payment came in": "Як надійшла оплата",
-        "Upload and match a bank statement": "Завантажити й зіставити банківську виписку"
+        "Upload and match a bank statement": "Завантажити й зіставити банківську виписку",
+        "Download invoice": "Завантажити рахунок",
+        "Invoice": "Рахунок",
+        "Invoice link": "Посилання на рахунок",
+        "The invoice shillinq issued for this registration, set by larpinq": "Рахунок, виставлений shillinq за цю реєстрацію, задає larpinq",
+        "Where the invoice is downloaded, from shillinq": "Де завантажити рахунок, із shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

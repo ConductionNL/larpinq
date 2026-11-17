@@ -908,7 +908,12 @@
         "Payment method": "Metodă de plată",
         "Bank transfer": "Transfer bancar",
         "How the payment came in": "Cum a fost primită plata",
-        "Upload and match a bank statement": "Încarcă și potrivește un extras de cont"
+        "Upload and match a bank statement": "Încarcă și potrivește un extras de cont",
+        "Download invoice": "Descarcă factura",
+        "Invoice": "Factură",
+        "Invoice link": "Link factură",
+        "The invoice shillinq issued for this registration, set by larpinq": "Factura emisă de shillinq pentru această înscriere, setată de larpinq",
+        "Where the invoice is downloaded, from shillinq": "Unde se descarcă factura, din shillinq"
     },
     "plurals": {}
 }
