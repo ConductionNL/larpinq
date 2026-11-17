@@ -24,6 +24,7 @@ description:
       event organisation, player registration, skill and item tracking, and community
       administration. Built on Nextcloud and Open Register, it offers a collaborative
       platform for LARP groups of all sizes.
+      Conduction maintains this component at its own cost, committed until 31 December 2027.
     features:
       - Character creation and management
       - Event organisation and player registration
@@ -39,6 +40,7 @@ description:
       karakters, evenementorganisatie, spelersregistratie, vaardigheids- en
       itembeheer, en gemeenschapsadministratie. Gebouwd op Nextcloud en Open Register
       biedt het een collaboratief platform voor LARP-groepen van elke omvang.
+      Conduction onderhoudt dit component voor eigen rekening, toegezegd tot 31 december 2027.
     features:
       - Karakter aanmaken en beheren
       - Evenementorganisatie en spelersregistratie
@@ -51,7 +53,12 @@ legal:
   repoOwner: "Conduction B.V."
 
 maintenance:
-  type: community
+  type: contract
+  contractors:
+    - name: Conduction B.V.
+      until: "2027-12-31"
+      email: info@conduction.nl
+      website: https://conduction.nl
   contacts:
     - name: Conduction B.V.
       email: info@conduction.nl

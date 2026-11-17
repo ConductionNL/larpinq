@@ -22,8 +22,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\BackgroundJob;
 
-use OCA\Larpinq\Service\PaymentFollowUp;
-use OCA\Larpinq\Service\TransferOffers;
+use OCA\Larpinq\Kernel\Contracts\PaymentFollowUpInterface;
+use OCA\Larpinq\Kernel\Contracts\TransferOffersInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;
@@ -55,14 +55,14 @@ class RegistrationPaymentJob extends TimedJob {
 	 * Constructor.
 	 *
 	 * @param ITimeFactory $time The clock.
-	 * @param PaymentFollowUp $followUp The daily pass.
-	 * @param TransferOffers $transfers Lapses old transfer offers.
+	 * @param PaymentFollowUpInterface $followUp The daily pass.
+	 * @param TransferOffersInterface $transfers Lapses old transfer offers.
 	 * @param LoggerInterface $logger The logger.
 	 */
 	public function __construct(
 		ITimeFactory $time,
-		private readonly PaymentFollowUp $followUp,
-		private readonly TransferOffers $transfers,
+		private readonly PaymentFollowUpInterface $followUp,
+		private readonly TransferOffersInterface $transfers,
 		private readonly LoggerInterface $logger,
 	) {
 		parent::__construct(time: $time);

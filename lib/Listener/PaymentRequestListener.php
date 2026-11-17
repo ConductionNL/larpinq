@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\PaymentFollowUp;
-use OCA\Larpinq\Service\PaymentLeaf;
-use OCA\Larpinq\Service\RegistrationPaymentService;
-use OCA\Larpinq\Service\RegistrationSettlement;
+use OCA\Larpinq\Kernel\Contracts\PaymentFollowUpInterface;
+use OCA\Larpinq\Kernel\Contracts\PaymentLeafInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationPaymentServiceInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationSettlementInterface;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -54,21 +54,21 @@ class PaymentRequestListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param IAppConfig $config The registration schema id.
-	 * @param RegistrationPaymentService $payments Asks for a registration's payment.
-	 * @param PaymentFollowUp $followUp Marks a registration paid.
-	 * @param PaymentLeaf $leaf Whether a request's subject is a registration.
+	 * @param RegistrationPaymentServiceInterface $payments Asks for a registration's payment.
+	 * @param PaymentFollowUpInterface $followUp Marks a registration paid.
+	 * @param PaymentLeafInterface $leaf Whether a request's subject is a registration.
 	 * @param IUserSession $session Who accepted.
-	 * @param RegistrationSettlement $settlement The money of a paid cancellation.
+	 * @param RegistrationSettlementInterface $settlement The money of a paid cancellation.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		private readonly IAppConfig $config,
-		private readonly RegistrationPaymentService $payments,
-		private readonly PaymentFollowUp $followUp,
-		private readonly PaymentLeaf $leaf,
+		private readonly RegistrationPaymentServiceInterface $payments,
+		private readonly PaymentFollowUpInterface $followUp,
+		private readonly PaymentLeafInterface $leaf,
 		private readonly IUserSession $session,
-		private readonly RegistrationSettlement $settlement,
+		private readonly RegistrationSettlementInterface $settlement,
 	) {
 	}//end __construct()
 

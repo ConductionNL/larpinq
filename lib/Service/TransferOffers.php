@@ -23,6 +23,7 @@ namespace OCA\Larpinq\Service;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\TransferOffersInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -40,7 +41,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class TransferOffers {
+class TransferOffers implements TransferOffersInterface {
 
 	public const OFFERED = 'offered';
 

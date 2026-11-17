@@ -57,10 +57,11 @@ class CharacterVisibilityRulesTest extends TestCase {
 		$auth = $this->character()['authorization'];
 
 		$this->assertSame(
-			expected: [['group' => self::GM], self::OWNER, ['group' => 'larpers', 'match' => ['approved' => 'approved']]],
+			// Story writers and stewards read every character (admin-staff-roles-and-invites D2).
+			expected: ['larpinq-writers', 'larpinq-stewards', ['group' => self::GM], self::OWNER, ['group' => 'larpers', 'match' => ['approved' => 'approved']]],
 			actual: $auth['read']
 		);
-		$this->assertSame(expected: [['group' => self::GM], self::OWNER], actual: $auth['update']);
+		$this->assertSame(expected: ['larpinq-writers', ['group' => self::GM], self::OWNER], actual: $auth['update']);
 		$this->assertSame(expected: [self::GM, 'larpers'], actual: $auth['create']);
 		$this->assertSame(expected: [self::GM], actual: $auth['delete']);
 	}//end testRowRulesLetAPlayerReadOwnAndApprovedAndWriteOnlyOwn()
@@ -81,9 +82,9 @@ class CharacterVisibilityRulesTest extends TestCase {
 	 */
 	public function testPrivateNotesAreGameMasterOnly(): void {
 		$props = $this->character()['properties'];
-		foreach (['slNotesPrivate', 'requirementOverrides'] as $field) {
-			$this->assertSame(expected: ['read' => [self::GM], 'update' => [self::GM]], actual: $props[$field]['authorization'], message: $field);
-		}
+		// Story writers read and write the private notes, a story field, and only read the overrides (admin-staff-roles-and-invites D2).
+		$this->assertSame(expected: ['read' => ['larpinq-writers', self::GM], 'update' => ['larpinq-writers', self::GM]], actual: $props['slNotesPrivate']['authorization']);
+		$this->assertSame(expected: ['read' => ['larpinq-writers', self::GM], 'update' => [self::GM]], actual: $props['requirementOverrides']['authorization']);
 	}//end testPrivateNotesAreGameMasterOnly()
 
 	/**
@@ -94,11 +95,14 @@ class CharacterVisibilityRulesTest extends TestCase {
 	public function testTheOwnerWritesStoryFieldsOnly(): void {
 		$props = $this->character()['properties'];
 		foreach (['background', 'faith'] as $field) {
-			$this->assertSame(expected: [self::GM, self::OWNER], actual: $props[$field]['authorization']['update'], message: $field);
+			$expected = $field === 'background' ? ['larpinq-writers', self::GM, self::OWNER] : [self::GM, self::OWNER];
+			$this->assertSame(expected: $expected, actual: $props[$field]['authorization']['update'], message: $field);
 		}
 
 		foreach (self::GM_WRITES as $field) {
-			$this->assertSame(expected: [self::GM], actual: $props[$field]['authorization']['update'], message: $field);
+			// slNotesPublic is a story field that story writers change too (admin-staff-roles-and-invites D2).
+			$expected = $field === 'slNotesPublic' ? ['larpinq-writers', self::GM] : [self::GM];
+			$this->assertSame(expected: $expected, actual: $props[$field]['authorization']['update'], message: $field);
 		}
 	}//end testTheOwnerWritesStoryFieldsOnly()
 

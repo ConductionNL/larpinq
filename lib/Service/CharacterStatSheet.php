@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
+
 /**
  * Computes, presents and checks character stats for the stat sheet endpoints.
  *
@@ -35,7 +37,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/character-management/spec.md
  */
-class CharacterStatSheet {
+class CharacterStatSheet implements CharacterStatSheetInterface {
 
 	/**
 	 * Constructor.
