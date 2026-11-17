@@ -88,11 +88,11 @@ class FormSubmitWriter {
 	/**
 	 * Submit one object of a larpinq type as the account, with the app's authority.
 	 *
-	 * @param string               $objectType The larpinq object type, e.g. `registration`.
-	 * @param array<string, mixed> $data       The object to create.
-	 * @param string               $uid        The submitting account.
-	 * @param string               $scope      What the idempotency key belongs to, e.g. the source form.
-	 * @param string               $key        The idempotency key.
+	 * @param string                $objectType The larpinq object type, e.g. `registration`.
+	 * @param array<string, mixed>  $data       The object to create.
+	 * @param array<string, string> $origin     Who submits and once: `uid` the submitting account,
+	 *                                          `scope` what the idempotency key belongs to (e.g. the
+	 *                                          source form) and `key` the idempotency key.
 	 *
 	 * @return array<string, mixed> The submit service's answer: reference, id, objects.
 	 *
@@ -104,12 +104,12 @@ class FormSubmitWriter {
 	 *
 	 * @spec openspec/changes/forms-registration-is-checked-at-binding/specs/forms-registration/spec.md#requirement-a-forms-submit-must-create-the-registration-through-the-submit-service
 	 */
-	public function submit(string $objectType, array $data, string $uid, string $scope, string $key): array {
+	public function submit(string $objectType, array $data, array $origin): array {
 		if ($this->available() === false) {
 			throw new RuntimeException('OpenRegister has no form submit with an app\'s authority.');
 		}
 
-		$subject = $this->users->get($uid);
+		$subject = $this->users->get((string)($origin['uid'] ?? ''));
 		if ($subject === null) {
 			throw new RuntimeException('The submitting account does not exist.');
 		}
@@ -118,7 +118,7 @@ class FormSubmitWriter {
 
 		$submitterClass = self::SUBMITTER;
 		$submissionClass = self::SUBMISSION;
-		$submitter = new $submitterClass(subject: $subject, scope: $scope, appAuthority: true);
+		$submitter = new $submitterClass(subject: $subject, scope: (string)($origin['scope'] ?? ''), appAuthority: true);
 		$submission = new $submissionClass(
 			writes: [['register' => $register, 'schema' => $schema, 'mapping' => null]],
 			payload: $data,
@@ -126,6 +126,6 @@ class FormSubmitWriter {
 		);
 
 		// OpenRegister is an optional dependency, resolved dynamically.
-		return (array)$this->container->get(self::SUBMIT)->submit(submission: $submission, idempotencyKey: $key);
+		return (array)$this->container->get(self::SUBMIT)->submit(submission: $submission, idempotencyKey: (string)($origin['key'] ?? ''));
 	}//end submit()
 }//end class

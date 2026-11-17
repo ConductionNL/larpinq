@@ -151,9 +151,7 @@ class FormSubmissionListener implements IEventListener {
 			$this->writer->submit(
 				objectType: 'registration',
 				data: $registration,
-				uid: $uid,
-				scope: 'forms:' . $formId,
-				key: 'forms-submission:' . $registration['submissionId']
+				origin: ['uid' => $uid, 'scope' => 'forms:' . $formId, 'key' => 'forms-submission:' . $registration['submissionId']]
 			);
 			return;
 		}

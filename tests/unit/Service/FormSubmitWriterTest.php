@@ -85,7 +85,7 @@ class FormSubmitWriterTest extends TestCase {
 	}//end writer()
 
 	public function testItSubmitsAsTheAccountWithTheAppsAuthorityAndTheKey(): void {
-		$answer = $this->writer()->submit(objectType: 'registration', data: ['event' => 'e-1'], uid: 'anna', scope: 'forms:12', key: 'forms-submission:501');
+		$answer = $this->writer()->submit(objectType: 'registration', data: ['event' => 'e-1'], origin: ['uid' => 'anna', 'scope' => 'forms:12', 'key' => 'forms-submission:501']);
 
 		$this->assertSame(expected: ['id' => 'reg-1', 'reference' => 'R-1'], actual: $answer);
 		$this->assertCount(expectedCount: 1, haystack: $this->submits);
@@ -109,7 +109,7 @@ class FormSubmitWriterTest extends TestCase {
 		$this->expectExceptionMessage(message: 'OpenRegister has no form submit with an app\'s authority.');
 
 		try {
-			$this->writer(bound: false)->submit(objectType: 'registration', data: [], uid: 'anna', scope: 'forms:12', key: 'k');
+			$this->writer(bound: false)->submit(objectType: 'registration', data: [], origin: ['uid' => 'anna', 'scope' => 'forms:12', 'key' => 'k']);
 		} finally {
 			$this->assertSame(expected: [], actual: $this->submits);
 		}
@@ -120,7 +120,7 @@ class FormSubmitWriterTest extends TestCase {
 		$this->expectExceptionMessage(message: 'The submitting account does not exist.');
 
 		try {
-			$this->writer()->submit(objectType: 'registration', data: [], uid: 'ghost', scope: 'forms:12', key: 'k');
+			$this->writer()->submit(objectType: 'registration', data: [], origin: ['uid' => 'ghost', 'scope' => 'forms:12', 'key' => 'k']);
 		} finally {
 			$this->assertSame(expected: [], actual: $this->submits);
 		}
