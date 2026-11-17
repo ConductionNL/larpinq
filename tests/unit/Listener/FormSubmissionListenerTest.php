@@ -29,7 +29,9 @@ use OCA\Forms\Db\Form;
 use OCA\Forms\Db\Submission;
 use OCA\Forms\Events\FormSubmittedEvent;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Service\FormSubmitWriter;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\OpenRegister\Service\Form\FormSubmission;
 use OCA\Larpinq\Tests\Unit\Support\InMemoryOpenRegister;
 use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
@@ -72,7 +74,7 @@ class FormSubmissionListenerTest extends TestCase {
 	 *
 	 * @return FormSubmissionListener The listener.
 	 */
-	private function listener(): FormSubmissionListener {
+	private function listener(?FormSubmitWriter $writer = null): FormSubmissionListener {
 		$store = $this->store;
 		$container = $this->createMock(originalClassName: ContainerInterface::class);
 		$container->method('get')->willReturnCallback(
@@ -96,8 +98,137 @@ class FormSubmissionListenerTest extends TestCase {
 			);
 		}
 
-		return new FormSubmissionListener(fetcher: $fetcher, users: $users, logger: $logger);
+		foreach (['error'] as $level) {
+			$logger->method($level)->willReturnCallback(
+				function (string $message): void {
+					$this->logged[] = $message;
+				}
+			);
+		}
+
+		return new FormSubmissionListener(fetcher: $fetcher, users: $users, logger: $logger, writer: $writer);
 	}//end listener()
+
+	/**
+	 * What OpenRegister's submit service was asked, by idempotency key.
+	 *
+	 * @var array<string, list<FormSubmission>>
+	 */
+	private array $submits = [];
+
+	/**
+	 * A submit writer over a fake submit service that stores into the
+	 * in-memory register, keeps idempotency keys, and refuses when told to.
+	 *
+	 * @param \Throwable|null $refusal What the submit service throws instead of writing.
+	 * @param bool            $bound   Whether OpenRegister binds the submit service at all.
+	 *
+	 * @return FormSubmitWriter The writer.
+	 */
+	private function writer(?\Throwable $refusal = null, bool $bound = true): FormSubmitWriter {
+		$store = $this->store;
+		$submitted = &$this->submits;
+		$service = new class($store, $submitted, $refusal) {
+			/** @param array<string, list<FormSubmission>> $submits */
+			public function __construct(private InMemoryOpenRegister $store, private array &$submits, private ?\Throwable $refusal) {
+			}
+
+			/** @return array<string, mixed> */
+			public function submit(FormSubmission $submission, ?string $idempotencyKey = null): array {
+				$key = (string)$idempotencyKey;
+				$first = isset($this->submits[$key]);
+				$this->submits[$key][] = $submission;
+				if ($this->refusal !== null) {
+					throw $this->refusal;
+				}
+
+				if ($first === false) {
+					$this->store->seed('registration', array_merge(['id' => 'r-' . count($this->submits)], $submission->payload));
+				}
+
+				return ['id' => 'r-' . count($this->submits)];
+			}
+		};
+		$container = $this->createMock(originalClassName: ContainerInterface::class);
+		$container->method('has')->willReturn($bound);
+		$container->method('get')->willReturn($service);
+		$schemas = $this->createMock(originalClassName: \OCA\Larpinq\Service\RegisterSchemaLookup::class);
+		$schemas->method('resolve')->willReturn(['3', 'registration']);
+		$users = $this->createMock(originalClassName: IUserManager::class);
+		$users->method('get')->willReturn($this->createMock(originalClassName: \OCP\IUser::class));
+
+		return new FormSubmitWriter(container: $container, schemas: $schemas, users: $users);
+	}//end writer()
+
+	/**
+	 * Through the submit service: the event fired twice for one answer leaves
+	 * exactly one registration, under one idempotency key, with the app's authority.
+	 *
+	 * @return void
+	 */
+	public function testASubmitThroughTheSubmitServiceCreatesOneRegistration(): void {
+		$writer = $this->writer();
+		$this->listener(writer: $writer)->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+		$this->listener(writer: $writer)->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+
+		$rows = array_values($this->store->objects['registration']);
+		$this->assertCount(expectedCount: 1, haystack: $rows);
+		$this->assertSame(expected: ['forms-submission:501'], actual: array_keys($this->submits));
+		$submission = $this->submits['forms-submission:501'][0];
+		$this->assertTrue(condition: $submission->submitter->appAuthority);
+		$this->assertSame(expected: 'forms:12', actual: $submission->submitter->scope);
+		$this->assertSame(expected: [['register' => '3', 'schema' => 'registration', 'mapping' => null]], actual: $submission->writes);
+		$this->assertSame(expected: self::EVENT, actual: $submission->payload['event']);
+		$this->assertSame(expected: self::ANNA, actual: $submission->payload['player']);
+		$this->assertSame(expected: 'pending', actual: $submission->payload['status']);
+		$this->assertSame(expected: 501, actual: $submission->payload['submissionId']);
+		$this->assertSame(expected: '2026-09-21T14:13:20+00:00', actual: $submission->payload['submittedAt'], message: 'Forms\' own moment, so a repeat carries the same object');
+		$this->assertSame(expected: [], actual: $this->store->saves, message: 'no direct write beside the submit');
+	}//end testASubmitThroughTheSubmitServiceCreatesOneRegistration()
+
+	/**
+	 * A repeated event the duplicate check misses (a race) reaches the submit
+	 * service with the same key and the same object, so nothing new is made.
+	 *
+	 * @return void
+	 */
+	public function testARepeatedSubmitCarriesTheSameKeyAndObject(): void {
+		$writer = $this->writer();
+		$this->listener(writer: $writer)->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+		unset($this->store->objects['registration']);
+		$this->listener(writer: $writer)->handle($this->submitted(form: 12, uid: 'anna', submission: 501));
+
+		$this->assertCount(expectedCount: 2, haystack: $this->submits['forms-submission:501']);
+		$this->assertEquals(expected: $this->submits['forms-submission:501'][0]->payload, actual: $this->submits['forms-submission:501'][1]->payload);
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects, message: 'the remembered key creates nothing new');
+	}//end testARepeatedSubmitCarriesTheSameKeyAndObject()
+
+	/**
+	 * Control: a submit the service refuses (the binding no longer fits the
+	 * schema) creates no registration, falls back to nothing, and is logged.
+	 *
+	 * @return void
+	 */
+	public function testARefusedSubmitCreatesNothing(): void {
+		$this->listener(writer: $this->writer(refusal: new \RuntimeException('required-unmapped: playerName')))->handle($this->submitted(form: 12, uid: 'anna'));
+
+		$this->assertArrayNotHasKey(key: 'registration', array: $this->store->objects);
+		$this->assertSame(expected: [], actual: $this->store->saves, message: 'a refusal is not retried as a direct write');
+		$this->assertContains(needle: 'Larpinq: a sign-up on form {form} did not become a registration.', haystack: $this->logged);
+	}//end testARefusedSubmitCreatesNothing()
+
+	/**
+	 * An OpenRegister without the submit service keeps the direct write with the app's authority.
+	 *
+	 * @return void
+	 */
+	public function testWithoutTheSubmitServiceTheDirectWriteStays(): void {
+		$this->listener(writer: $this->writer(bound: false))->handle($this->submitted(form: 12, uid: 'anna'));
+
+		$this->assertCount(expectedCount: 1, haystack: $this->store->objects['registration']);
+		$this->assertFalse(condition: $this->store->saves[0]['rbac']);
+		$this->assertSame(expected: [], actual: $this->submits);
+	}//end testWithoutTheSubmitServiceTheDirectWriteStays()
 
 	/**
 	 * A submission event.
@@ -109,6 +240,7 @@ class FormSubmissionListenerTest extends TestCase {
 	 * @return FormSubmittedEvent The event.
 	 */
 	private function submitted(int $form, string $uid, int $submission = 501): FormSubmittedEvent {
+		// 1790000000 = 2026-09-21T14:13:20Z, Forms' own moment of the answer.
 		return new FormSubmittedEvent(new Form($form, 'Winter Court sign-up'), new Submission($submission, $form, $uid, 1790000000));
 	}//end submitted()
 
