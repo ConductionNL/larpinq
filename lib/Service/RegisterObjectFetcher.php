@@ -323,7 +323,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 
 		try {
 			$reveal = $this->container->get('OCA\OpenRegister\Service\Rbac\ExplicitRevealInterface');
-		} catch (\Throwable $e) {
+		} catch (Exception $e) {
 			return $read();
 		}
 
