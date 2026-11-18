@@ -2429,6 +2429,24 @@
 						}
 					},
 					{
+						"id": "setting-maps",
+						"type": "object-list",
+						"title": "Maps of this world",
+						"icon": "MapOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_world_map",
+							"filter": {
+								"setting": "@objectId"
+							},
+							"columns": [
+								{ "key": "title", "label": "Title" },
+								{ "key": "visibility", "label": "Visibility" }
+							],
+							"rowRoute": "MapDetail"
+						}
+					},
+					{
 						"id": "setting-characters",
 						"type": "object-list",
 						"title": "Characters in this world",
@@ -2530,6 +2548,14 @@
 						"widgetId": "setting-lore",
 						"gridX": 0,
 						"gridY": 11,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "8",
+						"widgetId": "setting-maps",
+						"gridX": 0,
+						"gridY": 15,
 						"gridWidth": 12,
 						"gridHeight": 4
 					}
