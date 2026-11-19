@@ -69,7 +69,8 @@ test.beforeAll(async () => {
 	})
 	expect(created.ok(), await created.text()).toBe(true)
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
 	eventId = ledger.track(
@@ -80,6 +81,7 @@ test.beforeAll(async () => {
 			endDate: '2025-07-03T16:00:00+00:00',
 		}),
 	)
+	const player = ledger.track('player', await createObject(admin, 'player', { name: fixtureName('Karel') }))
 	for (const [key, name] of [
 		['mirela', 'Mirela the Wanderer'],
 		['bertram', 'Sir Bertram'],
@@ -89,6 +91,7 @@ test.beforeAll(async () => {
 			'character',
 			await createObject(admin, 'character', {
 				name: fixtureName(name),
+				ocName: player,
 				events: [eventId],
 			}),
 		)

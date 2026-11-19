@@ -20,13 +20,28 @@
  * instance offers, and is skipped, saying so, when the instance has no
  * template or no DocuDesk to render one.
  *
+ * The cast test (larpinq-runsheet-scoped-cast-query 4.1) reads the event's
+ * roster, which is built from the same scoped character query as the
+ * run-sheet's cast, so it needs no DocuDesk: a character of another event must
+ * stay out, a character of this event must be in.
+ *
  * @spec openspec/specs/pdf-export/spec.md
+ * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#4-tests
  */
+
+import type { APIRequestContext } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
 import { dismissSupportDialog } from '../_nav.ts'
-import { fixtureName, newApi } from '../workflows/fixtures.ts'
+import {
+	cleanupLedger,
+	createObject,
+	FixtureLedger,
+	fixtureName,
+	newApi,
+	resolveSchemaIds,
+} from '../workflows/fixtures.ts'
 
 const BASE = '/apps/larpinq'
 const OBJECTS = `${BASE_URL}/index.php/apps/openregister/api/objects/larpinq/larping_event`
@@ -89,6 +104,33 @@ test.describe('event-runsheet-export', () => {
 		} finally {
 			await admin.delete(`${OBJECTS}/${eventId}`, { headers: { 'OCS-APIRequest': 'true' } }).catch(() => undefined)
 			await admin.dispose()
+		}
+	})
+
+	test('the cast holds this event\'s characters and no other event\'s', async () => {
+		const api: APIRequestContext = await newApi()
+		const ledger = new FixtureLedger()
+		try {
+			await resolveSchemaIds(api)
+			const eventId = ledger.track('event', await createObject(api, 'event', { name: fixtureName('runsheet event') }))
+			const otherId = ledger.track('event', await createObject(api, 'event', { name: fixtureName('another event') }))
+			const cast = ledger.track('character', await createObject(api, 'character', {
+				name: fixtureName('cast member'), ocName: 'Speler Een', events: [eventId],
+			}))
+			const outsider = ledger.track('character', await createObject(api, 'character', {
+				name: fixtureName('other cast'), ocName: 'Speler Twee', events: [otherId],
+			}))
+
+			const res = await api.get(`${BASE_URL}/index.php/apps/larpinq/api/events/${eventId}/roster`, {
+				headers: { 'OCS-APIRequest': 'true' },
+			})
+			expect(res.status(), await res.text()).toBe(200)
+			const ids = ((await res.json()).participants ?? []).map((row: { character?: string }) => String(row.character ?? ''))
+			expect(ids, 'the event\'s own character is in the cast').toContain(cast)
+			expect(ids, 'a character of another event stays out').not.toContain(outsider)
+		} finally {
+			await cleanupLedger(api, ledger)
+			await api.dispose()
 		}
 	})
 })

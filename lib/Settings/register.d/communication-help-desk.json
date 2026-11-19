@@ -190,8 +190,13 @@
           },
           "question-answered": {
             "trigger": {
-              "type": "transition",
-              "action": "answer"
+              "type": "updated",
+              "condition": {
+                "field": "status",
+                "operator": "equals",
+                "from": "open",
+                "value": "answered"
+              }
             },
             "enabled": true,
             "channels": [

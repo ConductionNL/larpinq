@@ -285,6 +285,13 @@
 			"icon": "KeyVariant",
 			"route": "AccessCodes",
 			"order": 96
+		},
+		{
+			"id": "Maps",
+			"label": "Maps",
+			"icon": "MapOutline",
+			"route": "Maps",
+			"order": 34
 		}
 	],
 	"pages": [
@@ -370,7 +377,7 @@
 		],
 		[
 			"SettingDetail",
-			"d07d7b9064f3853cd9a47f13eac957f64ab43ad93ce2999960df093c22095480"
+			"0d6615799f89fda21e27bb8bfa1ed314407b4b801984988f9936782883a0189f"
 		],
 		[
 			"XpAwards",
@@ -523,6 +530,14 @@
 		[
 			"LoreArticle",
 			"b3cec2de3c472afbe1e6a6c04a67724ff15906a037b80785bfeb66b264f2222d"
+		],
+		[
+			"Maps",
+			"687d2d4b093aca881a827f3e2c667b4fbc814e0479d10da0bf07ccf0ffbfb350"
+		],
+		[
+			"MapDetail",
+			"782f2e5da60d4629a5a8725f0bde07d6734a255238c3ece5712174c9900a955c"
 		]
 	],
 	"rest": "d6f6fd2641f3c3d968dc87fe7c7dfd4906e1082aa84843cb7396441c41f38b11"

@@ -682,6 +682,58 @@
       {
         "@self": {
           "register": "larpinq",
+          "schema": "larping_world_map",
+          "slug": "world-map-valley-of-aldmoor"
+        },
+        "title": "The valley of Aldmoor",
+        "width": 2400,
+        "height": 1600,
+        "visibility": "players"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_map_pin",
+          "slug": "map-pin-aldmoor-city"
+        },
+        "map": "00000000-0000-4000-8000-000000000000",
+        "label": "Aldmoor city",
+        "x": 1180,
+        "y": 760,
+        "kind": "town",
+        "lorePage": "00000000-0000-4000-8000-000000000000",
+        "visibility": "players"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_map_pin",
+          "slug": "map-pin-north-gate"
+        },
+        "map": "00000000-0000-4000-8000-000000000000",
+        "label": "North gate",
+        "x": 1220,
+        "y": 240,
+        "kind": "ruin",
+        "lorePage": "00000000-0000-4000-8000-000000000000",
+        "visibility": "players"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
+          "schema": "larping_map_pin",
+          "slug": "map-pin-ash-grove"
+        },
+        "map": "00000000-0000-4000-8000-000000000000",
+        "label": "Ash grove",
+        "x": 1860,
+        "y": 1210,
+        "kind": "danger",
+        "visibility": "gamemasters"
+      },
+      {
+        "@self": {
+          "register": "larpinq",
           "schema": "larping_plot",
           "slug": "plot-the-heir-of-aldmoor"
         },
