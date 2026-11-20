@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Salida {day} {time}",
         "On site now: {count}": "Ahora en el lugar: {count}",
         "Checked Out At": "Salida registrada el",
-        "Checked Out By": "Salida registrada por"
+        "Checked Out By": "Salida registrada por",
+        "Care details": "Datos de salud",
+        "Due for erasure": "Pendientes de borrar",
+        "No care records yet.": "Aún no hay datos de salud."
     },
     "nplurals=2; plural=(n != 1);"
 )

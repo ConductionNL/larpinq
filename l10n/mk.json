@@ -1105,7 +1105,10 @@
         "Checked out {day} {time}": "Заминат {day} {time}",
         "On site now: {count}": "Сега на локација: {count}",
         "Checked Out At": "Заминувањето е забележано на",
-        "Checked Out By": "Заминувањето го забележа"
+        "Checked Out By": "Заминувањето го забележа",
+        "Care details": "Здравствени податоци",
+        "Due for erasure": "За бришење",
+        "No care records yet.": "Сè уште нема здравствени податоци."
     },
     "plurals": {}
 }

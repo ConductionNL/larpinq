@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Farinn {day} {time}",
         "On site now: {count}": "Á staðnum núna: {count}",
         "Checked Out At": "Brottför skráð þann",
-        "Checked Out By": "Brottför skráð af"
+        "Checked Out By": "Brottför skráð af",
+        "Care details": "Heilsufarsupplýsingar",
+        "Due for erasure": "Til eyðingar",
+        "No care records yet.": "Engar heilsufarsupplýsingar enn."
     },
     "nplurals=2; plural=(n != 1);"
 )

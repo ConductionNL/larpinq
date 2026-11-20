@@ -1090,7 +1090,20 @@
 						"type": "data",
 						"title": "Player",
 						"icon": "Account",
-						"content": { "columns": 1 }
+						"content": {
+							"columns": 1,
+							"exclude": ["allergies", "medicalNotes", "dietaryNeeds", "emergencyContactName", "emergencyContactPhone"]
+						}
+					},
+					{
+						"id": "player-care",
+						"type": "data",
+						"title": "Care details",
+						"icon": "MedicalBag",
+						"content": {
+							"columns": 1,
+							"include": ["allergies", "medicalNotes", "dietaryNeeds", "emergencyContactName", "emergencyContactPhone"]
+						}
 					},
 					{
 						"id": "player-contacts",
@@ -1156,6 +1169,14 @@
 						"widgetId": "player-characters",
 						"gridX": 6,
 						"gridY": 4,
+						"gridWidth": 6,
+						"gridHeight": 4
+					},
+					{
+						"id": "5",
+						"widgetId": "player-care",
+						"gridX": 0,
+						"gridY": 8,
 						"gridWidth": 6,
 						"gridHeight": 4
 					}
@@ -2279,6 +2300,71 @@
 							"limit": 50,
 							"emptyText": "No messages sent yet."
 						}
+					},
+					{
+						"id": "event-care",
+						"type": "object-list",
+						"title": "Care details",
+						"icon": "MedicalBag",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_event_care_record",
+							"filter": {
+								"event": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "player",
+									"label": "Player"
+								},
+								{
+									"key": "allergies",
+									"label": "Allergies"
+								},
+								{
+									"key": "medicalNotes",
+									"label": "Medical notes"
+								},
+								{
+									"key": "dietaryNeeds",
+									"label": "Dietary needs"
+								},
+								{
+									"key": "emergencyContactName",
+									"label": "Emergency contact"
+								},
+								{
+									"key": "emergencyContactPhone",
+									"label": "Emergency contact phone"
+								},
+								{
+									"key": "eraseAfter",
+									"label": "Erase after"
+								}
+							],
+							"limit": 200,
+							"emptyText": "No care records yet."
+						}
+					},
+					{
+						"id": "event-stats-care-due",
+						"type": "stats-block",
+						"title": "Due for erasure",
+						"icon": "DeleteClockOutline",
+						"content": {
+							"entries": [
+								{
+									"title": "Due for erasure",
+									"register": "larpinq",
+									"schema": "larping_event_care_record",
+									"metric": "count",
+									"filter": {
+										"event": "@objectId",
+										"eraseAfter": { "lte": "@now" }
+									}
+								}
+							]
+						}
 					}
 				],
 				"layout": [
@@ -2408,6 +2494,22 @@
 						"gridX": 0,
 						"gridY": 32,
 						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "17",
+						"widgetId": "event-care",
+						"gridX": 0,
+						"gridY": 36,
+						"gridWidth": 9,
+						"gridHeight": 4
+					},
+					{
+						"id": "18",
+						"widgetId": "event-stats-care-due",
+						"gridX": 9,
+						"gridY": 36,
+						"gridWidth": 3,
 						"gridHeight": 4
 					}
 				],
