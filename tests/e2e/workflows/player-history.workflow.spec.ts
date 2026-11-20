@@ -157,6 +157,11 @@ test.describe('events a player attended', () => {
 		const { status, body } = await historyOf(as.anna, ids.anna)
 		expect(status).toBe(200)
 		expect(body.count).toBe(2)
+		// Her own characters only: Karel's Oswin, checked in at the same event, is not in it.
+		expect(body.events.map((row) => row.character.id)).toEqual([
+			ids.mirela,
+			ids.harrow,
+		])
 
 		const context = await browser.newContext({
 			httpCredentials: { username: users.anna.uid, password: users.anna.pass },

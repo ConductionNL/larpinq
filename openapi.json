@@ -2,7 +2,7 @@
     "openapi": "3.0.3",
     "info": {
         "title": "Larpinq",
-        "version": "0.3.5-unstable.20261102200000",
+        "version": "0.3.6-unstable.20261119064322",
         "description": "The JSON API of Larpinq, the live action role-play app for Nextcloud: character sheets and builds, events with registrations, check-in and XP awards, worlds, settings and the setup wizard. The characters, events and other objects themselves are stored in OpenRegister and read and written through its API; this document covers the endpoints Larpinq adds on top.\n\nEvery path is served under `/api/v1/`, the version this document describes. The unversioned `/api/` paths keep working, are deprecated, and name their `/api/v1/` successor in a `Link` header next to a `Deprecation` header. Errors are RFC 9457 problem details (`application/problem+json`), and every response carries an `API-Version` header. Paths that implement an external standard keep the formats of that standard and are not described here.",
         "contact": {
             "name": "Conduction B.V.",
@@ -46,6 +46,10 @@
         {
             "name": "characters",
             "description": "Character sheets: PDF templates and the skill requirement report"
+        },
+        {
+            "name": "event-messages",
+            "description": "Game masters email the participants of an event"
         },
         {
             "name": "events",
@@ -175,6 +179,37 @@
                 ]
             }
         },
+        "/characters/game-master-access": {
+            "get": {
+                "operationId": "characters-game-master-access",
+                "summary": "Whether the signed-in user is a game master for the character page's game master actions",
+                "description": "Whether the signed-in user may record a requirement override or reject a character: game masters and admins. The character page shows its Override a requirement and Reject actions on this answer; the writes themselves are checked by the requirement listener and the lifecycle.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
+            }
+        },
         "/characters/{id}/requirement-report": {
             "get": {
                 "operationId": "characters-requirement-report",
@@ -292,6 +327,57 @@
                 }
             }
         },
+        "/characters/{id}/resubmit": {
+            "post": {
+                "operationId": "character-resubmission-resubmit",
+                "summary": "Submit a rejected character again",
+                "description": "Submit a rejected character again: it goes back to waiting for approval and the game masters are told. The character's owner or a game master only; a character that is not rejected is refused with 409 and changes nothing.",
+                "tags": [
+                    "characters"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The saved character, or 401, 403, 404, 409.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
         "/characters/{id}/stats": {
             "get": {
                 "operationId": "character-stats-show",
@@ -332,6 +418,37 @@
                         }
                     }
                 ]
+            }
+        },
+        "/events/runsheet-access": {
+            "get": {
+                "operationId": "events-runsheet-access",
+                "summary": "Whether the signed-in user may download event run sheets; the event page shows its \"Download run sheet\" action on this answer",
+                "description": "Whether the signed-in user may download event run sheets: game masters and admins, the same rule as the download. The event page shows its \"Download run sheet\" action on this answer.",
+                "tags": [
+                    "events"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{allowed: bool}`, or 401.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    }
+                }
             }
         },
         "/events/{id}/attendance": {
@@ -2433,6 +2550,233 @@
                         }
                     }
                 ]
+            }
+        },
+        "/events/{id}/messages/preview": {
+            "get": {
+                "operationId": "event-messages-preview",
+                "summary": "How many people a message with this audience reaches",
+                "description": "How many people a message to the event's participants reaches, the first ten names and who has no address. Game masters only.",
+                "tags": [
+                    "event-messages"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "statuses",
+                        "in": "query",
+                        "required": false,
+                        "description": "Registration statuses: accepted, waitlisted, pending (default accepted).",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "name": "checkedIn",
+                        "in": "query",
+                        "required": false,
+                        "description": "Only participants checked in at the event.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "paymentOpen",
+                        "in": "query",
+                        "required": false,
+                        "description": "Only registrations whose payment is open.",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "ticketRoles",
+                        "in": "query",
+                        "required": false,
+                        "description": "Ticket roles: player, crew, npc.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`{count, names, noAddressCount, noAddressNames}`, or 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                }
+            }
+        },
+        "/events/{id}/messages": {
+            "post": {
+                "operationId": "event-messages-create",
+                "summary": "Save a message to the event's participants as a draft",
+                "description": "Save a message to the event's participants as a draft. Game masters only.",
+                "tags": [
+                    "event-messages"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "subject": {
+                                        "type": "string"
+                                    },
+                                    "body": {
+                                        "type": "string"
+                                    },
+                                    "audience": {
+                                        "type": "object",
+                                        "additionalProperties": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The draft message, or 400 without subject or body, 401, 403, 404.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    }
+                }
+            }
+        },
+        "/events/{id}/messages/{messageId}/send": {
+            "post": {
+                "operationId": "event-messages-send",
+                "summary": "Send a draft message to the event's participants",
+                "description": "Queue a draft message: each recipient gets their own mail, 50 per background run. A message is sent once. Game masters only.",
+                "tags": [
+                    "event-messages"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The id.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "messageId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The messageId.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "The queued message, or 401, 403, 404, 409 when it was sent before.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Problem404"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Problem409"
+                    }
+                }
             }
         }
     },

@@ -54,7 +54,7 @@ class PlayerAttendanceServiceBehaviourTest extends TestCase {
 	public function testHistoryListsCheckedInEventsNewestFirst(): void {
 		$this->fetcher->expects($this->once())
 			->method('getObjects')
-			->with('character', 500, null, ['ocName' => 'alice'])
+			->with('character', 500, null, ['ownerUid' => 'alice-uid'])
 			->willReturn([
 				['id' => 'char-1', 'name' => 'Aria'],
 				['id' => ['id' => 'char-2'], 'name' => 'Bram'],
@@ -77,6 +77,7 @@ class PlayerAttendanceServiceBehaviourTest extends TestCase {
 		);
 		$this->fetcher->method('getObject')->willReturnCallback(
 			static fn (string $type, string $id): array => match ($id) {
+				'alice' => ['userUid' => 'alice-uid'],
 				'ev-old' => ['name' => 'Spring Feast', 'startDate' => '2025-05-01'],
 				'ev-new' => ['name' => 'Summer Siege', 'startDate' => '2026-05-01'],
 			}
@@ -111,17 +112,61 @@ class PlayerAttendanceServiceBehaviourTest extends TestCase {
 			['id' => 'att-1', 'event' => 'ev-gone'],
 			['id' => 'att-2', 'event' => 'ev-gone'],
 		]);
-		$this->fetcher->expects($this->once())
+		$eventReads = 0;
+		$this->fetcher->expects($this->exactly(count: 2))
 			->method('getObject')
-			->with('event', 'ev-gone')
-			->willThrowException(new RuntimeException('not found'));
+			->willReturnCallback(
+				static function (string $type, string $id) use (&$eventReads): array {
+					if ($type === 'event') {
+						self::assertSame(expected: 'ev-gone', actual: $id);
+						$eventReads++;
+					}
+
+					throw new RuntimeException('not found');
+				}
+			);
 
 		$history = (new PlayerAttendanceService(objectFetcher: $this->fetcher))->history(playerId: 'alice');
 
 		$this->assertSame(expected: 1, actual: $history['count']);
 		$this->assertSame(expected: ['id' => 'ev-gone', 'name' => ''], actual: $history['events'][0]['event']);
 		$this->assertSame(expected: '', actual: $history['events'][0]['eventStartDate']);
+		$this->assertSame(expected: 1, actual: $eventReads);
 	}//end testAnEventIsReadOnceAndAnUnreadableOneStaysEmpty()
+
+	/**
+	 * A player reading their own history gets their characters by `ownerUid`, never
+	 * by an `ocName` filter OpenRegister refuses them, and only their own: another
+	 * player's characters are not in the answer.
+	 *
+	 * @return void
+	 */
+	public function testAPlayerSeesTheirOwnCharactersByOwnerUidOnly(): void {
+		$characters = [
+			['id' => 'char-anna', 'name' => 'Mirela', 'ownerUid' => 'anna'],
+			['id' => 'char-karel', 'name' => 'Oswin', 'ownerUid' => 'karel'],
+		];
+		$this->fetcher->method('getObject')->willReturnCallback(
+			static fn (string $type, string $id): array => match ($type) {
+				'player' => ['userUid' => 'anna'],
+				'event' => ['name' => 'Summer Siege', 'startDate' => '2026-05-01'],
+			}
+		);
+		$this->fetcher->expects($this->once())->method('getObjects')->willReturnCallback(
+			static function (string $type, ?int $limit, ?int $offset, ?array $filters) use ($characters): array {
+				self::assertSame(expected: ['ownerUid' => 'anna'], actual: $filters);
+
+				return array_values(array_filter($characters, static fn (array $c): bool => $c['ownerUid'] === $filters['ownerUid']));
+			}
+		);
+		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
+			static fn (string $type, array $filters): array => [['id' => 'att-'.$filters['character'], 'event' => 'ev-1']]
+		);
+
+		$history = (new PlayerAttendanceService(objectFetcher: $this->fetcher))->history(playerId: 'player-anna');
+
+		$this->assertSame(expected: ['char-anna'], actual: array_map(static fn (array $row): string => $row['character']['id'], $history['events']));
+	}//end testAPlayerSeesTheirOwnCharactersByOwnerUidOnly()
 
 	/**
 	 * A player without characters has no history, and no attendance is read.

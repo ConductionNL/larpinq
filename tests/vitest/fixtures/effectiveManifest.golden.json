@@ -285,6 +285,13 @@
 			"icon": "KeyVariant",
 			"route": "AccessCodes",
 			"order": 96
+		},
+		{
+			"id": "Maps",
+			"label": "Maps",
+			"icon": "MapOutline",
+			"route": "Maps",
+			"order": 34
 		}
 	],
 	"pages": [
@@ -298,11 +305,11 @@
 		],
 		[
 			"Characters",
-			"58abe4843d3e3eacbd2c7d2fe501e60bc1cb16ff69c7e4bbd3373be8b817b795"
+			"3416cb1701497cf47b157c9e60bc7dfb0f9f9ca5a4bd4b7130a43aa703b91a36"
 		],
 		[
 			"CharacterDetail",
-			"6b8a2131702274c0cc78d014cafd1b252a8bb6ef59c9a12b0d16a7a569d76140"
+			"304c4fb5543071b115e10dc9b82fb74bf34a2b4734e6fac69265355b4dce7325"
 		],
 		[
 			"Players",
@@ -362,7 +369,7 @@
 		],
 		[
 			"EventDetail",
-			"101ec11cca42e199585cf3de8bf53c1ef9c9e1434cdd032cf5c2f7374ad13a14"
+			"b6b300b71e8cf9dd06bf79fb08bc5bb42677a8d38b652d721588332ada7833f8"
 		],
 		[
 			"Settings",
@@ -370,7 +377,7 @@
 		],
 		[
 			"SettingDetail",
-			"2a1c640cafc12291a3f8e74ddac0c6124c18daa976df771f958616d2903e9d47"
+			"0d6615799f89fda21e27bb8bfa1ed314407b4b801984988f9936782883a0189f"
 		],
 		[
 			"XpAwards",
@@ -523,6 +530,14 @@
 		[
 			"LoreArticle",
 			"b3cec2de3c472afbe1e6a6c04a67724ff15906a037b80785bfeb66b264f2222d"
+		],
+		[
+			"Maps",
+			"687d2d4b093aca881a827f3e2c667b4fbc814e0479d10da0bf07ccf0ffbfb350"
+		],
+		[
+			"MapDetail",
+			"782f2e5da60d4629a5a8725f0bde07d6734a255238c3ece5712174c9900a955c"
 		]
 	],
 	"rest": "d6f6fd2641f3c3d968dc87fe7c7dfd4906e1082aa84843cb7396441c41f38b11"
