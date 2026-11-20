@@ -97,7 +97,8 @@ class CharacterStatusFragmentTest extends TestCase {
 			$this->assertTrue(condition: $result->isValid(), message: "seed character {$object['name']} must validate");
 		}
 
-		$this->assertSame(expected: ['active', 'retired', 'dead'], actual: $statuses);
+		// Every status is seeded; the characters open for casting add more active ones.
+		$this->assertSame(expected: ['active', 'retired', 'dead'], actual: array_values(array_unique($statuses)));
 	}//end testTheSeedCharactersValidate()
 
 	/**

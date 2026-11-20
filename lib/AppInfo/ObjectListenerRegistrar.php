@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\AppInfo;
 
+use OCA\Larpinq\Listener\CastingPreferenceListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
@@ -58,8 +59,8 @@ class ObjectListenerRegistrar {
 	/**
 	 * Register the object listeners on OpenRegister's write events.
 	 *
-	 * The unique-holder veto, faction membership, character status, XP award
-	 * provenance, the portal profile and the player review stamp. Guarded on
+	 * The unique-holder veto, faction membership, character status, the casting
+	 * deadline, XP award provenance, the portal profile and the player review stamp. Guarded on
 	 * the event classes, so an OpenRegister without them degrades to data-only.
 	 *
 	 * @param IRegistrationContext $context The registration context.
@@ -73,6 +74,7 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CastingPreferenceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
 			// A sign-up form binding is checked against the registration (forms-registration-is-checked-at-binding).
@@ -94,6 +96,7 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CastingPreferenceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', SignupFormBindingListener::class);

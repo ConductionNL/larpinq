@@ -3,8 +3,8 @@ publiccodeYmlVersion: "0.4"
 name: Larpinq
 url: "https://github.com/ConductionNL/larpinq"
 landingURL: "https://larpinq.conduction.nl"
-softwareVersion: "0.3.3-beta.20260913170639"
-releaseDate: "2026-09-13"
+softwareVersion: "0.3.0"
+releaseDate: "2026-09-06"
 logo: img/app-store.svg
 developmentStatus: beta
 softwareType: "standalone/other"
