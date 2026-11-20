@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCP\IUser;
 use OCP\IUserManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -69,24 +70,68 @@ class ParticipantContact {
 	 */
 	public function forRegistration(array $registration): array {
 		$playerId = (string)($registration['player'] ?? '');
-		$uid = (string)($registration['playerUid'] ?? '');
 		$player = $this->readPlayer(playerId: $playerId);
-		$name = (string)($player['name'] ?? '');
+		$uid = (string)($registration['playerUid'] ?? '');
 		if ($uid === '') {
 			$uid = (string)($player['userUid'] ?? '');
 		}
 
 		$user = null;
-		$key = 'player:'.$playerId;
-		if ($playerId === '') {
-			$key = 'registration:'.(string)($registration['id'] ?? '');
-		}
-
 		if ($uid !== '') {
 			$user = $this->users->get($uid);
-			$key = 'uid:'.$uid;
 		}
 
+		$email = (string)($user?->getEMailAddress() ?? '');
+		if ($email === '' && $playerId !== '') {
+			$email = $this->contactEmail(playerId: $playerId);
+		}
+
+		return [
+			'key'   => $this->personKey(registration: $registration, playerId: $playerId, uid: $uid),
+			'name'  => $this->personName(player: $player, user: $user, uid: $uid, playerId: $playerId),
+			'email' => $email,
+		];
+	}//end forRegistration()
+
+	/**
+	 * The key that counts a person once: their account, else their player,
+	 * else the registration itself.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 * @param string               $playerId     The player's object id, or ''.
+	 * @param string               $uid          The account's user id, or ''.
+	 *
+	 * @return string
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function personKey(array $registration, string $playerId, string $uid): string {
+		if ($uid !== '') {
+			return 'uid:'.$uid;
+		}
+
+		if ($playerId !== '') {
+			return 'player:'.$playerId;
+		}
+
+		return 'registration:'.(string)($registration['id'] ?? '');
+	}//end personKey()
+
+	/**
+	 * The name to show: the player's name, else the account's display name,
+	 * else the user id, else the player id.
+	 *
+	 * @param array<string, mixed> $player   The player object, or [].
+	 * @param IUser|null           $user     The account, when there is one.
+	 * @param string               $uid      The account's user id, or ''.
+	 * @param string               $playerId The player's object id, or ''.
+	 *
+	 * @return string
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function personName(array $player, ?IUser $user, string $uid, string $playerId): string {
+		$name = (string)($player['name'] ?? '');
 		if ($name === '') {
 			$name = $user?->getDisplayName() ?? $uid;
 		}
@@ -95,13 +140,8 @@ class ParticipantContact {
 			$name = $playerId;
 		}
 
-		$email = (string)($user?->getEMailAddress() ?? '');
-		if ($email === '' && $playerId !== '') {
-			$email = $this->contactEmail(playerId: $playerId);
-		}
-
-		return ['key' => $key, 'name' => $name, 'email' => $email];
-	}//end forRegistration()
+		return $name;
+	}//end personName()
 
 	/**
 	 * The player object behind a registration, or an empty array when the
@@ -138,19 +178,8 @@ class ParticipantContact {
 	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function contactEmail(string $playerId): string {
-		if ($this->container === null || interface_exists(self::CONTACT_SERVICE) === false) {
-			return '';
-		}
-
-		try {
-			$links = (array)($this->container->get(self::CONTACT_SERVICE)->getContactsForObject($playerId)['results'] ?? []);
-		} catch (Throwable $e) {
-			$this->logger->debug('Larpinq: the contact card of a player could not be read for a message.', ['exception' => $e]);
-			return '';
-		}
-
 		$addresses = [];
-		foreach ($links as $link) {
+		foreach ($this->contactLinks(playerId: $playerId) as $link) {
 			$email = $this->activeAddress(link: $link);
 			if ($email === '') {
 				continue;
@@ -165,6 +194,29 @@ class ParticipantContact {
 
 		return ($addresses[0] ?? '');
 	}//end contactEmail()
+
+	/**
+	 * The contact links of a player, or an empty array when the contacts
+	 * service is absent or the links cannot be read.
+	 *
+	 * @param string $playerId The player's object id.
+	 *
+	 * @return array<int|string, mixed>
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function contactLinks(string $playerId): array {
+		if ($this->container === null || interface_exists(self::CONTACT_SERVICE) === false) {
+			return [];
+		}
+
+		try {
+			return (array)($this->container->get(self::CONTACT_SERVICE)->getContactsForObject($playerId)['results'] ?? []);
+		} catch (Throwable $e) {
+			$this->logger->debug('Larpinq: the contact card of a player could not be read for a message.', ['exception' => $e]);
+			return [];
+		}
+	}//end contactLinks()
 
 	/**
 	 * The valid email of an active contact link, or '' when the link is not
