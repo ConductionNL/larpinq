@@ -17,6 +17,7 @@ import type { APIRequestContext, Page } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
+import { openSidebarTab } from '../_nav.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -24,7 +25,10 @@ import {
 	FixtureLedger,
 	fixtureName,
 	newApi,
+	OR_BASE,
+	REGISTER_ID,
 	resolveSchemaIds,
+	SCHEMA_IDS,
 } from './fixtures.ts'
 
 let api: APIRequestContext
@@ -109,10 +113,11 @@ test.beforeAll(async () => {
 	const sword = await make('skill', { name: names.sword, effects: [blade, cost] })
 	const shield = await make('item', { name: names.shield, effects: [weight] })
 	const player = await make('player', { name: fixtureName('Mirela player') })
+	// The sword costs 10 XP, so it is learned after the awards: a character
+	// cannot be written with a skill it cannot pay for.
 	ids.mirela = await make('character', {
 		name: names.mirela,
 		ocName: player,
-		skills: [sword],
 		items: [shield],
 		conditions: [cursed],
 	})
@@ -129,6 +134,11 @@ test.beforeAll(async () => {
 			reason: fixtureName(reason),
 		})
 	}
+	const learned = await api.patch(`${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS.character}/${ids.mirela}`, {
+		headers: { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' },
+		data: { skills: [sword] },
+	})
+	expect(learned.ok(), await learned.text()).toBe(true)
 })
 
 test.afterAll(async () => {
@@ -144,7 +154,7 @@ test.afterAll(async () => {
  */
 async function openStats(page: Page): Promise<void> {
 	await page.goto(`${BASE}/characters/${ids.mirela}`)
-	await page.getByRole('tab', { name: 'Stats' }).click()
+	await openSidebarTab(page, 'Stats')
 	await page
 		.getByTestId('character-stat-sheet')
 		.waitFor({ state: 'visible', timeout: 30_000 })

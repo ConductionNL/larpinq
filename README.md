@@ -17,7 +17,7 @@
 
 ---
 
-Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
+Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud. Install it from the [Nextcloud App Store](https://apps.nextcloud.com/apps/larpinq).
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
 

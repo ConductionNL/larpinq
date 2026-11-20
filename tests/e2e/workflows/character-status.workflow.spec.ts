@@ -84,10 +84,12 @@ test.beforeAll(async () => {
 	})
 	expect(made.ok(), await made.text()).toBe(true)
 	gm = await request.newContext({
-		httpCredentials: { username: GM, password: `${GM}-pw!9` },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: GM, password: `${GM}-pw!9`, send: 'always' },
 	})
 
 	ids.world = await make('setting', { name: fixtureName('Aldmoor') })
+	ids.karel = await make('player', { name: fixtureName('Karel') })
 	for (const [key, name] of [
 		['harrow', 'Old Captain Harrow'],
 		['venn', 'Lady Venn'],
@@ -96,6 +98,7 @@ test.beforeAll(async () => {
 	]) {
 		ids[key] = await make('character', {
 			name: fixtureName(name),
+			ocName: ids.karel,
 			setting: ids.world,
 			status: 'active',
 		})

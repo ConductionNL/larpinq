@@ -74,7 +74,12 @@ class PlayerAttendanceService implements PlayerAttendanceServiceInterface {
 	 */
 	public function history(string $playerId): array {
 		$rows = [];
-		foreach ($this->objectFetcher->getObjects(objectType: 'character', limit: self::LIMIT, filters: ['ocName' => $playerId]) as $character) {
+		$characters = $this->objectFetcher->getObjects(
+			objectType: 'character',
+			limit: self::LIMIT,
+			filters: $this->characterFilter(playerId: $playerId)
+		);
+		foreach ($characters as $character) {
 			$characterId = $this->idOf(value: ($character['id'] ?? null));
 			if ($characterId === '') {
 				continue;
@@ -99,6 +104,35 @@ class PlayerAttendanceService implements PlayerAttendanceServiceInterface {
 
 		return ['count' => count($events), 'events' => $rows];
 	}//end history()
+
+	/**
+	 * Which characters are the player's: those whose `ownerUid` is the player's account.
+	 *
+	 * OpenRegister refuses a player an `ocName` filter on characters (the read rule
+	 * depends on the row), while the player's own rows by `ownerUid` are readable to
+	 * them. `ownerUid` is materialised from the player's `userUid`, read here as the
+	 * signed-in user. A player without an account, or one that cannot be read, falls
+	 * back to `ocName`, which a game master may filter on.
+	 *
+	 * @param string $playerId The player UUID.
+	 *
+	 * @return array<string, string> The equality filter on characters.
+	 *
+	 * @spec openspec/specs/events-players/spec.md
+	 */
+	private function characterFilter(string $playerId): array {
+		try {
+			$userUid = (string)($this->objectFetcher->getObject(objectType: 'player', id: $playerId)['userUid'] ?? '');
+		} catch (\Throwable $e) {
+			$userUid = '';
+		}
+
+		if ($userUid !== '') {
+			return ['ownerUid' => $userUid];
+		}
+
+		return ['ocName' => $playerId];
+	}//end characterFilter()
 
 	/**
 	 * One line of the history.

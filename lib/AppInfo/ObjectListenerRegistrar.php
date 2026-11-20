@@ -24,9 +24,11 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\AppInfo;
 
+use OCA\Larpinq\Listener\CastingPreferenceListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
+use OCA\Larpinq\Listener\HelpMessageListener;
 use OCA\Larpinq\Listener\PaymentRequestListener;
 use OCA\Larpinq\Listener\PlayerCareListener;
 use OCA\Larpinq\Listener\PlayerReviewListener;
@@ -57,8 +59,8 @@ class ObjectListenerRegistrar {
 	/**
 	 * Register the object listeners on OpenRegister's write events.
 	 *
-	 * The unique-holder veto, faction membership, character status, XP award
-	 * provenance, the portal profile and the player review stamp. Guarded on
+	 * The unique-holder veto, faction membership, character status, the casting
+	 * deadline, XP award provenance, the portal profile and the player review stamp. Guarded on
 	 * the event classes, so an OpenRegister without them degrades to data-only.
 	 *
 	 * @param IRegistrationContext $context The registration context.
@@ -72,15 +74,19 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterStatusListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CastingPreferenceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', PortalProfileListener::class);
 			// A sign-up form binding is checked against the registration (forms-registration-is-checked-at-binding).
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', SignupFormBindingListener::class);
+			// The help desk thread (communication-help-desk, REQ-CHD-002, REQ-CHD-003).
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', HelpMessageListener::class);
 		}
 
 		// A portal profile asks portaliq for its claim once it exists (players-self-signup).
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatedEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', PortalProfileListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatedEvent', HelpMessageListener::class);
 		}
 
 		// A player's changed care details follow into the event copies (players-care-details-and-erasure).
@@ -90,6 +96,7 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', FactionMembershipListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterStatusListener::class);
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CastingPreferenceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', XpAwardProvenanceListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', PlayerReviewListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', SignupFormBindingListener::class);

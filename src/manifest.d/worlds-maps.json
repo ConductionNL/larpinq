@@ -1,0 +1,115 @@
+{
+	"pages": [
+		{
+			"id": "Maps",
+			"route": "/maps",
+			"type": "index",
+			"title": "Maps",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_world_map",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{
+						"key": "title",
+						"label": "Title"
+					},
+					{
+						"key": "setting",
+						"label": "World"
+					},
+					{
+						"key": "visibility",
+						"label": "Visibility"
+					}
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "MapDetail",
+			"route": "/maps/:id/details",
+			"type": "detail",
+			"title": "Map",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_world_map",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "map-data",
+						"type": "data",
+						"title": "Map",
+						"icon": "MapOutline",
+						"content": {
+							"columns": 2
+						}
+					},
+					{
+						"id": "map-pins",
+						"type": "object-list",
+						"title": "Pins",
+						"icon": "MapMarkerOutline",
+						"content": {
+							"register": "larpinq",
+							"schema": "larping_map_pin",
+							"filter": {
+								"map": "@objectId"
+							},
+							"columns": [
+								{
+									"key": "label",
+									"label": "Label"
+								},
+								{
+									"key": "kind",
+									"label": "Kind"
+								},
+								{
+									"key": "x",
+									"label": "X"
+								},
+								{
+									"key": "y",
+									"label": "Y"
+								},
+								{
+									"key": "visibility",
+									"label": "Visibility"
+								}
+							]
+						}
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "map-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "2",
+						"widgetId": "map-pins",
+						"gridX": 0,
+						"gridY": 4,
+						"gridWidth": 12,
+						"gridHeight": 6
+					}
+				]
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "Maps",
+			"label": "Maps",
+			"icon": "MapOutline",
+			"route": "Maps",
+			"order": 34
+		}
+	]
+}

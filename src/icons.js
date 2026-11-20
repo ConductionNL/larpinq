@@ -27,12 +27,14 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarCheck from 'vue-material-design-icons/CalendarCheck.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+import CartOutline from 'vue-material-design-icons/CartOutline.vue'
 import CashCheck from 'vue-material-design-icons/CashCheck.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import CheckAll from 'vue-material-design-icons/CheckAll.vue'
 import ClipboardCheckOutline from 'vue-material-design-icons/ClipboardCheckOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
+import CloseCircleOutline from 'vue-material-design-icons/CloseCircleOutline.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
@@ -40,7 +42,9 @@ import DatabaseExport from 'vue-material-design-icons/DatabaseExport.vue'
 import DatabaseImport from 'vue-material-design-icons/DatabaseImport.vue'
 import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
+import EmailOutline from 'vue-material-design-icons/EmailOutline.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
+import FaceAgent from 'vue-material-design-icons/FaceAgent.vue'
 import FileDocument from 'vue-material-design-icons/FileDocument.vue'
 import FilePdfBox from 'vue-material-design-icons/FilePdfBox.vue'
 import FileSign from 'vue-material-design-icons/FileSign.vue'
@@ -48,6 +52,7 @@ import FlashOutline from 'vue-material-design-icons/FlashOutline.vue'
 import FolderOutline from 'vue-material-design-icons/FolderOutline.vue'
 import FormTextbox from 'vue-material-design-icons/FormTextbox.vue'
 import Gauge from 'vue-material-design-icons/Gauge.vue'
+import HelpCircleOutline from 'vue-material-design-icons/HelpCircleOutline.vue'
 import History from 'vue-material-design-icons/History.vue'
 import KeyVariant from 'vue-material-design-icons/KeyVariant.vue'
 import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
@@ -55,6 +60,7 @@ import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
 import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
+import MessageReplyTextOutline from 'vue-material-design-icons/MessageReplyTextOutline.vue'
 import Package from 'vue-material-design-icons/Package.vue'
 import PencilOutline from 'vue-material-design-icons/PencilOutline.vue'
 import Plus from 'vue-material-design-icons/Plus.vue'
@@ -72,6 +78,7 @@ import StoreOutline from 'vue-material-design-icons/StoreOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import TicketOutline from 'vue-material-design-icons/TicketOutline.vue'
+import TimelineClockOutline from 'vue-material-design-icons/TimelineClockOutline.vue'
 import ToolboxOutline from 'vue-material-design-icons/ToolboxOutline.vue'
 import TrendingUp from 'vue-material-design-icons/TrendingUp.vue'
 import Trophy from 'vue-material-design-icons/Trophy.vue'
@@ -94,12 +101,14 @@ export default {
 	Calendar,
 	CalendarCheck,
 	CalendarMonthOutline,
+	CartOutline,
 	CashCheck,
 	ChartBar,
 	ChartBoxOutline,
 	CheckAll,
 	ClipboardCheckOutline,
 	ClipboardList,
+	CloseCircleOutline,
 	Cog,
 	CogOutline,
 	ContentCopy,
@@ -107,7 +116,9 @@ export default {
 	DatabaseImport,
 	DramaMasks,
 	Earth,
+	EmailOutline,
 	EmoticonSickOutline,
+	FaceAgent,
 	FileDocument,
 	FilePdfBox,
 	FileSign,
@@ -115,6 +126,7 @@ export default {
 	FolderOutline,
 	FormTextbox,
 	Gauge,
+	HelpCircleOutline,
 	History,
 	KeyVariant,
 	Lightbulb,
@@ -122,6 +134,7 @@ export default {
 	MagicStaff,
 	MapMarker,
 	MapMarkerPath,
+	MessageReplyTextOutline,
 	Package,
 	PencilOutline,
 	Plus,
@@ -139,6 +152,7 @@ export default {
 	Sword,
 	SwordCross,
 	TicketOutline,
+	TimelineClockOutline,
 	ToolboxOutline,
 	TrendingUp,
 	Trophy,

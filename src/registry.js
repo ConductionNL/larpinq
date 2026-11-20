@@ -26,12 +26,18 @@ import LanguageSwitch from './components/LanguageSwitch.vue'
 import WorldSwitcher from './components/WorldSwitcher.vue'
 import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
+import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import EmailParticipantsDialog from './dialogs/EmailParticipantsDialog.vue'
+import OverrideRequirementDialog from './dialogs/OverrideRequirementDialog.vue'
+import RejectCharacterDialog from './dialogs/RejectCharacterDialog.vue'
+import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
 import CharacterStatSheet from './views/CharacterStatSheet.vue'
+import EventCasting from './views/EventCasting.vue'
 import EventChoiceCounts from './views/EventChoiceCounts.vue'
 import EventFeedback from './views/EventFeedback.vue'
 import EventRoster from './views/EventRoster.vue'
@@ -39,6 +45,7 @@ import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
 import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
 import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
+import RegistrationCasting from './views/RegistrationCasting.vue'
 import RegistrationChanges from './views/RegistrationChanges.vue'
 import RegistrationChoices from './views/RegistrationChoices.vue'
 import Rulebook from './views/Rulebook.vue'
@@ -84,9 +91,42 @@ export default {
 		component: CharacterPdfDownloadDialog,
 		propsSchema: {},
 	},
+	// CharacterDetail "Buy item" header action: the priced items of the
+	// character's world, bought with its in-game money in one server write.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	BuyItemDialog: {
+		kind: 'modal',
+		component: BuyItemDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Override a requirement" header action, game masters
+	// only: a skill and a reason, written with its requirementOverrides[]
+	// entry in one save so the server check and the audit trail apply.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	OverrideRequirementDialog: {
+		kind: 'modal',
+		component: OverrideRequirementDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Reject" header action, game masters only: the
+	// approval lifecycle's reject transition with its required reason.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	RejectCharacterDialog: {
+		kind: 'modal',
+		component: RejectCharacterDialog,
+		propsSchema: {},
+	},
 	CopyWorldDialog: {
 		kind: 'modal',
 		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Download run sheet" header action, game masters only: a
+	// template picker, then the run sheet opens in a new tab.
+	// @spec openspec/specs/pdf-export/spec.md
+	RunsheetDownloadDialog: {
+		kind: 'modal',
+		component: RunsheetDownloadDialog,
 		propsSchema: {},
 	},
 	// EventDetail "Award XP" header action (events-xp-batch-award), game
@@ -95,6 +135,15 @@ export default {
 	XpAwardDialog: {
 		kind: 'modal',
 		component: XpAwardDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Email participants" header action
+	// (communication-mail-participants), game masters only: write, preview
+	// the recipients and send one mail each.
+	// @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+	EmailParticipantsDialog: {
+		kind: 'modal',
+		component: EmailParticipantsDialog,
 		propsSchema: {},
 	},
 	// BuildDetail "Apply to character" header action (characters-multiple-builds).
@@ -129,6 +178,11 @@ export default {
 	// (registration-cancel-transfer-refund). @spec openspec/specs/event-registration/spec.md
 	RegistrationChanges: { kind: 'section', component: RegistrationChanges },
 	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
+	// Casting tab on the event page and on the registration page
+	// (events-casting-and-crew-roles).
+	// @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+	EventCasting: { kind: 'section', component: EventCasting },
+	RegistrationCasting: { kind: 'section', component: RegistrationCasting },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
 	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
 	BuildReport: { kind: 'section', component: BuildReport },
