@@ -49,25 +49,25 @@ class CharacterResubmissionControllerTest extends TestCase {
 	 * @return CharacterResubmissionController
 	 */
 	private function controller(?string $uid, bool $gm = false): CharacterResubmissionController {
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$user = null;
 		if ($uid !== null) {
-			$user = $this->createMock(IUser::class);
+			$user = $this->createMock(originalClassName: IUser::class);
 			$user->method('getUID')->willReturn($uid);
 		}
 
 		$session->method('getUser')->willReturn($user);
-		$groups = $this->createMock(IGroupManager::class);
+		$groups = $this->createMock(originalClassName: IGroupManager::class);
 		$groups->method('isInGroup')->willReturn($gm);
 		$groups->method('isAdmin')->willReturn(false);
 
-		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$this->fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$this->fetcher->method('getObjectOfType')->willReturn(
 			['id' => self::MIRELA, 'ownerUid' => 'anna', 'approved' => 'rejected', 'rejectionReason' => 'Pick one bloodline, not two']
 		);
 
 		return new CharacterResubmissionController(
-			request: $this->createMock(IRequest::class),
+			request: $this->createMock(originalClassName: IRequest::class),
 			resubmission: new CharacterResubmissionService(fetcher: $this->fetcher),
 			callerAccess: new CallerAccess(userSession: $session, groupManager: $groups),
 		);

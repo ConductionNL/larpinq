@@ -63,7 +63,7 @@ class CharacterResubmissionServiceTest extends TestCase {
 	 * @return CharacterResubmissionService
 	 */
 	private function service(?array $character): CharacterResubmissionService {
-		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$this->fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$this->fetcher->method('getObjectOfType')->willReturnCallback(
 			static function (string $objectType, string $id) use ($character): array {
 				if ($character === null || $objectType !== 'character' || $id !== self::MIRELA) {
@@ -133,7 +133,12 @@ class CharacterResubmissionServiceTest extends TestCase {
 	 */
 	public function testOnlyARejectedCharacterIsSubmittedAgain(): void {
 		$this->assertRefused(character: $this->mirela(approved: 'no'), uid: 'anna', status: 409, message: 'Only a rejected character is submitted again');
-		$this->assertRefused(character: $this->mirela(approved: 'approved'), uid: 'anna', status: 409, message: 'Only a rejected character is submitted again');
+		$this->assertRefused(
+			character: $this->mirela(approved: 'approved'),
+			uid: 'anna',
+			status: 409,
+			message: 'Only a rejected character is submitted again'
+		);
 	}//end testOnlyARejectedCharacterIsSubmittedAgain()
 
 	/**

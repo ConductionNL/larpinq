@@ -23,6 +23,7 @@ const OBJECTS = '/apps/openregister/api/objects/larpinq'
  *
  * @param {unknown} value The stored list.
  * @return {Array<string>} The ids.
+ * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 export function idsOf(value) {
 	return (Array.isArray(value) ? value : [])

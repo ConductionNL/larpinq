@@ -125,6 +125,7 @@ export default {
 		 * The character's name.
 		 *
 		 * @return {string} The name.
+		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		characterName() {
 			return String(this.character?.name ?? '')
@@ -170,6 +171,7 @@ export default {
 		 * Whether Buy may be pressed.
 		 *
 		 * @return {boolean} True when an affordable item is chosen and nothing is posting.
+		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		buyable() {
 			return this.status === 'ready' && this.affordable && !this.busy

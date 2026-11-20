@@ -130,6 +130,7 @@ export default {
 		 * The character's name.
 		 *
 		 * @return {string} The name.
+		 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 		 */
 		characterName() {
 			return String(this.character?.name ?? '')
