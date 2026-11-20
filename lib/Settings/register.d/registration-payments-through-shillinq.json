@@ -131,6 +131,45 @@
 								"gamemasters"
 							]
 						}
+					},
+					"paymentMethod": {
+						"type": "string",
+						"enum": [
+							"bank-transfer"
+						],
+						"x-enum-labels": {
+							"bank-transfer": "Bank transfer"
+						},
+						"title": "Payment method",
+						"description": "How the payment came in",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"invoiceId": {
+						"type": "string",
+						"format": "uuid",
+						"title": "Invoice",
+						"description": "The invoice shillinq issued for this registration, set by larpinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"invoiceUrl": {
+						"type": "string",
+						"format": "uri",
+						"maxLength": 2048,
+						"title": "Invoice link",
+						"description": "Where the invoice is downloaded, from shillinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
 					}
 				},
 				"x-openregister-notifications": {

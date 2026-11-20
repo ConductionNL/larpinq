@@ -55,7 +55,12 @@ class CheckinByCodeTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
+		// OpenRegister refuses a filter on the reveal-only checkinCode outside
+		// its trusted scope, as ExplicitRevealQueryException.
+		$this->fetcher->method('getObjectsWithAppAuthority')->willThrowException(
+			new \RuntimeException('\'checkinCode\' is shown only on request, so it cannot be filtered or sorted on.')
+		);
+		$this->fetcher->method('getObjectsByRevealedValue')->willReturnCallback(
 			fn (string $objectType, array $filters, ?int $limit = null): array => array_values(array_filter(
 				$this->registrations,
 				static fn (array $row): bool => ($row['checkinCode'] ?? '') === ($filters['checkinCode'] ?? null)

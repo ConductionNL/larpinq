@@ -333,8 +333,13 @@
           },
           "character-approved": {
             "trigger": {
-              "type": "transition",
-              "action": "approved"
+              "type": "updated",
+              "condition": {
+                "field": "approved",
+                "operator": "equals",
+                "from": "no",
+                "value": "approved"
+              }
             },
             "enabled": true,
             "channels": [

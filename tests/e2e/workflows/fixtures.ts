@@ -116,10 +116,11 @@ export async function resolveSchemaIds(api: APIRequestContext): Promise<void> {
 	if (typeof cfg.register === 'string' && cfg.register !== '') {
 		REGISTER_ID = cfg.register
 	}
-	for (const type of Object.keys(SCHEMA_IDS)) {
-		const id = cfg[`${type}_schema`]
-		if (typeof id === 'string' && id !== '') {
-			SCHEMA_IDS[type] = id
+	// Every configured type, not only the bootstrap ones: `setting`, `xpAward`
+	// and the later schemas have no literal above.
+	for (const [key, id] of Object.entries(cfg)) {
+		if (key.endsWith('_schema') && typeof id === 'string' && id !== '') {
+			SCHEMA_IDS[key.slice(0, -'_schema'.length)] = id
 		}
 	}
 }
@@ -162,13 +163,27 @@ export class FixtureLedger {
 	}
 }
 
+/** The schema id of a type; config keys are lower case (`xpaward_schema`). */
+function schemaId(type: string): string {
+	return SCHEMA_IDS[type] ?? SCHEMA_IDS[type.toLowerCase()] ?? type
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 /** Create one OpenRegister object; returns its UUID (real saveObject path). */
 export async function createObject(
 	api: APIRequestContext,
 	type: string,
 	body: Record<string, unknown>,
 ): Promise<string> {
-	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}`
+	// A character names its player by uuid (`ocName` is a required player
+	// reference). A fixture that gives a name, or none, gets a player made
+	// for it under that name.
+	if (type === 'character' && !UUID.test(String(body.ocName ?? ''))) {
+		const player = String(body.ocName ?? '') || `${String(body.name ?? 'character')} player`
+		body = { ...body, ocName: await createObject(api, 'player', { name: player }) }
+	}
+	const url = `${OR_BASE}/${REGISTER_ID}/${schemaId(type)}`
 	// Mirror `name` into `title` (and vice versa) so a create satisfies the
 	// schema whichever of the two it marks required.
 	//
@@ -218,7 +233,7 @@ export async function getObject(
 	type: string,
 	id: string,
 ): Promise<Record<string, unknown> | null> {
-	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}/${id}`
+	const url = `${OR_BASE}/${REGISTER_ID}/${schemaId(type)}/${id}`
 	const res = await api.get(url, { headers: HEADERS })
 	if (!res.ok()) {
 		return null
@@ -233,7 +248,7 @@ export async function updateObject(
 	id: string,
 	body: Record<string, unknown>,
 ): Promise<Record<string, unknown>> {
-	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}/${id}`
+	const url = `${OR_BASE}/${REGISTER_ID}/${schemaId(type)}/${id}`
 	const res = await api.put(url, { headers: HEADERS, data: body })
 	if (!res.ok()) {
 		throw new Error(
@@ -249,7 +264,7 @@ export async function deleteObject(
 	type: string,
 	id: string,
 ): Promise<boolean> {
-	const url = `${OR_BASE}/${REGISTER_ID}/${SCHEMA_IDS[type]}/${id}`
+	const url = `${OR_BASE}/${REGISTER_ID}/${schemaId(type)}/${id}`
 	const res = await api.delete(url, { headers: HEADERS })
 	return res.ok()
 }
@@ -418,18 +433,21 @@ export async function computeCharacterStat(
 	const path = await import('path')
 
 	// PHP harness: read persisted rows by UUID (working find path), inject into
-	// the real service, call the real calculateCharacter().
+	// the real service, call the real calculateCharacter(). The CLI runs as
+	// nobody, so OpenRegister's RBAC refuses a plain read: every harness signs
+	// in as the admin (NC_HARNESS_USER) and reads rows with the app's authority.
 	const php = (bootstrap: string) =>
 		[
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
+			'$u = $server->get(\\OCP\\IUserManager::class)->get(getenv("NC_HARNESS_USER") ?: "admin"); if ($u !== null) { $server->get(\\OCP\\IUserSession::class)->setUser($u); }',
 			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
 			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$charId=$argv[1]; $abId=$argv[2]; $efId=$argv[3];',
 			'$skId=$argv[4]??""; $itId=$argv[5]??""; $cdId=$argv[6]??"";',
-			'$g=function($t,$id) use($fetcher){ return $id!=="" ? $fetcher->getObject($t,$id) : null; };',
-			'$character=$fetcher->getObject("character",$charId);',
+			'$g=function($t,$id) use($fetcher){ return $id!=="" ? $fetcher->getObjectWithAppAuthority($t,$id) : null; };',
+			'$character=$fetcher->getObjectWithAppAuthority("character",$charId);',
 			'$ro=new ReflectionObject($svc);',
 			'$set=function($n,$v) use($svc,$ro){ $p=$ro->getProperty($n); $p->setAccessible(true); $p->setValue($svc,$v); };',
 			'$idx=function($e){ return $e ? [(string)$e["id"]=>$e] : []; };',
@@ -482,9 +500,10 @@ export async function computeCharacterStatLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
+			'$u = $server->get(\\OCP\\IUserManager::class)->get(getenv("NC_HARNESS_USER") ?: "admin"); if ($u !== null) { $server->get(\\OCP\\IUserSession::class)->setUser($u); }',
 			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
 			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
-			'$character=$fetcher->getObject("character",$argv[1]);',
+			'$character=$fetcher->getObjectWithAppAuthority("character",$argv[1]);',
 			'$result=$svc->calculateCharacter($character);',
 			'$ab=($result["stats"] ?? [])[$argv[2]] ?? null;',
 			'echo json_encode(["base"=>$ab["base"]??null,"value"=>$ab["value"]??null,"audit"=>$ab["audit"]??[]]);',
@@ -532,9 +551,10 @@ export async function computeStatsLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
+			'$u = $server->get(\\OCP\\IUserManager::class)->get(getenv("NC_HARNESS_USER") ?: "admin"); if ($u !== null) { $server->get(\\OCP\\IUserSession::class)->setUser($u); }',
 			'$fetcher = $server->get(\\OCA\\Larpinq\\Service\\RegisterObjectFetcher::class);',
 			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
-			'$character = $fetcher->getObject("character", $argv[1]);',
+			'$character = $fetcher->getObjectWithAppAuthority("character", $argv[1]);',
 			'$result = $svc->calculateCharacter($character);',
 			'echo json_encode($result["stats"] ?? []);',
 		].join('\n')
@@ -573,6 +593,7 @@ export async function computeRosterLive(
 			'<?php',
 			`require_once '${bootstrap}';`,
 			'$server = \\OC::$server;',
+			'$u = $server->get(\\OCP\\IUserManager::class)->get(getenv("NC_HARNESS_USER") ?: "admin"); if ($u !== null) { $server->get(\\OCP\\IUserSession::class)->setUser($u); }',
 			'$svc = $server->get(\\OCA\\Larpinq\\Service\\CharacterService::class);',
 			'$wanted = array_slice($argv, 1);',
 			'$out = [];',

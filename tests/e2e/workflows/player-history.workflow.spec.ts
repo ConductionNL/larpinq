@@ -17,6 +17,7 @@ import type { APIRequestContext } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
+import { openSidebarTab } from '../_nav.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -68,7 +69,8 @@ test.beforeAll(async () => {
 		})
 		expect(created.ok(), await created.text()).toBe(true)
 		as[key] = await request.newContext({
-			httpCredentials: { username: user.uid, password: user.pass },
+			storageState: { cookies: [], origins: [] },
+			httpCredentials: { username: user.uid, password: user.pass, send: 'always' },
 		})
 		ids[key] = ledger.track(
 			'player',
@@ -155,13 +157,18 @@ test.describe('events a player attended', () => {
 		const { status, body } = await historyOf(as.anna, ids.anna)
 		expect(status).toBe(200)
 		expect(body.count).toBe(2)
+		// Her own characters only: Karel's Oswin, checked in at the same event, is not in it.
+		expect(body.events.map((row) => row.character.id)).toEqual([
+			ids.mirela,
+			ids.harrow,
+		])
 
 		const context = await browser.newContext({
 			httpCredentials: { username: users.anna.uid, password: users.anna.pass },
 		})
 		const page = await context.newPage()
 		await page.goto(`${BASE_URL}/index.php/apps/larpinq/players/${ids.anna}`)
-		await page.getByRole('tab', { name: 'Events attended' }).click()
+		await openSidebarTab(page, 'Events attended')
 		await expect(page.getByTestId('player-attendance-count')).toContainText('2')
 		await expect(page.getByTestId('player-attendance-row')).toHaveCount(2)
 		await context.close()
