@@ -53,7 +53,7 @@ final class ServiceContractRegistrarTest extends TestCase {
 		(new ServiceContractRegistrar())->register(context: $context);
 
 		$names = array_column($aliases, 0);
-		$this->assertCount(27, $aliases);
+		$this->assertCount(28, $aliases);
 		$this->assertSame($names, array_values(array_unique($names)));
 		$this->assertContains([EventFeedbackServiceInterface::class, EventFeedbackService::class], $aliases);
 		$this->assertContains([RegisterObjectFetcherInterface::class, RegisterObjectFetcher::class], $aliases);

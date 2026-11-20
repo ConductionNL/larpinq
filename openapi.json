@@ -106,6 +106,10 @@
         {
             "name": "casting",
             "description": "Casting players to characters for an event."
+        },
+        {
+            "name": "portal",
+            "description": "Receivers of portaliq's forwarded portal actions."
         }
     ],
     "paths": {
@@ -2775,6 +2779,102 @@
                     },
                     "409": {
                         "$ref": "#/components/responses/Problem409"
+                    }
+                }
+            }
+        },
+        "/portal/characters": {
+            "post": {
+                "operationId": "portal-create-character",
+                "summary": "Create a character for the asserted portal player (portaliq forward)",
+                "description": "The receiver of the portal `createCharacter` endpoint action. Called server to server by portaliq with a signed `X-Portal-Subject` assertion; the assertion is the only credential. The linked player's uuid comes from the assertion's `ownerRef` claim, never from the body, and is written into both `ownerRef` and the required `ocName`. The body carries `name` (required) and `background`.",
+                "tags": [
+                    "portal"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "name": "X-Portal-Subject",
+                        "in": "header",
+                        "required": true,
+                        "description": "portaliq's signed subject assertion.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 1,
+                                        "maxLength": 255
+                                    },
+                                    "background": {
+                                        "type": "string",
+                                        "maxLength": 2555
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The created character's id and name.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Problem400"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Problem401"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Problem403"
+                    },
+                    "503": {
+                        "description": "The character could not be saved.",
+                        "headers": {
+                            "API-Version": {
+                                "$ref": "#/components/headers/API-Version"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            }
+                        }
                     }
                 }
             }

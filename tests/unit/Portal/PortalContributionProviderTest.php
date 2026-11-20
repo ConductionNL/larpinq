@@ -238,19 +238,21 @@ final class PortalContributionProviderTest extends TestCase {
 
 		$action = $actions[0];
 		$this->assertSame(expected: 'createCharacter', actual: $action['id']);
-		$this->assertSame(expected: 'create', actual: $action['type']);
-		$this->assertSame(expected: 'character', actual: $action['schema']);
-		$this->assertSame(expected: 'ownerRef', actual: $action['scopeField'], message: 'The writer stamps ownerRef so the record is player-owned');
+		$this->assertArrayNotHasKey(key: 'type', array: $action, message: 'An endpoint action carries no type: portaliq forwards it instead of writing it');
+		$this->assertSame(expected: '/index.php/apps/larpinq/api/portal/characters', actual: $action['endpoint']);
+		$this->assertSame(expected: 'POST', actual: $action['method']);
 		$this->assertSame(
 			expected: 'ownerRef',
 			actual: ($action['scopeClaim'] ?? null),
-			message: 'ownerRef is a player uuid: the stamp must be the linked player (the claim), never the portal subject reference'
+			message: 'ownerRef is a player uuid: the receiver writes the linked player (the claim), never the portal subject reference'
 		);
 		$this->assertSame(
 			expected: ['name', 'background'],
 			actual: $action['fields'],
-			message: 'No ocName (derived from ownerRef), no approved / slNotesPrivate / economy / lifecycle fields'
+			message: 'No ocName or ownerRef from the client (both come from the claim), no approved / slNotesPrivate / economy / lifecycle fields'
 		);
+		$this->assertSame(expected: ['name', 'background'], actual: array_keys($action['fieldConfigs']));
+		$this->assertTrue(condition: $action['fieldConfigs']['name']['required']);
 
 		// No inbox surface: the one notification is the question rule (REQ-CHD-004).
 		$this->assertSame(expected: ['larpinq.question.answered'], actual: array_column($manifest['notifications'], 'ruleKey'));
@@ -304,7 +306,9 @@ final class PortalContributionProviderTest extends TestCase {
 	}//end testMyProfileIsScopedToTheSubject()
 
 	/**
-	 * Scenario: Wave declares create actions only — no endpoint actions.
+	 * Scenario: createCharacter is the one endpoint action, and it is
+	 * forwarded to larpinq's own assertion-guarded receiver; every other
+	 * action is a declarative create.
 	 *
 	 * @return void
 	 *
@@ -314,7 +318,13 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 
 		foreach ($manifest['actions'] as $action) {
-			$this->assertSame(expected: 'create', actual: $action['type'], message: 'Receiver-side assertion verification does not exist yet');
+			if ($action['id'] === 'createCharacter') {
+				$this->assertSame(expected: PortalContributionProvider::CREATE_CHARACTER_ENDPOINT, actual: $action['endpoint']);
+				continue;
+			}
+
+			$this->assertSame(expected: 'create', actual: $action['type'], message: 'Only createCharacter is forwarded to an endpoint');
+			$this->assertArrayNotHasKey(key: 'endpoint', array: $action);
 		}
 
 	}//end testNoEndpointActions()
@@ -363,6 +373,11 @@ final class PortalContributionProviderTest extends TestCase {
 		$manifest = (array)$this->provider->getContribution(self::PLAYER_SUBJECT);
 
 		foreach (array_merge($manifest['collections'], $manifest['actions']) as $collection) {
+			// The createCharacter endpoint action writes characters through its receiver.
+			if (($collection['id'] ?? '') === 'createCharacter') {
+				$collection['schema'] = 'character';
+			}
+
 			$schemaName = $this->schemaKeyOf(schemas: $schemas, name: $collection['schema']);
 			$this->assertArrayHasKey(
 				key: $schemaName,
