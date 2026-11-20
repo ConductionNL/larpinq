@@ -19,7 +19,7 @@
  *
  * @link https://OpenRegister.app
  *
- * TEST-ONLY COPY of openregister/lib/Exception/NotAuthorizedException.php (openregister e3b8f93240),
+ * TEST-ONLY COPY of openregister/lib/Exception/NotAuthorizedException.php (openregister main c3d2067b),
  * the real class verbatim, loaded only by tests/bootstrap.php when OpenRegister
  * itself is not on the path. OpenRegisterStubDriftTest compares it with the
  * real file when the openregister source sits beside this app.
@@ -28,7 +28,6 @@
 namespace OCA\OpenRegister\Exception;
 
 use Exception;
-use Throwable;
 
 /**
  * Exception thrown when a user is not authorized to perform an action
@@ -50,23 +49,16 @@ use Throwable;
  */
 class NotAuthorizedException extends Exception {
 	/**
-	 * Constructor for NotAuthorizedException
+	 * The message when the thrower names none.
 	 *
-	 * Initializes exception with authorization error message.
-	 * Uses default HTTP 403 Forbidden status code.
-	 *
-	 * @param string $message The error message describing authorization failure
-	 * @param int $code The error code (default: 403 Forbidden)
-	 * @param Throwable|null $previous The previous exception that caused this one
-	 *
-	 * @return void
+	 * @var string
 	 */
-	public function __construct(
-		string $message = 'You are not authorized to perform this action',
-		int $code = 403,
-		?Throwable $previous = null,
-	) {
-		// Call parent constructor to initialize base exception properties.
-		parent::__construct(message: $message, code: $code, previous: $previous);
-	}//end __construct()
+	protected $message = 'You are not authorized to perform this action';
+
+	/**
+	 * HTTP 403 Forbidden unless the thrower names another code.
+	 *
+	 * @var integer
+	 */
+	protected $code = 403;
 }//end class

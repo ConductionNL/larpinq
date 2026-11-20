@@ -97,17 +97,57 @@ class OpenRegisterStubDriftTest extends TestCase {
 	}//end openRegisterRoot()
 
 	/**
-	 * Sorted public method names declared in a PHP file.
+	 * Sorted public method names a PHP file's class offers.
+	 *
+	 * Counts the methods the class declares and those it takes from a parent
+	 * class or a trait in the same directory: OpenRegister moved the event
+	 * accessors into `AbstractObjectEntityEvent` and the `WriteVetoState`
+	 * trait, so the leaf file alone declares none of its public API.
 	 *
 	 * @param string $file The file.
 	 *
 	 * @return array<int,string> Method names.
 	 */
 	private function publicMethods(string $file): array {
-		preg_match_all('/public\s+(?:static\s+)?function\s+(\w+)\s*\(/', (string)file_get_contents($file), $matches);
-		$names = array_values(array_unique($matches[1]));
+		$names = $this->declaredMethods(file: $file, seen: []);
+		$names = array_values(array_unique($names));
 		sort($names);
-
 		return $names;
 	}//end publicMethods()
+
+	/**
+	 * Public method names of a file's class, its same-directory parent and traits.
+	 *
+	 * @param string            $file The file.
+	 * @param array<int,string> $seen Files already read, against a cycle.
+	 *
+	 * @return array<int,string> Method names, unsorted, possibly repeated.
+	 */
+	private function declaredMethods(string $file, array $seen): array {
+		if (in_array($file, $seen, true) === true || is_file($file) === false) {
+			return [];
+		}
+
+		$seen[] = $file;
+		$source = (string)file_get_contents($file);
+		preg_match_all('/public\s+(?:static\s+)?function\s+(\w+)\s*\(/', $source, $matches);
+		$names = $matches[1];
+
+		$related = [];
+		if (preg_match('/\b(?:class|trait)\s+\w+\s+extends\s+(\w+)/', $source, $parent) === 1) {
+			$related[] = $parent[1];
+		}
+
+		$body = substr($source, (int)strpos($source, '{'));
+		preg_match_all('/^\s*use\s+(\w+(?:\s*,\s*\w+)*)\s*;/m', $body, $traits);
+		foreach ($traits[1] as $list) {
+			$related = array_merge($related, preg_split('/\s*,\s*/', $list));
+		}
+
+		foreach ($related as $name) {
+			$names = array_merge($names, $this->declaredMethods(file: dirname($file) . '/' . $name . '.php', seen: $seen));
+		}
+
+		return $names;
+	}//end declaredMethods()
 }//end class

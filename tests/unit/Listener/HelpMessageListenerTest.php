@@ -243,6 +243,29 @@ class HelpMessageListenerTest extends TestCase {
 	}
 
 	/**
+	 * Only a creating event is prepared or merged into: any other event that
+	 * reaches the preparing steps is left as it is.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 *
+	 * @return void
+	 */
+	public function testOnlyACreatingEventIsPreparedOrMerged(): void {
+		$listener = $this->listener();
+		$plain = new \OCP\EventDispatcher\Event();
+
+		$onCreating = new \ReflectionMethod($listener, 'onCreating');
+		$onCreating->invoke($listener, $plain);
+		$merge = new \ReflectionMethod($listener, 'merge');
+		$merge->invoke($listener, $plain, ['askerUid' => 'anna']);
+		$this->assertFalse($plain->isPropagationStopped());
+
+		$creating = new ObjectCreatingEvent(new HelpObjectEntity('character-schema-id', []));
+		$merge->invoke($listener, $creating, ['askerUid' => 'anna']);
+		$this->assertSame(['askerUid' => 'anna'], $creating->getModifiedData());
+	}
+
+	/**
 	 * Objects of other schemas, and a system write, are left alone.
 	 *
 	 * @return void

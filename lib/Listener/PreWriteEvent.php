@@ -77,17 +77,24 @@ final class PreWriteEvent {
 	/**
 	 * Stop the write and hand OpenRegister the errors, when a rule found any.
 	 *
+	 * Only OpenRegister's pre-write events carry errors; any other event is
+	 * stopped without them.
+	 *
 	 * @param Event $event The pre-write event.
 	 * @param array<string, mixed>|null $errors The errors, or null to let the write pass.
 	 *
 	 * @return void
 	 *
 	 * @spec openspec/specs/rpg-system/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public static function refuseOnErrors(Event $event, ?array $errors): void {
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
+		if ($errors === null) {
+			return;
+		}
+
+		$event->stopPropagation();
+		if (self::isPreWrite(event: $event) === true) {
 			$event->setErrors($errors);
 		}
 	}//end refuseOnErrors()

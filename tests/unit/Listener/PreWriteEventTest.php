@@ -80,6 +80,22 @@ class PreWriteEventTest extends TestCase {
 	}
 
 	/**
+	 * An event that is not a pre-write event is stopped but given no errors,
+	 * since only OpenRegister's pre-write events carry them.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 *
+	 * @return void
+	 */
+	public function testAnotherEventIsStoppedWithoutErrors(): void {
+		$event = new \OCP\EventDispatcher\Event();
+
+		PreWriteEvent::refuseOnErrors(event: $event, errors: ['name' => 'Required.']);
+
+		$this->assertTrue(condition: $event->isPropagationStopped());
+	}
+
+	/**
 	 * No errors (null) leaves the event running; an empty list still refuses.
 	 *
 	 * @return void

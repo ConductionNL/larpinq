@@ -27,6 +27,7 @@ namespace OCA\Larpinq\Listener;
 use DateTimeImmutable;
 use DateTimeInterface;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IAppConfig;
@@ -108,7 +109,7 @@ class HelpMessageListener implements IEventListener {
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-the-asker-can-reply-until-the-question-is-closed-req-chd-003
 	 */
 	public function handle(Event $event): void {
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
+		if ($event instanceof ObjectCreatingEvent) {
 			$this->onCreating(event: $event);
 			return;
 		}
@@ -131,8 +132,14 @@ class HelpMessageListener implements IEventListener {
 	 *
 	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function onCreating(Event $event): void {
+		if (($event instanceof ObjectCreatingEvent) === false) {
+			return;
+		}
+
 		// @phpstan-ignore-next-line
 		$entity = $event->getObject();
 		if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
@@ -457,9 +464,11 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $data  The fields.
 	 *
 	 * @return void
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function merge(Event $event, array $data): void {
-		if ($data !== []) {
+		if ($data !== [] && $event instanceof ObjectCreatingEvent) {
 			// @phpstan-ignore-next-line
 			$event->setModifiedData(array_merge($event->getModifiedData(), $data));
 		}

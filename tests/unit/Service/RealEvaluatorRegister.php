@@ -21,11 +21,13 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+require_once __DIR__ . '/../Support/RealPermissionHandler.php';
 require_once __DIR__ . '/../Support/RegisterAnswers.php';
 
 use Composer\Autoload\ClassLoader;
 use OCA\Larpinq\Service\ConfigFileLoaderService;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Tests\Unit\Support\RealPermissionHandler;
 use OCA\Larpinq\Tests\Unit\Support\RegisterAnswers;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
@@ -45,6 +47,9 @@ trait RealEvaluatorRegister {
 	/**
 	 * Put OpenRegister's classes on the path, or skip the test.
 	 *
+	 * PREPENDED, so the real `Db\Schema` wins over the test-only stub, which
+	 * has no authorization block for the evaluator to read.
+	 *
 	 * @return void
 	 */
 	private function requireOpenRegister(): void {
@@ -52,7 +57,7 @@ trait RealEvaluatorRegister {
 		foreach ($candidates as $lib) {
 			if ($lib !== '' && is_file($lib . '/Service/Object/PermissionHandler.php') === true) {
 				foreach (ClassLoader::getRegisteredLoaders() as $loader) {
-					$loader->addPsr4('OCA\\OpenRegister\\', rtrim($lib, '/') . '/');
+					$loader->addPsr4('OCA\\OpenRegister\\', rtrim($lib, '/') . '/', true);
 				}
 
 				return;
@@ -111,16 +116,18 @@ trait RealEvaluatorRegister {
 		$groupManager = $this->createMock(originalClassName: IGroupManager::class);
 		$groupManager->method('getUserGroupIds')->willReturn($groups);
 
-		return new \OCA\OpenRegister\Service\Object\PermissionHandler(
-			userSession: $session,
-			userManager: $users,
-			groupManager: $groupManager,
-			schemaMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\SchemaMapper::class),
-			objectEntityMapper: $this->createMock(originalClassName: \OCA\OpenRegister\Db\MagicMapper::class),
-			conditionMatcher: $this->createMock(originalClassName: \OCA\OpenRegister\Service\ConditionMatcher::class),
-			appConfig: $this->createMock(originalClassName: IAppConfig::class),
-			logger: new NullLogger(),
-			container: $container,
+		return RealPermissionHandler::build(
+			deps: [
+				'userSession' => $session,
+				'userManager' => $users,
+				'groupManager' => $groupManager,
+				'schemaMapper' => $this->createMock(originalClassName: \OCA\OpenRegister\Db\SchemaMapper::class),
+				'objectEntityMapper' => $this->createMock(originalClassName: \OCA\OpenRegister\Db\MagicMapper::class),
+				'conditionMatcher' => $this->createMock(originalClassName: \OCA\OpenRegister\Service\ConditionMatcher::class),
+				'appConfig' => $this->createMock(originalClassName: IAppConfig::class),
+				'logger' => new NullLogger(),
+				'container' => $container,
+			]
 		);
 	}//end permissionHandler()
 

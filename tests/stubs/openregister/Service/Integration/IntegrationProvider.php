@@ -37,6 +37,11 @@ namespace OCA\OpenRegister\Service\Integration;
  * (`getId`, `getRequiredApp`, `getStorageStrategy`, `isEnabled`, ...) to
  * route sub-resource calls and render UI surfaces.
  *
+ * This base declares no `list()`, `get()`, `create()`, `update()` or
+ * `delete()`, as in OpenRegister itself: a provider declares the operations
+ * it supports, with the legacy `(register, schema, objectId, ...)` signature
+ * or the `ObjectRef` one.
+ *
  * The five storage strategies that providers MAY declare:
  *   - 'magic-column' — link stored as a column on the OR object row.
  *   - 'link-table'   — link stored in a dedicated openregister_*_links table.
@@ -180,114 +185,6 @@ interface IntegrationProvider {
 	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
 	 */
 	public function authRequirements(): array;
-
-	/**
-	 * List linked things for an OR object.
-	 *
-	 * Implementations MAY honour the `$filters` array — common keys
-	 * are `_limit` (int), `_page` (int), `_search` (string). Unknown
-	 * filters MUST be ignored, not rejected.
-	 *
-	 * Return shape: implementations MAY return either
-	 *   - a flat list `array<int,array<string,mixed>>`, or
-	 *   - the paginated envelope `{items|results: array, total: int,
-	 *     nextCursor: ?string}` (a `PaginatedResult` or its array form)
-	 *     when the provider knows the cross-page total and/or can
-	 *     produce a cursor for the next page.
-	 *
-	 * Either shape is accepted: `ObjectIntegrationsController` runs the
-	 * value through {@see PaginatedResult::fromMixed()} and always emits
-	 * the canonical `{items, total, nextCursor}` envelope to the client.
-	 * Returning the envelope is preferred for providers backed by a
-	 * counted/paged store, because the flat-list fallback sets
-	 * `total = count(items)`, which disables frontend load-more.
-	 *
-	 * @param string $register Register slug or numeric id.
-	 * @param string $schema Schema slug or numeric id.
-	 * @param string $objectId Object uuid.
-	 * @param array<string,mixed> $filters Optional list filters.
-	 *
-	 * @return array<int,array<string,mixed>>|array<string,mixed> Flat list
-	 *                                                            of linked things, or a `{items, total, nextCursor}` envelope.
-	 *
-	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
-	 */
-	public function list(string $register, string $schema, string $objectId, array $filters = []): array;
-
-	/**
-	 * Get a single linked thing by id.
-	 *
-	 * Used by widget surface='single-entity' rendering — e.g. when a
-	 * schema property of type 'reference' carries a referenceType
-	 * marker pointing at this integration, `CnFormDialog` / `CnDetailGrid`
-	 * fetch the referenced entity through this method (AD-18).
-	 *
-	 * Implementations MAY throw a `NotImplementedException` for
-	 * list-only providers; the registry surfaces the failure via the
-	 * widget's empty state.
-	 *
-	 * @param string $register Register slug or numeric id.
-	 * @param string $schema Schema slug or numeric id.
-	 * @param string $objectId Owning object uuid.
-	 * @param string $entityId Linked-thing id.
-	 *
-	 * @return array<string,mixed> The linked thing.
-	 *
-	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
-	 */
-	public function get(string $register, string $schema, string $objectId, string $entityId): array;
-
-	/**
-	 * Create / attach a new linked thing.
-	 *
-	 * Providers with `storage='query-time'` MUST throw
-	 * NotImplementedException — there is no local store to write to.
-	 *
-	 * @param string $register Register slug or numeric id.
-	 * @param string $schema Schema slug or numeric id.
-	 * @param string $objectId Owning object uuid.
-	 * @param array<string,mixed> $payload New linked-thing fields.
-	 *
-	 * @return array<string,mixed> The created linked thing.
-	 *
-	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
-	 */
-	public function create(string $register, string $schema, string $objectId, array $payload): array;
-
-	/**
-	 * Update a linked thing.
-	 *
-	 * Providers with `storage='query-time'` MUST throw
-	 * NotImplementedException.
-	 *
-	 * @param string $register Register slug or numeric id.
-	 * @param string $schema Schema slug or numeric id.
-	 * @param string $objectId Owning object uuid.
-	 * @param string $entityId Linked-thing id.
-	 * @param array<string,mixed> $payload Update payload.
-	 *
-	 * @return array<string,mixed> The updated linked thing.
-	 *
-	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
-	 */
-	public function update(string $register, string $schema, string $objectId, string $entityId, array $payload): array;
-
-	/**
-	 * Delete / unlink a linked thing.
-	 *
-	 * Providers with `storage='query-time'` MUST throw
-	 * NotImplementedException.
-	 *
-	 * @param string $register Register slug or numeric id.
-	 * @param string $schema Schema slug or numeric id.
-	 * @param string $objectId Owning object uuid.
-	 * @param string $entityId Linked-thing id.
-	 *
-	 * @return void
-	 *
-	 *              providers (annotated to their integration-* change / pluggable-integration-registry task-1).
-	 */
-	public function delete(string $register, string $schema, string $objectId, string $entityId): void;
 
 	/**
 	 * Health + auth status for display in admin UI and OCS capabilities.
