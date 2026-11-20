@@ -84,6 +84,8 @@ class CastingPreferenceListener implements IEventListener {
 	 * @psalm-suppress UndefinedClass OpenRegister event classes are optional dependencies.
 	 *
 	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is the listeners' shared, stateless helper for OpenRegister's pre-write events.
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
