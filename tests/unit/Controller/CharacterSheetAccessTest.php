@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 declare(strict_types=1);

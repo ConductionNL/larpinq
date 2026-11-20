@@ -129,7 +129,7 @@ class CharactersController extends Controller {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-95
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-96
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-97
-	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	#[NoAdminRequired]
 	#[NoCSRFRequired]
@@ -205,7 +205,7 @@ class CharactersController extends Controller {
 	 *
 	 * @return array<string,mixed>|JSONResponse The character, or a 403 / 404 response.
 	 *
-	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	private function authorisedCharacter(string $id, string $uid): array|JSONResponse {
 		$character = $this->readCharacter(id: $id);
@@ -231,7 +231,7 @@ class CharactersController extends Controller {
 	 * @return DataDownloadResponse|JSONResponse The PDF download or an error.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
-	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	private function sheetFor(array $character, string $templateId): DataDownloadResponse|JSONResponse {
 		$templateData = $this->pdfRenderer->getTemplate($templateId);
@@ -255,7 +255,7 @@ class CharactersController extends Controller {
 	 *
 	 * @return bool True when the caller owns the character.
 	 *
-	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	private static function isOwner(array $character, string $uid): bool {
 		$owner = $character['ownerUid'] ?? '';
@@ -272,7 +272,7 @@ class CharactersController extends Controller {
 	 *
 	 * @return array<string,mixed> The character without `slNotesPrivate`.
 	 *
-	 * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md
 	 */
 	private static function redactGmPrivateFields(array $character): array {
 		unset($character['slNotesPrivate']);
