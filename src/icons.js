@@ -42,6 +42,7 @@ import DatabaseExport from 'vue-material-design-icons/DatabaseExport.vue'
 import DatabaseImport from 'vue-material-design-icons/DatabaseImport.vue'
 import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
+import EmailOutline from 'vue-material-design-icons/EmailOutline.vue'
 import EmoticonSickOutline from 'vue-material-design-icons/EmoticonSickOutline.vue'
 import FaceAgent from 'vue-material-design-icons/FaceAgent.vue'
 import FileDocument from 'vue-material-design-icons/FileDocument.vue'
@@ -115,6 +116,7 @@ export default {
 	DatabaseImport,
 	DramaMasks,
 	Earth,
+	EmailOutline,
 	EmoticonSickOutline,
 	FaceAgent,
 	FileDocument,
