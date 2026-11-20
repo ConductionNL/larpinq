@@ -295,7 +295,7 @@ class EventRosterService {
 	 *
 	 * @return bool Whether the change is allowed.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 */
 	public function allowsStatusChange(string $eventId, string $characterId, string $status): bool {
 		[$existing, $available] = $this->loadAttendance(eventId: $eventId);

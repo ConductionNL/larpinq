@@ -200,7 +200,7 @@ const STATUS_META = {
  *
  * @param {Array<{status: string}>} rows The roster rows.
  * @return {number} The count.
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
  */
 export function countOnSite(rows) {
 	return rows.filter((row) => row.status === 'checked-in').length
@@ -213,7 +213,7 @@ export function countOnSite(rows) {
  * @param {string} stamp The ISO-8601 `checkedOutAt`.
  * @param {string} locale The BCP 47 locale, e.g. `nl-NL`.
  * @return {{day: string, time: string}|null} The parts.
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
  */
 export function checkOutMoment(stamp, locale) {
 	const date = stamp ? new Date(stamp) : null
@@ -391,7 +391,7 @@ export default {
 		 * How many participants are on site now.
 		 *
 		 * @return {number}
-		 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
 		 */
 		onSiteCount() {
 			return countOnSite(this.participants)
@@ -621,7 +621,7 @@ export default {
 		 *
 		 * @param {object} row The participant row.
 		 * @return {string}
-		 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 		 */
 		checkedOutLabel(row) {
 			const moment = row.status === 'checked-out'

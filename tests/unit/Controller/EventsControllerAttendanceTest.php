@@ -304,7 +304,7 @@ class EventsControllerAttendanceTest extends TestCase {
 	/**
 	 * A check-out keeps the check-in stamps and stamps its own from the server.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 *
 	 * @return void
 	 */
@@ -328,7 +328,7 @@ class EventsControllerAttendanceTest extends TestCase {
 	/**
 	 * A check-out of someone who is not checked in is refused, and nothing is stored.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 *
 	 * @return void
 	 */
@@ -344,7 +344,7 @@ class EventsControllerAttendanceTest extends TestCase {
 	/**
 	 * A check-out with no attendance record at all is refused too.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 *
 	 * @return void
 	 */
@@ -361,7 +361,7 @@ class EventsControllerAttendanceTest extends TestCase {
 	/**
 	 * Checking in again after a check-out clears the check-out stamps.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 *
 	 * @return void
 	 */

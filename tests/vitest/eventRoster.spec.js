@@ -6,8 +6,8 @@
  * count, the "checked out {day} {time}" row text, and what a recorded
  * check-out writes onto the row.
  *
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'

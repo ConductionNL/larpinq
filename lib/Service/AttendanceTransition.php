@@ -28,7 +28,7 @@ namespace OCA\Larpinq\Service;
  * Pure: no storage, no clock. A check-out is allowed only from `checked-in`;
  * every other status from anything, as before check-out existed.
  *
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
  */
 final class AttendanceTransition {
 
@@ -45,7 +45,7 @@ final class AttendanceTransition {
 	 *
 	 * @return bool Whether the change is allowed.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 */
 	public function allows(array $prior, string $status): bool {
 		return $status !== self::CHECKED_OUT || ($prior['status'] ?? 'registered') === 'checked-in';
@@ -66,7 +66,7 @@ final class AttendanceTransition {
 	 *
 	 * @return array<string,mixed> The record to store.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 */
 	public function payload(array $ids, string $status, array $stamp, array $prior): array {
 		$payload = ['event' => $ids['event'], 'character' => $ids['character'], 'status' => $status];
@@ -90,7 +90,7 @@ final class AttendanceTransition {
 	 *
 	 * @return string|null The record UUID.
 	 *
-	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 	 */
 	public function recordId(mixed $prior): ?string {
 		if (is_array($prior) === true && isset($prior['id']) === true) {
