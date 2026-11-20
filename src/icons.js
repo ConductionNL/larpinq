@@ -27,12 +27,14 @@ import BriefcaseAccountOutline from 'vue-material-design-icons/BriefcaseAccountO
 import Calendar from 'vue-material-design-icons/Calendar.vue'
 import CalendarCheck from 'vue-material-design-icons/CalendarCheck.vue'
 import CalendarMonthOutline from 'vue-material-design-icons/CalendarMonthOutline.vue'
+import CartOutline from 'vue-material-design-icons/CartOutline.vue'
 import CashCheck from 'vue-material-design-icons/CashCheck.vue'
 import ChartBar from 'vue-material-design-icons/ChartBar.vue'
 import ChartBoxOutline from 'vue-material-design-icons/ChartBoxOutline.vue'
 import CheckAll from 'vue-material-design-icons/CheckAll.vue'
 import ClipboardCheckOutline from 'vue-material-design-icons/ClipboardCheckOutline.vue'
 import ClipboardList from 'vue-material-design-icons/ClipboardList.vue'
+import CloseCircleOutline from 'vue-material-design-icons/CloseCircleOutline.vue'
 import Cog from 'vue-material-design-icons/Cog.vue'
 import CogOutline from 'vue-material-design-icons/CogOutline.vue'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
@@ -76,6 +78,7 @@ import StoreOutline from 'vue-material-design-icons/StoreOutline.vue'
 import Sword from 'vue-material-design-icons/Sword.vue'
 import SwordCross from 'vue-material-design-icons/SwordCross.vue'
 import TicketOutline from 'vue-material-design-icons/TicketOutline.vue'
+import TimelineClockOutline from 'vue-material-design-icons/TimelineClockOutline.vue'
 import ToolboxOutline from 'vue-material-design-icons/ToolboxOutline.vue'
 import TrendingUp from 'vue-material-design-icons/TrendingUp.vue'
 import Trophy from 'vue-material-design-icons/Trophy.vue'
@@ -98,12 +101,14 @@ export default {
 	Calendar,
 	CalendarCheck,
 	CalendarMonthOutline,
+	CartOutline,
 	CashCheck,
 	ChartBar,
 	ChartBoxOutline,
 	CheckAll,
 	ClipboardCheckOutline,
 	ClipboardList,
+	CloseCircleOutline,
 	Cog,
 	CogOutline,
 	ContentCopy,
@@ -147,6 +152,7 @@ export default {
 	Sword,
 	SwordCross,
 	TicketOutline,
+	TimelineClockOutline,
 	ToolboxOutline,
 	TrendingUp,
 	Trophy,
