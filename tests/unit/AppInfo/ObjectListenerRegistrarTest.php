@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\AppInfo;
 
 use OCA\Larpinq\AppInfo\ObjectListenerRegistrar;
+use OCA\Larpinq\Listener\CastingPreferenceListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
@@ -73,6 +74,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 				[self::CREATING, UniqueHolderListener::class],
 				[self::CREATING, FactionMembershipListener::class],
 				[self::CREATING, CharacterStatusListener::class],
+				[self::CREATING, CastingPreferenceListener::class],
 				[self::CREATING, XpAwardProvenanceListener::class],
 				[self::CREATING, PortalProfileListener::class],
 				[self::CREATING, SignupFormBindingListener::class],
@@ -83,6 +85,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 				[self::UPDATING, UniqueHolderListener::class],
 				[self::UPDATING, FactionMembershipListener::class],
 				[self::UPDATING, CharacterStatusListener::class],
+				[self::UPDATING, CastingPreferenceListener::class],
 				[self::UPDATING, XpAwardProvenanceListener::class],
 				[self::UPDATING, PlayerReviewListener::class],
 				[self::UPDATING, SignupFormBindingListener::class],

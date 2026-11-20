@@ -2429,6 +2429,12 @@
 							"component": "EventChoiceCounts"
 						},
 						{
+							"id": "casting",
+							"label": "Casting",
+							"icon": "StarOutline",
+							"component": "EventCasting"
+						},
+						{
 							"id": "feedback",
 							"label": "Feedback",
 							"icon": "ClipboardCheckOutline",

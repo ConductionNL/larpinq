@@ -38,6 +38,9 @@ $extra = [
 	['name' => 'events#runsheetAccess', 'url' => '/api/events/runsheet-access', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
+	// Casting (events-casting-and-crew-roles, REQ-ECC-002, REQ-ECC-003): game masters only.
+	['name' => 'casting#proposal', 'url' => '/api/events/{id}/casting/proposal', 'verb' => 'GET'],
+	['name' => 'casting#confirm', 'url' => '/api/events/{id}/casting/confirm', 'verb' => 'POST'],
 	// events-qr-checkin: a steward scans or types a registration's code (REQ-EQC-003).
 	['name' => 'events#checkinByCode', 'url' => '/api/events/{id}/checkin-code', 'verb' => 'POST'],
 	// Email participants (communication-mail-participants): game masters only.
