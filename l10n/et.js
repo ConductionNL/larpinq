@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Lahkunud {day} {time}",
         "On site now: {count}": "Praegu kohal: {count}",
         "Checked Out At": "Lahkumine registreeritud",
-        "Checked Out By": "Lahkumise registreerija"
+        "Checked Out By": "Lahkumise registreerija",
+        "Care details": "Terviseandmed",
+        "Due for erasure": "Kustutamisele kuuluvad",
+        "No care records yet.": "Terviseandmeid veel pole."
     },
     "nplurals=2; plural=(n != 1);"
 )

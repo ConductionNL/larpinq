@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Partì {day} {time}",
         "On site now: {count}": "Ussa sin plaz: {count}",
         "Checked Out At": "Partenza annunziada ils",
-        "Checked Out By": "Partenza annunziada da"
+        "Checked Out By": "Partenza annunziada da",
+        "Care details": "Datas da sanadad",
+        "Due for erasure": "Da stizzar",
+        "No care records yet.": "Anc naginas datas da sanadad."
     },
     "nplurals=2; plural=(n != 1);"
 )

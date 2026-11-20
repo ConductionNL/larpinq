@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Αποχώρησε {day} {time}",
         "On site now: {count}": "Παρόντες τώρα: {count}",
         "Checked Out At": "Η αποχώρηση καταγράφηκε στις",
-        "Checked Out By": "Η αποχώρηση καταγράφηκε από"
+        "Checked Out By": "Η αποχώρηση καταγράφηκε από",
+        "Care details": "Στοιχεία υγείας",
+        "Due for erasure": "Προς διαγραφή",
+        "No care records yet.": "Δεν υπάρχουν ακόμη στοιχεία υγείας."
     },
     "nplurals=2; plural=(n != 1);"
 )

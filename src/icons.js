@@ -40,6 +40,7 @@ import CogOutline from 'vue-material-design-icons/CogOutline.vue'
 import ContentCopy from 'vue-material-design-icons/ContentCopy.vue'
 import DatabaseExport from 'vue-material-design-icons/DatabaseExport.vue'
 import DatabaseImport from 'vue-material-design-icons/DatabaseImport.vue'
+import DeleteClockOutline from 'vue-material-design-icons/DeleteClockOutline.vue'
 import DramaMasks from 'vue-material-design-icons/DramaMasks.vue'
 import Earth from 'vue-material-design-icons/Earth.vue'
 import EmailOutline from 'vue-material-design-icons/EmailOutline.vue'
@@ -60,6 +61,7 @@ import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
 import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
+import MedicalBag from 'vue-material-design-icons/MedicalBag.vue'
 import MessageReplyTextOutline from 'vue-material-design-icons/MessageReplyTextOutline.vue'
 import Package from 'vue-material-design-icons/Package.vue'
 import PencilOutline from 'vue-material-design-icons/PencilOutline.vue'
@@ -114,6 +116,7 @@ export default {
 	ContentCopy,
 	DatabaseExport,
 	DatabaseImport,
+	DeleteClockOutline,
 	DramaMasks,
 	Earth,
 	EmailOutline,
@@ -134,6 +137,7 @@ export default {
 	MagicStaff,
 	MapMarker,
 	MapMarkerPath,
+	MedicalBag,
 	MessageReplyTextOutline,
 	Package,
 	PencilOutline,

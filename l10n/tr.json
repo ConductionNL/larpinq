@@ -1105,7 +1105,10 @@
         "Checked out {day} {time}": "Çıkış yapıldı {day} {time}",
         "On site now: {count}": "Şu an mekânda: {count}",
         "Checked Out At": "Çıkış kaydı tarihi",
-        "Checked Out By": "Çıkış kaydını yapan"
+        "Checked Out By": "Çıkış kaydını yapan",
+        "Care details": "Sağlık bilgileri",
+        "Due for erasure": "Silinecek",
+        "No care records yet.": "Henüz sağlık bilgisi yok."
     },
     "plurals": {}
 }

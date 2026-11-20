@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Išvykęs {day} {time}",
         "On site now: {count}": "Dabar vietoje: {count}",
         "Checked Out At": "Išvykimas užregistruotas",
-        "Checked Out By": "Išvykimą užregistravo"
+        "Checked Out By": "Išvykimą užregistravo",
+        "Care details": "Sveikatos duomenys",
+        "Due for erasure": "Reikia ištrinti",
+        "No care records yet.": "Sveikatos duomenų dar nėra."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1105,7 +1105,10 @@
         "Checked out {day} {time}": "U largua {day} {time}",
         "On site now: {count}": "Tani në vend: {count}",
         "Checked Out At": "Largimi u regjistrua më",
-        "Checked Out By": "Largimi u regjistrua nga"
+        "Checked Out By": "Largimi u regjistrua nga",
+        "Care details": "Të dhëna shëndetësore",
+        "Due for erasure": "Për t'u fshirë",
+        "No care records yet.": "Ende nuk ka të dhëna shëndetësore."
     },
     "plurals": {}
 }

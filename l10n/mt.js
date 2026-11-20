@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Telaq {day} {time}",
         "On site now: {count}": "Preżenti issa: {count}",
         "Checked Out At": "Tluq irreġistrat fi",
-        "Checked Out By": "Tluq irreġistrat minn"
+        "Checked Out By": "Tluq irreġistrat minn",
+        "Care details": "Dettalji tal-kura",
+        "Due for erasure": "Għat-tħassir",
+        "No care records yet.": "Għad m'hemmx dettalji tal-kura."
     },
     "nplurals=2; plural=(n != 1);"
 )

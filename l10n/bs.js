@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Otišao {day} {time}",
         "On site now: {count}": "Sada na lokaciji: {count}",
         "Checked Out At": "Odlazak zabilježen",
-        "Checked Out By": "Odlazak zabilježio"
+        "Checked Out By": "Odlazak zabilježio",
+        "Care details": "Zdravstveni podaci",
+        "Due for erasure": "Za brisanje",
+        "No care records yet.": "Još nema zdravstvenih podataka."
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Ha sortit {day} {time}",
         "On site now: {count}": "Ara al lloc: {count}",
         "Checked Out At": "Sortida registrada el",
-        "Checked Out By": "Sortida registrada per"
+        "Checked Out By": "Sortida registrada per",
+        "Care details": "Dades de salut",
+        "Due for erasure": "Pendents d'esborrar",
+        "No care records yet.": "Encara no hi ha dades de salut."
     },
     "nplurals=2; plural=(n != 1);"
 )
