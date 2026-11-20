@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Sendt inn på nytt. Karakteren venter på en spilleder.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Hvorfor en spilleder avviste karakteren; eieren endrer den og sender den inn på nytt",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Godkjenningsstatus fra spilleder: ikke godkjent ennå, godkjent eller avvist med en begrunnelse",
-        "rejected": "avvist"
+        "rejected": "avvist",
+        "Payment method": "Betalingsmåte",
+        "Bank transfer": "Bankoverføring",
+        "How the payment came in": "Hvordan betalingen kom inn",
+        "Upload and match a bank statement": "Last opp og avstem en kontoutskrift",
+        "Download invoice": "Last ned faktura",
+        "Invoice": "Faktura",
+        "Invoice link": "Fakturalenke",
+        "The invoice shillinq issued for this registration, set by larpinq": "Fakturaen shillinq utstedte for denne påmeldingen, satt av larpinq",
+        "Where the invoice is downloaded, from shillinq": "Hvor fakturaen lastes ned, fra shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -66,6 +66,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @param PaymentRequestBuilder $builder Amount, pay-by date, reference and payload.
 	 * @param IGroupManager $groups Who is a game master.
 	 * @param LoggerInterface $logger The logger.
+	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -75,6 +76,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		private readonly PaymentRequestBuilder $builder,
 		private readonly IGroupManager $groups,
 		private readonly LoggerInterface $logger,
+		private readonly RegistrationInvoice $invoice,
 	) {
 	}//end __construct()
 
@@ -218,6 +220,10 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		if ((string)($created['paymentLink'] ?? '') !== '') {
 			$fields['paymentLink'] = (string)$created['paymentLink'];
 		}
+
+		// Shillinq issues the invoice a player asked for while it creates the
+		// request (REQ-RPS-006), so it can land with the request itself.
+		$fields += $this->invoice->fields(registration: $registration, request: $created);
 
 		return $this->store(id: $id, fields: $fields);
 	}//end raise()

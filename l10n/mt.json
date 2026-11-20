@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Issottomess mill-ġdid. Il-karattru qed jistenna kaptan tal-logħba.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Għaliex kaptan tal-logħba rrifjuta l-karattru; is-sid jibdlu u jissottomettih mill-ġdid",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status tal-approvazzjoni mill-kaptan: għadu mhux approvat, approvat jew irrifjutat b'raġuni",
-        "rejected": "irrifjutat"
+        "rejected": "irrifjutat",
+        "Payment method": "Metodu tal-ħlas",
+        "Bank transfer": "Trasferiment bankarju",
+        "How the payment came in": "Kif daħal il-ħlas",
+        "Upload and match a bank statement": "Tella' u qabbel dikjarazzjoni tal-bank",
+        "Download invoice": "Niżżel il-fattura",
+        "Invoice": "Fattura",
+        "Invoice link": "Link tal-fattura",
+        "The invoice shillinq issued for this registration, set by larpinq": "Il-fattura li ħareġ shillinq għal din ir-reġistrazzjoni, issettjata minn larpinq",
+        "Where the invoice is downloaded, from shillinq": "Minn fejn titniżżel il-fattura, minn shillinq"
     },
     "plurals": {}
 }

@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Újra beküldve. A karakter mesélőre vár.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Miért utasította el a mesélő a karaktert; a tulajdonos módosítja és újra beküldi",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Mesélői jóváhagyás állapota: még nincs jóváhagyva, jóváhagyva vagy indoklással elutasítva",
-        "rejected": "elutasítva"
+        "rejected": "elutasítva",
+        "Payment method": "Fizetési mód",
+        "Bank transfer": "Banki átutalás",
+        "How the payment came in": "Hogyan érkezett a fizetés",
+        "Upload and match a bank statement": "Bankszámlakivonat feltöltése és párosítása",
+        "Download invoice": "Számla letöltése",
+        "Invoice": "Számla",
+        "Invoice link": "Számla hivatkozása",
+        "The invoice shillinq issued for this registration, set by larpinq": "A számla, amelyet a shillinq ehhez a jelentkezéshez kiállított, a larpinq állítja be",
+        "Where the invoice is downloaded, from shillinq": "Honnan tölthető le a számla, a shillinqből"
     },
     "plurals": {}
 }

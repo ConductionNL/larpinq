@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Подадено отново. Героят чака водещ на играта.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Защо водещият на играта е отхвърлил героя; собственикът го променя и го подава отново",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Статус на одобрение от водещия: още неодобрен, одобрен или отхвърлен с причина",
-        "rejected": "отхвърлен"
+        "rejected": "отхвърлен",
+        "Payment method": "Начин на плащане",
+        "Bank transfer": "Банков превод",
+        "How the payment came in": "Как е постъпило плащането",
+        "Upload and match a bank statement": "Качване и съпоставяне на банково извлечение",
+        "Download invoice": "Изтегляне на фактурата",
+        "Invoice": "Фактура",
+        "Invoice link": "Връзка към фактурата",
+        "The invoice shillinq issued for this registration, set by larpinq": "Фактурата, която shillinq издаде за тази регистрация, задава се от larpinq",
+        "Where the invoice is downloaded, from shillinq": "Откъде се изтегля фактурата, от shillinq"
     },
     "plurals": {}
 }

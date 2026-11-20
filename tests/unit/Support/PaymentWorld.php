@@ -35,6 +35,7 @@ use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationChangeService;
+use OCA\Larpinq\Service\RegistrationInvoice;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationPaymentService;
 use OCA\Larpinq\Service\RegistrationService;
@@ -50,6 +51,7 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IAppConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
+use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
@@ -269,6 +271,11 @@ class FakePaymentLeaf implements IntegrationProvider {
 		}
 
 		$id = sprintf('f0000000-0000-4000-8000-%012d', $this->next++);
+		// Shillinq issues the invoice asked for while it creates the request.
+		if (($payload['invoiceRequested'] ?? false) === true) {
+			$request['invoiceReference'] = sprintf('a0000000-0000-4000-8000-%012d', $this->next);
+		}
+
 		$this->requests[$id] = array_merge($request, ['id' => $id, 'paymentLink' => 'https://pay.example.org/r/' . $id]);
 		return $this->requests[$id];
 	}
@@ -568,7 +575,8 @@ class PaymentWorld {
 			leaf: $this->paymentLeaf(),
 			builder: $builder,
 			groups: $this->groups(),
-			logger: new NullLogger()
+			logger: new NullLogger(),
+			invoice: $this->invoice()
 		);
 	}
 
@@ -578,7 +586,20 @@ class PaymentWorld {
 	 * @return PaymentFollowUp The payment follow-up.
 	 */
 	public function followUp(): PaymentFollowUp {
-		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger());
+		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger(), invoice: $this->invoice());
+	}
+
+	/**
+	 * Where a registration's invoice is downloaded, with shillinq's route on a test host.
+	 *
+	 * @return RegistrationInvoice The registration invoice.
+	 */
+	public function invoice(): RegistrationInvoice {
+		$urls = $this->test->getMockBuilder(IURLGenerator::class)->getMock();
+		$urls->method('linkToRouteAbsolute')->willReturnCallback(
+			static fn (string $route, array $parameters): string => 'https://cloud.example.org/' . $route . '/' . (string)($parameters['invoiceId'] ?? '')
+		);
+		return new RegistrationInvoice(urls: $urls);
 	}
 
 	/**

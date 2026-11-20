@@ -111,6 +111,24 @@ class PaymentRequestListenerTest extends TestCase {
 	}//end testAnotherObjectsRequestIsIgnored()
 
 	/**
+	 * Scenario "A club pays for its member": an invoice shillinq issued on the
+	 * request lands on the registration once, while the payment stays open (REQ-RPS-006).
+	 *
+	 * @return void
+	 */
+	public function testAnIssuedInvoiceLandsOnTheRegistrationOnce(): void {
+		$this->request['invoiceReference'] = 'a0000000-0000-4000-8000-000000000042';
+		$this->shillinqUpdates(state: 'pending');
+		$first = $this->world->registration(self::SANNE_REG);
+		$this->shillinqUpdates(state: 'pending');
+
+		$this->assertSame(expected: 'open', actual: $first['paymentState']);
+		$this->assertSame(expected: 'a0000000-0000-4000-8000-000000000042', actual: $first['invoiceId']);
+		$this->assertStringEndsWith(suffix: '/a0000000-0000-4000-8000-000000000042', string: $first['invoiceUrl']);
+		$this->assertSame(expected: $first, actual: $this->world->registration(self::SANNE_REG));
+	}//end testAnIssuedInvoiceLandsOnTheRegistrationOnce()
+
+	/**
 	 * Dispatch the real OpenRegister ObjectUpdatedEvent for shillinq's request.
 	 *
 	 * @param string $state The new state.

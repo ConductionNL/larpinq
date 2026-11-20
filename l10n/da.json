@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Indsendt igen. Karakteren venter på en spilleder.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Hvorfor en spilleder afviste karakteren; ejeren ændrer den og indsender den igen",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Godkendelsesstatus fra spilleder: endnu ikke godkendt, godkendt eller afvist med en begrundelse",
-        "rejected": "afvist"
+        "rejected": "afvist",
+        "Payment method": "Betalingsmetode",
+        "Bank transfer": "Bankoverførsel",
+        "How the payment came in": "Hvordan betalingen kom ind",
+        "Upload and match a bank statement": "Upload og afstem et kontoudtog",
+        "Download invoice": "Download faktura",
+        "Invoice": "Faktura",
+        "Invoice link": "Fakturalink",
+        "The invoice shillinq issued for this registration, set by larpinq": "Fakturaen, som shillinq har udstedt for denne tilmelding, angivet af larpinq",
+        "Where the invoice is downloaded, from shillinq": "Hvor fakturaen downloades, fra shillinq"
     },
     "plurals": {}
 }

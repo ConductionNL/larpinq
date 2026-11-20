@@ -29,6 +29,7 @@
 		:customComponents="customComponents"
 		:pageTypes="pageTypes"
 		:cellWidgets="cellWidgets"
+		:formatters="formatters"
 		appId="larpinq"
 		:translate="translateForApp"
 		:permissions="permissions">
@@ -92,6 +93,7 @@ import AgeCell from './components/cells/AgeCell.vue'
 import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
 import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import { startActiveWorld } from './services/activeWorld.js'
+import { invoiceDownloadLabel } from './services/invoiceDownload.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
 /**
@@ -259,6 +261,10 @@ export default {
 			// accepted registration's check-in code as a QR code (events-qr-checkin).
 			// `age` marks a date that lies too long in the past (communication-help-desk, REQ-CHD-002).
 			cellWidgets: { translatedName: TranslatedNameCell, checkinQr: RegistrationQrCode, age: AgeCell },
+			// Column formatters an index column names with `formatter`.
+			// `invoiceDownload` words an invoice link cell as "Download invoice"
+			// instead of the URL (registration-payments-through-shillinq REQ-RPS-006).
+			formatters: { invoiceDownload: invoiceDownloadLabel },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,

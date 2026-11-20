@@ -1058,7 +1058,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Submitted again. The character waits for a game master.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Why a game master rejected the character; the owner changes it and submits it again",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Approval status by game master: not yet approved, approved, or rejected with a reason",
-        "rejected": "rejected"
+        "rejected": "rejected",
+        "Bank transfer": "Bank transfer",
+        "Upload and match a bank statement": "Upload and match a bank statement",
+        "Payment method": "Payment method",
+        "How the payment came in": "How the payment came in",
+        "Download invoice": "Download invoice",
+        "Invoice": "Invoice",
+        "Invoice link": "Invoice link",
+        "The invoice shillinq issued for this registration, set by larpinq": "The invoice shillinq issued for this registration, set by larpinq",
+        "Where the invoice is downloaded, from shillinq": "Where the invoice is downloaded, from shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

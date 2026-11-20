@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Trimis din nou. Personajul așteaptă un maestru de joc.",
         "Why a game master rejected the character; the owner changes it and submits it again": "De ce un maestru de joc a respins personajul; proprietarul îl modifică și îl trimite din nou",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Starea aprobării de către maestru: încă neaprobat, aprobat sau respins cu un motiv",
-        "rejected": "respins"
+        "rejected": "respins",
+        "Payment method": "Metodă de plată",
+        "Bank transfer": "Transfer bancar",
+        "How the payment came in": "Cum a fost primită plata",
+        "Upload and match a bank statement": "Încarcă și potrivește un extras de cont",
+        "Download invoice": "Descarcă factura",
+        "Invoice": "Factură",
+        "Invoice link": "Link factură",
+        "The invoice shillinq issued for this registration, set by larpinq": "Factura emisă de shillinq pentru această înscriere, setată de larpinq",
+        "Where the invoice is downloaded, from shillinq": "Unde se descarcă factura, din shillinq"
     },
     "plurals": {}
 }

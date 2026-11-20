@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Поново поднето. Лик чека водитеља игре.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Зашто је водитељ игре одбио лик; власник га мења и поново подноси",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Статус одобрења водитеља игре: још није одобрен, одобрен или одбијен уз разлог",
-        "rejected": "одбијен"
+        "rejected": "одбијен",
+        "Payment method": "Начин плаћања",
+        "Bank transfer": "Банкарски пренос",
+        "How the payment came in": "Како је уплата стигла",
+        "Upload and match a bank statement": "Отпреми и упари банкарски извод",
+        "Download invoice": "Преузми рачун",
+        "Invoice": "Рачун",
+        "Invoice link": "Веза до рачуна",
+        "The invoice shillinq issued for this registration, set by larpinq": "Рачун који је shillinq издао за ову пријаву, поставља larpinq",
+        "Where the invoice is downloaded, from shillinq": "Где се рачун преузима, из shillinq"
     },
     "plurals": {}
 }

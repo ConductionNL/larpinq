@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Odoslané znova. Postava čaká na rozprávača.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Prečo rozprávač postavu zamietol; vlastník ju upraví a odošle znova",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Stav schválenia rozprávačom: zatiaľ neschválené, schválené alebo zamietnuté s dôvodom",
-        "rejected": "zamietnuté"
+        "rejected": "zamietnuté",
+        "Payment method": "Spôsob platby",
+        "Bank transfer": "Bankový prevod",
+        "How the payment came in": "Ako platba prišla",
+        "Upload and match a bank statement": "Nahrať a spárovať bankový výpis",
+        "Download invoice": "Stiahnuť faktúru",
+        "Invoice": "Faktúra",
+        "Invoice link": "Odkaz na faktúru",
+        "The invoice shillinq issued for this registration, set by larpinq": "Faktúra, ktorú shillinq vystavil pre túto prihlášku, nastavuje larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kde sa faktúra sťahuje, zo shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

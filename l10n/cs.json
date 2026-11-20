@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Odesláno znovu. Postava čeká na vypravěče.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Proč vypravěč postavu zamítl; vlastník ji upraví a odešle znovu",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Stav schválení vypravěčem: zatím neschváleno, schváleno, nebo zamítnuto s důvodem",
-        "rejected": "zamítnuto"
+        "rejected": "zamítnuto",
+        "Payment method": "Způsob platby",
+        "Bank transfer": "Bankovní převod",
+        "How the payment came in": "Jak platba přišla",
+        "Upload and match a bank statement": "Nahrát a spárovat bankovní výpis",
+        "Download invoice": "Stáhnout fakturu",
+        "Invoice": "Faktura",
+        "Invoice link": "Odkaz na fakturu",
+        "The invoice shillinq issued for this registration, set by larpinq": "Faktura, kterou shillinq vystavil pro tuto přihlášku, nastavuje larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kde se faktura stahuje, ze shillinq"
     },
     "plurals": {}
 }

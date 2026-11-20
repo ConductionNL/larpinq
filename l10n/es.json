@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Enviado de nuevo. El personaje espera a un director de juego.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Por qué un director de juego rechazó el personaje; el propietario lo cambia y lo envía de nuevo",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Estado de aprobación del director de juego: aún sin aprobar, aprobado o rechazado con un motivo",
-        "rejected": "rechazado"
+        "rejected": "rechazado",
+        "Payment method": "Método de pago",
+        "Bank transfer": "Transferencia bancaria",
+        "How the payment came in": "Cómo llegó el pago",
+        "Upload and match a bank statement": "Subir y conciliar un extracto bancario",
+        "Download invoice": "Descargar factura",
+        "Invoice": "Factura",
+        "Invoice link": "Enlace de la factura",
+        "The invoice shillinq issued for this registration, set by larpinq": "La factura que shillinq emitió para esta inscripción, la indica larpinq",
+        "Where the invoice is downloaded, from shillinq": "Dónde se descarga la factura, desde shillinq"
     },
     "plurals": {}
 }

@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Ponovo podneseno. Lik čeka voditelja igre.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Zašto je voditelj igre odbio lik; vlasnik ga mijenja i ponovo podnosi",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status odobrenja voditelja igre: još nije odobren, odobren ili odbijen uz razlog",
-        "rejected": "odbijen"
+        "rejected": "odbijen",
+        "Payment method": "Način plaćanja",
+        "Bank transfer": "Bankovni transfer",
+        "How the payment came in": "Kako je uplata stigla",
+        "Upload and match a bank statement": "Učitaj i upari bankovni izvod",
+        "Download invoice": "Preuzmi račun",
+        "Invoice": "Račun",
+        "Invoice link": "Link na račun",
+        "The invoice shillinq issued for this registration, set by larpinq": "Račun koji je shillinq izdao za ovu prijavu, postavlja larpinq",
+        "Where the invoice is downloaded, from shillinq": "Gdje se račun preuzima, iz shillinqa"
     },
     "nplurals=2; plural=(n != 1);"
 )

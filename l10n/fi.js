@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Lähetetty uudelleen. Hahmo odottaa pelinjohtajaa.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Miksi pelinjohtaja hylkäsi hahmon; omistaja muuttaa sitä ja lähettää sen uudelleen",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Pelinjohtajan hyväksynnän tila: ei vielä hyväksytty, hyväksytty tai hylätty syyn kanssa",
-        "rejected": "hylätty"
+        "rejected": "hylätty",
+        "Payment method": "Maksutapa",
+        "Bank transfer": "Pankkisiirto",
+        "How the payment came in": "Miten maksu saapui",
+        "Upload and match a bank statement": "Lataa ja täsmäytä tiliote",
+        "Download invoice": "Lataa lasku",
+        "Invoice": "Lasku",
+        "Invoice link": "Laskun linkki",
+        "The invoice shillinq issued for this registration, set by larpinq": "Lasku, jonka shillinq laati tälle ilmoittautumiselle, larpinqin asettama",
+        "Where the invoice is downloaded, from shillinq": "Mistä lasku ladataan, shillinqistä"
     },
     "nplurals=2; plural=(n != 1);"
 )

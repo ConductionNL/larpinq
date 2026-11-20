@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Submetida de novo. A personagem aguarda um mestre de jogo.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Porque um mestre de jogo rejeitou a personagem; o proprietário altera-a e submete-a de novo",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Estado de aprovação pelo mestre: ainda não aprovado, aprovado ou rejeitado com um motivo",
-        "rejected": "rejeitado"
+        "rejected": "rejeitado",
+        "Payment method": "Método de pagamento",
+        "Bank transfer": "Transferência bancária",
+        "How the payment came in": "Como o pagamento foi recebido",
+        "Upload and match a bank statement": "Carregar e conciliar um extrato bancário",
+        "Download invoice": "Transferir fatura",
+        "Invoice": "Fatura",
+        "Invoice link": "Ligação da fatura",
+        "The invoice shillinq issued for this registration, set by larpinq": "A fatura que o shillinq emitiu para esta inscrição, definida pelo larpinq",
+        "Where the invoice is downloaded, from shillinq": "Onde a fatura é transferida, a partir do shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

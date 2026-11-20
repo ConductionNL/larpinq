@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Inoltrà danovamain. Il persunaj spetga in manader dal gieu.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Pertge ch'in manader dal gieu ha refusà il persunaj; il possessur al mida e l'inoltrescha danovamain",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Status da l'approvaziun dal manader: anc betg approvà, approvà u refusà cun in motiv",
-        "rejected": "refusà"
+        "rejected": "refusà",
+        "Payment method": "Metoda da pajament",
+        "Bank transfer": "Transfer bancar",
+        "How the payment came in": "Co il pajament è entrà",
+        "Upload and match a bank statement": "Chargiar si ed attribuir in extract da conto",
+        "Download invoice": "Telechargiar il quint",
+        "Invoice": "Quint",
+        "Invoice link": "Link dal quint",
+        "The invoice shillinq issued for this registration, set by larpinq": "Il quint che shillinq ha emess per questa annunzia, fixà da larpinq",
+        "Where the invoice is downloaded, from shillinq": "Nua ch'il quint vegn telechargià, or da shillinq"
     },
     "plurals": {}
 }

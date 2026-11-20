@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Υποβλήθηκε ξανά. Ο χαρακτήρας περιμένει αφηγητή.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Γιατί ένας αφηγητής απέρριψε τον χαρακτήρα· ο κάτοχος τον αλλάζει και τον υποβάλλει ξανά",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Κατάσταση έγκρισης από αφηγητή: δεν έχει εγκριθεί ακόμη, εγκρίθηκε ή απορρίφθηκε με λόγο",
-        "rejected": "απορρίφθηκε"
+        "rejected": "απορρίφθηκε",
+        "Payment method": "Τρόπος πληρωμής",
+        "Bank transfer": "Τραπεζική μεταφορά",
+        "How the payment came in": "Πώς έγινε η πληρωμή",
+        "Upload and match a bank statement": "Μεταφόρτωση και αντιστοίχιση αντιγράφου κίνησης λογαριασμού",
+        "Download invoice": "Λήψη τιμολογίου",
+        "Invoice": "Τιμολόγιο",
+        "Invoice link": "Σύνδεσμος τιμολογίου",
+        "The invoice shillinq issued for this registration, set by larpinq": "Το τιμολόγιο που εξέδωσε το shillinq για αυτή την εγγραφή, ορίζεται από το larpinq",
+        "Where the invoice is downloaded, from shillinq": "Από πού γίνεται λήψη του τιμολογίου, από το shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

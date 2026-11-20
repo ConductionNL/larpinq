@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Подано знову. Персонаж чекає на майстра гри.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Чому майстер гри відхилив персонажа; власник змінює його й подає знову",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Статус схвалення майстром: ще не схвалено, схвалено або відхилено з причиною",
-        "rejected": "відхилено"
+        "rejected": "відхилено",
+        "Payment method": "Спосіб оплати",
+        "Bank transfer": "Банківський переказ",
+        "How the payment came in": "Як надійшла оплата",
+        "Upload and match a bank statement": "Завантажити й зіставити банківську виписку",
+        "Download invoice": "Завантажити рахунок",
+        "Invoice": "Рахунок",
+        "Invoice link": "Посилання на рахунок",
+        "The invoice shillinq issued for this registration, set by larpinq": "Рахунок, виставлений shillinq за цю реєстрацію, задає larpinq",
+        "Where the invoice is downloaded, from shillinq": "Де завантажити рахунок, із shillinq"
     },
     "nplurals=2; plural=(n != 1);"
 )

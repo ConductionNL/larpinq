@@ -1179,7 +1179,16 @@
         "Submitted again. The character waits for a game master.": "Opnieuw ingediend. Het karakter wacht op een spelleider.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Waarom een spelleider het karakter heeft afgekeurd; de eigenaar past het aan en dient het opnieuw in",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Goedkeuringsstatus door de spelleider: nog niet goedgekeurd, goedgekeurd of afgekeurd met een reden",
-        "rejected": "afgekeurd"
+        "rejected": "afgekeurd",
+        "Bank transfer": "Bankoverschrijving",
+        "Upload and match a bank statement": "Bankafschrift uploaden en matchen",
+        "Payment method": "Betaalwijze",
+        "How the payment came in": "Hoe de betaling binnenkwam",
+        "Download invoice": "Factuur downloaden",
+        "Invoice": "Factuur",
+        "Invoice link": "Factuurlink",
+        "The invoice shillinq issued for this registration, set by larpinq": "De factuur die shillinq voor deze inschrijving maakte, ingevuld door larpinq",
+        "Where the invoice is downloaded, from shillinq": "Waar de factuur wordt gedownload, uit shillinq"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

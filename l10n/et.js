@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Uuesti esitatud. Tegelane ootab mängujuhti.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Miks mängujuht tegelase tagasi lükkas; omanik muudab seda ja esitab uuesti",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Mängujuhi kinnituse olek: veel kinnitamata, kinnitatud või põhjusega tagasi lükatud",
-        "rejected": "tagasi lükatud"
+        "rejected": "tagasi lükatud",
+        "Payment method": "Makseviis",
+        "Bank transfer": "Pangaülekanne",
+        "How the payment came in": "Kuidas makse laekus",
+        "Upload and match a bank statement": "Laadi üles ja sobita pangaväljavõte",
+        "Download invoice": "Laadi arve alla",
+        "Invoice": "Arve",
+        "Invoice link": "Arve link",
+        "The invoice shillinq issued for this registration, set by larpinq": "Arve, mille shillinq selle registreerimise kohta väljastas, määrab larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kust arve alla laaditakse, shillinqist"
     },
     "nplurals=2; plural=(n != 1);"
 )

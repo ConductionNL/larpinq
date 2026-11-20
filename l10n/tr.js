@@ -1091,7 +1091,16 @@ OC.L10N.register(
         "Submitted again. The character waits for a game master.": "Yeniden gönderildi. Karakter bir oyun yöneticisini bekliyor.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Bir oyun yöneticisinin karakteri neden reddettiği; sahibi onu değiştirip yeniden gönderir",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Oyun yöneticisi onay durumu: henüz onaylanmadı, onaylandı veya gerekçeyle reddedildi",
-        "rejected": "reddedildi"
+        "rejected": "reddedildi",
+        "Payment method": "Ödeme yöntemi",
+        "Bank transfer": "Banka havalesi",
+        "How the payment came in": "Ödemenin nasıl geldiği",
+        "Upload and match a bank statement": "Banka hesap özeti yükle ve eşleştir",
+        "Download invoice": "Faturayı indir",
+        "Invoice": "Fatura",
+        "Invoice link": "Fatura bağlantısı",
+        "The invoice shillinq issued for this registration, set by larpinq": "shillinq'in bu kayıt için düzenlediği fatura, larpinq tarafından ayarlanır",
+        "Where the invoice is downloaded, from shillinq": "Faturanın indirildiği yer, shillinq'ten"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Iesniegts vēlreiz. Tēls gaida spēles vadītāju.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Kāpēc spēles vadītājs noraidīja tēlu; īpašnieks to maina un iesniedz vēlreiz",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Spēles vadītāja apstiprinājuma statuss: vēl nav apstiprināts, apstiprināts vai noraidīts ar iemeslu",
-        "rejected": "noraidīts"
+        "rejected": "noraidīts",
+        "Payment method": "Maksājuma veids",
+        "Bank transfer": "Bankas pārskaitījums",
+        "How the payment came in": "Kā maksājums tika saņemts",
+        "Upload and match a bank statement": "Augšupielādēt un saskaņot bankas izrakstu",
+        "Download invoice": "Lejupielādēt rēķinu",
+        "Invoice": "Rēķins",
+        "Invoice link": "Rēķina saite",
+        "The invoice shillinq issued for this registration, set by larpinq": "Rēķins, ko shillinq izrakstīja šai reģistrācijai, iestata larpinq",
+        "Where the invoice is downloaded, from shillinq": "Kur rēķinu lejupielādēt, no shillinq"
     },
     "plurals": {}
 }

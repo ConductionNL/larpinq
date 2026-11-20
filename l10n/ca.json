@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "S'ha tornat a enviar. El personatge espera un màster.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Per què un màster ha rebutjat el personatge; el propietari el canvia i el torna a enviar",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Estat d'aprovació del màster: encara no aprovat, aprovat o rebutjat amb un motiu",
-        "rejected": "rebutjat"
+        "rejected": "rebutjat",
+        "Payment method": "Mètode de pagament",
+        "Bank transfer": "Transferència bancària",
+        "How the payment came in": "Com ha arribat el pagament",
+        "Upload and match a bank statement": "Puja i concilia un extracte bancari",
+        "Download invoice": "Baixa la factura",
+        "Invoice": "Factura",
+        "Invoice link": "Enllaç de la factura",
+        "The invoice shillinq issued for this registration, set by larpinq": "La factura que shillinq ha emès per a aquesta inscripció, indicada per larpinq",
+        "Where the invoice is downloaded, from shillinq": "On es baixa la factura, des de shillinq"
     },
     "plurals": {}
 }

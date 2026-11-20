@@ -1090,7 +1090,16 @@
         "Submitted again. The character waits for a game master.": "Nach eng Kéier agereecht. De Personnage waart op d'Spillleedung.",
         "Why a game master rejected the character; the owner changes it and submits it again": "Firwat d'Spillleedung de Personnage ofgeleent huet; de Besëtzer ännert en a reecht en nach eng Kéier an",
         "Approval status by game master: not yet approved, approved, or rejected with a reason": "Fräigabestatus vun der Spillleedung: nach net fräiginn, fräiginn oder mat Grond ofgeleent",
-        "rejected": "ofgeleent"
+        "rejected": "ofgeleent",
+        "Payment method": "Bezuelmethod",
+        "Bank transfer": "Bankiwwerweisung",
+        "How the payment came in": "Wéi d'Bezuelung erakomm ass",
+        "Upload and match a bank statement": "Kontoauszuch eroplueden an ofgläichen",
+        "Download invoice": "Rechnung eroflueden",
+        "Invoice": "Rechnung",
+        "Invoice link": "Rechnungslink",
+        "The invoice shillinq issued for this registration, set by larpinq": "D'Rechnung, déi shillinq fir dës Umeldung ausgestallt huet, vu larpinq gesat",
+        "Where the invoice is downloaded, from shillinq": "Wou d'Rechnung erofgeluede gëtt, aus shillinq"
     },
     "plurals": {}
 }
