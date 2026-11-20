@@ -600,6 +600,7 @@
 					{ "key": "type", "label": "Type" },
 					{ "key": "status", "label": "Status" },
 					{ "key": "approved", "label": "Approved" },
+					{ "key": "rejectionReason", "label": "Rejection reason" },
 					{ "key": "setting", "label": "World" }
 				],
 				"selectable": true,
@@ -618,6 +619,53 @@
 				"register": "larpinq",
 				"schema": "character",
 				"headerActions": [
+					{
+						"id": "buy-item",
+						"type": "open-modal",
+						"target": "BuyItemDialog",
+						"label": "Buy item",
+						"icon": "CartOutline"
+					},
+					{
+						"id": "reject-character",
+						"type": "open-modal",
+						"target": "RejectCharacterDialog",
+						"label": "Reject",
+						"icon": "CloseCircleOutline",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/characters/game-master-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
+					{
+						"id": "resubmit-character",
+						"type": "api-call",
+						"label": "Submit again",
+						"icon": "Refresh",
+						"url": "/apps/larpinq/api/characters/{objectId}/resubmit",
+						"method": "POST",
+						"successMessage": "Submitted again. The character waits for a game master.",
+						"visibleWhen": {
+							"field": "approved",
+							"op": "eq",
+							"value": "rejected"
+						}
+					},
+					{
+						"id": "override-requirement",
+						"type": "open-modal",
+						"target": "OverrideRequirementDialog",
+						"label": "Override a requirement",
+						"icon": "ShieldAccountOutline",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/characters/game-master-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
 					{
 						"id": "download-pdf",
 						"type": "open-modal",
@@ -1857,6 +1905,19 @@
 				"schema": "larping_event",
 				"headerActions": [
 					{
+						"id": "download-runsheet",
+						"type": "open-modal",
+						"target": "RunsheetDownloadDialog",
+						"label": "Download run sheet",
+						"icon": "FilePdfBox",
+						"visibleWhen": {
+							"endpoint": "/apps/larpinq/api/events/runsheet-access",
+							"field": "allowed",
+							"op": "eq",
+							"value": true
+						}
+					},
+					{
 						"id": "award-xp",
 						"type": "open-modal",
 						"target": "XpAwardDialog",
@@ -2488,6 +2549,20 @@
 						}
 					},
 					{
+						"id": "setting-timeline",
+						"type": "timeline",
+						"title": "Timeline",
+						"icon": "TimelineClockOutline",
+						"_note": "REQ-SMD-002: the world's history entries and its events in one list, oldest first. Each entry sorts on its date; the schema's read rule keeps game-master entries from players.",
+						"content": {
+							"title": "Timeline",
+							"related": [
+								{ "register": "larpinq", "schema": "larping_history_entry", "field": "setting", "dateField": "date", "titleField": "title", "label": "History" },
+								{ "register": "larpinq", "schema": "larping_event", "field": "setting", "dateField": "startDate", "titleField": "name", "label": "Event" }
+							]
+						}
+					},
+					{
 						"id": "setting-related",
 						"type": "related",
 						"title": "Related",
@@ -2553,9 +2628,17 @@
 					},
 					{
 						"id": "8",
-						"widgetId": "setting-maps",
+						"widgetId": "setting-timeline",
 						"gridX": 0,
 						"gridY": 15,
+						"gridWidth": 12,
+						"gridHeight": 4
+					},
+					{
+						"id": "9",
+						"widgetId": "setting-maps",
+						"gridX": 0,
+						"gridY": 19,
 						"gridWidth": 12,
 						"gridHeight": 4
 					}

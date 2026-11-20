@@ -26,8 +26,12 @@ import LanguageSwitch from './components/LanguageSwitch.vue'
 import WorldSwitcher from './components/WorldSwitcher.vue'
 import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
 import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
+import BuyItemDialog from './dialogs/BuyItemDialog.vue'
 import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
 import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import OverrideRequirementDialog from './dialogs/OverrideRequirementDialog.vue'
+import RejectCharacterDialog from './dialogs/RejectCharacterDialog.vue'
+import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
 import XpAwardDialog from './dialogs/XpAwardDialog.vue'
 import BuildReport from './views/BuildReport.vue'
 import CharacterCustomFields from './views/CharacterCustomFields.vue'
@@ -83,9 +87,42 @@ export default {
 		component: CharacterPdfDownloadDialog,
 		propsSchema: {},
 	},
+	// CharacterDetail "Buy item" header action: the priced items of the
+	// character's world, bought with its in-game money in one server write.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	BuyItemDialog: {
+		kind: 'modal',
+		component: BuyItemDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Override a requirement" header action, game masters
+	// only: a skill and a reason, written with its requirementOverrides[]
+	// entry in one save so the server check and the audit trail apply.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	OverrideRequirementDialog: {
+		kind: 'modal',
+		component: OverrideRequirementDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Reject" header action, game masters only: the
+	// approval lifecycle's reject transition with its required reason.
+	// @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	RejectCharacterDialog: {
+		kind: 'modal',
+		component: RejectCharacterDialog,
+		propsSchema: {},
+	},
 	CopyWorldDialog: {
 		kind: 'modal',
 		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Download run sheet" header action, game masters only: a
+	// template picker, then the run sheet opens in a new tab.
+	// @spec openspec/specs/pdf-export/spec.md
+	RunsheetDownloadDialog: {
+		kind: 'modal',
+		component: RunsheetDownloadDialog,
 		propsSchema: {},
 	},
 	// EventDetail "Award XP" header action (events-xp-batch-award), game

@@ -35,6 +35,7 @@ $extra = [
 	['name' => 'characters#downloadPdf', 'url' => '/characters/{id}/download/{template}', 'verb' => 'GET'],
 	['name' => 'characters#pdfTemplates', 'url' => '/api/pdf/templates', 'verb' => 'GET'],
 	['name' => 'events#downloadRunsheet', 'url' => '/events/{id}/runsheet/{template}', 'verb' => 'GET'],
+	['name' => 'events#runsheetAccess', 'url' => '/api/events/runsheet-access', 'verb' => 'GET'],
 	['name' => 'events#roster', 'url' => '/api/events/{id}/roster', 'verb' => 'GET'],
 	['name' => 'events#recordAttendance', 'url' => '/api/events/{id}/attendance', 'verb' => 'POST'],
 	// events-qr-checkin: a steward scans or types a registration's code (REQ-EQC-003).
@@ -42,10 +43,12 @@ $extra = [
 	['name' => 'xpAwards#access', 'url' => '/api/xp-awards/access', 'verb' => 'GET'],
 	['name' => 'xpAwards#roster', 'url' => '/api/events/{id}/xp-award-roster', 'verb' => 'GET'],
 	['name' => 'xpAwards#award', 'url' => '/api/events/{id}/xp-awards', 'verb' => 'POST'],
+	['name' => 'characters#gameMasterAccess', 'url' => '/api/characters/game-master-access', 'verb' => 'GET'],
 	// Who answered the feedback form (events-post-event-survey REQ-EPS-004).
 	['name' => 'eventFeedback#summary', 'url' => '/api/events/{id}/feedback', 'verb' => 'GET'],
 	['name' => 'characters#requirementReport', 'url' => '/api/characters/{id}/requirement-report', 'verb' => 'GET'],
 	['name' => 'characterPurchases#buy', 'url' => '/api/characters/{id}/purchases', 'verb' => 'POST'],
+	['name' => 'characterResubmission#resubmit', 'url' => '/api/characters/{id}/resubmit', 'verb' => 'POST'],
 	['name' => 'characterStats#show', 'url' => '/api/characters/{id}/stats', 'verb' => 'GET'],
 	['name' => 'playerAttendance#index', 'url' => '/api/players/{id}/attendance', 'verb' => 'GET'],
 	['name' => 'registrationChoices#offer', 'url' => '/api/registrations/{id}/offer', 'verb' => 'GET'],
