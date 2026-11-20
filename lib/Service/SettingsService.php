@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\SettingsServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\IAppConfig;
 use Psr\Log\LoggerInterface;
@@ -40,7 +41,7 @@ use Psr\Log\LoggerInterface;
  *
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-23
  */
-class SettingsService {
+class SettingsService implements SettingsServiceInterface {
 
 	/**
 	 * Configuration keys that the settings UI reads and writes.
@@ -84,6 +85,9 @@ class SettingsService {
 		'attendance_schema',
 		'attendance_register',
 		'attendance_source',
+		'staffinvite_schema',
+		'staffinvite_register',
+		'staffinvite_source',
 		'lorepage_schema',
 		'lorepage_register',
 		'lorepage_source',
@@ -117,6 +121,27 @@ class SettingsService {
 		'accesscode_schema',
 		'accesscode_register',
 		'accesscode_source',
+		'castingpreference_schema',
+		'castingpreference_register',
+		'castingpreference_source',
+		'crewrole_schema',
+		'crewrole_register',
+		'crewrole_source',
+		'crewassignment_schema',
+		'crewassignment_register',
+		'crewassignment_source',
+		'eventcarerecord_schema',
+		'eventcarerecord_register',
+		'eventcarerecord_source',
+		'eventmessage_schema',
+		'eventmessage_register',
+		'eventmessage_source',
+		'helpquestion_schema',
+		'helpquestion_register',
+		'helpquestion_source',
+		'helpmessage_schema',
+		'helpmessage_register',
+		'helpmessage_source',
 	];
 
 	/**

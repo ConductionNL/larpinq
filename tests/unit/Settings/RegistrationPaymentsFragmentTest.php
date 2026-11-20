@@ -87,17 +87,25 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$properties = $this->schema(key: 'registration')['properties'];
 		$this->assertSame(expected: ['not-needed', 'to-request', 'open', 'paid', 'expired'], actual: $properties['paymentState']['enum']);
 		$this->assertSame(expected: 'uuid', actual: $properties['paymentRequestId']['format']);
-		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason'] as $field) {
+		foreach (['paymentState', 'paymentRequestId', 'paymentLink', 'paymentReference', 'payBy', 'paymentReminderAt', 'cancelReason', 'paymentMethod'] as $field) {
+			// A treasurer sets the payment state by hand too (admin-staff-roles-and-invites D2).
 			$this->assertSame(
-				expected: ['gamemasters'],
+				expected: $field === 'paymentState' ? ['larpinq-treasurers', 'gamemasters'] : ['gamemasters'],
 				actual: $properties[$field]['authorization']['update'],
 				message: "{$field} is set by larpinq and game masters only"
 			);
 		}
 
 		$this->assertSame(expected: 'boolean', actual: $properties['invoiceRequested']['type']);
-		$this->assertArrayNotHasKey(key: 'authorization', array: $properties['invoiceRequested'], message: 'the player asks for an invoice');
+		$this->assertSame(expected: ['gamemasters', ['group' => 'larpers', 'match' => ['playerUid' => '$userId']]], actual: $properties['invoiceRequested']['authorization']['update'], message: 'the player asks for an invoice');
 		$this->assertContains(needle: 'unpaid', haystack: $properties['cancelReason']['enum']);
+		// REQ-RPS-007: a request a bank statement line settled shows paid by bank transfer.
+		$this->assertSame(expected: ['bank-transfer'], actual: $properties['paymentMethod']['enum']);
+		$this->assertSame(expected: 'uuid', actual: $properties['invoiceId']['format'], message: 'the invoice shillinq issued (REQ-RPS-006)');
+		$this->assertSame(expected: 'uri', actual: $properties['invoiceUrl']['format']);
+		foreach (['invoiceId', 'invoiceUrl'] as $field) {
+			$this->assertSame(expected: ['gamemasters'], actual: $properties[$field]['authorization']['update'], message: "{$field} is set by larpinq, not by the player");
+		}
 	}//end testTheRegistrationCarriesThePaymentState()
 
 	/**
@@ -120,7 +128,9 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 			'paymentLink' => 'https://pay.example.org/r/f0000000',
 			'paymentReference' => 'WC26-0001',
 			'payBy' => '2026-11-20T00:00:00+00:00',
-			'invoiceRequested' => false,
+			'invoiceRequested' => true,
+			'invoiceId' => 'a0000000-0000-4000-8000-000000000001',
+			'invoiceUrl' => 'https://cloud.example.org/index.php/apps/shillinq/api/v1/invoices/a0000000-0000-4000-8000-000000000001/pdf',
 		];
 
 		$result = (new Validator())->validate(json_decode((string)json_encode($written)), json_decode((string)json_encode($schema)));

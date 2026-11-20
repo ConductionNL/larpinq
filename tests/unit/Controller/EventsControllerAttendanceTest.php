@@ -271,6 +271,126 @@ class EventsControllerAttendanceTest extends TestCase {
 	}
 
 	/**
+	 * Run a check-out over a prior record and capture what is stored.
+	 *
+	 * @param array<string,mixed> $prior The current attendance record.
+	 *
+	 * @return array{0: JSONResponse, 1: array<string,mixed>|null} The response and the stored data.
+	 */
+	private function checkOutOver(array $prior): array {
+		$this->asUser(uid: 'gm-anna', isGm: true);
+		$this->withParams(params: [
+			'character' => self::CHAR,
+			'status' => 'checked-out',
+			'checkedOutBy' => 'attacker',
+			'checkedOutAt' => '1999-01-01T00:00:00+00:00',
+		]);
+		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => [self::CHAR]]);
+		$this->objectFetcher->method('getObjects')->willReturn([
+			['id' => 'att-1', 'event' => self::EVT, 'character' => self::CHAR] + $prior,
+		]);
+
+		$captured = null;
+		$this->objectFetcher->method('saveObject')->willReturnCallback(
+			function (string $objectType, array $data, ?string $uuid) use (&$captured): array {
+				$captured = $data + ['uuid' => $uuid];
+				return $data;
+			}
+		);
+
+		return [$this->controller()->recordAttendance(self::EVT), $captured];
+	}
+
+	/**
+	 * A check-out keeps the check-in stamps and stamps its own from the server.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 *
+	 * @return void
+	 */
+	public function testCheckOutStampsTheServerAndKeepsTheCheckIn(): void {
+		[$result, $stored] = $this->checkOutOver(prior: [
+			'status' => 'checked-in',
+			'checkedInAt' => '2026-12-05T09:00:00+01:00',
+			'checkedInBy' => 'gm-bram',
+		]);
+
+		self::assertSame(expected: 200, actual: $result->getStatus());
+		self::assertSame(expected: 'att-1', actual: $stored['uuid']);
+		self::assertSame(expected: 'checked-out', actual: $stored['status']);
+		self::assertSame(expected: '2026-12-05T09:00:00+01:00', actual: $stored['checkedInAt']);
+		self::assertSame(expected: 'gm-bram', actual: $stored['checkedInBy']);
+		self::assertSame(expected: 'gm-anna', actual: $stored['checkedOutBy']);
+		self::assertNotSame(expected: '1999-01-01T00:00:00+00:00', actual: $stored['checkedOutAt']);
+		self::assertMatchesRegularExpression(pattern: '/^\d{4}-\d{2}-\d{2}T/', string: $stored['checkedOutAt']);
+	}
+
+	/**
+	 * A check-out of someone who is not checked in is refused, and nothing is stored.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 *
+	 * @return void
+	 */
+	public function testCheckOutFromRegisteredIsRefused(): void {
+		$this->objectFetcher->expects(self::never())->method('saveObject');
+		[$result, $stored] = $this->checkOutOver(prior: ['status' => 'registered']);
+
+		self::assertSame(expected: 422, actual: $result->getStatus());
+		self::assertStringContainsString(needle: 'Invalid status change', haystack: $result->getData()['error']);
+		self::assertNull(actual: $stored);
+	}
+
+	/**
+	 * A check-out with no attendance record at all is refused too.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 *
+	 * @return void
+	 */
+	public function testCheckOutWithoutARecordIsRefused(): void {
+		$this->asUser(uid: 'gm-anna', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-out']);
+		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => [self::CHAR]]);
+		$this->objectFetcher->method('getObjects')->willReturn([]);
+		$this->objectFetcher->expects(self::never())->method('saveObject');
+
+		self::assertSame(expected: 422, actual: $this->controller()->recordAttendance(self::EVT)->getStatus());
+	}
+
+	/**
+	 * Checking in again after a check-out clears the check-out stamps.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 *
+	 * @return void
+	 */
+	public function testANewCheckInClearsTheCheckOut(): void {
+		$this->asUser(uid: 'gm-anna', isGm: true);
+		$this->withParams(params: ['character' => self::CHAR, 'status' => 'checked-in']);
+		$this->objectFetcher->method('getObject')->willReturn(['id' => self::EVT, 'players' => [self::CHAR]]);
+		$this->objectFetcher->method('getObjects')->willReturn([
+			[
+				'id' => 'att-1', 'event' => self::EVT, 'character' => self::CHAR, 'status' => 'checked-out',
+				'checkedOutAt' => '2026-12-05T22:10:00+01:00', 'checkedOutBy' => 'gm-anna',
+			],
+		]);
+		$stored = null;
+		$this->objectFetcher->method('saveObject')->willReturnCallback(
+			function (string $objectType, array $data, ?string $uuid) use (&$stored): array {
+				$stored = $data;
+				return $data;
+			}
+		);
+
+		self::assertSame(expected: 200, actual: $this->controller()->recordAttendance(self::EVT)->getStatus());
+		self::assertSame(expected: 'checked-in', actual: $stored['status']);
+		self::assertArrayNotHasKey(key: 'checkedOutAt', array: $stored);
+		self::assertArrayNotHasKey(key: 'checkedOutBy', array: $stored);
+		self::assertSame(expected: 'gm-anna', actual: $stored['checkedInBy']);
+	}
+
+	/**
 	 * Record degrades to424 when schema absent.
 	 *
 	 * @return void

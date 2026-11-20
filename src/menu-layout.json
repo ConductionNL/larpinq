@@ -11,7 +11,9 @@
 		"Factions": "CharactersGroup",
 		"NewPlayers": "CharactersGroup",
 		"Registrations": "WorldGroup",
-		"MyRegistrations": "WorldGroup"
+		"MyRegistrations": "WorldGroup",
+		"SkillLists": "MechanicsGroup",
+		"Rulebook": "WorldGroup"
 	},
 	"removals": [],
 	"settingsSection": []

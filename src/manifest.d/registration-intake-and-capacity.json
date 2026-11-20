@@ -10,6 +10,16 @@
 				"schema": "larping_registration",
 				"allowExport": true,
 				"showMassImport": false,
+				"headerActions": [
+					{
+						"id": "bank-statement",
+						"label": "Upload and match a bank statement",
+						"icon": "BankTransfer",
+						"handler": "larpinqOpenBankStatementImport",
+						"visibleWhen": { "endpoint": "/apps/larpinq/api/payments/access", "field": "allowed", "op": "eq", "value": true },
+						"_note": "registration-payments-through-shillinq REQ-RPS-007: game masters upload the statement in shillinq, which matches transfers to payment requests by reference; a matched registration turns paid by bank transfer (PaymentFollowUp). Lines that matched nothing are listed in shillinq."
+					}
+				],
 				"columns": [
 					{
 						"key": "event",
@@ -88,6 +98,14 @@
 						"label": "Pay by"
 					},
 					{
+						"key": "invoiceUrl",
+						"label": "Invoice",
+						"widget": "link",
+						"widgetProps": { "href": "{invoiceUrl}" },
+						"formatter": "invoiceDownload",
+						"_note": "registration-payments-through-shillinq REQ-RPS-006: the invoice shillinq issued on request, shown as a download link once it is there (RegistrationInvoice)."
+					},
+					{
 						"key": "transferStatus",
 						"label": "Transfer"
 					},
@@ -152,6 +170,12 @@
 							"component": "RegistrationChoices"
 						},
 						{
+							"id": "casting",
+							"label": "Casting",
+							"icon": "StarOutline",
+							"component": "RegistrationCasting"
+						},
+						{
 							"id": "changes",
 							"label": "Cancel or hand over",
 							"icon": "AccountArrowLeftOutline",
@@ -170,6 +194,14 @@
 					]
 				},
 				"headerActions": [
+					{
+						"id": "download-invoice",
+						"label": "Download invoice",
+						"icon": "FilePdfBox",
+						"href": "/apps/shillinq/api/v1/invoices/@object.invoiceId/pdf",
+						"target": "_blank",
+						"visibleWhen": { "field": "invoiceId", "op": "notEmpty" }
+					},
 					{
 						"id": "request-payment",
 						"type": "api-call",

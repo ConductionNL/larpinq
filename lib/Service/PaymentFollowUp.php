@@ -25,6 +25,7 @@ namespace OCA\Larpinq\Service;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\Larpinq\Kernel\Contracts\PaymentFollowUpInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -43,7 +44,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class PaymentFollowUp {
+class PaymentFollowUp implements PaymentFollowUpInterface {
 
 	/**
 	 * Shillinq's states that mean the money came.
@@ -51,6 +52,13 @@ class PaymentFollowUp {
 	 * @var array<int, string>
 	 */
 	private const CAPTURED = ['captured', 'captured_unapplied'];
+
+	/**
+	 * How shillinq marks a request settled from a bank statement line, and the
+	 * payment method a registration then shows.
+	 * @var string
+	 */
+	private const BANK_TRANSFER = 'bank-transfer';
 
 	/**
 	 * Days before the pay-by date the player is reminded.
@@ -79,6 +87,7 @@ class PaymentFollowUp {
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
 	 * @param PaymentLeaf $leaf Shillinq's payment requests leaf.
 	 * @param LoggerInterface $logger The logger.
+	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -86,6 +95,7 @@ class PaymentFollowUp {
 		private readonly RegisterObjectFetcher $fetcher,
 		private readonly PaymentLeaf $leaf,
 		private readonly LoggerInterface $logger,
+		private readonly RegistrationInvoice $invoice,
 	) {
 	}//end __construct()
 
@@ -100,16 +110,27 @@ class PaymentFollowUp {
 	 */
 	public function requestChanged(array $request): void {
 		$requestId = (string)($request['id'] ?? '');
-		if ($requestId === '' || $this->isCaptured(request: $request) === false) {
+		$captured = $this->isCaptured(request: $request);
+		$hasInvoice = trim((string)($request['invoiceReference'] ?? '')) !== '';
+		if ($requestId === '' || ($captured === false && $hasInvoice === false)) {
 			return;
 		}
 
 		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['paymentRequestId' => $requestId], limit: 1);
-		if ($rows === [] || (string)($rows[0]['paymentState'] ?? '') === RegistrationPaymentService::PAID) {
+		if ($rows === []) {
 			return;
 		}
 
-		$this->markPaid(registration: $rows[0], request: $request);
+		if ($captured === true && (string)($rows[0]['paymentState'] ?? '') !== RegistrationPaymentService::PAID) {
+			$this->markPaid(registration: $rows[0], request: $request);
+			return;
+		}
+
+		// An invoice shillinq issued later than the request (REQ-RPS-006) lands once.
+		$invoice = $this->invoice->fields(registration: $rows[0], request: $request);
+		if ($invoice !== []) {
+			$this->save(registration: $rows[0], fields: $invoice);
+		}
 	}//end requestChanged()
 
 	/**
@@ -194,18 +215,30 @@ class PaymentFollowUp {
 	}//end requestOf()
 
 	/**
-	 * Mark a registration paid, keeping the payment link shillinq has.
+	 * Mark a registration paid, keeping the payment link shillinq has and,
+	 * for a request a bank statement line settled, the method bank transfer.
 	 *
 	 * @param array<string, mixed> $registration The registration.
 	 * @param array<string, mixed> $request The captured request.
 	 *
 	 * @return void
+	 *
+	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
 	 */
 	private function markPaid(array $registration, array $request): void {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];
 		if ((string)($registration['paymentLink'] ?? '') === '' && (string)($request['paymentLink'] ?? '') !== '') {
 			$fields['paymentLink'] = (string)$request['paymentLink'];
 		}
+
+		// Shillinq stamps `settledVia` when a bank statement line quoting the
+		// reference settled the request (REQ-RPS-007).
+		if ((string)($request['settledVia'] ?? '') === self::BANK_TRANSFER) {
+			$fields['paymentMethod'] = self::BANK_TRANSFER;
+		}
+
+		$fields += $this->invoice->fields(registration: $registration, request: $request);
 
 		$this->save(registration: $registration, fields: $fields);
 	}//end markPaid()

@@ -11,7 +11,9 @@ import {
 	changeTone,
 	fetchCharacterStats,
 	formatChange,
+	formatHistoryDate,
 	hasModifiers,
+	xpHistory,
 } from '../../src/services/characterStats.js'
 
 describe('fetchCharacterStats', () => {
@@ -60,5 +62,21 @@ describe('modifier rendering', () => {
 		expect(hasModifiers({})).toBe(false)
 		expect(hasModifiers({ modifiers: [{ change: 1 }] })).toBe(true)
 		expect(changeTone(0)).toBe('none')
+	})
+})
+
+describe('XP history (REQ-CSP-006)', () => {
+	it('passes the history the server sends through the fetch', async () => {
+		const history = [{ skillId: 'sk-herb', skillName: 'Kruidenkunde', xp: 6, date: '2026-11-14T09:00:00+00:00', user: 'Anna' }]
+		globalThis.fetch = vi.fn().mockResolvedValueOnce({ ok: true, json: async () => ({ abilities: [], xp: { left: 36, history } }) })
+
+		expect(xpHistory(await fetchCharacterStats('abc'))).toEqual(history)
+		delete globalThis.fetch
+	})
+
+	it('formats a valid moment as a date and leaves an invalid one empty', () => {
+		expect(formatHistoryDate('2026-11-14T09:00:00+00:00')).toBe(new Date('2026-11-14T09:00:00+00:00').toLocaleDateString())
+		expect(formatHistoryDate('soon')).toBe('')
+		expect(formatHistoryDate('')).toBe('')
 	})
 })

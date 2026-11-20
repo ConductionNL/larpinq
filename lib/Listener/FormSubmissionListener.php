@@ -26,8 +26,9 @@ namespace OCA\Larpinq\Listener;
 
 use DateTimeImmutable;
 use DateTimeInterface;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\RegistrationService;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
+use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
+use OCA\Larpinq\Service\FormSubmitWriter;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\IUserManager;
@@ -43,7 +44,11 @@ use Throwable;
  * when one is linked. The answers stay in Forms. An anonymous answer, or a
  * second answer from the same account for the same event, creates nothing.
  * The registration is written with the app's authority: players may not
- * create registrations themselves.
+ * create registrations themselves. Where OpenRegister offers it, the write
+ * goes through its form submit service, which validates the registration
+ * against its schema and keeps the Forms submission id as idempotency key,
+ * so an event fired twice creates one registration; a refused submit
+ * creates nothing. An older OpenRegister keeps the direct write.
  *
  * @category Listener
  * @package  OCA\Larpinq\Listener
@@ -69,16 +74,18 @@ class FormSubmissionListener implements IEventListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param RegisterObjectFetcher $fetcher Reads events and players, writes the registration.
+	 * @param RegisterObjectFetcherInterface $fetcher Reads events and players, writes the registration.
 	 * @param IUserManager $users Tells an account from an anonymous answer.
 	 * @param LoggerInterface $logger The logger.
+	 * @param FormSubmitWriter|null $writer Writes through OpenRegister's submit service; null keeps the direct write.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
-		private readonly RegisterObjectFetcher $fetcher,
+		private readonly RegisterObjectFetcherInterface $fetcher,
 		private readonly IUserManager $users,
 		private readonly LoggerInterface $logger,
+		private readonly ?FormSubmitWriter $writer = null,
 	) {
 	}//end __construct()
 
@@ -139,7 +146,17 @@ class FormSubmissionListener implements IEventListener {
 			return;
 		}
 
-		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $this->newRegistration(submission: $submission, eventId: $eventId));
+		$registration = $this->newRegistration(submission: $submission, eventId: $eventId);
+		if ($this->writer !== null && $this->writer->available() === true) {
+			$this->writer->submit(
+				objectType: 'registration',
+				data: $registration,
+				origin: ['uid' => $uid, 'scope' => 'forms:' . $formId, 'key' => 'forms-submission:' . $registration['submissionId']]
+			);
+			return;
+		}
+
+		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $registration);
 	}//end intake()
 
 	/**
@@ -202,9 +219,9 @@ class FormSubmissionListener implements IEventListener {
 		$registration = [
 			'event' => $eventId,
 			'submitterUid' => $uid,
-			'status' => RegistrationService::PENDING,
+			'status' => RegistrationServiceInterface::PENDING,
 			'submissionId' => (int)($submission['id'] ?? 0),
-			'submittedAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+			'submittedAt' => $this->submittedAt(submission: $submission),
 		];
 		$players = $this->fetcher->getObjectsWithAppAuthority(objectType: 'player', filters: ['userUid' => $uid], limit: 1);
 		if ($players !== []) {
@@ -213,4 +230,21 @@ class FormSubmissionListener implements IEventListener {
 
 		return $registration;
 	}//end newRegistration()
+
+	/**
+	 * When the answer was sent: Forms' own timestamp, so a repeated event
+	 * carries the same registration; the current time when Forms gives none.
+	 *
+	 * @param array<string, mixed> $submission The submission as Forms serialises it.
+	 *
+	 * @return string The moment, ISO 8601.
+	 */
+	private function submittedAt(array $submission): string {
+		$timestamp = (int)($submission['timestamp'] ?? 0);
+		if ($timestamp > 0) {
+			return (new DateTimeImmutable('@' . $timestamp))->format(DateTimeInterface::ATOM);
+		}
+
+		return (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
+	}//end submittedAt()
 }//end class

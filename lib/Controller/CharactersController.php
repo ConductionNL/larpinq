@@ -37,9 +37,9 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Controller;
 
-use OCA\Larpinq\Service\DocuDeskPdfRenderer;
-use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\SkillRequirementService;
+use OCA\Larpinq\Kernel\Contracts\DocuDeskPdfRendererInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
+use OCA\Larpinq\Kernel\Contracts\SkillRequirementServiceInterface;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
@@ -67,18 +67,18 @@ class CharactersController extends Controller {
 	 *
 	 * @param string $appName The name of the app
 	 * @param IRequest $request The request object
-	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher
-	 * @param DocuDeskPdfRenderer $pdfRenderer The shared DocuDesk PDF rendering helper
+	 * @param RegisterObjectFetcherInterface $objectFetcher The register object fetcher
+	 * @param DocuDeskPdfRendererInterface $pdfRenderer The shared DocuDesk PDF rendering helper
 	 * @param CallerAccess $callerAccess The signed-in caller and the admin check
-	 * @param SkillRequirementService $requirementService The skill-requirement validation service
+	 * @param SkillRequirementServiceInterface $requirementService The skill-requirement validation service
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
-		private readonly RegisterObjectFetcher $objectFetcher,
-		private readonly DocuDeskPdfRenderer $pdfRenderer,
+		private readonly RegisterObjectFetcherInterface $objectFetcher,
+		private readonly DocuDeskPdfRendererInterface $pdfRenderer,
 		private readonly CallerAccess $callerAccess,
-		private readonly SkillRequirementService $requirementService,
+		private readonly SkillRequirementServiceInterface $requirementService,
 	) {
 		parent::__construct(appName: $appName, request: $request);
 	}//end __construct()
@@ -315,6 +315,27 @@ class CharactersController extends Controller {
 
 		return new DataDownloadResponse($pdfString, $fileName, 'application/pdf');
 	}//end characterSheetFile()
+
+	/**
+	 * Whether the caller is a game master for the character page's game master
+	 * actions: Override a requirement and Reject.
+	 *
+	 * The writes themselves are checked where they land: the requirement
+	 * listener refuses an override from anyone but a game master, and the
+	 * lifecycle's reject transition admits the game master group only. This
+	 * answer only decides whether the page offers the actions.
+	 *
+	 * @return JSONResponse `{allowed: bool}`, or 401 when nobody is signed in.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	 */
+	#[NoAdminRequired]
+	public function gameMasterAccess(): JSONResponse {
+		return $this->callerAccess->gameMasterAnswer();
+	}//end gameMasterAccess()
 
 	/**
 	 * The character-sheet templates for the Download as PDF dialog.

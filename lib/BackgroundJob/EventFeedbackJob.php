@@ -22,7 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\BackgroundJob;
 
-use OCA\Larpinq\Service\EventFeedbackService;
+use OCA\Larpinq\Kernel\Contracts\EventFeedbackServiceInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;
@@ -44,13 +44,13 @@ class EventFeedbackJob extends TimedJob {
 	/**
 	 * Constructor.
 	 *
-	 * @param ITimeFactory         $time     The clock.
-	 * @param EventFeedbackService $feedback The daily round.
-	 * @param LoggerInterface      $logger   The logger.
+	 * @param ITimeFactory                  $time     The clock.
+	 * @param EventFeedbackServiceInterface $feedback The daily round.
+	 * @param LoggerInterface               $logger   The logger.
 	 */
 	public function __construct(
 		ITimeFactory $time,
-		private readonly EventFeedbackService $feedback,
+		private readonly EventFeedbackServiceInterface $feedback,
 		private readonly LoggerInterface $logger,
 	) {
 		parent::__construct(time: $time);

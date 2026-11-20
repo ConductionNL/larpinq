@@ -95,7 +95,7 @@ class EventRosterService {
 	 */
 	public function buildRoster(string $eventId): array {
 		[$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $eventId);
-		$characters = $this->castCharacters(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId, event: $this->getEvent(eventId: $eventId));
 		$lookup = new CastLookup(players: $this->indexPlayers(characters: $characters), attendance: $attendance);
 
 		$participants = [];
@@ -127,7 +127,7 @@ class EventRosterService {
 	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
-		$characters = $this->castCharacters(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId, event: $event);
 		$lookup = $this->runsheetLookup(eventId: $eventId, characters: $characters);
 		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
 		$this->sortByName(rows: $cast);
@@ -180,27 +180,35 @@ class EventRosterService {
 	}//end runsheetEvent()
 
 	/**
-	 * The characters cast in an event, in register order.
+	 * The characters cast in an event: those whose `events` array holds the
+	 * event, in register order, then those the event's `players` names (an
+	 * accepted registration adds its character there), the same two sources
+	 * isParticipant() accepts.
 	 *
-	 * OpenRegister narrows the read to characters whose `events` array holds
-	 * the event; the membership check here stays as the final word, so a
-	 * filter that over-matches never adds a character to the cast.
+	 * OpenRegister narrows the first read to characters whose `events` array
+	 * holds the event; the membership check here stays as the final word, so
+	 * a filter that over-matches never adds a character to the cast.
 	 *
-	 * @param string $eventId The event UUID.
+	 * @param string                   $eventId The event UUID.
+	 * @param array<string,mixed>|null $event   The event, or null when it cannot be read.
 	 *
 	 * @return list<array<string,mixed>> The cast characters.
 	 *
 	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
-	private function castCharacters(string $eventId): array {
+	private function castCharacters(string $eventId, ?array $event): array {
 		$cast = [];
 		foreach ($this->fetchCharacters(eventId: $eventId) as $character) {
 			if ($this->attendsEvent(character: $character, eventId: $eventId) === true) {
-				$cast[] = $character;
+				$cast[(string)($character['id'] ?? '')] = $character;
 			}
 		}
 
-		return $cast;
+		$listed = array_diff(array_map('strval', (array)($event['players'] ?? [])), array_keys($cast));
+		$cast += array_column($this->objectFetcher->getObjectsById(objectType: 'character', ids: $listed), null, 'id');
+
+		return array_values($cast);
 	}//end castCharacters()
 
 	/**
@@ -222,15 +230,17 @@ class EventRosterService {
 			'status' => (string)($record['status'] ?? 'registered'),
 			'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
 			'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
+			'checkedOutAt' => (string)($record['checkedOutAt'] ?? ''),
+			'checkedOutBy' => (string)($record['checkedOutBy'] ?? ''),
 		];
 	}//end buildRosterEntry()
 
 	/**
 	 * Persist an attendance record for a participant.
 	 *
-	 * Provenance is server-stamped here — `checkedInAt` comes from the server
-	 * clock and `checkedInBy` from the caller-supplied acting uid, never from a
-	 * request body. An existing record for the same (event, character) pair is
+	 * Provenance is server-stamped here — `checkedInAt` / `checkedOutAt` come
+	 * from the server clock and `checkedInBy` / `checkedOutBy` from the
+	 * caller-supplied acting uid, never from a request body. An existing record for the same (event, character) pair is
 	 * updated in place rather than duplicated.
 	 *
 	 * @param string $eventId The event UUID.
@@ -249,31 +259,49 @@ class EventRosterService {
 		string $status,
 		string $actingUid,
 	): ?array {
-		// Server-stamped provenance — any client-supplied checkedInAt/checkedInBy
-		// is discarded by the caller (never read) and re-derived here.
-		$payload = [
-			'event' => $eventId,
-			'character' => $characterId,
-			'status' => $status,
-			'checkedInAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			'checkedInBy' => $actingUid,
-		];
-
 		try {
 			[$existing, $available] = $this->loadAttendance(eventId: $eventId);
 			if ($available === false) {
 				return null;
 			}
 
+			$prior = $existing[$characterId] ?? [];
+
 			return $this->objectFetcher->saveObject(
 				objectType: 'attendance',
-				data: $payload,
-				uuid: $this->existingRecordId(existing: $existing, characterId: $characterId)
+				data: (new AttendanceTransition())->payload(
+					ids: ['event' => $eventId, 'character' => $characterId],
+					status: $status,
+					stamp: ['uid' => $actingUid, 'at' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM)],
+					prior: $prior
+				),
+				uuid: (new AttendanceTransition())->recordId(prior: $prior)
 			);
 		} catch (\Exception $exception) {
 			return null;
 		}
 	}//end recordAttendance()
+
+	/**
+	 * Whether a status may be recorded over a participant's current one; see
+	 * (new AttendanceTransition())->allows().
+	 *
+	 * When attendance storage is unavailable this answers true, so the write
+	 * reaches recordAttendance() and degrades there.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param string $characterId The character UUID.
+	 * @param string $status The status asked for (already validated).
+	 *
+	 * @return bool Whether the change is allowed.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 */
+	public function allowsStatusChange(string $eventId, string $characterId, string $status): bool {
+		[$existing, $available] = $this->loadAttendance(eventId: $eventId);
+
+		return $available === false || (new AttendanceTransition())->allows(prior: ($existing[$characterId] ?? []), status: $status);
+	}//end allowsStatusChange()
 
 	/**
 	 * Award XP to every character checked in at an event (hermiq-ai-tooling REQ-001).
@@ -346,23 +374,6 @@ class EventRosterService {
 
 		return $this->attendsEvent(character: $character, eventId: $eventId);
 	}//end isParticipant()
-
-	/**
-	 * The UUID of an existing attendance record for a character, if any.
-	 *
-	 * @param array<string,array<string,mixed>> $existing Records indexed by character id.
-	 * @param string $characterId The character UUID.
-	 *
-	 * @return string|null The record UUID, or null to create a new one.
-	 */
-	private function existingRecordId(array $existing, string $characterId): ?string {
-		$prior = $existing[$characterId] ?? null;
-		if (is_array($prior) === true && isset($prior['id']) === true) {
-			return (string)$prior['id'];
-		}
-
-		return null;
-	}//end existingRecordId()
 
 	/**
 	 * Build one run-sheet cast entry for a character.

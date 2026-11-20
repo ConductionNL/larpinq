@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\RegistrationPaymentServiceInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\IGroupManager;
 use Psr\Log\LoggerInterface;
@@ -43,7 +44,7 @@ use Throwable;
  *
  * @spec openspec/specs/event-registration/spec.md
  */
-class RegistrationPaymentService {
+class RegistrationPaymentService implements RegistrationPaymentServiceInterface {
 
 	public const NOT_NEEDED = 'not-needed';
 
@@ -65,6 +66,7 @@ class RegistrationPaymentService {
 	 * @param PaymentRequestBuilder $builder Amount, pay-by date, reference and payload.
 	 * @param IGroupManager $groups Who is a game master.
 	 * @param LoggerInterface $logger The logger.
+	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -74,6 +76,7 @@ class RegistrationPaymentService {
 		private readonly PaymentRequestBuilder $builder,
 		private readonly IGroupManager $groups,
 		private readonly LoggerInterface $logger,
+		private readonly RegistrationInvoice $invoice,
 	) {
 	}//end __construct()
 
@@ -217,6 +220,10 @@ class RegistrationPaymentService {
 		if ((string)($created['paymentLink'] ?? '') !== '') {
 			$fields['paymentLink'] = (string)$created['paymentLink'];
 		}
+
+		// Shillinq issues the invoice a player asked for while it creates the
+		// request (REQ-RPS-006), so it can land with the request itself.
+		$fields += $this->invoice->fields(registration: $registration, request: $created);
 
 		return $this->store(id: $id, fields: $fields);
 	}//end raise()

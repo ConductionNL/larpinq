@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\CheckinByCodeInterface;
 use OCP\IUserManager;
 use Throwable;
 
@@ -38,7 +39,7 @@ use Throwable;
  *
  * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
-class CheckinByCode {
+class CheckinByCode implements CheckinByCodeInterface {
 
 	/**
 	 * The attendance status of a checked-in participant.
@@ -193,7 +194,7 @@ class CheckinByCode {
 		}
 
 		try {
-			$found = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['checkinCode' => $code], limit: 1);
+			$found = $this->fetcher->getObjectsByRevealedValue(objectType: 'registration', filters: ['checkinCode' => $code], limit: 1);
 		} catch (Throwable $e) {
 			return null;
 		}

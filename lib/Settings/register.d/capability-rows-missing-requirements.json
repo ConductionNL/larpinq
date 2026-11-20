@@ -32,6 +32,111 @@
 						}
 					}
 				}
+			},
+			"character": {
+				"properties": {
+					"approved": {
+						"title": "Approved",
+						"enum": [
+							"rejected"
+						],
+						"description": "Approval status by game master: not yet approved, approved, or rejected with a reason"
+					},
+					"rejectionReason": {
+						"type": "string",
+						"title": "Rejection reason",
+						"description": "Why a game master rejected the character; the owner changes it and submits it again",
+						"maxLength": 2000,
+						"authorization": {
+							"read": [
+								"gamemasters",
+								"larpinq-writers",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					}
+				},
+				"configuration": {
+					"x-openregister-lifecycle": {
+						"transitions": {
+							"reject": {
+								"from": [
+									"no"
+								],
+								"to": "rejected",
+								"description": "A game master rejects the submitted character with a reason.",
+								"authorization": [
+									"gamemasters"
+								],
+								"inputs": [
+									{
+										"field": "rejectionReason",
+										"required": true
+									}
+								]
+							},
+							"resubmit": {
+								"from": [
+									"rejected"
+								],
+								"to": "no",
+								"description": "The owner submits the changed character again; it waits for approval."
+							}
+						}
+					}
+				},
+				"x-openregister-notifications": {
+					"character-rejected": {
+						"trigger": {
+							"type": "transition",
+							"action": "reject"
+						},
+						"enabled": true,
+						"channels": [
+							"nc-notification"
+						],
+						"recipients": [
+							{
+								"kind": "field",
+								"field": "ownerUid"
+							}
+						],
+						"subject": {
+							"nl": "Personage {{name}} is afgekeurd: {{rejectionReason}}",
+							"en": "Character {{name}} was rejected: {{rejectionReason}}"
+						}
+					},
+					"character-resubmitted": {
+						"trigger": {
+							"type": "transition",
+							"action": "resubmit"
+						},
+						"enabled": true,
+						"channels": [
+							"nc-notification"
+						],
+						"recipients": [
+							{
+								"kind": "groups",
+								"groups": [
+									"gamemasters"
+								]
+							}
+						],
+						"subject": {
+							"nl": "Personage opnieuw ingediend: {{name}}",
+							"en": "Character submitted again: {{name}}"
+						}
+					}
+				}
 			}
 		}
 	}

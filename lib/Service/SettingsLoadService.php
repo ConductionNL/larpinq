@@ -83,6 +83,7 @@ class SettingsLoadService {
 		'event' => 'larping_event',
 		'setting' => 'setting',
 		'attendance' => 'larping_attendance',
+		'staffinvite' => 'larping_staff_invite',
 		'lorepage' => 'larping_lore_page',
 		'characterfield' => 'larping_character_field',
 		'faction' => 'larping_faction',
@@ -90,10 +91,18 @@ class SettingsLoadService {
 		'relationship' => 'larping_relationship',
 		'characterbuild' => 'larping_character_build',
 		'xpaward' => 'xpAward',
+		'castingpreference' => 'larping_casting_preference',
+		'crewrole' => 'larping_crew_role',
+		'crewassignment' => 'larping_crew_assignment',
 		'registration' => 'larping_registration',
 		'tickettype' => 'larping_ticket_type',
 		'registrationoption' => 'larping_registration_option',
 		'accesscode' => 'larping_access_code',
+		'skilllist' => 'larping_skill_list',
+		'eventcarerecord' => 'larping_event_care_record',
+		'eventmessage' => 'larping_event_message',
+		'helpquestion' => 'larping_help_question',
+		'helpmessage' => 'larping_help_message',
 	];
 
 	/**

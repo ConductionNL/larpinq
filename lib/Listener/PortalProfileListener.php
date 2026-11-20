@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use OCA\Larpinq\Service\RegisterObjectFetcher;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -45,7 +45,11 @@ use Throwable;
  *   `myCharacters` collection read. portaliq answers in the event's result
  *   slot; anything but `ok` is logged and the profile stays unlinked.
  * - A character created through the portal (it carries `ownerRef`) is played
- *   by that player: `ocName` is set to the owner when empty.
+ *   by that player: `ocName` is set to the owner when empty. The portal's
+ *   createCharacter receiver (PortalCharacterController) already sends
+ *   `ocName`, because OpenRegister validates required fields before this
+ *   event; this fill is the fallback for any other write that carries only
+ *   `ownerRef`.
  *
  * @category Listener
  * @package  OCA\Larpinq\Listener
@@ -79,7 +83,7 @@ class PortalProfileListener implements IEventListener {
 	 * Constructor.
 	 *
 	 * @param IAppConfig $config Config (player and character schema ids).
-	 * @param RegisterObjectFetcher $fetcher Reads existing profiles with the app's authority.
+	 * @param RegisterObjectFetcherInterface $fetcher Reads existing profiles with the app's authority.
 	 * @param IEventDispatcher $dispatcher Dispatches portaliq's claim event.
 	 * @param IL10N $l10n Translations for the refusal message.
 	 * @param LoggerInterface $logger The logger.
@@ -88,7 +92,7 @@ class PortalProfileListener implements IEventListener {
 	 */
 	public function __construct(
 		private readonly IAppConfig $config,
-		private readonly RegisterObjectFetcher $fetcher,
+		private readonly RegisterObjectFetcherInterface $fetcher,
 		private readonly IEventDispatcher $dispatcher,
 		private readonly IL10N $l10n,
 		private readonly LoggerInterface $logger,

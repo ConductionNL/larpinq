@@ -26,7 +26,7 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Listener;
 
 use OCA\Larpinq\Service\HolderQuery;
-use OCA\Larpinq\Service\IdListNormaliser;
+use OCA\Larpinq\Kernel\Contracts\IdListNormaliserInterface;
 use OCA\Larpinq\Service\UniqueHolderService;
 use OCP\IL10N;
 
@@ -47,12 +47,12 @@ class UniqueHolderVeto {
 	 * Constructor.
 	 *
 	 * @param UniqueHolderService $holders The holder lookup.
-	 * @param IdListNormaliser $idNormaliser Relation value normaliser.
+	 * @param IdListNormaliserInterface $idNormaliser Relation value normaliser.
 	 * @param IL10N $l10n Translations for the refusal message.
 	 */
 	public function __construct(
 		private readonly UniqueHolderService $holders,
-		private readonly IdListNormaliser $idNormaliser,
+		private readonly IdListNormaliserInterface $idNormaliser,
 		private readonly IL10N $l10n,
 	) {
 	}//end __construct()

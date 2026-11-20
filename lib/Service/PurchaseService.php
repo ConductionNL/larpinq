@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Kernel\Contracts\PurchaseServiceInterface;
 use Throwable;
 
 /**
@@ -34,7 +35,7 @@ use Throwable;
  *
  * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
  */
-class PurchaseService {
+class PurchaseService implements PurchaseServiceInterface {
 
 	/**
 	 * The coins a price and a purse are counted in.

@@ -13,11 +13,15 @@
 
 ## Phase 2 — Replace mount
 
-- [ ] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
+- [x] 2.1 Update `src/main.js` to mount `CnAppRoot` directly with
       `manifest` + `registry` props; drop the legacy `Vue.use(...)` +
       `CnPageRenderer` boilerplate.
   - **acceptance_criteria**: Boot path is `CnAppRoot.mount(...)`; no
     further bespoke setup remains.
+  - Done with the library's one-call boot `mountCnApp(...)`
+    (nextcloud-vue 2.181.0), which builds the router from the manifest
+    and mounts CnAppRoot; App.vue stays the root wrapper for the
+    `#sidebar` and `#user-settings` slots.
 
 - [x] 2.2 Remove `src/customComponents.js`.
   - **acceptance_criteria**: `grep -rn customComponents src/` returns no
@@ -41,7 +45,9 @@
 
 - [x] 4.1 `npm run check:manifest` clean.
 - [ ] 4.2 `composer check:strict` clean.
-- [ ] 4.3 Live-deploy regression: each manifest menu item, page widget
+- [x] 4.3 Live-deploy regression: each manifest menu item, page widget
       slot, and detail tab renders against the dev container.
-- [ ] 4.4 Visual regression / Playwright spot-check on the
+  - Passed live 17 Nov on a fresh rig: `index-pages.spec.ts`, `spa-ui.spec.ts`, `detail-forms-admin.spec.ts` and `app-chrome.spec.ts` render every menu entry, index, detail page and sidebar tab (selector drift fixed in the same PR).
+- [x] 4.4 Visual regression / Playwright spot-check on the
       `Characters` index + `CharacterDetail` detail (CSAT surfaces).
+  - Characters index and CharacterDetail pass in `index-pages.spec.ts` and `detail-forms-admin.spec.ts` on the 17 Nov rig.
