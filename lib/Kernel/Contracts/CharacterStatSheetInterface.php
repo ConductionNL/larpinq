@@ -70,4 +70,15 @@ interface CharacterStatSheetInterface {
 	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function stats(array $character): array;
+
+	/**
+	 * The XP history lines of a character: each refunded skill, read from its audit trail.
+	 *
+	 * @param array<string, mixed> $character The character, as read by the caller.
+	 *
+	 * @return array<int, array<string, mixed>> The history lines, newest first.
+	 *
+	 * @spec openspec/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+	 */
+	public function xpHistory(array $character): array;
 }//end interface

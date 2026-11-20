@@ -22,6 +22,8 @@ declare(strict_types=1);
 namespace OCA\Larpinq\Tests\Unit\Controller;
 
 use OCA\Larpinq\Controller\CharacterStatsController;
+use OCA\Larpinq\Kernel\Contracts\CharacterStatSheetInterface;
+use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
 use OCA\Larpinq\Service\CharacterService;
 use OCA\Larpinq\Service\CharacterStatSheet;
 use OCA\Larpinq\Service\CharacterStatsPresenter;
@@ -273,4 +275,33 @@ class CharacterStatsControllerTest extends TestCase {
 		$this->assertSame(expected: [], actual: $response->getData()['xp']['history']);
 		$this->assertSame(expected: 30, actual: $response->getData()['xp']['left']);
 	}//end testAnUnreadableHistoryIsEmptyNotAnError()
+
+	/**
+	 * The controller reads the history through the sheet contract, so any
+	 * implementation of CharacterStatSheetInterface answers it.
+	 *
+	 * @spec openspec/specs/character-management/spec.md#requirement-the-refund-shows-in-the-xp-history-req-csp-006
+	 *
+	 * @return void
+	 */
+	public function testTheHistoryComesThroughTheSheetContract(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcherInterface::class);
+		$fetcher->method('getObject')->willReturn(['id' => self::MIRELA]);
+		$sheet = $this->createMock(originalClassName: CharacterStatSheetInterface::class);
+		$sheet->method('stats')->willReturn([]);
+		$sheet->method('present')->willReturn(['xp' => ['left' => 5]]);
+		$line = ['skillId' => 'sk-herb', 'skillName' => 'Herb lore', 'xp' => 6];
+		$sheet->expects($this->once())->method('xpHistory')->with(['id' => self::MIRELA])->willReturn([$line]);
+
+		$controller = new CharacterStatsController(
+			appName: 'larpinq',
+			request: $this->createMock(originalClassName: IRequest::class),
+			objectFetcher: $fetcher,
+			statSheet: $sheet,
+		);
+		$data = $controller->show(id: self::MIRELA)->getData();
+
+		$this->assertSame(expected: [$line], actual: $data['xp']['history']);
+		$this->assertSame(expected: 5, actual: $data['xp']['left']);
+	}//end testTheHistoryComesThroughTheSheetContract()
 }//end class
