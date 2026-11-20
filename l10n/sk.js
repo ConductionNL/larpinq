@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Faktúra",
         "Invoice link": "Odkaz na faktúru",
         "The invoice shillinq issued for this registration, set by larpinq": "Faktúra, ktorú shillinq vystavil pre túto prihlášku, nastavuje larpinq",
-        "Where the invoice is downloaded, from shillinq": "Kde sa faktúra sťahuje, zo shillinq"
+        "Where the invoice is downloaded, from shillinq": "Kde sa faktúra sťahuje, zo shillinq",
+        "Check out": "Zaregistrovať odchod",
+        "Checked out": "Odišiel",
+        "Checked out {day} {time}": "Odišiel {day} {time}",
+        "On site now: {count}": "Teraz na mieste: {count}",
+        "Checked Out At": "Odchod zaregistrovaný dňa",
+        "Checked Out By": "Odchod zaregistroval"
     },
     "nplurals=2; plural=(n != 1);"
 )

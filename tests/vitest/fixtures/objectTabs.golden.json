@@ -556,8 +556,8 @@
 		}
 	},
 	"EventRoster": {
-		"templateRenderSha256": "94530759e6e768c011900652321f1da41b7684785fc08f4c8d72a913c5e34e2c",
-		"styleSha256": "69589561919e05c34fa58b73ac39a662aed9ebe951bb6f1ab9bad976e9b1dbe2",
+		"templateRenderSha256": "37d47f9f83cb8d6386138e49eb21f725fe0444d8245a28d1d807aaf254f55337",
+		"styleSha256": "b4ec28d2de6e7389ed830a6456c13c8f3fdaff50d2568d092152145b7a8901d4",
 		"scenarios": {
 			"prop wins": {
 				"id": "p-1",

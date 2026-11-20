@@ -1099,7 +1099,13 @@
         "Invoice": "Faktura",
         "Invoice link": "Link do faktury",
         "The invoice shillinq issued for this registration, set by larpinq": "Faktura wystawiona przez shillinq dla tego zgłoszenia, ustawia larpinq",
-        "Where the invoice is downloaded, from shillinq": "Gdzie pobrać fakturę, z shillinq"
+        "Where the invoice is downloaded, from shillinq": "Gdzie pobrać fakturę, z shillinq",
+        "Check out": "Zarejestruj wyjście",
+        "Checked out": "Wyszedł",
+        "Checked out {day} {time}": "Wyszedł {day} {time}",
+        "On site now: {count}": "Obecnie na miejscu: {count}",
+        "Checked Out At": "Wyjście zarejestrowano dnia",
+        "Checked Out By": "Wyjście zarejestrował"
     },
     "plurals": {}
 }

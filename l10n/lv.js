@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Rēķins",
         "Invoice link": "Rēķina saite",
         "The invoice shillinq issued for this registration, set by larpinq": "Rēķins, ko shillinq izrakstīja šai reģistrācijai, iestata larpinq",
-        "Where the invoice is downloaded, from shillinq": "Kur rēķinu lejupielādēt, no shillinq"
+        "Where the invoice is downloaded, from shillinq": "Kur rēķinu lejupielādēt, no shillinq",
+        "Check out": "Reģistrēt aiziešanu",
+        "Checked out": "Aizgājis",
+        "Checked out {day} {time}": "Aizgājis {day} {time}",
+        "On site now: {count}": "Pašlaik uz vietas: {count}",
+        "Checked Out At": "Aiziešana reģistrēta",
+        "Checked Out By": "Aiziešanu reģistrēja"
     },
     "nplurals=2; plural=(n != 1);"
 )

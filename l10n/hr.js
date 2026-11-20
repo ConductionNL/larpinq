@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Račun",
         "Invoice link": "Poveznica na račun",
         "The invoice shillinq issued for this registration, set by larpinq": "Račun koji je shillinq izdao za ovu prijavu, postavlja larpinq",
-        "Where the invoice is downloaded, from shillinq": "Gdje se račun preuzima, iz shillinqa"
+        "Where the invoice is downloaded, from shillinq": "Gdje se račun preuzima, iz shillinqa",
+        "Check out": "Prijavi odlazak",
+        "Checked out": "Otišao",
+        "Checked out {day} {time}": "Otišao {day} {time}",
+        "On site now: {count}": "Sada na lokaciji: {count}",
+        "Checked Out At": "Odlazak zabilježen",
+        "Checked Out By": "Odlazak zabilježio"
     },
     "nplurals=2; plural=(n != 1);"
 )

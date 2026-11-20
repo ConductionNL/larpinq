@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Sąskaita faktūra",
         "Invoice link": "Sąskaitos faktūros nuoroda",
         "The invoice shillinq issued for this registration, set by larpinq": "Sąskaita faktūra, kurią shillinq išrašė šiai registracijai, nustato larpinq",
-        "Where the invoice is downloaded, from shillinq": "Kur atsisiunčiama sąskaita faktūra, iš shillinq"
+        "Where the invoice is downloaded, from shillinq": "Kur atsisiunčiama sąskaita faktūra, iš shillinq",
+        "Check out": "Registruoti išvykimą",
+        "Checked out": "Išvykęs",
+        "Checked out {day} {time}": "Išvykęs {day} {time}",
+        "On site now: {count}": "Dabar vietoje: {count}",
+        "Checked Out At": "Išvykimas užregistruotas",
+        "Checked Out By": "Išvykimą užregistravo"
     },
     "nplurals=2; plural=(n != 1);"
 )

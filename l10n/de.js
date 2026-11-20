@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Rechnung",
         "Invoice link": "Rechnungslink",
         "The invoice shillinq issued for this registration, set by larpinq": "Die Rechnung, die shillinq für diese Anmeldung ausgestellt hat, von larpinq gesetzt",
-        "Where the invoice is downloaded, from shillinq": "Wo die Rechnung heruntergeladen wird, aus shillinq"
+        "Where the invoice is downloaded, from shillinq": "Wo die Rechnung heruntergeladen wird, aus shillinq",
+        "Check out": "Auschecken",
+        "Checked out": "Ausgecheckt",
+        "Checked out {day} {time}": "Ausgecheckt {day} {time}",
+        "On site now: {count}": "Jetzt vor Ort: {count}",
+        "Checked Out At": "Ausgecheckt am",
+        "Checked Out By": "Ausgecheckt von"
     },
     "nplurals=2; plural=(n != 1);"
 )

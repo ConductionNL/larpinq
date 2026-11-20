@@ -1099,7 +1099,13 @@
         "Invoice": "Рахунак",
         "Invoice link": "Спасылка на рахунак",
         "The invoice shillinq issued for this registration, set by larpinq": "Рахунак, які shillinq выставіў за гэтую рэгістрацыю, задае larpinq",
-        "Where the invoice is downloaded, from shillinq": "Дзе спампаваць рахунак, з shillinq"
+        "Where the invoice is downloaded, from shillinq": "Дзе спампаваць рахунак, з shillinq",
+        "Check out": "Зарэгістраваць ад'езд",
+        "Checked out": "Выехаў",
+        "Checked out {day} {time}": "Выехаў {day} {time}",
+        "On site now: {count}": "Цяпер на месцы: {count}",
+        "Checked Out At": "Ад'езд зафіксаваны",
+        "Checked Out By": "Ад'езд зафіксаваў"
     },
     "plurals": {}
 }

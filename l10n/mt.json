@@ -1099,7 +1099,13 @@
         "Invoice": "Fattura",
         "Invoice link": "Link tal-fattura",
         "The invoice shillinq issued for this registration, set by larpinq": "Il-fattura li ħareġ shillinq għal din ir-reġistrazzjoni, issettjata minn larpinq",
-        "Where the invoice is downloaded, from shillinq": "Minn fejn titniżżel il-fattura, minn shillinq"
+        "Where the invoice is downloaded, from shillinq": "Minn fejn titniżżel il-fattura, minn shillinq",
+        "Check out": "Irreġistra t-tluq",
+        "Checked out": "Telaq",
+        "Checked out {day} {time}": "Telaq {day} {time}",
+        "On site now: {count}": "Preżenti issa: {count}",
+        "Checked Out At": "Tluq irreġistrat fi",
+        "Checked Out By": "Tluq irreġistrat minn"
     },
     "plurals": {}
 }

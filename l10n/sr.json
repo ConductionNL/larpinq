@@ -1099,7 +1099,13 @@
         "Invoice": "Рачун",
         "Invoice link": "Веза до рачуна",
         "The invoice shillinq issued for this registration, set by larpinq": "Рачун који је shillinq издао за ову пријаву, поставља larpinq",
-        "Where the invoice is downloaded, from shillinq": "Где се рачун преузима, из shillinq"
+        "Where the invoice is downloaded, from shillinq": "Где се рачун преузима, из shillinq",
+        "Check out": "Пријави одлазак",
+        "Checked out": "Отишао",
+        "Checked out {day} {time}": "Отишао {day} {time}",
+        "On site now: {count}": "Сада на локацији: {count}",
+        "Checked Out At": "Одлазак забележен",
+        "Checked Out By": "Одлазак забележио"
     },
     "plurals": {}
 }

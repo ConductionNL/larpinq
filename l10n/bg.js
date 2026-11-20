@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Фактура",
         "Invoice link": "Връзка към фактурата",
         "The invoice shillinq issued for this registration, set by larpinq": "Фактурата, която shillinq издаде за тази регистрация, задава се от larpinq",
-        "Where the invoice is downloaded, from shillinq": "Откъде се изтегля фактурата, от shillinq"
+        "Where the invoice is downloaded, from shillinq": "Откъде се изтегля фактурата, от shillinq",
+        "Check out": "Отписване",
+        "Checked out": "Отписан",
+        "Checked out {day} {time}": "Отписан {day} {time}",
+        "On site now: {count}": "На място сега: {count}",
+        "Checked Out At": "Тръгването е отбелязано на",
+        "Checked Out By": "Тръгването е отбелязано от"
     },
     "nplurals=2; plural=(n != 1);"
 )

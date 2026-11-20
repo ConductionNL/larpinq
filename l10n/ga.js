@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Sonrasc",
         "Invoice link": "Nasc an tsonraisc",
         "The invoice shillinq issued for this registration, set by larpinq": "An sonrasc a d'eisigh shillinq don chlárú seo, socraithe ag larpinq",
-        "Where the invoice is downloaded, from shillinq": "Cá n-íoslódáiltear an sonrasc, ó shillinq"
+        "Where the invoice is downloaded, from shillinq": "Cá n-íoslódáiltear an sonrasc, ó shillinq",
+        "Check out": "Cláraigh amach",
+        "Checked out": "Cláraithe amach",
+        "Checked out {day} {time}": "Cláraithe amach {day} {time}",
+        "On site now: {count}": "Ar an láthair anois: {count}",
+        "Checked Out At": "Clárú amach ar",
+        "Checked Out By": "Cláraithe amach ag"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Fatura",
         "Invoice link": "Fatura bağlantısı",
         "The invoice shillinq issued for this registration, set by larpinq": "shillinq'in bu kayıt için düzenlediği fatura, larpinq tarafından ayarlanır",
-        "Where the invoice is downloaded, from shillinq": "Faturanın indirildiği yer, shillinq'ten"
+        "Where the invoice is downloaded, from shillinq": "Faturanın indirildiği yer, shillinq'ten",
+        "Check out": "Çıkış kaydı yap",
+        "Checked out": "Çıkış yapıldı",
+        "Checked out {day} {time}": "Çıkış yapıldı {day} {time}",
+        "On site now: {count}": "Şu an mekânda: {count}",
+        "Checked Out At": "Çıkış kaydı tarihi",
+        "Checked Out By": "Çıkış kaydını yapan"
     },
     "nplurals=2; plural=(n != 1);"
 )

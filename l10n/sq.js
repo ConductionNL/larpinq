@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Fatura",
         "Invoice link": "Lidhja e faturës",
         "The invoice shillinq issued for this registration, set by larpinq": "Fatura që shillinq lëshoi për këtë regjistrim, vendoset nga larpinq",
-        "Where the invoice is downloaded, from shillinq": "Ku shkarkohet fatura, nga shillinq"
+        "Where the invoice is downloaded, from shillinq": "Ku shkarkohet fatura, nga shillinq",
+        "Check out": "Regjistro largimin",
+        "Checked out": "Është larguar",
+        "Checked out {day} {time}": "U largua {day} {time}",
+        "On site now: {count}": "Tani në vend: {count}",
+        "Checked Out At": "Largimi u regjistrua më",
+        "Checked Out By": "Largimi u regjistrua nga"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1099,7 +1099,13 @@
         "Invoice": "Рахунок",
         "Invoice link": "Посилання на рахунок",
         "The invoice shillinq issued for this registration, set by larpinq": "Рахунок, виставлений shillinq за цю реєстрацію, задає larpinq",
-        "Where the invoice is downloaded, from shillinq": "Де завантажити рахунок, із shillinq"
+        "Where the invoice is downloaded, from shillinq": "Де завантажити рахунок, із shillinq",
+        "Check out": "Зареєструвати відбуття",
+        "Checked out": "Відбув",
+        "Checked out {day} {time}": "Відбув {day} {time}",
+        "On site now: {count}": "Зараз на місці: {count}",
+        "Checked Out At": "Відбуття зафіксовано",
+        "Checked Out By": "Відбуття зафіксував"
     },
     "plurals": {}
 }

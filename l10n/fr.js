@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Facture",
         "Invoice link": "Lien de la facture",
         "The invoice shillinq issued for this registration, set by larpinq": "La facture émise par shillinq pour cette inscription, renseignée par larpinq",
-        "Where the invoice is downloaded, from shillinq": "Où télécharger la facture, depuis shillinq"
+        "Where the invoice is downloaded, from shillinq": "Où télécharger la facture, depuis shillinq",
+        "Check out": "Enregistrer le départ",
+        "Checked out": "Parti",
+        "Checked out {day} {time}": "Parti {day} {time}",
+        "On site now: {count}": "Sur place maintenant : {count}",
+        "Checked Out At": "Départ enregistré le",
+        "Checked Out By": "Départ enregistré par"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Quint",
         "Invoice link": "Link dal quint",
         "The invoice shillinq issued for this registration, set by larpinq": "Il quint che shillinq ha emess per questa annunzia, fixà da larpinq",
-        "Where the invoice is downloaded, from shillinq": "Nua ch'il quint vegn telechargià, or da shillinq"
+        "Where the invoice is downloaded, from shillinq": "Nua ch'il quint vegn telechargià, or da shillinq",
+        "Check out": "Annunziar la partenza",
+        "Checked out": "Partì",
+        "Checked out {day} {time}": "Partì {day} {time}",
+        "On site now: {count}": "Ussa sin plaz: {count}",
+        "Checked Out At": "Partenza annunziada ils",
+        "Checked Out By": "Partenza annunziada da"
     },
     "nplurals=2; plural=(n != 1);"
 )

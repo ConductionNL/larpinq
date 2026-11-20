@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Τιμολόγιο",
         "Invoice link": "Σύνδεσμος τιμολογίου",
         "The invoice shillinq issued for this registration, set by larpinq": "Το τιμολόγιο που εξέδωσε το shillinq για αυτή την εγγραφή, ορίζεται από το larpinq",
-        "Where the invoice is downloaded, from shillinq": "Από πού γίνεται λήψη του τιμολογίου, από το shillinq"
+        "Where the invoice is downloaded, from shillinq": "Από πού γίνεται λήψη του τιμολογίου, από το shillinq",
+        "Check out": "Δήλωση αποχώρησης",
+        "Checked out": "Αποχώρησε",
+        "Checked out {day} {time}": "Αποχώρησε {day} {time}",
+        "On site now: {count}": "Παρόντες τώρα: {count}",
+        "Checked Out At": "Η αποχώρηση καταγράφηκε στις",
+        "Checked Out By": "Η αποχώρηση καταγράφηκε από"
     },
     "nplurals=2; plural=(n != 1);"
 )

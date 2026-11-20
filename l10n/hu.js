@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Számla",
         "Invoice link": "Számla hivatkozása",
         "The invoice shillinq issued for this registration, set by larpinq": "A számla, amelyet a shillinq ehhez a jelentkezéshez kiállított, a larpinq állítja be",
-        "Where the invoice is downloaded, from shillinq": "Honnan tölthető le a számla, a shillinqből"
+        "Where the invoice is downloaded, from shillinq": "Honnan tölthető le a számla, a shillinqből",
+        "Check out": "Távozás rögzítése",
+        "Checked out": "Távozott",
+        "Checked out {day} {time}": "Távozott: {day} {time}",
+        "On site now: {count}": "Most a helyszínen: {count}",
+        "Checked Out At": "Távozás rögzítve ekkor",
+        "Checked Out By": "A távozást rögzítette"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1067,7 +1067,13 @@ OC.L10N.register(
         "Invoice": "Invoice",
         "Invoice link": "Invoice link",
         "The invoice shillinq issued for this registration, set by larpinq": "The invoice shillinq issued for this registration, set by larpinq",
-        "Where the invoice is downloaded, from shillinq": "Where the invoice is downloaded, from shillinq"
+        "Where the invoice is downloaded, from shillinq": "Where the invoice is downloaded, from shillinq",
+        "Check out": "Check out",
+        "Checked out": "Checked out",
+        "Checked out {day} {time}": "Checked out {day} {time}",
+        "On site now: {count}": "On site now: {count}",
+        "Checked Out At": "Checked Out At",
+        "Checked Out By": "Checked Out By"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Счёт",
         "Invoice link": "Ссылка на счёт",
         "The invoice shillinq issued for this registration, set by larpinq": "Счёт, выставленный shillinq за эту регистрацию, задаётся larpinq",
-        "Where the invoice is downloaded, from shillinq": "Где скачать счёт, из shillinq"
+        "Where the invoice is downloaded, from shillinq": "Где скачать счёт, из shillinq",
+        "Check out": "Зарегистрировать уход",
+        "Checked out": "Ушёл",
+        "Checked out {day} {time}": "Ушёл {day} {time}",
+        "On site now: {count}": "Сейчас на месте: {count}",
+        "Checked Out At": "Уход отмечен",
+        "Checked Out By": "Уход отметил"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1099,7 +1099,13 @@
         "Invoice": "Faktura",
         "Invoice link": "Odkaz na fakturu",
         "The invoice shillinq issued for this registration, set by larpinq": "Faktura, kterou shillinq vystavil pro tuto přihlášku, nastavuje larpinq",
-        "Where the invoice is downloaded, from shillinq": "Kde se faktura stahuje, ze shillinq"
+        "Where the invoice is downloaded, from shillinq": "Kde se faktura stahuje, ze shillinq",
+        "Check out": "Zaregistrovat odchod",
+        "Checked out": "Odešel",
+        "Checked out {day} {time}": "Odešel {day} {time}",
+        "On site now: {count}": "Nyní na místě: {count}",
+        "Checked Out At": "Odchod zaregistrován dne",
+        "Checked Out By": "Odchod zaregistroval"
     },
     "plurals": {}
 }

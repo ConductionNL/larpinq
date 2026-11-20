@@ -1099,7 +1099,13 @@
         "Invoice": "Lasku",
         "Invoice link": "Laskun linkki",
         "The invoice shillinq issued for this registration, set by larpinq": "Lasku, jonka shillinq laati tälle ilmoittautumiselle, larpinqin asettama",
-        "Where the invoice is downloaded, from shillinq": "Mistä lasku ladataan, shillinqistä"
+        "Where the invoice is downloaded, from shillinq": "Mistä lasku ladataan, shillinqistä",
+        "Check out": "Kirjaa ulos",
+        "Checked out": "Kirjattu ulos",
+        "Checked out {day} {time}": "Kirjattu ulos {day} {time}",
+        "On site now: {count}": "Paikalla nyt: {count}",
+        "Checked Out At": "Lähtö kirjattu",
+        "Checked Out By": "Lähdön kirjaaja"
     },
     "plurals": {}
 }

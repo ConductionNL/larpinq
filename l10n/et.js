@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Arve",
         "Invoice link": "Arve link",
         "The invoice shillinq issued for this registration, set by larpinq": "Arve, mille shillinq selle registreerimise kohta väljastas, määrab larpinq",
-        "Where the invoice is downloaded, from shillinq": "Kust arve alla laaditakse, shillinqist"
+        "Where the invoice is downloaded, from shillinq": "Kust arve alla laaditakse, shillinqist",
+        "Check out": "Registreeri lahkumine",
+        "Checked out": "Lahkunud",
+        "Checked out {day} {time}": "Lahkunud {day} {time}",
+        "On site now: {count}": "Praegu kohal: {count}",
+        "Checked Out At": "Lahkumine registreeritud",
+        "Checked Out By": "Lahkumise registreerija"
     },
     "nplurals=2; plural=(n != 1);"
 )

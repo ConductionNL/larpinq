@@ -1099,7 +1099,13 @@
         "Invoice": "Factura",
         "Invoice link": "Enllaç de la factura",
         "The invoice shillinq issued for this registration, set by larpinq": "La factura que shillinq ha emès per a aquesta inscripció, indicada per larpinq",
-        "Where the invoice is downloaded, from shillinq": "On es baixa la factura, des de shillinq"
+        "Where the invoice is downloaded, from shillinq": "On es baixa la factura, des de shillinq",
+        "Check out": "Registra la sortida",
+        "Checked out": "Ha sortit",
+        "Checked out {day} {time}": "Ha sortit {day} {time}",
+        "On site now: {count}": "Ara al lloc: {count}",
+        "Checked Out At": "Sortida registrada el",
+        "Checked Out By": "Sortida registrada per"
     },
     "plurals": {}
 }

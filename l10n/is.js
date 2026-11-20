@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Reikningur",
         "Invoice link": "Tengill á reikning",
         "The invoice shillinq issued for this registration, set by larpinq": "Reikningurinn sem shillinq gaf út fyrir þessa skráningu, settur af larpinq",
-        "Where the invoice is downloaded, from shillinq": "Hvar reikningurinn er sóttur, úr shillinq"
+        "Where the invoice is downloaded, from shillinq": "Hvar reikningurinn er sóttur, úr shillinq",
+        "Check out": "Skrá brottför",
+        "Checked out": "Farinn",
+        "Checked out {day} {time}": "Farinn {day} {time}",
+        "On site now: {count}": "Á staðnum núna: {count}",
+        "Checked Out At": "Brottför skráð þann",
+        "Checked Out By": "Brottför skráð af"
     },
     "nplurals=2; plural=(n != 1);"
 )

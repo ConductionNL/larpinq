@@ -210,6 +210,8 @@ class EventsControllerGoldenTest extends TestCase {
 				return $case['participant'];
 			}
 		);
+		// Check-out transitions are covered in EventsControllerAttendanceTest; every recorded case here is allowed.
+		$roster->method('allowsStatusChange')->willReturn(true);
 		$roster->method('recordAttendance')->willReturnCallback(
 			function (string $eventId, string $characterId, string $status, string $actingUid) use ($case, &$calls): ?array {
 				$calls[] = ['recordAttendance', $eventId, $characterId, $status, $actingUid];

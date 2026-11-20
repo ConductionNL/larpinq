@@ -1100,7 +1100,13 @@ OC.L10N.register(
         "Invoice": "Faktura",
         "Invoice link": "Fakturalenke",
         "The invoice shillinq issued for this registration, set by larpinq": "Fakturaen shillinq utstedte for denne påmeldingen, satt av larpinq",
-        "Where the invoice is downloaded, from shillinq": "Hvor fakturaen lastes ned, fra shillinq"
+        "Where the invoice is downloaded, from shillinq": "Hvor fakturaen lastes ned, fra shillinq",
+        "Check out": "Sjekk ut",
+        "Checked out": "Sjekket ut",
+        "Checked out {day} {time}": "Sjekket ut {day} {time}",
+        "On site now: {count}": "På stedet nå: {count}",
+        "Checked Out At": "Sjekket ut den",
+        "Checked Out By": "Sjekket ut av"
     },
     "nplurals=2; plural=(n != 1);"
 )
