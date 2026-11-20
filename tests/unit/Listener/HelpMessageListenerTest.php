@@ -258,11 +258,11 @@ class HelpMessageListenerTest extends TestCase {
 		$onCreating->invoke($listener, $plain);
 		$merge = new \ReflectionMethod($listener, 'merge');
 		$merge->invoke($listener, $plain, ['askerUid' => 'anna']);
-		$this->assertFalse($plain->isPropagationStopped());
+		$this->assertFalse(condition: $plain->isPropagationStopped());
 
 		$creating = new ObjectCreatingEvent(new HelpObjectEntity('character-schema-id', []));
 		$merge->invoke($listener, $creating, ['askerUid' => 'anna']);
-		$this->assertSame(['askerUid' => 'anna'], $creating->getModifiedData());
+		$this->assertSame(expected: ['askerUid' => 'anna'], actual: $creating->getModifiedData());
 	}
 
 	/**

@@ -29,7 +29,11 @@ final class RealPermissionHandler {
 	/**
 	 * Build the handler from its collaborators.
 	 *
-	 * @param array{userSession: object, userManager: object, groupManager: object, schemaMapper: object, objectEntityMapper: object, conditionMatcher: object, appConfig: object, logger: object, container: object} $deps The collaborators.
+	 * The keys of `$deps` are the flat constructor's argument names: userSession,
+	 * userManager, groupManager, schemaMapper, objectEntityMapper,
+	 * conditionMatcher, appConfig, logger and container.
+	 *
+	 * @param array<string, object> $deps The collaborators.
 	 *
 	 * @return object The real PermissionHandler.
 	 */
