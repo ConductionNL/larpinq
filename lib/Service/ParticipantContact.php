@@ -70,17 +70,10 @@ class ParticipantContact {
 	public function forRegistration(array $registration): array {
 		$playerId = (string)($registration['player'] ?? '');
 		$uid = (string)($registration['playerUid'] ?? '');
-		$name = '';
-		try {
-			if ($playerId !== '') {
-				$player = $this->fetcher->getObject(objectType: 'player', id: $playerId);
-				$name = (string)($player['name'] ?? '');
-				if ($uid === '') {
-					$uid = (string)($player['userUid'] ?? '');
-				}
-			}
-		} catch (Throwable $e) {
-			$this->logger->debug('Larpinq: the player of a registration could not be read for a message.', ['exception' => $e]);
+		$player = $this->readPlayer(playerId: $playerId);
+		$name = (string)($player['name'] ?? '');
+		if ($uid === '') {
+			$uid = (string)($player['userUid'] ?? '');
 		}
 
 		$user = null;
@@ -111,6 +104,29 @@ class ParticipantContact {
 	}//end forRegistration()
 
 	/**
+	 * The player object behind a registration, or an empty array when the
+	 * registration names no player or the player cannot be read.
+	 *
+	 * @param string $playerId The player's object id, '' when there is none.
+	 *
+	 * @return array<string, mixed>
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function readPlayer(string $playerId): array {
+		if ($playerId === '') {
+			return [];
+		}
+
+		try {
+			return (array)$this->fetcher->getObject(objectType: 'player', id: $playerId);
+		} catch (Throwable $e) {
+			$this->logger->debug('Larpinq: the player of a registration could not be read for a message.', ['exception' => $e]);
+			return [];
+		}
+	}//end readPlayer()
+
+	/**
 	 * The email on the contact card linked to the player: the primary active
 	 * one first, else the first active one with an address; '' when the player
 	 * has none or the contact links cannot be read.
@@ -135,12 +151,8 @@ class ParticipantContact {
 
 		$addresses = [];
 		foreach ($links as $link) {
-			if (is_array($link) === false) {
-				continue;
-			}
-
-			$email = trim((string)($link['email'] ?? ''));
-			if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false || ($link['active'] ?? true) === false) {
+			$email = $this->activeAddress(link: $link);
+			if ($email === '') {
 				continue;
 			}
 
@@ -153,4 +165,27 @@ class ParticipantContact {
 
 		return ($addresses[0] ?? '');
 	}//end contactEmail()
+
+	/**
+	 * The valid email of an active contact link, or '' when the link is not
+	 * an array, is inactive or carries no valid address.
+	 *
+	 * @param mixed $link One contact link.
+	 *
+	 * @return string
+	 *
+	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 */
+	private function activeAddress(mixed $link): string {
+		if (is_array($link) === false || ($link['active'] ?? true) === false) {
+			return '';
+		}
+
+		$email = trim((string)($link['email'] ?? ''));
+		if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+			return '';
+		}
+
+		return $email;
+	}//end activeAddress()
 }//end class
