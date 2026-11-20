@@ -18,3 +18,11 @@ targetRules = ["generic-api-key"]
 paths = [
   '''(^|/)tests/vitest/fixtures/effectiveManifest\.golden\.json$''',
 ]
+
+[[allowlists]]
+description = "Portal assertion test fixtures: made-up signing secrets ('larpinq-test-secret-...', 'attacker-secret-...') for the signature and forgery tests, not credentials."
+targetRules = ["generic-api-key"]
+paths = [
+  '''(^|/)tests/unit/Controller/PortalCharacterControllerTest\.php$''',
+  '''(^|/)tests/unit/Service/PortalAssertionVerifierTest\.php$''',
+]
