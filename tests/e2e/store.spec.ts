@@ -110,7 +110,7 @@ test.describe('admin-configuration-store', () => {
 			}
 		})
 
-		await page.goto(`${BASE}/store`, { waitUntil: 'networkidle' })
+		await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
 		await expect(page.getByRole('heading', { name: 'Marketplace' }).first()).toBeVisible({ timeout: 30_000 })
 		expect(foreign, 'no request leaves the instance').toEqual([])
 	})
@@ -121,7 +121,7 @@ test.describe('admin-configuration-store', () => {
 	test('a player who is not an administrator is offered no Install', async ({ browser }) => {
 		const page = await pageAs(browser, sem)
 		try {
-			await page.goto(`${BASE}/store`, { waitUntil: 'networkidle' })
+			await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
 			await expect(page.getByRole('heading', { name: 'Marketplace' }).first()).toBeVisible({ timeout: 30_000 })
 			await expect(page.getByRole('button', { name: /^Install/ })).toHaveCount(0)
 		} finally {
@@ -133,7 +133,7 @@ test.describe('admin-configuration-store', () => {
 	 * @e2e store::a-game-master-browses-the-store
 	 */
 	test.fixme('a published bundle shows its kind, publisher, contents and version', async ({ page }) => {
-		await page.goto(`${BASE}/store`, { waitUntil: 'networkidle' })
+		await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
 		const card = page.locator('[data-testid^="store-card"]').filter({ hasText: BUNDLE }).first()
 		await expect(card).toBeVisible({ timeout: 30_000 })
 		await expect(card).toContainText('Larpvereniging Zuiddrecht')
@@ -144,7 +144,7 @@ test.describe('admin-configuration-store', () => {
 	 * @e2e store::a-skill-tree-from-another-campaign-goes-into-one-world
 	 */
 	test.fixme('the administrator installs a seeded bundle into one world', async ({ page }) => {
-		await page.goto(`${BASE}/store`, { waitUntil: 'networkidle' })
+		await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
 		const card = page.locator('[data-testid^="store-card"]').filter({ hasText: BUNDLE }).first()
 		await card.getByRole('button', { name: /^Install/ }).click()
 		await page.getByRole('combobox', { name: /world/i }).click()
