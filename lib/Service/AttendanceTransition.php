@@ -82,4 +82,21 @@ final class AttendanceTransition {
 
 		return $payload + ['checkedOutAt' => $stamp['at'], 'checkedOutBy' => $stamp['uid']];
 	}//end payload()
+
+	/**
+	 * The UUID of the current record, or null to create a new one.
+	 *
+	 * @param mixed $prior The current record, or an empty array.
+	 *
+	 * @return string|null The record UUID.
+	 *
+	 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 */
+	public function recordId(mixed $prior): ?string {
+		if (is_array($prior) === true && isset($prior['id']) === true) {
+			return (string)$prior['id'];
+		}
+
+		return null;
+	}//end recordId()
 }//end class

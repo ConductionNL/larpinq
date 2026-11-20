@@ -275,7 +275,7 @@ class EventRosterService {
 					stamp: ['uid' => $actingUid, 'at' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM)],
 					prior: $prior
 				),
-				uuid: $this->existingRecordId(existing: $existing, characterId: $characterId)
+				uuid: (new AttendanceTransition())->recordId(prior: $prior)
 			);
 		} catch (\Exception $exception) {
 			return null;
@@ -374,23 +374,6 @@ class EventRosterService {
 
 		return $this->attendsEvent(character: $character, eventId: $eventId);
 	}//end isParticipant()
-
-	/**
-	 * The UUID of an existing attendance record for a character, if any.
-	 *
-	 * @param array<string,array<string,mixed>> $existing Records indexed by character id.
-	 * @param string $characterId The character UUID.
-	 *
-	 * @return string|null The record UUID, or null to create a new one.
-	 */
-	private function existingRecordId(array $existing, string $characterId): ?string {
-		$prior = $existing[$characterId] ?? null;
-		if (is_array($prior) === true && isset($prior['id']) === true) {
-			return (string)$prior['id'];
-		}
-
-		return null;
-	}//end existingRecordId()
 
 	/**
 	 * Build one run-sheet cast entry for a character.
