@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Which status may follow which, and what a status stores.
  *
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
  */
 class AttendanceTransitionTest extends TestCase {
 
