@@ -27,10 +27,6 @@ namespace OCA\Larpinq\Service;
 use Exception;
 use InvalidArgumentException;
 use OCA\Larpinq\Kernel\Contracts\RegisterObjectFetcherInterface;
-use OCA\OpenRegister\Kernel\Contracts\Value\ObjectDeletion;
-use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindOptions;
-use OCA\OpenRegister\Kernel\Contracts\Value\ObjectFindTarget;
-use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
@@ -61,6 +57,13 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	private readonly RegisterSchemaLookup $schemaLookup;
 
 	/**
+	 * Builds the register and schema options of each OpenRegister call.
+	 *
+	 * @var RegisterCallOptions
+	 */
+	private readonly RegisterCallOptions $callOptions;
+
+	/**
 	 * Constructor for RegisterObjectFetcher.
 	 *
 	 * @param ContainerInterface $container DI container.
@@ -69,6 +72,8 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @param LoggerInterface $logger Logger for the resolver fallback path.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 *
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
 	 */
 	public function __construct(
 		private readonly ContainerInterface $container,
@@ -77,6 +82,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		LoggerInterface $logger,
 	) {
 		$this->schemaLookup = new RegisterSchemaLookup(container: $container, config: $config, logger: $logger);
+		$this->callOptions  = new RegisterCallOptions();
 	}//end __construct()
 
 	/**
@@ -451,6 +457,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
 	 */
 	public function getObjectWithAppAuthority(string $objectType, string $id): array {
 		$idLower = strtolower($id);
@@ -464,7 +471,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $object
 		$object = $openRegister->find(
 			id: $idLower,
-			options: new ObjectFindOptions(register: $register, schema: $schema),
+			options: $this->callOptions->find(target: [$register, $schema]),
 			_rbac: false,
 			_multitenancy: false,
 		);
@@ -528,6 +535,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
 	 */
 	public function saveObject(string $objectType, array $data, ?string $uuid = null): array {
 		$objectTypeLower = strtolower($objectType);
@@ -538,10 +546,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			$data,
-			new ObjectSaveOptions(
-				target: new ObjectFindTarget(register: $register, schema: $schema),
-				uuid: $uuid
-			)
+			$this->callOptions->save(target: [$register, $schema], uuid: $uuid)
 		);
 
 		return $this->toArray(object: $saved);
@@ -571,6 +576,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
 	 */
 	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
 		if ($uuid !== null && $uuid !== '') {
@@ -583,10 +589,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			object: $data,
-			options: new ObjectSaveOptions(
-				target: new ObjectFindTarget(register: $register, schema: $schema),
-				uuid: $uuid
-			),
+			options: $this->callOptions->save(target: [$register, $schema], uuid: $uuid),
 			_rbac: false,
 			_multitenancy: false
 		);
@@ -627,12 +630,13 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/setting-management/spec.md
+	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
 	 */
 	public function deleteObject(string $objectType, string $uuid): bool {
 		$openRegister = $this->getOpenRegisterService();
 
 		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
-		return (bool)$openRegister->deleteObject(new ObjectDeletion(uuid: $uuid, target: new ObjectFindTarget(register: $register, schema: $schema)));
+		return (bool)$openRegister->deleteObject($this->callOptions->deletion(uuid: $uuid, target: [$register, $schema]));
 	}//end deleteObject()
 }//end class

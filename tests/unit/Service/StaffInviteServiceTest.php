@@ -22,6 +22,8 @@ use DomainException;
 use InvalidArgumentException;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\StaffInviteService;
+use OCA\Larpinq\Service\StaffInviteState;
+use OCA\Larpinq\Service\StaffTeam;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IGroup;
@@ -37,6 +39,8 @@ use PHPUnit\Framework\TestCase;
  * REQ-ASR-004 and REQ-ASR-005 of admin-staff-roles-and-invites.
  */
 #[CoversClass(StaffInviteService::class)]
+#[CoversClass(StaffInviteState::class)]
+#[CoversClass(StaffTeam::class)]
 class StaffInviteServiceTest extends TestCase {
 
 	private const CODE = '0123456789abcdef0123456789abcdef';
@@ -70,8 +74,8 @@ class StaffInviteServiceTest extends TestCase {
 		return new StaffInviteService(
 			objectFetcher: $this->fetcher,
 			groupManager: $this->groupManager,
-			userManager: $this->userManager,
-			timeFactory: $clock,
+			inviteState: new StaffInviteState(timeFactory: $clock),
+			team: new StaffTeam(groupManager: $this->groupManager, userManager: $this->userManager),
 		);
 	}//end service()
 

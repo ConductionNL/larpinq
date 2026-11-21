@@ -171,6 +171,30 @@ class RegistrationPlaces {
 	}//end optionFull()
 
 	/**
+	 * The event's players after one character leaves and another joins.
+	 *
+	 * The order of those who stay is kept; a joining character already in the
+	 * list is not added twice. An empty id leaves or joins nobody.
+	 *
+	 * @param array<string, mixed>               $event The event.
+	 * @param array{remove: string, add: string} $move  The character that leaves and the one that joins, each '' for none.
+	 *
+	 * @return list<string> The player ids.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 */
+	public function playersAfter(array $event, array $move): array {
+		$players = array_map('strval', (array)($event['players'] ?? []));
+		$next    = array_values(array_filter($players, static fn (string $id): bool => $id !== $move['remove']));
+		if ($move['add'] !== '' && in_array($move['add'], $next, true) === false) {
+			$next[] = $move['add'];
+		}
+
+		return $next;
+	}//end playersAfter()
+
+	/**
 	 * The event's accepted registrations.
 	 *
 	 * @param string $eventId The event.

@@ -23,16 +23,13 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use DomainException;
 use InvalidArgumentException;
 use OCA\Larpinq\Support\AppIdentity;
-use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
-use OCP\IUserManager;
 use OutOfBoundsException;
 
 	/**
@@ -97,14 +94,16 @@ class StaffInviteService {
 	 *
 	 * @param RegisterObjectFetcher $objectFetcher The OpenRegister object access.
 	 * @param IGroupManager $groupManager The Nextcloud groups.
-	 * @param IUserManager $userManager The Nextcloud users.
-	 * @param ITimeFactory $timeFactory The clock.
+	 * @param StaffInviteState $inviteState The state of an invite and the clock.
+	 * @param StaffTeam $team The members of each role.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $objectFetcher,
 		private readonly IGroupManager $groupManager,
-		private readonly IUserManager $userManager,
-		private readonly ITimeFactory $timeFactory,
+		private readonly StaffInviteState $inviteState,
+		private readonly StaffTeam $team,
 	) {
 	}//end __construct()
 
@@ -148,6 +147,7 @@ class StaffInviteService {
 	 * @param int                                                  $days   How many days it is valid.
 	 *
 	 * @return array{invite: array<string, mixed>, token: string} The invite, and its token shown once.
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function issue(array $invite, int $days): array {
 		$token = bin2hex(random_bytes(16));
@@ -156,7 +156,7 @@ class StaffInviteService {
 			data: [
 				'role' => $invite['role'],
 				'tokenHash' => self::hashToken(token: $token),
-				'expiresAt' => $this->now()->modify('+' . $days . ' days')->format(DateTimeInterface::ATOM),
+				'expiresAt' => $this->inviteState->now()->modify('+' . $days . ' days')->format(DateTimeInterface::ATOM),
 				'maxUses' => $invite['maxUses'],
 				'uses' => [],
 				'createdBy' => $invite['createdBy'],
@@ -247,10 +247,11 @@ class StaffInviteService {
 	 * @param IUser                $user   Who redeemed it.
 	 *
 	 * @return void
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function recordUse(array $invite, IUser $user): void {
-		$uses   = self::uses(invite: $invite);
-		$uses[] = ['uid' => $user->getUID(), 'at' => $this->now()->format(DateTimeInterface::ATOM)];
+		$uses   = $this->inviteState->uses(invite: $invite);
+		$uses[] = ['uid' => $user->getUID(), 'at' => $this->inviteState->now()->format(DateTimeInterface::ATOM)];
 		$invite['uses'] = $uses;
 		// The whole invite is written back, token hash included: a save replaces the object.
 		$this->objectFetcher->saveObjectWithAppAuthority(
@@ -271,14 +272,15 @@ class StaffInviteService {
 	 * @throws \Exception When the invite cannot be read.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function revoke(string $id, string $actingUid): array {
 		$invite = $this->objectFetcher->getObjectOfType(objectType: self::OBJECT_TYPE, id: $id);
-		if (self::isRevoked(invite: $invite) === true) {
+		if ($this->inviteState->isRevoked(invite: $invite) === true) {
 			return self::withoutHash(invite: $invite);
 		}
 
-		$invite['revokedAt'] = $this->now()->format(DateTimeInterface::ATOM);
+		$invite['revokedAt'] = $this->inviteState->now()->format(DateTimeInterface::ATOM);
 		$invite['revokedBy'] = $actingUid;
 		$saved = $this->objectFetcher->saveObjectWithAppAuthority(
 			objectType: self::OBJECT_TYPE,
@@ -295,11 +297,12 @@ class StaffInviteService {
 	 * @return array{roles: list<array{role: string, members: list<array{uid: string, displayName: string}>}>, invites: list<array<string, mixed>>}
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function team(): array {
 		$roles = [];
 		foreach (self::roles() as $role) {
-			$roles[] = ['role' => $role, 'members' => $this->members(role: $role)];
+			$roles[] = ['role' => $role, 'members' => $this->team->members(role: $role)];
 		}
 
 		$invites = [];
@@ -312,22 +315,6 @@ class StaffInviteService {
 		return ['roles' => $roles, 'invites' => $invites];
 	}//end team()
 
-	/**
-	 * A role's members by display name.
-	 *
-	 * @param string $role The group id.
-	 *
-	 * @return list<array{uid: string, displayName: string}>
-	 */
-	private function members(string $role): array {
-		$members = [];
-		foreach (($this->groupManager->get($role)?->getUsers() ?? []) as $member) {
-			$members[] = ['uid' => $member->getUID(), 'displayName' => $member->getDisplayName()];
-		}
-
-		usort($members, static fn (array $a, array $b): int => strcasecmp($a['displayName'], $b['displayName']));
-		return $members;
-	}//end members()
 
 	/**
 	 * Remove a member from a role.
@@ -345,6 +332,7 @@ class StaffInviteService {
 	 * @throws DomainException When a game master removes themself from the game masters.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function removeMember(string $role, string $uid, string $actingUid): bool {
 		self::assertKnownRole(role: $role);
@@ -353,31 +341,9 @@ class StaffInviteService {
 			throw new DomainException('You cannot remove yourself from the game masters');
 		}
 
-		return $this->removeFrom(role: $role, uid: $uid);
+		return $this->team->removeFrom(role: $role, uid: $uid);
 	}//end removeMember()
 
-	/**
-	 * Take a user out of a role's group; false when either is gone or they are not in it.
-	 *
-	 * @param string $role The group id.
-	 * @param string $uid  The user.
-	 *
-	 * @return bool
-	 */
-	private function removeFrom(string $role, string $uid): bool {
-		$group = $this->groupManager->get($role);
-		$user  = $this->userManager->get($uid);
-		if ($group === null || $user === null) {
-			return false;
-		}
-
-		if ($group->inGroup($user) === false) {
-			return false;
-		}
-
-		$group->removeUser($user);
-		return true;
-	}//end removeFrom()
 
 	/**
 	 * Whether an invite still adds people: revoked first, then expired, then used up.
@@ -387,49 +353,13 @@ class StaffInviteService {
 	 * @return string One of the STATE_* values.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function state(array $invite): string {
-		if (self::isRevoked(invite: $invite) === true) {
-			return self::STATE_REVOKED;
-		}
-
-		if ($this->isExpired(invite: $invite) === true) {
-			return self::STATE_EXPIRED;
-		}
-
-		if (count(self::uses(invite: $invite)) >= max(1, (int)($invite['maxUses'] ?? 1))) {
-			return self::STATE_USED_UP;
-		}
-
-		return self::STATE_VALID;
+		return $this->inviteState->state(invite: $invite);
 	}//end state()
 
-	/**
-	 * Whether the invite was revoked.
-	 *
-	 * @param array<string, mixed> $invite The invite.
-	 *
-	 * @return bool
-	 */
-	private static function isRevoked(array $invite): bool {
-		return is_string($invite['revokedAt'] ?? null) === true && $invite['revokedAt'] !== '';
-	}//end isRevoked()
 
-	/**
-	 * Whether the invite's end has passed; one without a readable end has.
-	 *
-	 * @param array<string, mixed> $invite The invite.
-	 *
-	 * @return bool
-	 */
-	private function isExpired(array $invite): bool {
-		$expires = false;
-		if (is_string($invite['expiresAt'] ?? null) === true) {
-			$expires = strtotime($invite['expiresAt']);
-		}
-
-		return $expires === false || $expires <= $this->now()->getTimestamp();
-	}//end isExpired()
 
 	/**
 	 * Refuse a role that is not a staff role.
@@ -527,21 +457,6 @@ class StaffInviteService {
 		return is_string($invite['tokenHash'] ?? null) === true && hash_equals($hash, $invite['tokenHash']) === true;
 	}//end hasHash()
 
-	/**
-	 * The recorded uses of an invite.
-	 *
-	 * @param array<string, mixed> $invite The invite.
-	 *
-	 * @return list<array<string, mixed>> The uses.
-	 */
-	private static function uses(array $invite): array {
-		$uses = $invite['uses'] ?? [];
-		if (is_array($uses) === false) {
-			return [];
-		}
-
-		return array_values(array_filter($uses, 'is_array'));
-	}//end uses()
 
 	/**
 	 * The id of an invite.
@@ -578,14 +493,4 @@ class StaffInviteService {
 		return $invite;
 	}//end withoutHash()
 
-	/**
-	 * Now, from the clock.
-	 *
-	 * @return DateTimeImmutable The current moment.
-	 *
-	 * @SuppressWarnings(PHPMD.StaticAccess) DateTimeImmutable's named constructor.
-	 */
-	private function now(): DateTimeImmutable {
-		return DateTimeImmutable::createFromMutable($this->timeFactory->getDateTime());
-	}//end now()
 }//end class

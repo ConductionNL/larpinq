@@ -28,8 +28,9 @@
 
 ## 5. Quality
 
-- [ ] 5.1 `composer check:strict` green
+- [x] 5.1 `composer check:strict` green
   - Run 17 Nov on this branch merged with development: lint, phpcs (0 errors) and test:all (1243 tests, OK) pass; phpmd, psalm (8) and phpstan (1) report findings only in files this change does not touch (Application, StaffInvitesController, the listeners, CharacterStatsController, the MCP and form stubs), so they are inherited from development and stay open here.
   - 21 Nov, development after #1130, #1132 and #1134 (OpenRegister main beside the app): lint, phpcs (0 errors), psalm (no errors), phpstan (no errors) and test:all (1405 tests, OK) pass. phpmd keeps 9 findings: coupling in StaffInvitesController, CharacterRequirementListener, HelpMessageListener, RegistrationListener, RegisterObjectFetcher and StaffInviteService; class complexity in EventFeedbackService, RegistrationService and StaffInviteService. Each needs a collaborator extracted.
+  - 21 Nov, branch `cloud/b-larpinq-phpmd-collaborators`: the 9 phpmd findings are gone. Collaborators extracted: `StaffInviteState`, `StaffTeam` and `StaffInviteLink` (StaffInviteService, StaffInvitesController), `RegisterCallOptions` (RegisterObjectFetcher), `FeedbackParticipants` (EventFeedbackService), `EventCapacityLock` and `RegistrationPlaces::playersAfter()` (RegistrationService); the listeners read the event shape through `PreWriteEvent`. lint, phpcs (0 errors), phpmd (none), psalm (no errors), phpstan (no errors) and test:all (1424 tests, OK) pass.
 - [x] 5.2 Hydra gates green on the diff
   - 17 Nov: green after pointing the e2e spec's `@spec` anchor at `#4-tests` (gate-46 found `#4-verification`, a heading this file does not have).

@@ -260,4 +260,20 @@ class RegistrationPlacesTest extends TestCase {
 
 		$this->assertTrue(condition: $this->places->optionFull(option: ['id' => 7, 'event' => 'ev1', 'placeLimit' => 1], registration: ['id' => 'r9']));
 	}
+
+	/**
+	 * The players after a change keep their order, drop the leaver and add a newcomer once.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 *
+	 * @return void
+	 */
+	public function testPlayersAfterAChange(): void {
+		$event = ['players' => ['c1', 'c2', 3]];
+
+		$this->assertSame(expected: ['c1', '3', 'c4'], actual: $this->places->playersAfter(event: $event, move: ['remove' => 'c2', 'add' => 'c4']));
+		$this->assertSame(expected: ['c1', 'c2', '3'], actual: $this->places->playersAfter(event: $event, move: ['remove' => '', 'add' => 'c1']));
+		$this->assertSame(expected: ['c1', 'c2', '3'], actual: $this->places->playersAfter(event: $event, move: ['remove' => '', 'add' => '']));
+		$this->assertSame(expected: ['c9'], actual: $this->places->playersAfter(event: [], move: ['remove' => 'c1', 'add' => 'c9']));
+	}//end testPlayersAfterAChange()
 }
