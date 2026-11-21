@@ -164,6 +164,8 @@ class StaffInvitesController extends Controller {
 	 * the signed-in caller to the invite's staff role. Rate limited per user.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) StaffInviteService::hashToken() is a pure hash helper.
 	 */
 	#[NoAdminRequired]
 	#[UserRateLimit(limit: 10, period: 300)]

@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 use OCA\Larpinq\Kernel\Contracts\EventFeedbackServiceInterface;
@@ -233,7 +234,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 			return null;
 		}
 
-		$closes = self::moment(value: ($event['feedbackClosesAt'] ?? null)) ?? $opens->add(new \DateInterval(self::DEFAULT_OPEN_FOR));
+		$closes = self::moment(value: ($event['feedbackClosesAt'] ?? null)) ?? $opens->add(new DateInterval(self::DEFAULT_OPEN_FOR));
 
 		return ['opens' => $opens, 'closes' => $closes];
 	}//end window()
@@ -256,7 +257,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 		return [
 			'event'      => $event,
 			'formId'     => $formId,
-			'remindFrom' => $window['closes']->sub(new \DateInterval(self::REMIND_BEFORE)),
+			'remindFrom' => $window['closes']->sub(new DateInterval(self::REMIND_BEFORE)),
 			'now'        => $now,
 		];
 	}//end openRun()

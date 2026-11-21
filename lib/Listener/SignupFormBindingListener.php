@@ -72,6 +72,8 @@ class SignupFormBindingListener implements IEventListener {
 	 * @return void
 	 *
 	 * @spec openspec/changes/forms-registration-is-checked-at-binding/specs/forms-registration/spec.md#requirement-a-forms-binding-must-be-valid-against-the-registration-schema-when-it-is-made
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
 		if (PreWriteEvent::isPreWrite(event: $event) === false) {

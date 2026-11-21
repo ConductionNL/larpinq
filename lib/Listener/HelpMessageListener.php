@@ -110,7 +110,8 @@ class HelpMessageListener implements IEventListener {
 	 */
 	public function handle(Event $event): void {
 		if ($event instanceof ObjectCreatingEvent) {
-			$this->onCreating(event: $event);
+			// @phpstan-ignore-next-line
+			$this->onCreating(event: $event, entity: $event->getObject());
 			return;
 		}
 
@@ -126,7 +127,8 @@ class HelpMessageListener implements IEventListener {
 	/**
 	 * Before a question or a message is stored: prepare or refuse it.
 	 *
-	 * @param Event $event The creating event.
+	 * @param Event  $event  The creating event.
+	 * @param object $entity The object being created.
 	 *
 	 * @return void
 	 *
@@ -135,13 +137,7 @@ class HelpMessageListener implements IEventListener {
 	 *
 	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
-	private function onCreating(Event $event): void {
-		if (($event instanceof ObjectCreatingEvent) === false) {
-			return;
-		}
-
-		// @phpstan-ignore-next-line
-		$entity = $event->getObject();
+	private function onCreating(Event $event, object $entity): void {
 		if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
 			$this->prepareQuestion(event: $event, question: (array)$entity->getObject());
 		} else if ($this->isOf(entity: $entity, key: 'helpmessage_schema') === true) {
@@ -164,12 +160,14 @@ class HelpMessageListener implements IEventListener {
 	 * @return void
 	 *
 	 * @spec openspec/changes/communication-help-desk/specs/help-desk/spec.md#requirement-players-ask-questions-req-chd-001
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function prepareQuestion(Event $event, array $question): void {
 		$asker = $this->askerOf(question: $question);
 		$uid   = $this->caller->uid();
 		if ($uid === '' || $this->caller->isOrganiser(uid: $uid) === true) {
-			$this->merge(event: $event, data: $asker);
+			PreWriteEvent::mergeModified(event: $event, data: $asker);
 			return;
 		}
 
@@ -179,7 +177,7 @@ class HelpMessageListener implements IEventListener {
 			return;
 		}
 
-		$this->merge(event: $event, data: self::ownAsker(asker: $asker, uid: $uid));
+		PreWriteEvent::mergeModified(event: $event, data: self::ownAsker(asker: $asker, uid: $uid));
 	}//end prepareQuestion()
 
 	/**
@@ -273,6 +271,8 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $message The message as written.
 	 *
 	 * @return void
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function prepareMessage(Event $event, array $message): void {
 		$question  = $this->questionOf(message: $message);
@@ -289,7 +289,7 @@ class HelpMessageListener implements IEventListener {
 			return;
 		}
 
-		$this->merge(event: $event, data: ['author' => $uid, 'fromOrganiser' => $organiser] + self::threadOf(question: (array)$question));
+		PreWriteEvent::mergeModified(event: $event, data: ['author' => $uid, 'fromOrganiser' => $organiser] + self::threadOf(question: (array)$question));
 	}//end prepareMessage()
 
 	/**
@@ -456,23 +456,6 @@ class HelpMessageListener implements IEventListener {
 
 		return trim($value);
 	}//end idOf()
-
-	/**
-	 * Merge fields into what other listeners changed.
-	 *
-	 * @param Event               $event The pre-create event.
-	 * @param array<string,mixed> $data  The fields.
-	 *
-	 * @return void
-	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
-	 */
-	private function merge(Event $event, array $data): void {
-		if ($data !== [] && $event instanceof ObjectCreatingEvent) {
-			// @phpstan-ignore-next-line
-			$event->setModifiedData(array_merge($event->getModifiedData(), $data));
-		}
-	}//end merge()
 
 	/**
 	 * Whether an entity is of the schema configured under a key.

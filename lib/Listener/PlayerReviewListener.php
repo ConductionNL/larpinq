@@ -85,6 +85,8 @@ class PlayerReviewListener implements IEventListener {
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
 	 * @spec openspec/specs/portal-contribution/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) WriteStamp is a pure helper over the fields it is handed.
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) === false) {

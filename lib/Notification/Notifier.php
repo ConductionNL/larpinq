@@ -82,6 +82,8 @@ class Notifier implements INotifier {
 	 * @throws UnknownNotificationException When it is not one of larpinq's.
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-participants-who-were-there-are-invited-once-req-eps-002
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) FeedbackDelivery::subjectText() is a pure text helper.
 	 */
 	public function prepare(INotification $notification, string $languageCode): INotification {
 		$subject = $notification->getSubject();

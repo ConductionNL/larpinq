@@ -248,6 +248,8 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return array<string, string> `['checkinCode' => ...]`, or nothing.
 	 *
 	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */
 	private static function checkinCodeFor(array $registration, string $status): array {
 		if ($status !== self::ACCEPTED || (string)($registration['checkinCode'] ?? '') !== '') {
