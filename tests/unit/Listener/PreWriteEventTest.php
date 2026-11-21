@@ -83,7 +83,7 @@ class PreWriteEventTest extends TestCase {
 	 * An event that is not a pre-write event is stopped but given no errors,
 	 * since only OpenRegister's pre-write events carry them.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/rpg-system/spec.md
 	 *
 	 * @return void
 	 */
@@ -99,7 +99,7 @@ class PreWriteEventTest extends TestCase {
 	 * Fields merge into what other listeners changed, only on a pre-write event
 	 * and only when there are any.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/rpg-system/spec.md
 	 *
 	 * @return void
 	 */

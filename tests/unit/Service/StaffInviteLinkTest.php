@@ -9,7 +9,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/staff-roles/spec.md
  */
 
 declare(strict_types=1);

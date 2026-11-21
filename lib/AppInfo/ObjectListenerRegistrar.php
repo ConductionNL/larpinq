@@ -132,7 +132,7 @@ class ObjectListenerRegistrar {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function registerOpenRegisterHooks(IRegistrationContext $context): void {
 		if (interface_exists('OCA\OpenRegister\Mcp\IMcpScannableServices') === true) {

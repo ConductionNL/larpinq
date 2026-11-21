@@ -124,7 +124,7 @@ class EventRosterService {
 	 * @return array<string,mixed> The render context.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
 		$characters = $this->castCharacters(eventId: $eventId, event: $event);
@@ -194,7 +194,7 @@ class EventRosterService {
 	 *
 	 * @return list<array<string,mixed>> The cast characters.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function castCharacters(string $eventId, ?array $event): array {
@@ -450,7 +450,7 @@ class EventRosterService {
 	 *
 	 * @return array<int,array<string,mixed>> The character objects.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#2-scope-the-character-query
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
 	private function fetchCharacters(string $eventId): array {
 		try {
@@ -474,7 +474,7 @@ class EventRosterService {
 	 *
 	 * @return array<string,array<string,mixed>> Players indexed by id.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#3-scope-the-player-lookup
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
 	private function indexPlayers(array $characters): array {
 		$indexed = [];

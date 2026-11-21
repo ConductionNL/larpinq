@@ -133,7 +133,7 @@ class HelpMessageListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/help-desk/spec.md
 	 */
 	private function onCreating(Event $event, object $entity): void {
 		if ($this->isOf(entity: $entity, key: 'helpquestion_schema') === true) {
@@ -297,7 +297,7 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $question The question.
 	 *
 	 * @return array<string,string>
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/help-desk/spec.md
 	 */
 	private static function threadOf(array $question): array {
 		return [
@@ -379,7 +379,7 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $message  The stored message.
 	 *
 	 * @return array<string,string>
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/help-desk/spec.md
 	 */
 	private static function followUp(array $question, array $message): array {
 		$next = self::statusAfter(status: (string)($question['status'] ?? ''), fromOrganiser: (($message['fromOrganiser'] ?? false) === true));

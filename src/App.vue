@@ -19,7 +19,7 @@
  only dangling @spec target. The requirement this file actually satisfies is
  "CnAppRoot SHALL be the boot entry point" in the Tier-4 graduation spec.
 
- @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md
+ @spec openspec/specs/app-manifest/spec.md
 -->
 <template>
 	<CnAppRoot

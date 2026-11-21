@@ -112,7 +112,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param LoggerInterface       $logger   The logger.
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -165,7 +165,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @return array<string, mixed> formId, opensAt, closesAt, invited, answered (int|null) and notAnswered (list of uid and character, or null).
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-game-masters-see-who-answered-req-eps-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function summary(array $event): array {
 		$formId  = (int)($event['feedbackForm'] ?? 0);
@@ -291,7 +291,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param array{event: array, formId: int, remindFrom: DateTimeImmutable, now: DateTimeImmutable} $run The event's run.
 	 *
 	 * @return array{invited: int, reminded: int}
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	private function forEvent(array $run): array {
 		$done           = ['invited' => 0, 'reminded' => 0];
@@ -315,7 +315,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param array{formId: int, remindFrom: DateTimeImmutable, now: DateTimeImmutable} $run        The event's run.
 	 *
 	 * @return array{owner: string, field: string}|null
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	private function dueFor(array $attendance, array $run): ?array {
 		$field = self::dueStamp(attendance: $attendance, run: $run);

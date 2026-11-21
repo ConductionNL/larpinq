@@ -122,7 +122,6 @@ class Application extends App implements IBootstrap {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-1
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-2
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-3
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function register(IRegistrationContext $context): void {
 		// ADR-040 load-order prelude — MUST come before every class_exists()

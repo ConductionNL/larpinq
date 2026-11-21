@@ -9,7 +9,7 @@
  * The registry is read as source text: importing it pulls in every view and
  * dialog with their library imports, which this node suite does not load.
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md
+ * @spec openspec/specs/app-manifest/spec.md
  */
 
 import { existsSync, readFileSync } from 'node:fs'

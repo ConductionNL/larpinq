@@ -97,7 +97,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -122,7 +122,6 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return array<string, mixed> The fields to set.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function beforeCreate(array $registration): array {
 		$changes = [];
@@ -181,7 +180,6 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return array<string, string> `decidedAt` and `decidedBy`.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function stamp(string $actingUid): array {
 		$decidedBy = $actingUid;
@@ -312,7 +310,6 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function release(string $eventId): void {
 		$this->lock->release(eventId: $eventId);
@@ -329,7 +326,6 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return bool Whether this request holds the lock.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function hold(string $eventId): bool {
 		return $this->lock->acquire(eventId: $eventId);
@@ -349,7 +345,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @param string $excludeId The registration being decided (not counted).
 	 *
 	 * @return string The status.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	private function placeOutcome(array $event, array $registration, string $excludeId): string {
 		$capacity = $event['capacity'] ?? null;
@@ -383,7 +379,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @param array<string, mixed>|null $old The registration before.
 	 *
 	 * @return void
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	private function syncParticipants(string $eventId, array $new, ?array $old): void {
 		$remove = '';

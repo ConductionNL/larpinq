@@ -135,7 +135,6 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 * @spec openspec/specs/character-custom-fields/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
@@ -202,7 +201,7 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument   OpenRegister entity classes are optional dependencies.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
@@ -260,7 +259,6 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 * @spec openspec/specs/character-custom-fields/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */

@@ -12,7 +12,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/staff-roles/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -59,7 +59,7 @@ class StaffInviteState {
 	 * @return string One of the StaffInviteService::STATE_* values.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function state(array $invite): string {
 		if ($this->isRevoked(invite: $invite) === true) {
@@ -84,7 +84,7 @@ class StaffInviteState {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function isRevoked(array $invite): bool {
 		return is_string($invite['revokedAt'] ?? null) === true && $invite['revokedAt'] !== '';
@@ -97,7 +97,7 @@ class StaffInviteState {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function isExpired(array $invite): bool {
 		$expires = false;
@@ -115,7 +115,7 @@ class StaffInviteState {
 	 *
 	 * @return list<array<string, mixed>> The uses.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function uses(array $invite): array {
 		$uses = $invite['uses'] ?? [];
@@ -131,7 +131,7 @@ class StaffInviteState {
 	 *
 	 * @return DateTimeImmutable The current moment.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) DateTimeImmutable's named constructor.
 	 */

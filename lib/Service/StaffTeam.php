@@ -12,7 +12,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/staff-roles/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -61,7 +61,7 @@ class StaffTeam {
 	 * @return list<array{uid: string, displayName: string}>
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function members(string $role): array {
 		$members = [];
@@ -82,7 +82,7 @@ class StaffTeam {
 	 * @return bool
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function removeFrom(string $role, string $uid): bool {
 		$group = $this->groupManager->get($role);

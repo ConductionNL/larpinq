@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 declare(strict_types=1);
@@ -64,7 +64,7 @@ class EventCapacityLock {
 	 * @param array{attempts?: int, waitMicros?: int} $retry   How often a busy lock is tried (default 30)
 	 *                                                        and the pause between two tries in microseconds (default 100000).
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-registration/spec.md
 	 */
 	public function __construct(
 		private readonly ILockingProvider $locking,
@@ -80,7 +80,6 @@ class EventCapacityLock {
 	 * @return bool Whether this request holds the lock.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function acquire(string $eventId): bool {
 		if (isset($this->held[$eventId]) === true) {
@@ -108,7 +107,6 @@ class EventCapacityLock {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function release(string $eventId): void {
 		if (isset($this->held[$eventId]) === false) {

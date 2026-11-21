@@ -140,7 +140,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 	/**
 	 * The curated MCP tool listing is aliased under larpinq's app id.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/rpg-system/spec.md
 	 *
 	 * @return void
 	 */

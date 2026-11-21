@@ -97,7 +97,7 @@ class StaffInviteService {
 	 * @param StaffInviteState $inviteState The state of an invite and the clock.
 	 * @param StaffTeam $team The members of each role.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $objectFetcher,
@@ -147,7 +147,7 @@ class StaffInviteService {
 	 * @param int                                                  $days   How many days it is valid.
 	 *
 	 * @return array{invite: array<string, mixed>, token: string} The invite, and its token shown once.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	private function issue(array $invite, int $days): array {
 		$token = bin2hex(random_bytes(16));
@@ -247,7 +247,7 @@ class StaffInviteService {
 	 * @param IUser                $user   Who redeemed it.
 	 *
 	 * @return void
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	private function recordUse(array $invite, IUser $user): void {
 		$uses   = $this->inviteState->uses(invite: $invite);
@@ -272,7 +272,7 @@ class StaffInviteService {
 	 * @throws \Exception When the invite cannot be read.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function revoke(string $id, string $actingUid): array {
 		$invite = $this->objectFetcher->getObjectOfType(objectType: self::OBJECT_TYPE, id: $id);
@@ -297,7 +297,7 @@ class StaffInviteService {
 	 * @return array{roles: list<array{role: string, members: list<array{uid: string, displayName: string}>}>, invites: list<array<string, mixed>>}
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function team(): array {
 		$roles = [];
@@ -332,7 +332,7 @@ class StaffInviteService {
 	 * @throws DomainException When a game master removes themself from the game masters.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-game-masters-see-and-manage-the-team-req-asr-005
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function removeMember(string $role, string $uid, string $actingUid): bool {
 		self::assertKnownRole(role: $role);
@@ -353,7 +353,7 @@ class StaffInviteService {
 	 * @return string One of the STATE_* values.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function state(array $invite): string {
 		return $this->inviteState->state(invite: $invite);

@@ -101,7 +101,7 @@ tryLoadTranslations()
 // #sidebar and #user-settings slots, and receives the manifest, registry and
 // page types as props.
 //
-// @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md#requirement-cnapproot-shall-be-the-boot-entry-point
+// @spec openspec/specs/app-manifest/spec.md#requirement-cnapproot-shall-be-the-boot-entry-point
 mountCnApp('#content', {
 	appId: 'larpinq',
 	manifest,

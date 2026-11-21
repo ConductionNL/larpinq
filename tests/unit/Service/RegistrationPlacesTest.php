@@ -264,7 +264,7 @@ class RegistrationPlacesTest extends TestCase {
 	/**
 	 * The players after a change keep their order, drop the leaver and add a newcomer once.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-registration/spec.md
 	 *
 	 * @return void
 	 */
