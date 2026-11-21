@@ -666,13 +666,6 @@ export default {
 	container-type: inline-size;
 }
 
-@container (max-width: 600px) {
-	.event-roster__action {
-		min-width: 44px;
-		min-height: 44px;
-	}
-}
-
 .event-roster__scan {
 	display: flex;
 	flex-direction: column;
@@ -722,5 +715,40 @@ export default {
 	background-color: var(--color-background-hover);
 	color: var(--color-text-maxcontrast);
 	font-size: 0.9em;
+}
+
+@container (max-width: 600px) {
+	.event-roster__action {
+		min-width: 44px;
+		min-height: 44px;
+	}
+
+	/*
+	 * The scan field spans the width, its button sits below it at 44 pixels,
+	 * and the code text is 16 pixels so the phone does not zoom in while the
+	 * steward types (REQ-APF-002).
+	 *
+	 * @spec openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages/spec.md
+	 */
+	.event-roster__scan {
+		align-items: stretch;
+	}
+
+	.event-roster__scan-panel {
+		max-width: none;
+	}
+
+	.event-roster__scan-form {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.event-roster__scan-form :deep(input) {
+		font-size: 16px;
+	}
+
+	.event-roster__scan :deep(button) {
+		min-height: 44px;
+	}
 }
 </style>
