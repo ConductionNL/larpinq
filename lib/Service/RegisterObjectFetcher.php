@@ -73,7 +73,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function __construct(
 		private readonly ContainerInterface $container,
@@ -457,7 +457,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function getObjectWithAppAuthority(string $objectType, string $id): array {
 		$idLower = strtolower($id);
@@ -535,7 +535,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/event-checkin-roster/spec.md
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function saveObject(string $objectType, array $data, ?string $uuid = null): array {
 		$objectTypeLower = strtolower($objectType);
@@ -576,7 +576,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedAssignment  OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function saveObjectWithAppAuthority(string $objectType, array $data, ?string $uuid = null): array {
 		if ($uuid !== null && $uuid !== '') {
@@ -630,7 +630,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
 	 *
 	 * @spec openspec/specs/setting-management/spec.md
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function deleteObject(string $objectType, string $uuid): bool {
 		$openRegister = $this->getOpenRegisterService();

@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/staff-roles/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -63,7 +63,7 @@ class StaffInviteLink {
 	 * @return string The link.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function url(string $token): string {
 		return $this->urlGenerator->linkToRouteAbsolute('larpinq.dashboard.page') . 'staff-invite/' . $token;
@@ -77,7 +77,7 @@ class StaffInviteLink {
 	 * @return bool True when taken; false while another redeem of it holds it.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function lock(string $token): bool {
 		try {
@@ -96,7 +96,7 @@ class StaffInviteLink {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function unlock(string $token): void {
 		$this->lockingProvider->releaseLock(self::lockKey(token: $token), ILockingProvider::LOCK_EXCLUSIVE);
@@ -109,7 +109,7 @@ class StaffInviteLink {
 	 *
 	 * @return string The key.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) StaffInviteService::hashToken() is a pure hash helper.
 	 */

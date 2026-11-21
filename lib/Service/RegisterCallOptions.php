@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+ * @spec openspec/specs/object-service/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -42,7 +42,7 @@ use OCA\OpenRegister\Kernel\Contracts\Value\ObjectSaveOptions;
  *
  * @psalm-suppress UndefinedClass OpenRegister is an optional dependency.
  *
- * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+ * @spec openspec/specs/object-service/spec.md
  */
 class RegisterCallOptions {
 
@@ -55,7 +55,7 @@ class RegisterCallOptions {
 	 *
 	 * @psalm-suppress UndefinedClass OpenRegister is an optional dependency.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function find(array $target): ObjectFindOptions {
 		return new ObjectFindOptions(register: $target[0], schema: $target[1]);
@@ -71,7 +71,7 @@ class RegisterCallOptions {
 	 *
 	 * @psalm-suppress UndefinedClass OpenRegister is an optional dependency.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function save(array $target, ?string $uuid): ObjectSaveOptions {
 		return new ObjectSaveOptions(target: new ObjectFindTarget(register: $target[0], schema: $target[1]), uuid: $uuid);
@@ -87,7 +87,7 @@ class RegisterCallOptions {
 	 *
 	 * @psalm-suppress UndefinedClass OpenRegister is an optional dependency.
 	 *
-	 * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#5-quality
+	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function deletion(string $uuid, array $target): ObjectDeletion {
 		return new ObjectDeletion(uuid: $uuid, target: new ObjectFindTarget(register: $target[0], schema: $target[1]));

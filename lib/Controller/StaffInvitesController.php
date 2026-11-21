@@ -75,7 +75,7 @@ class StaffInvitesController extends Controller {
 	 * @param StaffInviteLink $inviteLink Builds the invite link and holds the redeem lock.
 	 * @param LoggerInterface $logger The logger.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function __construct(
 		IRequest $request,
@@ -95,7 +95,7 @@ class StaffInvitesController extends Controller {
 	 * @return JSONResponse 201 with the invite, token and link; 400, 401 or 403.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	#[NoAdminRequired]
 	public function create(): JSONResponse {
@@ -163,7 +163,7 @@ class StaffInvitesController extends Controller {
 	 * the signed-in caller to the invite's staff role. Rate limited per user.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	#[NoAdminRequired]
 	#[UserRateLimit(limit: 10, period: 300)]

@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+ * @spec openspec/specs/event-feedback/spec.md
  */
 
 declare(strict_types=1);
@@ -47,7 +47,7 @@ class FeedbackParticipants {
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads the register with the app's authority.
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -62,7 +62,7 @@ class FeedbackParticipants {
 	 * @param string $eventId The event.
 	 *
 	 * @return array<int, array> The attendance records.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function checkedIn(string $eventId): array {
 		$rows = $this->fetcher->getObjectsWithAppAuthority(
@@ -80,7 +80,7 @@ class FeedbackParticipants {
 	 * @param string $eventId The event.
 	 *
 	 * @return array<string, string> Character name by user id.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function invitees(string $eventId): array {
 		$invited = [];
@@ -104,7 +104,7 @@ class FeedbackParticipants {
 	 * @param array $attendance The attendance record.
 	 *
 	 * @return string The user id.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function ownerOf(array $attendance): string {
 		return $this->characterField(attendance: $attendance, field: 'ownerUid');
@@ -116,7 +116,7 @@ class FeedbackParticipants {
 	 * @param array $attendance The attendance record.
 	 *
 	 * @return string The name.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function characterName(array $attendance): string {
 		$character = $attendance['character'] ?? '';
@@ -134,7 +134,7 @@ class FeedbackParticipants {
 	 * @param string $field      The character field.
 	 *
 	 * @return string The value.
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	private function characterField(array $attendance, string $field): string {
 		$character = $attendance['character'] ?? '';

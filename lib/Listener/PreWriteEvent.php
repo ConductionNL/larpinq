@@ -86,7 +86,6 @@ final class PreWriteEvent {
 	 * @return void
 	 *
 	 * @spec openspec/specs/rpg-system/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public static function refuseOnErrors(Event $event, ?array $errors): void {
 		if ($errors === null) {
@@ -110,7 +109,7 @@ final class PreWriteEvent {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public static function mergeModified(Event $event, array $data): void {
 		if ($data === [] || self::isPreWrite(event: $event) === false) {

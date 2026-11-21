@@ -182,7 +182,6 @@ class RegistrationPlaces {
 	 * @return list<string> The player ids.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function playersAfter(array $event, array $move): array {
 		$players = array_map('strval', (array)($event['players'] ?? []));
