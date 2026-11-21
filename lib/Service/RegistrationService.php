@@ -24,11 +24,8 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use OCA\Larpinq\Kernel\Contracts\RegistrationServiceInterface;
 use OCP\Lock\ILockingProvider;
-use OCP\Lock\LockedException;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -61,13 +58,6 @@ class RegistrationService implements RegistrationServiceInterface {
 	public const AUTOMATIC = 'larpinq';
 
 	/**
-	 * Lock key prefix, one lock per event.
-	 *
-	 * @var string
-	 */
-	private const LOCK_PREFIX = 'larpinq/event-capacity/';
-
-	/**
 	 * Upper bound of the registrations one event is read with.
 	 *
 	 * @var integer
@@ -75,11 +65,11 @@ class RegistrationService implements RegistrationServiceInterface {
 	private const MAX_ROWS = 2000;
 
 	/**
-	 * Events whose lock this request holds.
+	 * The lock per event that place decisions are taken under.
 	 *
-	 * @var array<string, true>
+	 * @var EventCapacityLock
 	 */
-	private array $held = [];
+	private readonly EventCapacityLock $lock;
 
 	/**
 	 * Whether the service itself is moving a waitlisted registration up.
@@ -106,16 +96,19 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @param EventCareRecords|null $care Copies the player's care details for the event on acceptance (players-care-details-and-erasure).
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
-		private readonly ILockingProvider $locking,
+		ILockingProvider $locking,
 		private readonly LoggerInterface $logger,
-		private readonly int $lockAttempts = 30,
-		private readonly int $lockWaitMicros = 100000,
+		int $lockAttempts = 30,
+		int $lockWaitMicros = 100000,
 		private readonly ?EventCareRecords $care = null,
 	) {
 		$this->places = new RegistrationPlaces(fetcher: $fetcher);
+		$this->lock   = new EventCapacityLock(locking: $locking, attempts: $lockAttempts, waitMicros: $lockWaitMicros);
 	}//end __construct()
 
 	/**
@@ -129,11 +122,12 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return array<string, mixed> The fields to set.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function beforeCreate(array $registration): array {
 		$changes = [];
 		if ((string)($registration['submittedAt'] ?? '') === '') {
-			$changes['submittedAt'] = $this->now();
+			$changes['submittedAt'] = date(DATE_ATOM);
 		}
 
 		$event = $this->event(eventId: (string)($registration['event'] ?? ''));
@@ -145,7 +139,7 @@ class RegistrationService implements RegistrationServiceInterface {
 
 		return array_merge(
 			$changes,
-			['status' => $placement['status'], 'decidedAt' => $this->now(), 'decidedBy' => self::AUTOMATIC],
+			['status' => $placement['status'], 'decidedAt' => date(DATE_ATOM), 'decidedBy' => self::AUTOMATIC],
 			$placement
 		);
 	}//end beforeCreate()
@@ -187,6 +181,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return array<string, string> `decidedAt` and `decidedBy`.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function stamp(string $actingUid): array {
 		$decidedBy = $actingUid;
@@ -194,7 +189,7 @@ class RegistrationService implements RegistrationServiceInterface {
 			$decidedBy = self::AUTOMATIC;
 		}
 
-		return ['decidedAt' => $this->now(), 'decidedBy' => $decidedBy];
+		return ['decidedAt' => date(DATE_ATOM), 'decidedBy' => $decidedBy];
 	}//end stamp()
 
 	/**
@@ -317,14 +312,10 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function release(string $eventId): void {
-		if (isset($this->held[$eventId]) === false) {
-			return;
-		}
-
-		unset($this->held[$eventId]);
-		$this->locking->releaseLock(self::LOCK_PREFIX . $eventId, ILockingProvider::LOCK_EXCLUSIVE);
+		$this->lock->release(eventId: $eventId);
 	}//end release()
 
 	/**
@@ -338,9 +329,10 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @return bool Whether this request holds the lock.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	public function hold(string $eventId): bool {
-		return $this->acquire(eventId: $eventId);
+		return $this->lock->acquire(eventId: $eventId);
 	}//end hold()
 
 	/**
@@ -357,6 +349,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @param string $excludeId The registration being decided (not counted).
 	 *
 	 * @return string The status.
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function placeOutcome(array $event, array $registration, string $excludeId): string {
 		$capacity = $event['capacity'] ?? null;
@@ -366,7 +359,7 @@ class RegistrationService implements RegistrationServiceInterface {
 		}
 
 		$eventId = (string)($event['id'] ?? '');
-		if ($this->acquire(eventId: $eventId) === false) {
+		if ($this->lock->acquire(eventId: $eventId) === false) {
 			$this->logger->warning('Larpinq: event {event} was busy; the registration waits for a place.', ['event' => $eventId]);
 			return self::WAITLISTED;
 		}
@@ -390,6 +383,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 * @param array<string, mixed>|null $old The registration before.
 	 *
 	 * @return void
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private function syncParticipants(string $eventId, array $new, ?array $old): void {
 		$remove = '';
@@ -411,13 +405,8 @@ class RegistrationService implements RegistrationServiceInterface {
 			return;
 		}
 
-		$players = array_map('strval', (array)($event['players'] ?? []));
-		$next = array_values(array_filter($players, static fn (string $id): bool => $id !== $remove));
-		if ($add !== '' && in_array($add, $next, true) === false) {
-			$next[] = $add;
-		}
-
-		if ($next === $players) {
+		$next = $this->places->playersAfter(event: $event, remove: $remove, add: $add);
+		if ($next === array_map('strval', (array)($event['players'] ?? []))) {
 			return;
 		}
 
@@ -505,38 +494,4 @@ class RegistrationService implements RegistrationServiceInterface {
 			return null;
 		}
 	}//end event()
-
-	/**
-	 * Take the event's lock, trying a few times while another request holds it.
-	 *
-	 * @param string $eventId The event.
-	 *
-	 * @return bool Whether this request holds the lock.
-	 */
-	private function acquire(string $eventId): bool {
-		if (isset($this->held[$eventId]) === true) {
-			return true;
-		}
-
-		for ($attempt = 1; $attempt <= max(1, $this->lockAttempts); $attempt++) {
-			try {
-				$this->locking->acquireLock(self::LOCK_PREFIX . $eventId, ILockingProvider::LOCK_EXCLUSIVE);
-				$this->held[$eventId] = true;
-				return true;
-			} catch (LockedException $e) {
-				usleep($this->lockWaitMicros);
-			}
-		}
-
-		return false;
-	}//end acquire()
-
-	/**
-	 * Now, as stored.
-	 *
-	 * @return string The moment.
-	 */
-	private function now(): string {
-		return (new DateTimeImmutable())->format(DateTimeInterface::ATOM);
-	}//end now()
 }//end class

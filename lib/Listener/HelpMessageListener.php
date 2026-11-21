@@ -24,8 +24,6 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Listener;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\OpenRegister\Event\ObjectCreatingEvent;
 use OCP\EventDispatcher\Event;
@@ -299,12 +297,13 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $question The question.
 	 *
 	 * @return array<string,string>
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private static function threadOf(array $question): array {
 		return [
 			'askerUid'  => (string)($question['askerUid'] ?? ''),
 			'ownerRef'  => (string)($question['ownerRef'] ?? ''),
-			'createdAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
+			'createdAt' => date(DATE_ATOM),
 		];
 	}//end threadOf()
 
@@ -380,10 +379,11 @@ class HelpMessageListener implements IEventListener {
 	 * @param array<string,mixed> $message  The stored message.
 	 *
 	 * @return array<string,string>
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
 	 */
 	private static function followUp(array $question, array $message): array {
 		$next = self::statusAfter(status: (string)($question['status'] ?? ''), fromOrganiser: (($message['fromOrganiser'] ?? false) === true));
-		$data = ['lastMessageAt' => (string)($message['createdAt'] ?? (new DateTimeImmutable())->format(DateTimeInterface::ATOM))];
+		$data = ['lastMessageAt' => (string)($message['createdAt'] ?? date(DATE_ATOM))];
 		if ($next !== null) {
 			$data['status'] = $next;
 		}
