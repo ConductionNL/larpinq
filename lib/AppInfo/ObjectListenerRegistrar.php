@@ -25,7 +25,9 @@ declare(strict_types=1);
 namespace OCA\Larpinq\AppInfo;
 
 use OCA\Larpinq\Listener\CastingPreferenceListener;
+use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
+use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\HelpMessageListener;
@@ -37,6 +39,7 @@ use OCA\Larpinq\Listener\RegistrationListener;
 use OCA\Larpinq\Listener\SignupFormBindingListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
+use OCA\Larpinq\Mcp\LarpinqScannableServices;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
 /**
@@ -44,7 +47,9 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
  * whole, registered from Application::register().
  *
  * Split out of Application so its coupling stays under phpmd's limit as the
- * list grows; Application still decides when they are registered.
+ * list grows; Application still decides when they are registered. Every other
+ * hook into OpenRegister lives here too: the deep-link listener, the
+ * character requirement guard and the curated MCP tool listing.
  *
  * @category AppInfo
  * @package  OCA\Larpinq\AppInfo
@@ -53,6 +58,9 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
  * @link     https://larpingapp.com
  *
  * @spec openspec/specs/rpg-system/spec.md
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Its one job is to name each
+ * listener class, so its coupling grows with the list, as ServiceContractRegistrar's does.
  */
 class ObjectListenerRegistrar {
 
@@ -70,6 +78,8 @@ class ObjectListenerRegistrar {
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function register(IRegistrationContext $context): void {
+		$this->registerOpenRegisterHooks(context: $context);
+
 		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', UniqueHolderListener::class);
 			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', FactionMembershipListener::class);
@@ -104,6 +114,46 @@ class ObjectListenerRegistrar {
 
 		$this->registerRegistrationListeners(context: $context);
 	}//end register()
+
+	/**
+	 * Register the hooks registered before the object listeners: the curated
+	 * MCP tools, the deep-link listener and the character requirement guard.
+	 *
+	 * The curated MCP tools (hermiq-ai-tooling REQ-004): OpenRegister scans the
+	 * classes LarpinqScannableServices lists for #[McpTool] methods; the
+	 * interface is OpenRegister's, so the alias waits for it. The deep link
+	 * serves OpenRegister's unified search. The requirement guard is the
+	 * server-authoritative skill-requirement and XP-budget check on character
+	 * writes (skill-requirement-enforcement), registered first so it runs before
+	 * the other pre-write listeners, as it did from Application. Each is guarded
+	 * on its OpenRegister class, so an older OpenRegister degrades to data-only.
+	 *
+	 * @param IRegistrationContext $context The registration context.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 */
+	private function registerOpenRegisterHooks(IRegistrationContext $context): void {
+		if (interface_exists('OCA\OpenRegister\Mcp\IMcpScannableServices') === true) {
+			$context->registerServiceAlias(
+				'OCA\OpenRegister\Mcp\IMcpScannableServices::' . Application::APP_ID,
+				LarpinqScannableServices::class
+			);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\DeepLinkRegistrationEvent', DeepLinkRegistrationListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterRequirementListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterRequirementListener::class);
+		}
+	}//end registerOpenRegisterHooks()
 
 	/**
 	 * Register the listener that carries a player's changed care details into

@@ -16,7 +16,9 @@ namespace OCA\Larpinq\Tests\Unit\AppInfo;
 
 use OCA\Larpinq\AppInfo\ObjectListenerRegistrar;
 use OCA\Larpinq\Listener\CastingPreferenceListener;
+use OCA\Larpinq\Listener\CharacterRequirementListener;
 use OCA\Larpinq\Listener\CharacterStatusListener;
+use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
 use OCA\Larpinq\Listener\FactionMembershipListener;
 use OCA\Larpinq\Listener\FormSubmissionListener;
 use OCA\Larpinq\Listener\HelpMessageListener;
@@ -28,6 +30,8 @@ use OCA\Larpinq\Listener\RegistrationListener;
 use OCA\Larpinq\Listener\SignupFormBindingListener;
 use OCA\Larpinq\Listener\UniqueHolderListener;
 use OCA\Larpinq\Listener\XpAwardProvenanceListener;
+use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Mcp\LarpinqScannableServices;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
 use PHPUnit\Framework\TestCase;
 
@@ -50,6 +54,7 @@ class ObjectListenerRegistrarTest extends TestCase {
 	 * @return list<array{string,string}>
 	 */
 	private function registrations(): array {
+		require_once __DIR__ . '/fixtures/openregister-events.php';
 		$pairs = [];
 		$context = $this->createMock(originalClassName: IRegistrationContext::class);
 		$context->method('registerEventListener')->willReturnCallback(
@@ -71,6 +76,9 @@ class ObjectListenerRegistrarTest extends TestCase {
 	public function testEveryListenerIsRegisteredInOrder(): void {
 		$this->assertSame(
 			expected: [
+				['OCA\OpenRegister\Event\DeepLinkRegistrationEvent', DeepLinkRegistrationListener::class],
+				[self::CREATING, CharacterRequirementListener::class],
+				[self::UPDATING, CharacterRequirementListener::class],
 				[self::CREATING, UniqueHolderListener::class],
 				[self::CREATING, FactionMembershipListener::class],
 				[self::CREATING, CharacterStatusListener::class],
@@ -127,5 +135,29 @@ class ObjectListenerRegistrarTest extends TestCase {
 		);
 
 		$this->assertSame(expected: [FormSubmissionListener::class], actual: array_values($listeners));
+	}
+
+	/**
+	 * The curated MCP tool listing is aliased under larpinq's app id.
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 *
+	 * @return void
+	 */
+	public function testTheMcpToolListingIsAliased(): void {
+		$aliases = [];
+		$context = $this->createMock(originalClassName: IRegistrationContext::class);
+		$context->method('registerServiceAlias')->willReturnCallback(
+			function (string $alias, string $target) use (&$aliases): void {
+				$aliases[] = [$alias, $target];
+			}
+		);
+
+		(new ObjectListenerRegistrar())->register(context: $context);
+
+		$this->assertSame(
+			expected: [['OCA\OpenRegister\Mcp\IMcpScannableServices::' . Application::APP_ID, LarpinqScannableServices::class]],
+			actual: $aliases
+		);
 	}
 }
