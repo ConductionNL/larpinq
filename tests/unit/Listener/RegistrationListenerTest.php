@@ -61,7 +61,18 @@ class RegistrationListenerTest extends TestCase {
 
 	private const SCHEMA = '42';
 
+	/**
+	 * The capacity and participants service.
+	 *
+	 * @var RegistrationServiceInterface&MockObject
+	 */
 	private RegistrationServiceInterface&MockObject $service;
+
+	/**
+	 * The character and ticket check.
+	 *
+	 * @var RegistrationWriteCheckInterface&MockObject
+	 */
 	private RegistrationWriteCheckInterface&MockObject $writeCheck;
 
 	/**
@@ -70,18 +81,16 @@ class RegistrationListenerTest extends TestCase {
 	 * @return RegistrationListener
 	 */
 	private function listener(): RegistrationListener {
-		$config = $this->createMock(IAppConfig::class);
-		$config->method('getValueString')->willReturnCallback(
-			static fn (string $app, string $key, string $default = ''): string => $key === 'registration_schema' ? self::SCHEMA : $default
-		);
-		$user = $this->createMock(IUser::class);
+		$config = $this->createMock(originalClassName: IAppConfig::class);
+		$config->method('getValueString')->willReturnMap([['larpinq', 'registration_schema', '', self::SCHEMA]]);
+		$user = $this->createMock(originalClassName: IUser::class);
 		$user->method('getUID')->willReturn('gm');
-		$session = $this->createMock(IUserSession::class);
+		$session = $this->createMock(originalClassName: IUserSession::class);
 		$session->method('getUser')->willReturn($user);
-		$l10n = $this->createMock(IL10N::class);
+		$l10n = $this->createMock(originalClassName: IL10N::class);
 		$l10n->method('t')->willReturnCallback(static fn (string $text): string => 'NL:' . $text);
-		$this->service = $this->createMock(RegistrationServiceInterface::class);
-		$this->writeCheck = $this->createMock(RegistrationWriteCheckInterface::class);
+		$this->service = $this->createMock(originalClassName: RegistrationServiceInterface::class);
+		$this->writeCheck = $this->createMock(originalClassName: RegistrationWriteCheckInterface::class);
 
 		return new RegistrationListener(
 			config: $config,
@@ -108,8 +117,8 @@ class RegistrationListenerTest extends TestCase {
 		$event = new ObjectCreatingEvent(new RegistrationObjectEntity(self::SCHEMA, ['event' => 'e1']));
 		$listener->handle($event);
 
-		$this->assertSame(['price' => 50, 'status' => 'accepted'], $event->getModifiedData());
-		$this->assertFalse($event->isPropagationStopped());
+		$this->assertSame(expected: ['price' => 50, 'status' => 'accepted'], actual: $event->getModifiedData());
+		$this->assertFalse(condition: $event->isPropagationStopped());
 	}//end testACreateIsCheckedAndDecided()
 
 	/**
@@ -129,7 +138,7 @@ class RegistrationListenerTest extends TestCase {
 		);
 		$listener->handle($event);
 
-		$this->assertSame([], $event->getModifiedData());
+		$this->assertSame(expected: [], actual: $event->getModifiedData());
 	}//end testAnUpdateIsDecidedFromTheStoredOne()
 
 	/**
@@ -145,8 +154,8 @@ class RegistrationListenerTest extends TestCase {
 		$event = new ObjectCreatingEvent(new RegistrationObjectEntity(self::SCHEMA, []));
 		$listener->handle($event);
 
-		$this->assertTrue($event->isPropagationStopped());
-		$this->assertSame(['message' => 'NL:No places left'], $event->getErrors());
+		$this->assertTrue(condition: $event->isPropagationStopped());
+		$this->assertSame(expected: ['message' => 'NL:No places left'], actual: $event->getErrors());
 	}//end testARefusalStopsTheWrite()
 
 	/**

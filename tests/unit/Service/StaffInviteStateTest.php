@@ -37,7 +37,7 @@ class StaffInviteStateTest extends TestCase {
 	 * @return StaffInviteState
 	 */
 	private function state(): StaffInviteState {
-		$clock = $this->createMock(ITimeFactory::class);
+		$clock = $this->createMock(originalClassName: ITimeFactory::class);
 		$clock->method('getDateTime')->willReturnCallback(static fn (): DateTime => new DateTime(self::NOW));
 		return new StaffInviteState(timeFactory: $clock);
 	}//end state()
@@ -51,10 +51,12 @@ class StaffInviteStateTest extends TestCase {
 		$state = $this->state();
 		$valid = ['expiresAt' => '2026-11-20T00:00:00+00:00', 'maxUses' => 2, 'uses' => [['uid' => 'a']]];
 
-		$this->assertSame(StaffInviteService::STATE_VALID, $state->state(invite: $valid));
-		$this->assertSame(StaffInviteService::STATE_USED_UP, $state->state(invite: ['maxUses' => 1] + $valid));
-		$this->assertSame(StaffInviteService::STATE_EXPIRED, $state->state(invite: ['expiresAt' => '2026-11-01T00:00:00+00:00', 'maxUses' => 1] + $valid));
-		$this->assertSame(StaffInviteService::STATE_REVOKED, $state->state(invite: ['revokedAt' => '2026-11-10T00:00:00+00:00', 'expiresAt' => 'x'] + $valid));
+		$this->assertSame(expected: StaffInviteService::STATE_VALID, actual: $state->state(invite: $valid));
+		$this->assertSame(expected: StaffInviteService::STATE_USED_UP, actual: $state->state(invite: ['maxUses' => 1] + $valid));
+		$expired = ['expiresAt' => '2026-11-01T00:00:00+00:00', 'maxUses' => 1] + $valid;
+		$revoked = ['revokedAt' => '2026-11-10T00:00:00+00:00', 'expiresAt' => 'x'] + $valid;
+		$this->assertSame(expected: StaffInviteService::STATE_EXPIRED, actual: $state->state(invite: $expired));
+		$this->assertSame(expected: StaffInviteService::STATE_REVOKED, actual: $state->state(invite: $revoked));
 	}//end testTheStatesInOrder()
 
 	/**
@@ -65,9 +67,9 @@ class StaffInviteStateTest extends TestCase {
 	public function testUnreadableEndAndEmptyRevoke(): void {
 		$state = $this->state();
 
-		$this->assertTrue($state->isExpired(invite: []));
-		$this->assertTrue($state->isExpired(invite: ['expiresAt' => 'not a date']));
-		$this->assertFalse($state->isRevoked(invite: ['revokedAt' => '']));
+		$this->assertTrue(condition: $state->isExpired(invite: []));
+		$this->assertTrue(condition: $state->isExpired(invite: ['expiresAt' => 'not a date']));
+		$this->assertFalse(condition: $state->isRevoked(invite: ['revokedAt' => '']));
 	}//end testUnreadableEndAndEmptyRevoke()
 
 	/**
@@ -78,8 +80,8 @@ class StaffInviteStateTest extends TestCase {
 	public function testUsesAndNow(): void {
 		$state = $this->state();
 
-		$this->assertSame([['uid' => 'a']], $state->uses(invite: ['uses' => ['junk', ['uid' => 'a']]]));
-		$this->assertSame([], $state->uses(invite: ['uses' => 'junk']));
-		$this->assertSame(self::NOW, $state->now()->format(DATE_ATOM));
+		$this->assertSame(expected: [['uid' => 'a']], actual: $state->uses(invite: ['uses' => ['junk', ['uid' => 'a']]]));
+		$this->assertSame(expected: [], actual: $state->uses(invite: ['uses' => 'junk']));
+		$this->assertSame(expected: self::NOW, actual: $state->now()->format(DATE_ATOM));
 	}//end testUsesAndNow()
 }//end class

@@ -471,7 +471,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $object
 		$object = $openRegister->find(
 			id: $idLower,
-			options: $this->callOptions->find(register: $register, schema: $schema),
+			options: $this->callOptions->find(target: [$register, $schema]),
 			_rbac: false,
 			_multitenancy: false,
 		);
@@ -546,7 +546,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			$data,
-			$this->callOptions->save(register: $register, schema: $schema, uuid: $uuid)
+			$this->callOptions->save(target: [$register, $schema], uuid: $uuid)
 		);
 
 		return $this->toArray(object: $saved);
@@ -589,7 +589,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 		// @var mixed $saved
 		$saved = $openRegister->saveObject(
 			object: $data,
-			options: $this->callOptions->save(register: $register, schema: $schema, uuid: $uuid),
+			options: $this->callOptions->save(target: [$register, $schema], uuid: $uuid),
 			_rbac: false,
 			_multitenancy: false
 		);
@@ -637,6 +637,6 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 
 		[$register, $schema] = $this->resolveRegisterAndSchema(objectTypeLower: strtolower($objectType));
 
-		return (bool)$openRegister->deleteObject($this->callOptions->deletion(uuid: $uuid, register: $register, schema: $schema));
+		return (bool)$openRegister->deleteObject($this->callOptions->deletion(uuid: $uuid, target: [$register, $schema]));
 	}//end deleteObject()
 }//end class

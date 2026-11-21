@@ -34,13 +34,13 @@ class EventCapacityLockTest extends TestCase {
 	 * @return void
 	 */
 	public function testAHeldLockIsTakenOnceAndReleasedOnce(): void {
-		$locks = $this->createMock(ILockingProvider::class);
+		$locks = $this->createMock(originalClassName: ILockingProvider::class);
 		$locks->expects($this->once())->method('acquireLock')->with('larpinq/event-capacity/e1', ILockingProvider::LOCK_EXCLUSIVE);
 		$locks->expects($this->once())->method('releaseLock')->with('larpinq/event-capacity/e1', ILockingProvider::LOCK_EXCLUSIVE);
-		$lock = new EventCapacityLock(locking: $locks, attempts: 3, waitMicros: 0);
+		$lock = new EventCapacityLock(locking: $locks, retry: ['attempts' => 3, 'waitMicros' => 0]);
 
-		$this->assertTrue($lock->acquire(eventId: 'e1'));
-		$this->assertTrue($lock->acquire(eventId: 'e1'));
+		$this->assertTrue(condition: $lock->acquire(eventId: 'e1'));
+		$this->assertTrue(condition: $lock->acquire(eventId: 'e1'));
 		$lock->release(eventId: 'e1');
 		$lock->release(eventId: 'e1');
 	}//end testAHeldLockIsTakenOnceAndReleasedOnce()
@@ -51,12 +51,12 @@ class EventCapacityLockTest extends TestCase {
 	 * @return void
 	 */
 	public function testABusyLockIsTriedThenGivenUp(): void {
-		$locks = $this->createMock(ILockingProvider::class);
-		$locks->expects($this->exactly(3))->method('acquireLock')->willThrowException(new LockedException('larpinq/event-capacity/e1'));
+		$locks = $this->createMock(originalClassName: ILockingProvider::class);
+		$locks->expects($this->exactly(count: 3))->method('acquireLock')->willThrowException(new LockedException('larpinq/event-capacity/e1'));
 		$locks->expects($this->never())->method('releaseLock');
-		$lock = new EventCapacityLock(locking: $locks, attempts: 3, waitMicros: 0);
+		$lock = new EventCapacityLock(locking: $locks, retry: ['attempts' => 3, 'waitMicros' => 0]);
 
-		$this->assertFalse($lock->acquire(eventId: 'e1'));
+		$this->assertFalse(condition: $lock->acquire(eventId: 'e1'));
 		$lock->release(eventId: 'e1');
 	}//end testABusyLockIsTriedThenGivenUp()
 
@@ -66,7 +66,7 @@ class EventCapacityLockTest extends TestCase {
 	 * @return void
 	 */
 	public function testALockFreedOnALaterTryIsTaken(): void {
-		$locks = $this->createMock(ILockingProvider::class);
+		$locks = $this->createMock(originalClassName: ILockingProvider::class);
 		$calls = 0;
 		$locks->method('acquireLock')->willReturnCallback(
 			static function () use (&$calls): void {
@@ -76,9 +76,9 @@ class EventCapacityLockTest extends TestCase {
 				}
 			}
 		);
-		$lock = new EventCapacityLock(locking: $locks, attempts: 2, waitMicros: 0);
+		$lock = new EventCapacityLock(locking: $locks, retry: ['attempts' => 2, 'waitMicros' => 0]);
 
-		$this->assertTrue($lock->acquire(eventId: 'e2'));
-		$this->assertSame(2, $calls);
+		$this->assertTrue(condition: $lock->acquire(eventId: 'e2'));
+		$this->assertSame(expected: 2, actual: $calls);
 	}//end testALockFreedOnALaterTryIsTaken()
 }//end class

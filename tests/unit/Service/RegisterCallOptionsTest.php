@@ -36,19 +36,19 @@ class RegisterCallOptionsTest extends TestCase {
 	public function testEachOptionNamesItsTarget(): void {
 		$options = new RegisterCallOptions();
 
-		$find = $options->find(register: '5', schema: '7');
-		$this->assertSame('5', (string)$find->register);
-		$this->assertSame('7', (string)$find->schema);
+		$find = $options->find(target: ['5', '7']);
+		$this->assertSame(expected: '5', actual: (string)$find->register);
+		$this->assertSame(expected: '7', actual: (string)$find->schema);
 
-		$save = $options->save(register: '5', schema: '7', uuid: self::UUID);
-		$this->assertSame('5', (string)$save->target->register);
-		$this->assertSame('7', (string)$save->target->schema);
-		$this->assertSame(self::UUID, $save->uuid);
-		$this->assertNull($options->save(register: '5', schema: '7', uuid: null)->uuid);
+		$save = $options->save(target: ['5', '7'], uuid: self::UUID);
+		$this->assertSame(expected: '5', actual: (string)$save->target->register);
+		$this->assertSame(expected: '7', actual: (string)$save->target->schema);
+		$this->assertSame(expected: self::UUID, actual: $save->uuid);
+		$this->assertNull(actual: $options->save(target: ['5', '7'], uuid: null)->uuid);
 
-		$deletion = $options->deletion(uuid: self::UUID, register: '5', schema: '7');
-		$this->assertSame(self::UUID, $deletion->uuid);
-		$this->assertSame('5', (string)$deletion->target->register);
-		$this->assertSame('7', (string)$deletion->target->schema);
+		$deletion = $options->deletion(uuid: self::UUID, target: ['5', '7']);
+		$this->assertSame(expected: self::UUID, actual: $deletion->uuid);
+		$this->assertSame(expected: '5', actual: (string)$deletion->target->register);
+		$this->assertSame(expected: '7', actual: (string)$deletion->target->schema);
 	}//end testEachOptionNamesItsTarget()
 }//end class

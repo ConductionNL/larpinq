@@ -271,9 +271,9 @@ class RegistrationPlacesTest extends TestCase {
 	public function testPlayersAfterAChange(): void {
 		$event = ['players' => ['c1', 'c2', 3]];
 
-		$this->assertSame(['c1', '3', 'c4'], $this->places->playersAfter(event: $event, remove: 'c2', add: 'c4'));
-		$this->assertSame(['c1', 'c2', '3'], $this->places->playersAfter(event: $event, remove: '', add: 'c1'));
-		$this->assertSame(['c1', 'c2', '3'], $this->places->playersAfter(event: $event, remove: '', add: ''));
-		$this->assertSame(['c9'], $this->places->playersAfter(event: [], remove: 'c1', add: 'c9'));
+		$this->assertSame(expected: ['c1', '3', 'c4'], actual: $this->places->playersAfter(event: $event, move: ['remove' => 'c2', 'add' => 'c4']));
+		$this->assertSame(expected: ['c1', 'c2', '3'], actual: $this->places->playersAfter(event: $event, move: ['remove' => '', 'add' => 'c1']));
+		$this->assertSame(expected: ['c1', 'c2', '3'], actual: $this->places->playersAfter(event: $event, move: ['remove' => '', 'add' => '']));
+		$this->assertSame(expected: ['c9'], actual: $this->places->playersAfter(event: [], move: ['remove' => 'c1', 'add' => 'c9']));
 	}//end testPlayersAfterAChange()
 }

@@ -40,11 +40,11 @@ class StaffInviteLinkTest extends TestCase {
 	 * @return void
 	 */
 	public function testUrl(): void {
-		$urls = $this->createMock(IURLGenerator::class);
+		$urls = $this->createMock(originalClassName: IURLGenerator::class);
 		$urls->method('linkToRouteAbsolute')->with('larpinq.dashboard.page')->willReturn('https://cloud.example/apps/larpinq/');
-		$link = new StaffInviteLink(urlGenerator: $urls, lockingProvider: $this->createMock(ILockingProvider::class));
+		$link = new StaffInviteLink(urlGenerator: $urls, lockingProvider: $this->createMock(originalClassName: ILockingProvider::class));
 
-		$this->assertSame('https://cloud.example/apps/larpinq/staff-invite/' . self::CODE, $link->url(token: self::CODE));
+		$this->assertSame(expected: 'https://cloud.example/apps/larpinq/staff-invite/' . self::CODE, actual: $link->url(token: self::CODE));
 	}//end testUrl()
 
 	/**
@@ -54,19 +54,19 @@ class StaffInviteLinkTest extends TestCase {
 	 */
 	public function testLockKeyedByHash(): void {
 		$key = 'larpinq/staff-invite/' . hash('sha256', self::CODE);
-		$this->assertSame($key, StaffInviteLink::lockKey(token: self::CODE));
-		$this->assertStringNotContainsString(self::CODE, $key);
+		$this->assertSame(expected: $key, actual: StaffInviteLink::lockKey(token: self::CODE));
+		$this->assertStringNotContainsString(needle: self::CODE, haystack: $key);
 
-		$locks = $this->createMock(ILockingProvider::class);
+		$locks = $this->createMock(originalClassName: ILockingProvider::class);
 		$locks->expects($this->once())->method('acquireLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE);
 		$locks->expects($this->once())->method('releaseLock')->with($key, ILockingProvider::LOCK_EXCLUSIVE);
-		$link = new StaffInviteLink(urlGenerator: $this->createMock(IURLGenerator::class), lockingProvider: $locks);
-		$this->assertTrue($link->lock(token: self::CODE));
+		$link = new StaffInviteLink(urlGenerator: $this->createMock(originalClassName: IURLGenerator::class), lockingProvider: $locks);
+		$this->assertTrue(condition: $link->lock(token: self::CODE));
 		$link->unlock(token: self::CODE);
 
-		$held = $this->createMock(ILockingProvider::class);
+		$held = $this->createMock(originalClassName: ILockingProvider::class);
 		$held->method('acquireLock')->willThrowException(new LockedException($key));
-		$busy = new StaffInviteLink(urlGenerator: $this->createMock(IURLGenerator::class), lockingProvider: $held);
-		$this->assertFalse($busy->lock(token: self::CODE));
+		$busy = new StaffInviteLink(urlGenerator: $this->createMock(originalClassName: IURLGenerator::class), lockingProvider: $held);
+		$this->assertFalse(condition: $busy->lock(token: self::CODE));
 	}//end testLockKeyedByHash()
 }//end class

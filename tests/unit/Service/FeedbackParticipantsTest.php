@@ -37,11 +37,11 @@ class FeedbackParticipantsTest extends TestCase {
 	 * @return FeedbackParticipants
 	 */
 	private function participants(array $rows, array $characters): FeedbackParticipants {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
-			static function (string $objectType, array $filters, ?int $limit = null) use ($rows): array {
-				self::assertSame('attendance', $objectType);
-				self::assertSame(['event' => 'e1', 'status' => 'checked-in'], $filters);
+			static function (string $objectType, array $filters) use ($rows): array {
+				self::assertSame(expected: 'attendance', actual: $objectType);
+				self::assertSame(expected: ['event' => 'e1', 'status' => 'checked-in'], actual: $filters);
 				return $rows;
 			}
 		);
@@ -65,7 +65,9 @@ class FeedbackParticipantsTest extends TestCase {
 	public function testOnlyCheckedInRowsCount(): void {
 		$rows = [['id' => 'a1', 'status' => 'checked-in'], ['id' => 'a2', 'status' => 'no-show']];
 
-		$this->assertSame([['id' => 'a1', 'status' => 'checked-in']], $this->participants(rows: $rows, characters: [])->checkedIn(eventId: 'e1'));
+		$checkedIn = $this->participants(rows: $rows, characters: [])->checkedIn(eventId: 'e1');
+
+		$this->assertSame(expected: [['id' => 'a1', 'status' => 'checked-in']], actual: $checkedIn);
 	}//end testOnlyCheckedInRowsCount()
 
 	/**
@@ -76,12 +78,12 @@ class FeedbackParticipantsTest extends TestCase {
 	public function testOwnerAndName(): void {
 		$reader = $this->participants(rows: [], characters: ['c1' => ['ownerUid' => 'anna', 'name' => 'Aldric']]);
 
-		$this->assertSame('anna', $reader->ownerOf(attendance: ['character' => 'c1']));
-		$this->assertSame('anna', $reader->ownerOf(attendance: ['character' => ['id' => 'c1']]));
-		$this->assertSame('', $reader->ownerOf(attendance: ['character' => 'gone']));
-		$this->assertSame('', $reader->ownerOf(attendance: []));
-		$this->assertSame('Aldric', $reader->characterName(attendance: ['character' => 'c1']));
-		$this->assertSame('Embedded', $reader->characterName(attendance: ['character' => ['id' => 'c1', 'name' => 'Embedded']]));
+		$this->assertSame(expected: 'anna', actual: $reader->ownerOf(attendance: ['character' => 'c1']));
+		$this->assertSame(expected: 'anna', actual: $reader->ownerOf(attendance: ['character' => ['id' => 'c1']]));
+		$this->assertSame(expected: '', actual: $reader->ownerOf(attendance: ['character' => 'gone']));
+		$this->assertSame(expected: '', actual: $reader->ownerOf(attendance: []));
+		$this->assertSame(expected: 'Aldric', actual: $reader->characterName(attendance: ['character' => 'c1']));
+		$this->assertSame(expected: 'Embedded', actual: $reader->characterName(attendance: ['character' => ['id' => 'c1', 'name' => 'Embedded']]));
 	}//end testOwnerAndName()
 
 	/**
@@ -101,6 +103,6 @@ class FeedbackParticipantsTest extends TestCase {
 			'c3' => ['ownerUid' => '', 'name' => 'Nobody'],
 		];
 
-		$this->assertSame(['anna' => 'Aldric'], $this->participants(rows: $rows, characters: $characters)->invitees(eventId: 'e1'));
+		$this->assertSame(expected: ['anna' => 'Aldric'], actual: $this->participants(rows: $rows, characters: $characters)->invitees(eventId: 'e1'));
 	}//end testInvitees()
 }//end class

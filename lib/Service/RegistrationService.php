@@ -108,7 +108,7 @@ class RegistrationService implements RegistrationServiceInterface {
 		private readonly ?EventCareRecords $care = null,
 	) {
 		$this->places = new RegistrationPlaces(fetcher: $fetcher);
-		$this->lock   = new EventCapacityLock(locking: $locking, attempts: $lockAttempts, waitMicros: $lockWaitMicros);
+		$this->lock   = new EventCapacityLock(locking: $locking, retry: ['attempts' => $lockAttempts, 'waitMicros' => $lockWaitMicros]);
 	}//end __construct()
 
 	/**
@@ -405,7 +405,7 @@ class RegistrationService implements RegistrationServiceInterface {
 			return;
 		}
 
-		$next = $this->places->playersAfter(event: $event, remove: $remove, add: $add);
+		$next = $this->places->playersAfter(event: $event, move: ['remove' => $remove, 'add' => $add]);
 		if ($next === array_map('strval', (array)($event['players'] ?? []))) {
 			return;
 		}
