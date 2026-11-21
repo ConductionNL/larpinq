@@ -146,10 +146,12 @@ class ObjectListenerRegistrar {
 			$context->registerEventListener('OCA\OpenRegister\Event\DeepLinkRegistrationEvent', DeepLinkRegistrationListener::class);
 		}
 
-		foreach (['OCA\OpenRegister\Event\ObjectCreatingEvent', 'OCA\OpenRegister\Event\ObjectUpdatingEvent'] as $event) {
-			if (class_exists($event) === true) {
-				$context->registerEventListener($event, CharacterRequirementListener::class);
-			}
+		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectCreatingEvent', CharacterRequirementListener::class);
+		}
+
+		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
+			$context->registerEventListener('OCA\OpenRegister\Event\ObjectUpdatingEvent', CharacterRequirementListener::class);
 		}
 	}//end registerOpenRegisterHooks()
 
