@@ -100,6 +100,27 @@ final class PreWriteEvent {
 	}//end refuseOnErrors()
 
 	/**
+	 * Merge fields into what other listeners changed on a pre-write event.
+	 *
+	 * Nothing is merged for an empty set of fields or for an event that is not
+	 * one of OpenRegister's pre-write events, which carry no modified data.
+	 *
+	 * @param Event               $event The pre-write event.
+	 * @param array<string,mixed> $data  The fields.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/changes/larpinq-manifest-tier-4/tasks.md#phase-4--verification
+	 */
+	public static function mergeModified(Event $event, array $data): void {
+		if ($data === [] || self::isPreWrite(event: $event) === false) {
+			return;
+		}
+
+		$event->setModifiedData(array_merge($event->getModifiedData(), $data));
+	}//end mergeModified()
+
+	/**
 	 * The object's data with its uuid as `id`.
 	 *
 	 * @param object $entity The OpenRegister object.

@@ -74,6 +74,8 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
 	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */
 	public function checkIn(string $eventId, string $code, string $actingUid): array {
 		$registration = $this->registrationFor(code: CheckinCode::normalise(code: $code));

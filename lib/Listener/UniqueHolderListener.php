@@ -84,6 +84,8 @@ class UniqueHolderListener implements IEventListener {
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
 	 *
 	 * @spec openspec/specs/rpg-system/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) === false
@@ -112,6 +114,8 @@ class UniqueHolderListener implements IEventListener {
 	 * @param Event $event The Creating or Updating event.
 	 *
 	 * @return array{subject:string,write:ObjectWrite}|null The subject and the write.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function subjectOf(Event $event): ?array {
 		try {

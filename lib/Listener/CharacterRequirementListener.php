@@ -135,6 +135,8 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 * @spec openspec/specs/character-custom-fields/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
 		if ($this->isPreWrite(event: $event) === false) {

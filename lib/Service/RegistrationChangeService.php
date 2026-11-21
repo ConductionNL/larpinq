@@ -72,6 +72,8 @@ class RegistrationChangeService implements RegistrationChangeServiceInterface {
 	 * @throws RegistrationChangeRefusedException When the caller may not cancel it now.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function cancel(string $registrationId, string $actingUid, string $choice = ''): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
@@ -118,6 +120,8 @@ class RegistrationChangeService implements RegistrationChangeServiceInterface {
 	 * @throws RegistrationChangeRefusedException When the caller may not add to this booking.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function addParticipant(string $registrationId, string $actingUid, string $name, string $playerId = ''): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
@@ -161,6 +165,8 @@ class RegistrationChangeService implements RegistrationChangeServiceInterface {
 	 * @throws RegistrationChangeRefusedException When the registration does not exist.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function whatMayChange(string $registrationId, string $actingUid): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);

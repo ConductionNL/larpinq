@@ -92,8 +92,8 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 			return;
 		}
 
-		$missing = array_filter($accepted, [self::class, 'lacksCode']);
-		$done    = count(array_filter(array_map([$this, 'giveCode'], $missing)));
+		$missing = array_filter($accepted, self::lacksCode(...));
+		$done    = count(array_filter(array_map($this->giveCode(...), $missing)));
 
 		$output->info($done . ' of ' . count($missing) . ' accepted registrations without a check-in code now have one.');
 	}//end run()
@@ -117,6 +117,8 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 	 * @param array<string, mixed> $registration The registration, with an id.
 	 *
 	 * @return bool True when it was saved.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */
 	private function giveCode(array $registration): bool {
 		$uuid = (string)$registration['id'];

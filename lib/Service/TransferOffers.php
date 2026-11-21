@@ -89,6 +89,8 @@ class TransferOffers implements TransferOffersInterface {
 	 * @throws RegistrationChangeRefusedException When it cannot be offered.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function offer(string $registrationId, string $actingUid, string $recipientUid): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
@@ -133,6 +135,8 @@ class TransferOffers implements TransferOffersInterface {
 	 * @throws RegistrationChangeRefusedException When there is no open offer for the caller.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function accept(string $registrationId, string $actingUid): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
@@ -175,6 +179,8 @@ class TransferOffers implements TransferOffersInterface {
 	 * @throws RegistrationChangeRefusedException When there is no open offer, or not theirs.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	public function withdraw(string $registrationId, string $actingUid): array {
 		$registration = RegistrationReads::registration(fetcher: $this->fetcher, registrationId: $registrationId);
@@ -228,6 +234,8 @@ class TransferOffers implements TransferOffersInterface {
 	 * @param DateTimeImmutable $now The moment.
 	 *
 	 * @return bool True when it lapsed.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) RegistrationReads is a pure helper; the fetcher is passed in.
 	 */
 	private function hasLapsed(array $registration, DateTimeImmutable $now): bool {
 		if ($this->policy->isOpen(event: RegistrationReads::event(fetcher: $this->fetcher, registration: $registration), now: $now) === false) {
