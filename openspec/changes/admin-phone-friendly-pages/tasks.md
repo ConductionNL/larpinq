@@ -8,6 +8,7 @@
 - [x] 1.3 The same container styles in larpinq's other registered components (REQ-APF-001). Verify: the phone suite passes for CharacterDetail with the Stats tab, and the Casting and Award XP tabs.
 - [ ] 1.4 Report overflow in nextcloud-vue components upstream and mark the tests with the issue (REQ-APF-001). Verify: each marked test names an issue number.
 - [ ] 1.5 Phone screenshots in `docs/features/phone-use.md` (ADR-010). Verify: the docs build renders it.
+  - Written 21 Nov and listed in `docs/features/README.md`; the phone screenshots are still to be taken on a live instance.
 - [x] 1.6 Dutch and English strings for any new labels (REQ-APF-002). Verify: `npm run test:l10n`.
 
 Quality reminders (not tracked as tasks): `npm run lint` and `npm run stylelint` once before push.
