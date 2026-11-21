@@ -16,6 +16,7 @@
 ## 3. Pages
 
 - [x] 3.1 Cancel, offer transfer, accept transfer and add participant on My registrations and the registration detail, in `src/manifest.json` (REQ-RCT-001 to REQ-RCT-004). Verify: `npm run check:manifest`; Playwright `tests/e2e/registration-cancel-transfer.spec.ts` for Mila's cancel and Sanne's transfer.
+  - The spec file was written 21 Nov from the scenarios "Mila drops out" and "Sanne hands her place to Pieter"; not run here, it needs a live instance.
 
 ## 4. Strings and docs
 
