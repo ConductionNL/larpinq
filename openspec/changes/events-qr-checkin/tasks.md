@@ -21,6 +21,7 @@
 
 - [x] 4.1 Dutch and English strings (REQ-EQC-003). Verify: `npm run test:l10n`.
 - [ ] 4.2 `docs/features/qr-checkin.md` with a screenshot of the scan panel (ADR-010). Verify: the docs build renders it.
+  - Written 21 Nov and listed in `docs/features/README.md`; the screenshot of the scan panel is still to be taken on a live instance.
 - [x] 4.3 Add `qrcode` to `package.json` with its licence noted. Verify: `npm ci` and `npm run build` pass; the dependency-integrity gates pass.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
