@@ -1,0 +1,365 @@
+{
+	"components": {
+		"schemas": {
+			"character": {
+				"authorization": {
+					"read": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"ownerUid": "$userId"
+							}
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"approved": "approved"
+							}
+						}
+					],
+					"create": [
+						"gamemasters",
+						"larpers"
+					],
+					"update": [
+						{
+							"group": "gamemasters"
+						},
+						{
+							"group": "larpers",
+							"match": {
+								"ownerUid": "$userId"
+							}
+						}
+					],
+					"delete": [
+						"gamemasters"
+					]
+				},
+				"properties": {
+					"slNotesPrivate": {
+						"authorization": {
+							"read": [
+								"gamemasters"
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"requirementOverrides": {
+						"authorization": {
+							"read": [
+								"gamemasters"
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"background": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					},
+					"faith": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					},
+					"slNotesPublic": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"card": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"notice": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"itemsAndMoney": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"gold": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"silver": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"copper": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"skills": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"items": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"conditions": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"events": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"approved": {
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"name": {
+						"authorization": {
+							"update": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					},
+					"description": {
+						"authorization": {
+							"update": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					},
+					"ocName": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"ownerUid": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"ownerRef": {
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					}
+				}
+			}
+		}
+	}
+}

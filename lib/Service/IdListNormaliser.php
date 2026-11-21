@@ -16,11 +16,16 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
+
+use OCA\Larpinq\Kernel\Contracts\IdListNormaliserInterface;
 
 /**
  * Normalises a relation value to a flat list of string ids.
@@ -33,7 +38,7 @@ namespace OCA\Larpinq\Service;
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
-class IdListNormaliser {
+class IdListNormaliser implements IdListNormaliserInterface {
 	/**
 	 * Normalise a value to a list of string ids.
 	 *

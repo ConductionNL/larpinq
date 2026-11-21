@@ -252,7 +252,7 @@ test.describe('character — CRUD persistence (store round-trip)', () => {
 
 	// --- UI-driven variants (data surfacing) — blocked on this instance ---
 
-	// @e2e openspec/specs/character-management/spec.md#create-a-character
+	// @e2e openspec/specs/character-management/spec.md#create-a-new-character
 	// FIXED (2026-06-10, wave-3): OR-core dedup + store now registers the
 	// per-type register/schema (config.<type>_register), so the Characters list
 	// fires its object fetch and the seeded row surfaces.
@@ -386,7 +386,7 @@ test.describe('skill — CRUD persistence (store round-trip)', () => {
 		).toBeNull()
 	})
 
-	// @e2e openspec/specs/skill-management/spec.md#create-a-skill
+	// @e2e openspec/specs/game-mechanics/spec.md#create-a-skill-with-effects-and-prerequisites
 	// FIXED (2026-06-10, wave-3): OR-core dedup + the per-type register/schema
 	// store registration make the Skills list fire its fetch; the seeded row
 	// surfaces.

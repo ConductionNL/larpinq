@@ -1,0 +1,342 @@
+{
+    "nothing required": [],
+    "empty context": [
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-a",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-str",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 1
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "c-1",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-1",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "skills present, absent, unknown, nameless": [
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-a",
+            "targetName": "Alchemy",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-c",
+            "targetName": "Cartography",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-n",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "skills overridden": [
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-c",
+            "targetName": "Cartography",
+            "status": "overridden",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-a",
+            "targetName": "Alchemy",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "skill as a single string": [
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-b",
+            "targetName": "Bowyer",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "stats meet, miss, equal, unknown": [
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-str",
+            "targetName": "Strength",
+            "status": "passed",
+            "current": 4,
+            "required": 4
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-int",
+            "targetName": "Intellect",
+            "status": "unmet",
+            "current": 2,
+            "required": 4
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 4
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-raw",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 4
+        }
+    ],
+    "stats with string score": [
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-int",
+            "targetName": "Intellect",
+            "status": "passed",
+            "current": 2,
+            "required": 2
+        }
+    ],
+    "stats without score": [
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-raw",
+            "targetName": "",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "stats overridden": [
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-int",
+            "targetName": "Intellect",
+            "status": "overridden",
+            "current": 2,
+            "required": 9
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 9
+        }
+    ],
+    "conditions and effects": [
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "c-1",
+            "targetName": "",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "c-2",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-2",
+            "targetName": "",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-9",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "conditions and effects against numeric ids": [
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "1",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "0",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "conditions and effects overridden": [
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "c-2",
+            "targetName": "",
+            "status": "overridden",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-9",
+            "targetName": "",
+            "status": "overridden",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-1",
+            "targetName": "",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        }
+    ],
+    "everything at once": [
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-b",
+            "targetName": "Bowyer",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredSkill",
+            "target": "s-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-str",
+            "targetName": "Strength",
+            "status": "unmet",
+            "current": 4,
+            "required": 5
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredStat",
+            "target": "st-x",
+            "targetName": "",
+            "status": "unresolvable",
+            "current": 0,
+            "required": 5
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredCondition",
+            "target": "c-1",
+            "targetName": "",
+            "status": "passed",
+            "current": 0,
+            "required": 0
+        },
+        {
+            "skill": "skill-1",
+            "type": "requiredEffect",
+            "target": "e-3",
+            "targetName": "",
+            "status": "unmet",
+            "current": 0,
+            "required": 0
+        }
+    ]
+}

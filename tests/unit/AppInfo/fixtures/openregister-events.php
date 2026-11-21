@@ -4,7 +4,7 @@
  * Minimal stand-ins for the OpenRegister event classes Application::register()
  * probes for with class_exists().
  *
- * register() only ever passes these class NAMES to
+ * The register() method only ever passes these class NAMES to
  * IRegistrationContext::registerEventListener() — it never constructs one, and
  * never touches a member. So a name is the entire contract this file has to
  * satisfy, and declaring anything more would be inventing an API that
@@ -43,7 +43,7 @@ if (class_exists(\OCA\OpenRegister\Event\DeepLinkRegistrationEvent::class, false
 	}//end class
 }
 
-if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class, false) === false) {
+if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class) === false) {
 	/**
 	 * Stand-in for OpenRegister's pre-create object event.
 	 */
@@ -51,10 +51,23 @@ if (class_exists(\OCA\OpenRegister\Event\ObjectCreatingEvent::class, false) === 
 	}//end class
 }
 
-if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class, false) === false) {
+if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatingEvent::class) === false) {
 	/**
 	 * Stand-in for OpenRegister's pre-update object event.
 	 */
 	class ObjectUpdatingEvent {
+	}//end class
+}
+
+if (class_exists(\OCA\OpenRegister\Event\ObjectCreatedEvent::class) === false) {
+	/**
+	 * Stand-in for OpenRegister's post-create object event.
+	 */
+	class ObjectCreatedEvent {
+	}//end class
+}
+
+if (class_exists(\OCA\OpenRegister\Event\ObjectUpdatedEvent::class) === false) {
+	class ObjectUpdatedEvent {
 	}//end class
 }

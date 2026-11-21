@@ -1,4 +1,8 @@
 /**
+ * SPDX-FileCopyrightText: 2024 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+/**
  * Object store for Larpinq — powered by @conduction/nextcloud-vue.
  *
  * Uses createObjectStore('object') to maintain the same Pinia store ID.
@@ -23,6 +27,16 @@
  * On switch, `App.vue` ALSO calls `store.setActiveTenantOrganisation(uuid)`
  * which clears the in-memory collection / object / pagination caches so
  * the next fetch hits the new tenant.
+ *
+ * ## Language wiring (i18n-language-negotiation-getters, OR ADR-025)
+ *
+ * `languageGetter` stamps `?_lang=<user language>` on reads, so OpenRegister
+ * returns the user's translation of each translatable property.
+ * `targetLanguageGetter` stamps `X-Translation-Target-Language` on writes, so
+ * an edit made in a German UI is stored as the German translation instead of
+ * overwriting the source. OpenRegister files a target equal to the
+ * register's default language as the source itself, so a user writing in
+ * the default language still updates the source row.
  */
 import {
 	auditTrailsPlugin,
@@ -30,6 +44,7 @@ import {
 	filesPlugin,
 	relationsPlugin,
 } from '@conduction/nextcloud-vue'
+import { userLanguage } from '../../services/userLanguage.js'
 
 // Module-local tenant UUID — written by `setObjectStoreTenantUuid()` from
 // the host App.vue once `useTenantContext()` resolves an active tenant.
@@ -56,4 +71,8 @@ export const useObjectStore = createObjectStore('object', {
 	// `setActiveTenantOrganisation()` so cache-clear stays atomic with
 	// the header switch).
 	organisationUuidGetter: () => _activeTenantUuid,
+	// Reads: `?_lang=<user language>` (REQ: OR fetches pass the locale).
+	languageGetter: userLanguage,
+	// Writes: `X-Translation-Target-Language: <user language>`.
+	targetLanguageGetter: userLanguage,
 })

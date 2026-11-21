@@ -2,17 +2,32 @@ publiccodeYmlVersion: "0.4"
 
 name: Larpinq
 url: "https://github.com/ConductionNL/larpinq"
-softwareVersion: "0.1.21"
-releaseDate: "2026-05-26"
+landingURL: "https://larpinq.conduction.nl"
+softwareVersion: "0.3.0"
+releaseDate: "2026-09-06"
+logo: img/app-store.svg
 developmentStatus: beta
 softwareType: "standalone/other"
 
 platforms:
-  - nextcloud
+  - web
 
 categories:
   - collaboration
   - event-management
+
+dependsOn:
+  open:
+    - name: Nextcloud
+      versionMin: "32"
+      versionMax: "35"
+    - name: OpenRegister
+
+intendedAudience:
+  countries:
+    - nl
+  scope:
+    - culture
 
 description:
   en:
@@ -24,11 +39,21 @@ description:
       event organisation, player registration, skill and item tracking, and community
       administration. Built on Nextcloud and Open Register, it offers a collaborative
       platform for LARP groups of all sizes.
+      Install it from the Nextcloud App Store: https://apps.nextcloud.com/apps/larpinq.
+      Conduction maintains this component at its own cost, committed until 31 December 2027.
     features:
-      - Character creation and management
-      - Event organisation and player registration
-      - Skill and item tracking
-      - Community administration
+      - Settings (worlds and campaigns) that scope characters, events and rules
+      - Character sheets with background stories and a game master approval workflow
+      - Players linked to Nextcloud contacts
+      - Abilities, skills, items, conditions and effects with a stat calculation engine
+      - Events with a participant roster and Nextcloud Calendar scheduling
+      - Post-event XP awards with an audit trail and prerequisite checks
+      - Printable PDF character sheets and per-event cast lists
+      - Access limited to an enrolled Nextcloud group
+    screenshots:
+      - img/screenshot-dashboard.png
+      - img/screenshot-characters.png
+      - img/screenshot-events.png
 
   nl:
     shortDescription: >
@@ -39,11 +64,21 @@ description:
       karakters, evenementorganisatie, spelersregistratie, vaardigheids- en
       itembeheer, en gemeenschapsadministratie. Gebouwd op Nextcloud en Open Register
       biedt het een collaboratief platform voor LARP-groepen van elke omvang.
+      Installeer het via de Nextcloud App Store: https://apps.nextcloud.com/apps/larpinq.
+      Conduction onderhoudt dit component voor eigen rekening, toegezegd tot 31 december 2027.
     features:
-      - Karakter aanmaken en beheren
-      - Evenementorganisatie en spelersregistratie
-      - Vaardigheids- en itembeheer
-      - Gemeenschapsadministratie
+      - Settings (werelden en campagnes) die karakters, events en regels afbakenen
+      - Karakterbladen met achtergrondverhaal en goedkeuring door de spelleider
+      - Spelers gekoppeld aan Nextcloud-contacten
+      - Abilities, skills, items, conditions en effects met een stat-berekeningsmotor
+      - Events met een deelnemerslijst en planning via Nextcloud Agenda
+      - XP-toekenningen na een event met audit trail en controle op vereisten
+      - Afdrukbare PDF-karakterbladen en castlijsten per event
+      - Toegang beperkt tot een aangemelde Nextcloud-groep
+    screenshots:
+      - img/screenshot-dashboard.png
+      - img/screenshot-characters.png
+      - img/screenshot-events.png
 
 legal:
   license: EUPL-1.2
@@ -51,7 +86,12 @@ legal:
   repoOwner: "Conduction B.V."
 
 maintenance:
-  type: community
+  type: contract
+  contractors:
+    - name: Conduction B.V.
+      until: "2027-12-31"
+      email: info@conduction.nl
+      website: https://conduction.nl
   contacts:
     - name: Conduction B.V.
       email: info@conduction.nl
@@ -60,5 +100,44 @@ maintenance:
 localisation:
   localisationReady: true
   availableLanguages:
-    - nl
+    - be
+    - bg
+    - bs
+    - ca
+    - cs
+    - da
+    - de
+    - el
     - en
+    - es
+    - et
+    - fi
+    - fr
+    - ga
+    - hr
+    - hu
+    - is
+    - it
+    - lb
+    - lt
+    - lv
+    - mk
+    - mt
+    - nb
+    - nl
+    - pl
+    - pt
+    - rm
+    - ro
+    - ru
+    - sk
+    - sl
+    - sq
+    - sr
+    - sv
+    - tr
+    - uk
+
+# Common Ground layer (nl.vng profile), as a standard supports entry.
+supports:
+  - id: https://commonground.nl/cms/view/54476261/5-lagen-model#process

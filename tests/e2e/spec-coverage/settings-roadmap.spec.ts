@@ -2,14 +2,9 @@
  * SPDX-FileCopyrightText: 2026 Larpinq Contributors
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec-coverage Playwright tests — larpinq in-app Game Settings page
- * (manifest page id "GameSettings", type "settings", route /game-settings)
- * and the Features & roadmap page (manifest page id "FeaturesRoadmap",
- * type "roadmap", route /features-roadmap).
- *
- * These two manifest pages were previously untested: spa-ui.spec.ts only
- * covered the NC *admin* settings panel (/settings/admin/larpinq), not
- * the in-app GameSettings page, and the roadmap page had no coverage at all.
+ * Spec-coverage Playwright tests: the data storage form on the admin page
+ * (/settings/admin/larpinq, its only home) and the Features & roadmap page
+ * (manifest page id "FeaturesRoadmap", type "roadmap", route /features-roadmap).
  *
  * All assertions are data-independent and target the rendered shell so they
  * are stable in a bare env (the OR MagicMapper bare-UUID-slug bug makes some
@@ -77,75 +72,41 @@ function trackLarpErrors(page: Page): string[] {
 }
 
 // ===========================================================================
-// GAME SETTINGS page — manifest page "GameSettings" (type: settings)
+// STORAGE SETTINGS — the admin page /settings/admin/larpinq. The in-app
+// "Game Settings" page that mounted the same form is gone: app configuration
+// lives in the Nextcloud administration settings only.
 // openspec/specs/settings-management-ui/spec.md
 // ===========================================================================
 
-test.describe('game-settings page', () => {
+test.describe('storage settings on the admin page', () => {
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings page renders the settings shell with version + storage sections', async ({
+	test('the admin page renders the version card and the data storage form', async ({
 		page,
 	}) => {
 		const errs = trackLarpErrors(page)
-		await openRoute(page, '/game-settings')
+		await page.goto('/index.php/settings/admin/larpinq', { waitUntil: 'domcontentloaded' })
 
-		// The in-app GameSettings page (CnSettingsPage shell) renders its heading.
 		await expect(
-			page
-				.locator('.app-content')
-				.getByRole('heading', { name: /Larpinq Settings/i })
-				.first(),
+			page.getByRole('heading', { name: /Version Information|Versie-informatie/i }).first(),
 		).toBeVisible({ timeout: 10_000 })
-
-		// Version Information and Data storage section headings are present.
 		await expect(
-			page
-				.locator('.app-content')
-				.getByRole('heading', { name: /Version Information/i })
-				.first(),
+			page.getByRole('heading', { name: /Data storage|Gegevensopslag/i }).first(),
 		).toBeVisible()
 		await expect(
-			page
-				.locator('.app-content')
-				.getByRole('heading', { name: /Data storage/i })
-				.first(),
+			page.locator('button').filter({ hasText: /Save All|Alles opslaan/i }).first(),
 		).toBeVisible()
 
-		// No larpinq-origin fatal page errors while rendering the settings page.
 		expect(errs.filter((e) => e.startsWith('pageerror'))).toHaveLength(0)
 	})
 
 	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings page exposes Re-import configuration and Save controls', async ({
-		page,
-	}) => {
-		await openRoute(page, '/game-settings')
-
-		// Primary settings actions are present and clickable (we don't submit).
+	test('the app has no in-app game settings page', async ({ page }) => {
+		await page.goto(`${BASE}/`, { waitUntil: 'domcontentloaded' })
+		await dismissSupportDialog(page)
+		await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
 		await expect(
-			page
-				.locator('.app-content button')
-				.filter({ hasText: /Re-import configuration/i })
-				.first(),
-		).toBeVisible({ timeout: 10_000 })
-		await expect(
-			page.locator('.app-content button').filter({ hasText: /Save/i }).first(),
-		).toBeVisible()
-	})
-
-	// @e2e openspec/specs/settings-management-ui/spec.md#panel-loads-then-saves-all-types
-	test('game settings version block shows an up-to-date / version indicator', async ({
-		page,
-	}) => {
-		await openRoute(page, '/game-settings')
-
-		// The version-information block renders a status control (e.g. "Up to date").
-		await expect(
-			page
-				.locator('.app-content')
-				.getByText(/Up to date|outdated|update available/i)
-				.first(),
-		).toBeVisible({ timeout: 10_000 })
+			page.locator('#app-navigation-vue, .app-navigation').getByText(/Game Settings|Spelinstellingen/i),
+		).toHaveCount(0)
 	})
 })
 

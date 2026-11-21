@@ -1,0 +1,37 @@
+# Larpinq
+
+> Larpinq is a Nextcloud app for LARP (live-action role-play) organisations: worlds, characters, players, game mechanics with a stat-calculation engine, events with registrations and XP awards, and printable character sheets, with its data stored in OpenRegister.
+
+## Start here
+
+- [README](README.md): what the app does, installation, Docker evaluation stack and tech stack
+- [AGENTS.md](AGENTS.md): setup, build, test, lint and the OpenSpec flow for coding agents
+- [Contributing](CONTRIBUTING.md): branching model, pull requests and commit message conventions
+
+## Documentation
+
+- [Introduction](docs/intro.md): getting started with Larpinq
+- [Architecture](docs/architecture.md): schema-driven design, every object stored in OpenRegister
+- [Features](docs/FEATURES.md): feature overview
+- [Feature pages](docs/features/README.md): one page per feature area
+- [Run a local demo](docs/Installation/demo-environment.md): a working Larpinq on your own machine
+- [Directory structure](docs/directories.md): what each folder is for
+- [Style guide](docs/styleguide.md): frontend styling decisions
+
+## API
+
+- [OpenAPI document](openapi.json): the JSON API of Larpinq (character sheets and builds, events, registrations, check-in, XP awards, worlds, setup)
+- [API contract spec](openspec/specs/api-contract/spec.md): versioned paths, problem-details errors and how the OpenAPI document is published
+- [Register definition](lib/Settings/larpinq_register.json): the OpenRegister schemas for the app's data types, extended by the fragments in lib/Settings/register.d/
+
+## Specs and decisions
+
+- [OpenSpec config](openspec/config.yaml): project context and rules for specs
+- [Character management spec](openspec/specs/character-management/spec.md): characters and the stat-calculation engine
+- [Game mechanics spec](openspec/specs/game-mechanics/spec.md): abilities, skills, items, conditions and effects
+- [Event registration spec](openspec/specs/event-registration/spec.md): sign-ups, registration status and capacity
+- [Event XP awards spec](openspec/specs/event-xp-awards/spec.md): per-participant XP awards after an event
+- [PDF export spec](openspec/specs/pdf-export/spec.md): character sheets and run-sheets rendered through DocuDesk
+- [ADR-001 Integrate, don't build](openspec/architecture/adr-001-integrate-dont-build.md): consume OpenRegister abstractions and integration apps
+- [ADR-002 GM authorization](openspec/architecture/adr-002-gm-authorization-single-group.md): one canonical game-master group
+- [ADR-003 Lore pages](openspec/architecture/adr-003-lore-pages-are-register-objects.md): lore pages are register objects, not a wiki

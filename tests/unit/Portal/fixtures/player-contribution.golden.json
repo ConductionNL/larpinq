@@ -1,0 +1,517 @@
+{
+    "label": "Larpinq",
+    "collections": [
+        {
+            "id": "myCharacters",
+            "register": "larpinq",
+            "schema": "character",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "label": "My characters",
+            "listable": true,
+            "fields": [
+                "name",
+                "ocName",
+                "description",
+                "type",
+                "faith",
+                "gold",
+                "silver",
+                "copper",
+                "card",
+                "itemsAndMoney",
+                "slNotesPublic",
+                "background",
+                "skills",
+                "items",
+                "conditions",
+                "events",
+                "setting"
+            ]
+        },
+        {
+            "id": "events",
+            "register": "larpinq",
+            "schema": "event",
+            "scopeField": "",
+            "label": "Events",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "startDate",
+                "endDate",
+                "location",
+                "setting"
+            ]
+        },
+        {
+            "id": "skillCatalog",
+            "register": "larpinq",
+            "schema": "skill",
+            "scopeField": "",
+            "label": "Skills",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "requiredSkills",
+                "requiredStats",
+                "requiredConditions",
+                "requiredEffects",
+                "requiredScore",
+                "setting",
+                "list"
+            ]
+        },
+        {
+            "id": "itemCatalog",
+            "register": "larpinq",
+            "schema": "item",
+            "scopeField": "",
+            "label": "Items",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "unique",
+                "setting"
+            ]
+        },
+        {
+            "id": "conditionCatalog",
+            "register": "larpinq",
+            "schema": "condition",
+            "scopeField": "",
+            "label": "Conditions",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "unique",
+                "setting"
+            ]
+        },
+        {
+            "id": "myProfile",
+            "register": "larpinq",
+            "schema": "player",
+            "scopeField": "portalSubjectRef",
+            "label": "My profile",
+            "listable": true,
+            "fields": [
+                "name",
+                "description"
+            ]
+        },
+        {
+            "id": "myRegistrations",
+            "register": "larpinq",
+            "schema": "larping_registration",
+            "scopeField": "player",
+            "scopeClaim": "ownerRef",
+            "label": "Mijn aanmeldingen",
+            "listable": true,
+            "fields": [
+                "event",
+                "character",
+                "status",
+                "ticketType",
+                "paymentState",
+                "payBy",
+                "paymentReference",
+                "paymentLink",
+                "submittedAt"
+            ],
+            "columns": [
+                {
+                    "field": "event",
+                    "label": "Evenement"
+                },
+                {
+                    "field": "status",
+                    "label": "Status",
+                    "render": "badge"
+                },
+                {
+                    "field": "paymentState",
+                    "label": "Betaling",
+                    "render": "badge"
+                },
+                {
+                    "field": "payBy",
+                    "label": "Betalen voor",
+                    "render": "date"
+                }
+            ],
+            "detail": {
+                "layout": "card",
+                "fields": [
+                    "event",
+                    "character",
+                    "status",
+                    "ticketType",
+                    "paymentState",
+                    "payBy",
+                    "paymentReference",
+                    "paymentLink"
+                ]
+            },
+            "defaultSort": {
+                "field": "submittedAt",
+                "direction": "desc"
+            }
+        },
+        {
+            "id": "rulebookChapters",
+            "register": "larpinq",
+            "schema": "larping_lore_page",
+            "scopeField": "",
+            "filter": {
+                "category": "rules",
+                "visibility": "players",
+                "revealFrom": "IS NULL"
+            },
+            "label": "Regelboek",
+            "listable": true,
+            "fields": [
+                "title",
+                "body",
+                "setting",
+                "parent",
+                "order"
+            ],
+            "columns": [
+                {
+                    "field": "title",
+                    "label": "Hoofdstuk"
+                }
+            ],
+            "detail": {
+                "layout": "card",
+                "fields": [
+                    "title",
+                    "body"
+                ]
+            },
+            "defaultSort": {
+                "field": "order",
+                "direction": "asc"
+            }
+        },
+        {
+            "id": "skillLists",
+            "register": "larpinq",
+            "schema": "larping_skill_list",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardighedenlijsten",
+            "listable": true,
+            "fields": [
+                "name",
+                "kind",
+                "description",
+                "costAbility",
+                "order",
+                "setting"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Lijst"
+                },
+                {
+                    "field": "kind",
+                    "label": "Soort"
+                }
+            ],
+            "defaultSort": {
+                "field": "order",
+                "direction": "asc"
+            }
+        },
+        {
+            "id": "rulebookSkills",
+            "register": "larpinq",
+            "schema": "larping_skill",
+            "scopeField": "",
+            "filter": {
+                "hiddenFromRulebook": false
+            },
+            "label": "Vaardigheden",
+            "listable": true,
+            "fields": [
+                "name",
+                "description",
+                "effect",
+                "effects",
+                "requiredSkills",
+                "requiredStats",
+                "requiredConditions",
+                "requiredEffects",
+                "requiredScore",
+                "setting",
+                "list"
+            ],
+            "columns": [
+                {
+                    "field": "name",
+                    "label": "Vaardigheid"
+                },
+                {
+                    "field": "list",
+                    "label": "Lijst"
+                }
+            ],
+            "defaultSort": {
+                "field": "name",
+                "direction": "asc"
+            }
+        },
+        {
+            "id": "myQuestions",
+            "register": "larpinq",
+            "schema": "larping_help_question",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "label": "Mijn vragen",
+            "listable": true,
+            "fields": [
+                "subject",
+                "body",
+                "event",
+                "character",
+                "status",
+                "lastMessageAt"
+            ],
+            "columns": [
+                {
+                    "field": "subject",
+                    "label": "Onderwerp"
+                },
+                {
+                    "field": "status",
+                    "label": "Status",
+                    "render": "badge"
+                },
+                {
+                    "field": "lastMessageAt",
+                    "label": "Laatste bericht",
+                    "render": "date"
+                }
+            ],
+            "detail": {
+                "layout": "card",
+                "fields": [
+                    "subject",
+                    "body",
+                    "event",
+                    "character",
+                    "status",
+                    "lastMessageAt"
+                ]
+            },
+            "defaultSort": {
+                "field": "lastMessageAt",
+                "direction": "desc"
+            }
+        },
+        {
+            "id": "myQuestionMessages",
+            "register": "larpinq",
+            "schema": "larping_help_message",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "label": "Antwoorden",
+            "listable": true,
+            "fields": [
+                "question",
+                "fromOrganiser",
+                "body",
+                "createdAt"
+            ],
+            "columns": [
+                {
+                    "field": "body",
+                    "label": "Bericht"
+                },
+                {
+                    "field": "fromOrganiser",
+                    "label": "Van de spelleiding",
+                    "render": "badge"
+                },
+                {
+                    "field": "createdAt",
+                    "label": "Geschreven op",
+                    "render": "date"
+                }
+            ],
+            "defaultSort": {
+                "field": "createdAt",
+                "direction": "asc"
+            }
+        }
+    ],
+    "actions": [
+        {
+            "id": "createCharacter",
+            "label": "Create a character",
+            "endpoint": "/index.php/apps/larpinq/api/portal/characters",
+            "method": "POST",
+            "scopeClaim": "ownerRef",
+            "fields": [
+                "name",
+                "background"
+            ],
+            "fieldConfigs": {
+                "name": {
+                    "label": "Character name",
+                    "required": true
+                },
+                "background": {
+                    "label": "Background story",
+                    "size": "large"
+                }
+            }
+        },
+        {
+            "id": "createPlayerProfile",
+            "type": "create",
+            "label": "Create your player profile",
+            "register": "larpinq",
+            "schema": "player",
+            "scopeField": "portalSubjectRef",
+            "fields": [
+                "name",
+                "description"
+            ]
+        },
+        {
+            "id": "askQuestion",
+            "type": "create",
+            "label": "Ask a question",
+            "register": "larpinq",
+            "schema": "larping_help_question",
+            "scopeField": "ownerRef",
+            "scopeClaim": "ownerRef",
+            "fields": [
+                "subject",
+                "body",
+                "event"
+            ]
+        }
+    ],
+    "pages": [
+        {
+            "id": "myLarp",
+            "label": "Mijn larp",
+            "group": "Verenigingen",
+            "icon": "Sword",
+            "blocks": [
+                {
+                    "type": "richText",
+                    "markdown": "Hier staan uw karakters en uw aanmeldingen voor evenementen."
+                },
+                {
+                    "type": "collection",
+                    "collection": "myCharacters"
+                },
+                {
+                    "type": "detail",
+                    "collection": "myCharacters"
+                },
+                {
+                    "type": "action",
+                    "action": "createCharacter"
+                },
+                {
+                    "type": "collection",
+                    "collection": "myRegistrations"
+                },
+                {
+                    "type": "detail",
+                    "collection": "myRegistrations"
+                }
+            ]
+        },
+        {
+            "id": "rulebook",
+            "label": "Regelboek",
+            "group": "Verenigingen",
+            "icon": "BookOpenVariant",
+            "blocks": [
+                {
+                    "type": "richText",
+                    "markdown": "De spelregels, gepubliceerd door de spelleiding. Wat hier staat, geldt op elk evenement."
+                },
+                {
+                    "type": "collection",
+                    "collection": "rulebookChapters"
+                },
+                {
+                    "type": "detail",
+                    "collection": "rulebookChapters"
+                },
+                {
+                    "type": "collection",
+                    "collection": "skillLists"
+                },
+                {
+                    "type": "collection",
+                    "collection": "rulebookSkills"
+                }
+            ]
+        },
+        {
+            "id": "help",
+            "label": "Vragen aan de spelleiding",
+            "group": "Verenigingen",
+            "icon": "HelpCircleOutline",
+            "blocks": [
+                {
+                    "type": "richText",
+                    "markdown": "Stel hier uw vraag aan de spelleiding. U ziet uw vragen, de antwoorden en of een vraag nog open staat."
+                },
+                {
+                    "type": "collection",
+                    "collection": "myQuestions"
+                },
+                {
+                    "type": "detail",
+                    "collection": "myQuestions"
+                },
+                {
+                    "type": "collection",
+                    "collection": "myQuestionMessages"
+                },
+                {
+                    "type": "action",
+                    "action": "askQuestion"
+                }
+            ]
+        }
+    ],
+    "notifications": [
+        {
+            "ruleKey": "larpinq.question.answered",
+            "collection": "myQuestions",
+            "on": {
+                "field": "status",
+                "operator": "changed"
+            },
+            "recipients": {
+                "field": "ownerRef",
+                "claim": "ownerRef"
+            },
+            "titleField": "subject"
+        }
+    ]
+}

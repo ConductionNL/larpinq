@@ -1,0 +1,36 @@
+# Tasks: registration-payments-through-shillinq
+
+<!-- HYDRA CAP: max 20 unindented `- [ ]` lines. This file uses 11. -->
+
+## 1. Data
+
+- [x] 1.1 Fragment: `event.payBy`, `paymentRequired`; `registration.paymentState`, `paymentRequestId`, `paymentLink`, `paymentReference`, `paymentReminderAt`, `invoiceRequested`, `cancelReason`; the reminder notification rule (REQ-RPS-001, REQ-RPS-003). Verify: `npm run check:register`; `npm run check:schema-l10n`; hydra notification-dialect gate passes.
+
+## 2. Request and state
+
+- [x] 2.1 `RegistrationPaymentService::requestFor()` through the integration registry's `shillinq-payment-requests` leaf, called from the deferred registration handler (REQ-RPS-001). Verify: PHPUnit with a fake leaf: one create per accepted priced registration, none for zero lines, none twice.
+- [x] 2.2 `PaymentRequestListener` on `ObjectUpdatedEvent` for shillinq `PaymentRequest` with a larpinq registration subject (REQ-RPS-002). Verify: PHPUnit with the real OpenRegister event class and `getNewObject()`; the listener-work-placement gate passes.
+- [x] 2.3 Graceful mode without shillinq: manual payment state for game masters (REQ-RPS-006). Verify: PHPUnit with the leaf absent.
+
+## 3. Reminders and expiry
+
+- [x] 3.1 `RegistrationPaymentJob` (`TimedJob`, daily, bounded pages): reminder 3 days before, expiry one day after, and the leaf `list` reconciliation (REQ-RPS-003, REQ-RPS-004). Verify: PHPUnit with a fixed clock for each case; `appinfo/info.xml` lists the job; the repair-step-registration gate passes.
+
+## 4. Pages
+
+- [x] 4.1 Payment columns, filter and counts on EventDetail and the Registrations pages, and the player's payment block on My registrations, in `src/manifest.json` (REQ-RPS-005). Verify: `npm run check:manifest`.
+- [ ] 4.2 Playwright `tests/e2e/workflows/registration-payments.workflow.spec.ts` (written 2 October; not run: no isolated instance with shillinq) against a shillinq test instance: Anna is accepted, sees her link and WC26-0001; a simulated capture marks her paid on the roster (REQ-RPS-001, REQ-RPS-002, REQ-RPS-005). Verify: passes locally with shillinq enabled.
+
+## 5. Strings and docs
+
+- [x] 5.1 Dutch and English strings, including the reminder message (REQ-RPS-003). Verify: `npm run test:l10n`.
+- [x] 5.2 `docs/features/event-payments.md`: what larpinq does and what shillinq does (ADR-010). Verify: the docs build renders it.
+
+## 6. Shillinq's halves: invoice and bank match
+
+- [x] 6.1 Invoice on request (`reg-invoices`, REQ-RPS-006): `lib/Settings/register.d/registration-payments-through-shillinq.json` gains `registration.invoiceId` and `invoiceUrl`; `lib/Listener/PaymentRequestListener.php` copies the issued invoice from the shillinq `PaymentRequest` onto the registration; `src/manifest.json` shows "Factuur downloaden" on the registration and on My registrations when `invoiceUrl` is set, as LrAanmelding draws it. `PaymentRequestBuilder` already passes `invoiceRequested`. Depends on shillinq `changes/receivables-object-request-settlement` (an issued `ARInvoice` behind a request created with `invoiceRequested`, `ObjectRequestInvoiceService`) and the invoice PDF of `changes/sales-invoice-document`. Verify: `tests/unit/Listener/PaymentRequestListenerTest.php` (an issued invoice lands on the registration once); `tests/unit/Settings/RegistrationPaymentsFragmentTest.php`; `npm run check:manifest`. Built: shillinq issues the invoice at create and names it in the request's `invoiceReference`; `RegistrationInvoice` turns that into `invoiceId` and an absolute `invoiceUrl` to shillinq's invoice download (`shillinq.invoiceApi.pdf`), written with the request in `RegistrationPaymentService::raise()` and, when shillinq reports it later, once through `PaymentFollowUp::requestChanged()` (`tests/unit/Service/RegistrationInvoiceTest.php`). The registration page has a "Download invoice" header link when `invoiceId` is set; My registrations has an Invoice link column worded by the `invoiceDownload` formatter. The invoice PDF layout itself is shillinq's `changes/sales-invoice-document`, still open there.
+- [x] 6.2 Bank statement match (`reg-bank-statement-match`, REQ-RPS-002, REQ-RPS-007): `lib/Settings/register.d/registration-payments-through-shillinq.json` gains `registration.paymentMethod`; `lib/Listener/PaymentRequestListener.php` marks the registration paid with `paymentMethod: bank-transfer` when shillinq settles its request from a bank line that quotes `paymentReference`; `src/manifest.json` adds "Bankafschrift uploaden en matchen" on the Registrations index for game masters, opening shillinq's bank statement wizard, as LrAanmeldingen draws it. `RegistrationPaymentService` already sends `paymentReference` on create. Depends on shillinq `specs/shillinq-bank-statement-wizard` (import of CAMT.053, MT940 or CSV) and `changes/receivables-object-request-settlement` (`ObjectRequestBankMatcher`, `BankLineObjectRequestListener`). Verify: `tests/unit/Listener/PaymentRequestListenerTest.php` (a bank settlement sets paid and the method); `npm run check:manifest`. Built: the listener path goes through `PaymentFollowUp::markPaid()`, which sets the method when the request reports `settledVia: bank-transfer` (`tests/unit/Service/PaymentBankTransferTest.php`); the action sits in the Registrations page header actions in `src/manifest.d/registration-intake-and-capacity.json`, visible when `/api/payments/access` allows, and opens the shillinq bank import page.
+
+Quality reminders (not tracked as tasks): `composer check:strict` once before push.
+
+Open until shillinq's side exists (design "Revised at build time"): an app may raise a request on the leaf, so every acceptance asks at once (for-ruben/shillinq-payment-request-leaf-app-caller.md); bank matching by reference and an invoice on request for rows `reg-bank-statement-match` and `reg-invoices`. Do not archive before then.

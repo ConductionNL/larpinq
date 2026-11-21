@@ -1,0 +1,143 @@
+{
+	"components": {
+		"registers": {
+			"larpinq": {
+				"schemas": ["larping_character_field"]
+			}
+		},
+		"schemas": {
+			"characterField": {
+				"slug": "larping_character_field",
+				"title": "Character field",
+				"icon": "FormTextbox",
+				"version": "1.0.0",
+				"summary": "An extra field on the character sheets of a world",
+				"description": "A field a game master adds to the character sheets of one world, or of every world when no world is set. The values live on the character.",
+				"type": "object",
+				"configuration": {
+					"exportable": true
+				},
+				"required": ["label", "key", "fieldType"],
+				"properties": {
+					"label": {
+						"type": "string",
+						"title": "Label",
+						"description": "The name of the field on the character sheet",
+						"maxLength": 255
+					},
+					"key": {
+						"type": "string",
+						"title": "Key",
+						"description": "The key the value is stored under: lower case letters, digits and hyphens",
+						"pattern": "^[a-z0-9][a-z0-9-]*$",
+						"maxLength": 64
+					},
+					"fieldType": {
+						"type": "string",
+						"title": "Field type",
+						"description": "What kind of value the field holds",
+						"enum": ["text", "number", "choice", "yes-no"],
+						"x-enum-labels": {
+							"text": "Text",
+							"number": "Number",
+							"choice": "Choice",
+							"yes-no": "Yes or no"
+						},
+						"default": "text"
+					},
+					"choices": {
+						"type": "array",
+						"title": "Choices",
+						"description": "The values a choice field offers",
+						"items": {
+							"type": "string",
+							"maxLength": 255
+						}
+					},
+					"visibility": {
+						"type": "string",
+						"title": "Visible to",
+						"description": "Who reads and fills in the field: game masters only, or also the player who owns the character",
+						"enum": ["gamemasters", "owner"],
+						"x-enum-labels": {
+							"gamemasters": "Game masters only",
+							"owner": "Game masters and the player"
+						},
+						"default": "owner"
+					},
+					"order": {
+						"type": "integer",
+						"title": "Order",
+						"description": "The position of the field on the sheet",
+						"default": 0
+					},
+					"help": {
+						"type": "string",
+						"title": "Help text",
+						"description": "A hint shown under the field",
+						"maxLength": 500
+					},
+					"setting": {
+						"type": "string",
+						"format": "uuid",
+						"$ref": "setting",
+						"title": "World",
+						"description": "The world whose characters get this field; empty for every world"
+					}
+				},
+				"authorization": {
+					"read": [
+						"gamemasters",
+						{
+							"group": "larpers",
+							"match": {
+								"visibility": "owner"
+							}
+						}
+					],
+					"create": ["gamemasters"],
+					"update": ["gamemasters"],
+					"delete": ["gamemasters"]
+				}
+			},
+			"character": {
+				"properties": {
+					"customFields": {
+						"type": "object",
+						"title": "Extra fields",
+						"description": "The values of the extra fields the player may read and fill in, by key",
+						"authorization": {
+							"read": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							],
+							"update": [
+								"gamemasters",
+								{
+									"group": "larpers",
+									"match": {
+										"ownerUid": "$userId"
+									}
+								}
+							]
+						}
+					},
+					"customFieldsPrivate": {
+						"type": "object",
+						"title": "Extra fields for game masters",
+						"description": "The values of the extra fields only game masters read and fill in, by key",
+						"authorization": {
+							"read": ["gamemasters"],
+							"update": ["gamemasters"]
+						}
+					}
+				}
+			}
+		}
+	}
+}

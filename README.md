@@ -17,9 +17,15 @@
 
 ---
 
-Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud.
+Larpinq brings live-action role-playing management natively into Nextcloud. Game masters define abilities, skills, items, conditions, and effects; the app automatically computes each character's stats and keeps them synchronized as game state changes. Players register for events, track XP, and print their character sheet — all without leaving Nextcloud. Install it from the [Nextcloud App Store](https://apps.nextcloud.com/apps/larpinq).
 
 > **Optional:** [OpenRegister](https://github.com/ConductionNL/openregister) — enables advanced features like audit trails, object locking, cross-object relations, and JSON-based data storage.
+
+## Test coverage
+
+<!-- coverage:start -->
+Measured test coverage: 92.6% of statements (PHP 92.6% of 4,080 statements), at commit `706d020` on 2026-11-11. The JavaScript frontend is not in this figure, because it has no coverage measurement yet. The figures come from [`coverage-summary.json`](coverage-summary.json); refresh them with `composer coverage:publish`.
+<!-- coverage:end -->
 
 ## Screenshots
 
@@ -140,6 +146,29 @@ composer install
 php occ app:enable larpinq
 ```
 
+### Try it with Docker
+
+The repository builds an evaluation image: the official Nextcloud image with larpinq and OpenRegister installed and enabled. It is meant for trying the app out and for test environments. For production, install the app from the Nextcloud App Store.
+
+```bash
+docker compose -f docker/docker-compose.yml up -d --build
+```
+
+Open http://localhost:8080/apps/larpinq/ and sign in as `admin` with password `admin`. The first start takes a minute or two. Set `NEXTCLOUD_ADMIN_PASSWORD` and `APP_PORT` to change the password and the port; `docker/docker-compose.yml` lists every setting. `docker compose -f docker/docker-compose.yml down -v` removes the stack and its data.
+
+Released versions are published as `ghcr.io/conductionnl/larpinq`, so leaving out `--build` uses the published image.
+
+### Run it on Kubernetes
+
+`charts/larpinq` wraps the official [Nextcloud Helm chart](https://github.com/nextcloud/helm) and runs the same image with PostgreSQL:
+
+```bash
+helm dependency build charts/larpinq
+helm install larpinq charts/larpinq --set nextcloud.nextcloud.host=larpinq.example.org
+```
+
+Change the passwords in `charts/larpinq/values.yaml` before you install it anywhere that matters.
+
 ## Development
 
 ### Start the environment
@@ -232,6 +261,10 @@ All dependencies (PHP and JavaScript) are automatically checked against an appro
 - **Font licenses:** OFL-1.0, OFL-1.1
 
 Dependencies with licenses not on this list will fail CI unless explicitly approved in `.license-overrides.json` with a documented justification.
+
+Runtime dependencies added for a feature, with their licence:
+
+- [`qrcode`](https://github.com/soldair/node-qrcode) (MIT): draws a registration's check-in code as a QR code on My registrations (events-qr-checkin).
 ## Authors
 
 Built by [Conduction](https://conduction.nl) — open-source software for Dutch government and public sector organizations.

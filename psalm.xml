@@ -81,6 +81,7 @@
                 <referencedClass name="OCA\OpenRegister\Db\ObjectEntity"/>
                 <referencedClass name="OCA\OpenRegister\Db\RegisterMapper"/>
                 <referencedClass name="OCA\OpenRegister\Db\SchemaMapper"/>
+                <referencedClass name="OCA\OpenRegister\Exception\NotAuthorizedException"/>
                 <referencedClass name="OCA\OpenRegister\Event\DeepLinkRegistrationEvent"/>
                 <referencedClass name="OCA\OpenRegister\Event\ObjectCreatingEvent"/>
                 <referencedClass name="OCA\OpenRegister\Event\ObjectCreatedEvent"/>
@@ -93,6 +94,8 @@
                 <referencedClass name="OCA\OpenRegister\Service\FileService"/>
                 <referencedClass name="OCA\OpenRegister\Service\CalendarEventService"/>
                 <referencedClass name="OCA\OpenRegister\Mcp\IMcpToolProvider"/>
+                <referencedClass name="OCA\OpenRegister\Mcp\IMcpScannableServices"/>
+                <referencedClass name="OCA\OpenRegister\Service\Form\FormDestination"/>
                 <!-- Additional OCP infrastructure types used across the fleet -->
                 <referencedClass name="OCP\AppFramework\Bootstrap\IBootContext"/>
                 <referencedClass name="OCP\AppFramework\Bootstrap\IRegistrationContext"/>
@@ -108,6 +111,13 @@
                 <referencedClass name="GuzzleHttp\Exception\GuzzleException"/>
             </errorLevel>
         </UndefinedClass>
+        <UndefinedAttributeClass>
+            <errorLevel type="suppress">
+                <!-- OpenRegister's MCP tool attribute: OpenRegister is a sibling
+                     app, not a composer dependency, so Psalm cannot load it. -->
+                <referencedClass name="OCA\OpenRegister\Mcp\Attribute\McpTool"/>
+            </errorLevel>
+        </UndefinedAttributeClass>
         <UndefinedMagicMethod errorLevel="suppress"/>
         <UnusedClass errorLevel="suppress"/>
         <PossiblyUnusedMethod errorLevel="suppress"/>

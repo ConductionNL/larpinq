@@ -1,0 +1,390 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_ticket_type",
+          "larping_registration_option",
+          "larping_access_code"
+        ]
+      }
+    },
+    "schemas": {
+      "ticketType": {
+        "slug": "larping_ticket_type",
+        "title": "Ticket type",
+        "icon": "TicketOutline",
+        "version": "1.0.0",
+        "summary": "What a place at an event costs for one kind of participant",
+        "description": "A ticket type of one event: player, crew, NPC or other, with its listed price, an optional sale window and an optional number of places. A hidden ticket type is offered only to someone with a code that unlocks it. Larpinq records the listed price on a registration; the amount due and the payment are handled by shillinq.",
+        "type": "object",
+        "x-schema-org": "schema:Offer",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "name",
+          "role",
+          "amount"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event",
+            "description": "The event this ticket type is for"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Name",
+            "description": "The name players see, such as Player early bird"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "player",
+              "crew",
+              "npc",
+              "other"
+            ],
+            "title": "Role",
+            "description": "Who this ticket is for"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Listed price",
+            "description": "The price in cents. A later change applies to new choices only."
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "default": "EUR",
+            "title": "Currency",
+            "description": "The currency of the price, such as EUR"
+          },
+          "saleFrom": {
+            "type": "string",
+            "format": "date-time",
+            "title": "On sale from",
+            "description": "From this moment the ticket type is offered. Empty means from now."
+          },
+          "saleUntil": {
+            "type": "string",
+            "format": "date-time",
+            "title": "On sale until",
+            "description": "After this moment the ticket type is no longer offered, as for an early bird price"
+          },
+          "placeLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Places",
+            "description": "How many accepted registrations this ticket type takes. Empty means no limit of its own."
+          },
+          "hidden": {
+            "type": "boolean",
+            "default": false,
+            "title": "Only with a code",
+            "description": "Offered only to someone who enters a code that unlocks it"
+          },
+          "order": {
+            "type": "integer",
+            "title": "Order",
+            "description": "Where the ticket type is listed among the others"
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "hidden": false
+              }
+            }
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "registrationOption": {
+        "slug": "larping_registration_option",
+        "title": "Registration option",
+        "icon": "SilverwareForkKnife",
+        "version": "1.0.0",
+        "summary": "An extra a player can choose with their registration, such as a meal plan",
+        "description": "An extra of one event with its listed price, such as full catering, vegan. An option with a number of places is refused once it is full.",
+        "type": "object",
+        "x-schema-org": "schema:Offer",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "name",
+          "category",
+          "amount"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event",
+            "description": "The event this option is for"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Name",
+            "description": "The name players see, such as Full catering, vegan"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "meal",
+              "other"
+            ],
+            "title": "Category",
+            "description": "Meal for catering choices, other for anything else"
+          },
+          "amount": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Listed price",
+            "description": "The price in cents. A later change applies to new choices only."
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "default": "EUR",
+            "title": "Currency",
+            "description": "The currency of the price, such as EUR"
+          },
+          "placeLimit": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Places",
+            "description": "How many accepted registrations can choose this option. Empty means no limit."
+          }
+        },
+        "authorization": {
+          "read": [
+            "gamemasters",
+            "larpers"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "accessCode": {
+        "slug": "larping_access_code",
+        "title": "Access code",
+        "icon": "KeyVariant",
+        "version": "1.0.0",
+        "summary": "A code that unlocks hidden ticket types of an event",
+        "description": "A code a game master hands out, such as to crew friends. Entered on a registration, it unlocks the hidden ticket types it names, inside its valid window and up to its number of uses. Only game masters see codes.",
+        "type": "object",
+        "x-schema-org": "schema:Offer",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "code",
+          "unlocks"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event",
+            "description": "The event this code is for"
+          },
+          "code": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64,
+            "title": "Code",
+            "description": "What a player types, such as LANTERN. Upper and lower case count the same."
+          },
+          "unlocks": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": "Unlocks",
+            "description": "The hidden ticket types this code makes available"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid from",
+            "description": "From this moment the code works. Empty means from now."
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid until",
+            "description": "After this moment the code no longer works"
+          },
+          "maxUses": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Uses",
+            "description": "How many registrations can use the code. Empty means no limit."
+          }
+        },
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        }
+      },
+      "registration": {
+        "slug": "larping_registration",
+        "properties": {
+          "ticketType": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_ticket_type",
+            "title": "Ticket type",
+            "description": "The ticket type the player chose"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "title": "Options",
+            "description": "The extras the player chose, such as a meal plan"
+          },
+          "code": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Code",
+            "description": "The code the player entered to unlock a hidden ticket type"
+          },
+          "accessCode": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Code used",
+            "description": "The code that matched, set by larpinq",
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          },
+          "lines": {
+            "type": "array",
+            "title": "Price lines",
+            "description": "The listed price of each choice when it was made, set by larpinq. Larpinq adds nothing up; the amount due comes from shillinq.",
+            "items": {
+              "type": "object",
+              "required": [
+                "kind",
+                "ref",
+                "name",
+                "amount",
+                "currency"
+              ],
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "ticket",
+                    "option"
+                  ],
+                  "title": "Kind",
+                  "description": "Ticket or option"
+                },
+                "ref": {
+                  "type": "string",
+                  "format": "uuid",
+                  "title": "Chosen",
+                  "description": "The ticket type or option chosen"
+                },
+                "name": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "title": "Name",
+                  "description": "The name when it was chosen"
+                },
+                "amount": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "title": "Listed price",
+                  "description": "The listed price in cents when it was chosen"
+                },
+                "currency": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{3}$",
+                  "title": "Currency",
+                  "description": "The currency of the price, such as EUR"
+                }
+              }
+            },
+            "authorization": {
+              "update": [
+                "gamemasters"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

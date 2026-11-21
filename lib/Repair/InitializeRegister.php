@@ -12,13 +12,16 @@
  * @copyright 2024 Ruben Linde
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Repair;
 
-use OCA\Larpinq\Service\SettingsService;
+use OCA\Larpinq\Kernel\Contracts\SettingsServiceInterface;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Psr\Log\LoggerInterface;
@@ -43,13 +46,13 @@ class InitializeRegister implements IRepairStep {
 	/**
 	 * Constructor for InitializeRegister.
 	 *
-	 * @param SettingsService $settingsService The settings service.
-	 * @param LoggerInterface $logger The logger interface.
+	 * @param SettingsServiceInterface $settingsService The settings service.
+	 * @param LoggerInterface          $logger          The logger interface.
 	 *
 	 * @return void
 	 */
 	public function __construct(
-		private readonly SettingsService $settingsService,
+		private readonly SettingsServiceInterface $settingsService,
 		private readonly LoggerInterface $logger,
 	) {
 	}//end __construct()
