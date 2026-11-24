@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 
 declare(strict_types=1);

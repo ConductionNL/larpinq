@@ -7,9 +7,9 @@
  * characters, and an option a player picks on a registration is counted on
  * the event's Choices tab.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md
- * @spec openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md
- * @spec openspec/changes/capability-rows-missing-requirements/specs/event-registration/spec.md
+ * @spec openspec/specs/setting-management/spec.md
+ * @spec openspec/specs/events-players/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 import type { APIRequestContext } from '@playwright/test'
@@ -70,14 +70,14 @@ test.afterAll(async () => {
 	await api.dispose()
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md#a-player-reads-what-aldmoor-is-like
+// @e2e openspec/specs/setting-management/spec.md#a-player-reads-what-aldmoor-is-like
 test('the world page shows the world\'s description', async ({ page }) => {
 	await page.goto(`${BASE}/settings/${ids.world}`)
 	await expect(page.locator('.app-content')).toContainText(DESCRIPTION, { timeout: 30_000 })
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md#a-game-master-links-annas-account
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md#annas-characters
+// @e2e openspec/specs/events-players/spec.md#a-game-master-links-annas-account
+// @e2e openspec/specs/events-players/spec.md#annas-characters
 test('the player page shows the account and the characters, and a character opens', async ({ page }) => {
 	await page.goto(`${BASE}/players/${ids.anna}`)
 	const content = page.locator('.app-content')
@@ -91,7 +91,7 @@ test('the player page shows the account and the characters, and a character open
 	await expect(page).toHaveURL(new RegExp(`/characters/${ids.mirela}`), { timeout: 15_000 })
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/event-registration/spec.md#anna-eats-vegetarian
+// @e2e openspec/specs/event-registration/spec.md#anna-eats-vegetarian
 test('an option picked on a registration is shown on it and counted on the Choices tab', async ({ page }) => {
 	const registration = await make('larping_registration', {
 		event: ids.event,

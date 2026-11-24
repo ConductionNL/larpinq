@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -70,7 +70,7 @@ class EventMessagesController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	#[NoAdminRequired]
 	public function preview(string $id): JSONResponse {
@@ -102,7 +102,7 @@ class EventMessagesController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+	 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 	 */
 	#[NoAdminRequired]
 	public function create(string $id): JSONResponse {
@@ -146,7 +146,7 @@ class EventMessagesController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+	 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 	 */
 	#[NoAdminRequired]
 	public function send(string $id, string $messageId): JSONResponse {

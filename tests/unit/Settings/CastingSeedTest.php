@@ -11,7 +11,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/events-casting-and-crew-roles/tasks.md#task-1.2
+ * @spec openspec/changes/archive/2026-11-24-events-casting-and-crew-roles/tasks.md#task-1.2
  */
 
 declare(strict_types=1);

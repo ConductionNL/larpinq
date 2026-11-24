@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  */
 
 declare(strict_types=1);
@@ -39,7 +39,7 @@ use RuntimeException;
  * task 1.2): the primary active card first, else the first active card with a
  * valid address.
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+ * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
  */
 #[CoversClass(ParticipantContact::class)]
 class ParticipantContactTest extends TestCase {

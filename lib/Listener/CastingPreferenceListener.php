@@ -21,7 +21,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use OCP\IUserSession;
  *
  * @psalm-suppress UndefinedClass OpenRegister event classes are an optional dependency.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 class CastingPreferenceListener implements IEventListener {
 
@@ -83,7 +83,7 @@ class CastingPreferenceListener implements IEventListener {
 	 *
 	 * @psalm-suppress UndefinedClass OpenRegister event classes are optional dependencies.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+	 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is the listeners' shared, stateless helper for OpenRegister's pre-write events.
 	 */

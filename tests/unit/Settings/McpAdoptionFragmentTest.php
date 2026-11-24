@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/larpinq-mcp-adoption
+ * @spec openspec/changes/archive/2026-11-24-larpinq-mcp-adoption
  */
 
 declare(strict_types=1);

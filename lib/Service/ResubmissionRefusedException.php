@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 
 declare(strict_types=1);
@@ -25,7 +25,7 @@ use RuntimeException;
 /**
  * A refused resubmission, with the HTTP status the controller answers.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 class ResubmissionRefusedException extends RuntimeException {
 
@@ -35,7 +35,7 @@ class ResubmissionRefusedException extends RuntimeException {
 	 * @param string $message The reason, in English.
 	 * @param int    $status  The HTTP status to answer.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function __construct(string $message, private readonly int $status) {
 		parent::__construct(message: $message);
@@ -46,7 +46,7 @@ class ResubmissionRefusedException extends RuntimeException {
 	 *
 	 * @return int The status.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function getStatus(): int {
 		return $this->status;

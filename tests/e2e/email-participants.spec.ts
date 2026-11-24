@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec coverage: openspec/changes/communication-mail-participants (task 2.2,
+ * Spec coverage: openspec/changes/archive/2026-11-24-communication-mail-participants (task 2.2,
  * REQ-CMP-001 to REQ-CMP-004).
  *
  * A game master writes to the accepted participants of "Winter Court 2026"
@@ -86,7 +86,7 @@ test.afterAll(async () => {
 	await admin.dispose()
 })
 
-// @e2e openspec/changes/communication-mail-participants/specs
+// @e2e openspec/changes/archive/2026-11-24-communication-mail-participants/specs
 test('a game master writes to the accepted participants, sees 3 recipients, sends, and finds the message on the event', async ({
 	page,
 }) => {

@@ -7,7 +7,7 @@
  * it is downloaded in `invoiceUrl`. A link cell on My registrations shows that
  * link worded as "Download invoice" rather than as the URL itself.
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 import { translate as t } from '@nextcloud/l10n'
 
@@ -17,7 +17,7 @@ import { translate as t } from '@nextcloud/l10n'
  *
  * @param {unknown} value The stored `invoiceUrl`.
  * @return {string} The cell text.
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 export function invoiceDownloadLabel(value) {
 	if (typeof value !== 'string' || value.trim() === '') {

@@ -8,7 +8,7 @@
  filled and open places and an assign action. Game masters only; the
  proposal comes from larpinq, everything else from the OpenRegister objects API.
 
- @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ @spec openspec/specs/event-casting/spec.md
  @visual exclude Sidebar-tab section (not a routed page); covered by tests/vitest/eventCastingView.spec.js and the planned tests/e2e/event-casting.spec.ts.
 -->
 <template>
@@ -168,7 +168,7 @@ export default {
 		 *
 		 * @return {object} The option.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		notCast() {
 			return { id: '', label: t('larpinq', 'Not cast') }
@@ -179,7 +179,7 @@ export default {
 		 *
 		 * @return {Array<object>} The options.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+		 * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
 		 */
 		characterOptions() {
 			const characters = this.view.proposal?.characters ?? []
@@ -197,7 +197,7 @@ export default {
 		 *
 		 * @return {Array<object>} The columns.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		rankColumns() {
 			const ranks = Array.from({ length: MAX_RANK }, (_, i) => ({
@@ -212,7 +212,7 @@ export default {
 		 *
 		 * @return {Array<object>} The rows.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+		 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 		 */
 		rankRows() {
 			return (this.view.proposal?.characters ?? []).map((character) => {
@@ -229,7 +229,7 @@ export default {
 		 *
 		 * @return {Array<object>} The columns.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		proposalColumns() {
 			return [
@@ -245,7 +245,7 @@ export default {
 		 *
 		 * @return {Array<object>} `{id, player, rank}` per row.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+		 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 		 */
 		proposalRows() {
 			const pairs = this.view.proposal?.pairs ?? []
@@ -269,7 +269,7 @@ export default {
 		 *
 		 * @return {string} The names, comma separated.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		unmatchedNames() {
 			return (this.view.proposal?.unmatched ?? [])
@@ -282,7 +282,7 @@ export default {
 		 *
 		 * @return {string} The names, comma separated.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		refusedNames() {
 			return this.refused
@@ -295,7 +295,7 @@ export default {
 		 *
 		 * @return {Array<object>} The roles.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+		 * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
 		 */
 		crew() {
 			return crewPlaces(this.view.roles ?? [], this.view.assignments ?? [])
@@ -319,7 +319,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+		 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 		 */
 		async load() {
 			this.loading = true
@@ -341,7 +341,7 @@ export default {
 		 * @param {string} kind `crew` or `npc`.
 		 * @return {string} The label.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		kindLabel(kind) {
 			return kind === 'npc' ? t('larpinq', 'npc') : t('larpinq', 'crew')
@@ -353,7 +353,7 @@ export default {
 		 * @param {string} registrationId The registration uuid.
 		 * @return {string} The name.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		nameOf(registrationId) {
 			const registration = (this.view.registrations ?? []).find(
@@ -371,7 +371,7 @@ export default {
 		 * @param {object|null} option The chosen option.
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+		 * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
 		 */
 		pick(registrationId, option) {
 			const chosen = option ?? this.notCast
@@ -392,7 +392,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+		 * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
 		 */
 		async confirm() {
 			this.confirming = true
@@ -416,7 +416,7 @@ export default {
 		 * @param {object} role The role, with its assignments.
 		 * @return {Array<object>} The options.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+		 * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
 		 */
 		volunteerOptions(role) {
 			return volunteersFor(
@@ -435,7 +435,7 @@ export default {
 		 * @param {object} role The role.
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+		 * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
 		 */
 		async assign(role) {
 			const choice = this.crewChoice[role.id]

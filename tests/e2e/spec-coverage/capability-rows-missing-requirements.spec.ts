@@ -2,7 +2,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  * SPDX-License-Identifier: EUPL-1.2
  *
- * Spec coverage for openspec/changes/capability-rows-missing-requirements:
+ * Spec coverage for openspec/changes/archive/2026-11-24-capability-rows-missing-requirements:
  * the world page's description and timeline, the player page's account and
  * characters, and the game master override on the character page.
  *
@@ -23,9 +23,9 @@
  *   by tests/e2e/workflows/registration-tickets.workflow.spec.ts.
  * - the run sheet download from the event page: tests/e2e/spec-coverage/event-runsheet-export.spec.ts.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md
- * @spec openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md
+ * @spec openspec/specs/setting-management/spec.md
+ * @spec openspec/specs/events-players/spec.md
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md
  */
 
 import type { APIRequestContext, Browser, Page } from '@playwright/test'
@@ -145,7 +145,7 @@ test.afterAll(async () => {
 	await admin.dispose()
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md#a-player-reads-what-aldmoor-is-like
+// @e2e openspec/specs/setting-management/spec.md#a-player-reads-what-aldmoor-is-like
 test('a player reads the world description on the world page', async ({ browser }) => {
 	const page = await asAnna(browser)
 	await open(page, `/settings/${ids.world}`)
@@ -153,7 +153,7 @@ test('a player reads the world description on the world page', async ({ browser 
 	await page.context().close()
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md#the-founding-comes-before-the-siege
+// @e2e openspec/specs/setting-management/spec.md#the-founding-comes-before-the-siege
 test('the world timeline lists the founding before the Summer Siege', async ({ page }) => {
 	await open(page, `/settings/${ids.world}`)
 	const timeline = page.locator('section, div').filter({ has: page.getByRole('heading', { name: 'Timeline' }) }).last()
@@ -163,7 +163,7 @@ test('the world timeline lists the founding before the Summer Siege', async ({ p
 	expect(text.indexOf(names.founding)).toBeLessThan(text.indexOf(names.siege))
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/setting-management/spec.md#a-hidden-entry-stays-hidden
+// @e2e openspec/specs/setting-management/spec.md#a-hidden-entry-stays-hidden
 test('a game-master history entry is in the game master\'s timeline and not in a player\'s', async ({ page, browser }) => {
 	await open(page, `/settings/${ids.world}`)
 	await expect(page.getByText(names.secret).first()).toBeVisible({ timeout: 30_000 })
@@ -175,14 +175,14 @@ test('a game-master history entry is in the game master\'s timeline and not in a
 	await anna.context().close()
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md#a-game-master-links-anna-s-account
+// @e2e openspec/specs/events-players/spec.md#a-game-master-links-anna-s-account
 test('the player page shows the linked Nextcloud account', async ({ page }) => {
 	await open(page, `/players/${ids.anna}`)
 	await expect(page.getByText(names.anna).first()).toBeVisible({ timeout: 30_000 })
 	await expect(page.getByText(annaUid).first()).toBeVisible()
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/events-players/spec.md#anna-s-characters
+// @e2e openspec/specs/events-players/spec.md#anna-s-characters
 test('the player page lists the player\'s characters and opens one', async ({ page }) => {
 	await open(page, `/players/${ids.anna}`)
 	await expect(page.getByText(names.mirela).first()).toBeVisible({ timeout: 30_000 })
@@ -191,7 +191,7 @@ test('the player page lists the player\'s characters and opens one', async ({ pa
 	await expect(page).toHaveURL(new RegExp(`/characters/${ids.mirela}`), { timeout: 30_000 })
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#a-game-master-grants-a-skill-as-a-plot-reward
+// @e2e openspec/specs/skill-requirement-enforcement/spec.md#a-game-master-grants-a-skill-as-a-plot-reward
 test('a game master grants Dragon Speech with a reason and the history shows it', async ({ page }) => {
 	await open(page, `/characters/${ids.chosen}`)
 	await page.getByRole('button', { name: 'Override a requirement' }).first().click()
@@ -211,7 +211,7 @@ test('a game master grants Dragon Speech with a reason and the history shows it'
 	await expect(page.getByText(reason).first()).toBeVisible({ timeout: 30_000 })
 })
 
-// @e2e openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#a-player-has-no-override-action
+// @e2e openspec/specs/skill-requirement-enforcement/spec.md#a-player-has-no-override-action
 test('a player gets no override action on her own character', async ({ browser }) => {
 	const page = await asAnna(browser)
 	await open(page, `/characters/${ids.mirela}`)

@@ -7,7 +7,7 @@
  * @category Test
  * @package  OCA\Larpinq\Tests\Unit
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 
 declare(strict_types=1);

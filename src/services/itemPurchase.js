@@ -8,7 +8,7 @@
  * and refuses a purchase the character cannot pay, so this module only reads
  * what the dialog shows and passes the server's answer on.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -26,7 +26,7 @@ export const COINS = ['gold', 'silver', 'copper']
  * @param {unknown} value The stored amount.
  * @return {number} The amount.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 function amount(value) {
 	const number = Number(value)
@@ -42,7 +42,7 @@ function amount(value) {
  * @param {object} item The item.
  * @return {{gold: number, silver: number, copper: number}|null} The price.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 export function priceOf(item) {
 	const raw = item?.price
@@ -66,7 +66,7 @@ export function priceOf(item) {
  * @param {object} character The character.
  * @return {{gold: number, silver: number, copper: number}} The purse.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 export function purseOf(character) {
 	return Object.fromEntries(COINS.map((coin) => [coin, amount(character?.[coin])]))
@@ -80,7 +80,7 @@ export function purseOf(character) {
  * @param {{gold: number, silver: number, copper: number}|null} price The price.
  * @return {boolean} True when every coin of the price is held.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 export function canPay(purse, price) {
 	return price !== null && COINS.every((coin) => (purse?.[coin] ?? 0) >= price[coin])
@@ -104,7 +104,7 @@ function carried(character) {
  * @param {string} characterId The character.
  * @return {Promise<{character: object, items: Array<{id: string, name: string, price: object}>}|null>} Null when the character cannot be read.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 export async function fetchPurchaseOptions(characterId) {
 	if (!characterId) {
@@ -141,7 +141,7 @@ export async function fetchPurchaseOptions(characterId) {
  * @param {string} itemId The item.
  * @return {Promise<{ok: boolean, status: number, message: string, character: object|null}>} The outcome; `message` is the server's refusal, in English.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 export async function buyItem(characterId, itemId) {
 	const response = await fetch(

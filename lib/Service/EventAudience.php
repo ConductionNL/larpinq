@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -45,7 +45,7 @@ class EventAudience {
 	 *
 	 * @return array{statuses: list<string>, checkedIn: bool, paymentOpen: bool, ticketRoles: list<string>}
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+	 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 	 */
 	public function normalise(array $raw): array {
 		$statuses = $this->knownValues(values: $raw['statuses'] ?? [], known: self::STATUSES);
@@ -71,7 +71,7 @@ class EventAudience {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+	 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 	 */
 	public function matches(array $registration, array $audience, array $roles, array $checkedIn): bool {
 		if (in_array((string)($registration['status'] ?? ''), $audience['statuses'], true) === false) {

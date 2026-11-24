@@ -6,7 +6,7 @@
  * (registration-payments-through-shillinq REQ-RPS-007) opens shillinq's bank
  * statement import, shows only to game masters and is registered by name.
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
  */
 import fs from 'fs'
 import path from 'path'

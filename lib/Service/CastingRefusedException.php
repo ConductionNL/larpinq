@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 
 declare(strict_types=1);
@@ -29,7 +29,7 @@ use RuntimeException;
 /**
  * The casting is too large to propose, or its data cannot be read.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 class CastingRefusedException extends RuntimeException {
 }//end class

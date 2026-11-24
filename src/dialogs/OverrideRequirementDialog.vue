@@ -120,7 +120,7 @@ export default {
 		 *
 		 * @return {string} The id.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+		 * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 		 */
 		id() {
 			return firstId(this.characterId, this.$route?.params?.id)
@@ -130,7 +130,7 @@ export default {
 		 * The character's name.
 		 *
 		 * @return {string} The name.
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+		 * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 		 */
 		characterName() {
 			return String(this.character?.name ?? '')
@@ -141,7 +141,7 @@ export default {
 		 *
 		 * @return {boolean} True when it may.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+		 * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 		 */
 		savable() {
 			return this.status === 'ready' && this.selected !== null && this.reason.trim() !== '' && !this.busy
@@ -153,7 +153,7 @@ export default {
 	 *
 	 * @return {Promise<void>}
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 	 */
 	async mounted() {
 		const options = await fetchOverrideOptions(this.id)
@@ -174,7 +174,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+		 * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 		 */
 		async save() {
 			if (!this.savable) {

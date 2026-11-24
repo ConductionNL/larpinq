@@ -7,7 +7,7 @@
  * the one write that adds the skill with its requirementOverrides[] entry,
  * OverrideRequirementDialog, and the header action only game masters see.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 
 import fs from 'fs'
