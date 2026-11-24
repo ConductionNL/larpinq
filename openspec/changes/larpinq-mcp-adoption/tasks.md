@@ -10,7 +10,8 @@
   - GIVEN the same file WHEN inspected THEN `character` has `search`/`get`/`create` only, `xpAward` has `search`/`get`/`create` only, `attendance` has `search`/`get`/`update` only, the other 6 schemas have `search`/`get` only, and no `delete` verb appears anywhere
   - GIVEN a dev Nextcloud instance WHEN `larpinq.character.create` is called via MCP THEN the created object's `approved` field is `"no"`, and WHEN `larpinq.attendance.update` sets `status` THEN `checkedInAt`/`checkedInBy` remain server-stamped and are not settable from the call's input
 - [x] Implement
-- [ ] Test
+- [x] Test
+  - The fragment shape (verbs, no delete, filters, hints, bounding gates) is locked by `tests/unit/Settings/McpAdoptionFragmentTest.php`. The dev-instance criterion is written, runs in nightly: Newman folder "5. MCP dialect" in `tests/integration/larpinq.postman_collection.json` (character.create lands with `approved` = `no`, attendance.update keeps `checkedInAt`/`checkedInBy` server-stamped). Not run in the sandbox: no live instance.
 
 ### Task 2: Cross-check every `search.filters` entry against real schema properties
 - **spec_ref**: `openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption/spec.md#req-005-every-declared-search-filter-names-a-real-schema-property`
@@ -28,8 +29,9 @@
   - GIVEN the new fragment WHEN run through `python3 -m json.tool` THEN it parses with zero errors
   - GIVEN a dev Nextcloud instance WHEN `ConfigFileLoaderService::loadConfigurationFile()` re-runs (fragment signature changed) THEN the merged register imports without error and all 21 derived tools (9 schemas × search/get, plus 3 extra write verbs) appear in OpenRegister's MCP tool listing
   - GIVEN a non-gamemaster caller WHEN `larpinq.xpAward.create` or `larpinq.attendance.update` is invoked THEN OpenRegister's object-level `authorization` gate rejects the call
-- [ ] Implement
-- [ ] Test
+- [x] Implement
+- [x] Test
+  - Written, runs in nightly: the fragment parses (`python3 -m json.tool`, and the merge in `McpAdoptionFragmentTest`); Newman folder "5. MCP dialect" checks after import that `tools/list` holds exactly the 21 derived larpinq tools with only the three bounded writes and no delete. The non-gamemaster refusal needs a second, non-admin account the collection does not seed; that case stays with OpenRegister's REQ-DERIVED-005 tests. Not run in the sandbox: no live instance.
 
 ### Task 4: Add a CHANGELOG entry
 - **spec_ref**: `openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption/spec.md#req-008-mcp-tools-are-derived-without-app-level-php`
@@ -40,7 +42,7 @@
 - [x] Test
 
 ## Verification
-- [ ] All tasks checked off
+- [x] All tasks checked off
 - [ ] `openspec validate` passes
 - [ ] Manual testing against acceptance criteria
 - [ ] Code review against spec requirements
