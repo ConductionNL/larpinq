@@ -80,7 +80,8 @@ class RequestCreditShareTest extends TestCase {
 		$share = new RequestCreditShare();
 		$this->assertSame(expected: [], actual: $share->fields(registration: [], request: ['amount' => 95]));
 		$this->assertSame(expected: [], actual: $share->fields(registration: [], request: ['amount' => 95, 'settlements' => 'x']));
-		$this->assertSame(expected: [], actual: $share->fields(registration: [], request: ['amount' => 95, 'settlements' => [['method' => 'credit', 'amount' => 'abc']]]));
+		$unreadable = ['amount' => 95, 'settlements' => [['method' => 'credit', 'amount' => 'abc']]];
+		$this->assertSame(expected: [], actual: $share->fields(registration: [], request: $unreadable));
 
 		$request = ['amount' => 95, 'settlements' => [['method' => 'credit', 'amount' => 85]]];
 		$shown = ['paidFromCredit' => 8500, 'amountOpen' => 1000];
@@ -200,7 +201,8 @@ class RequestCreditShareTest extends TestCase {
 		$this->assertSame(expected: [8500, 1000, 'open'], actual: [$row['paidFromCredit'], $row['amountOpen'], $row['paymentState']]);
 
 		$this->world->followUp()->requestChanged(request: ['id' => $requestId, 'state' => 'pending', 'amount' => 95]);
-		$this->assertSame(expected: 8500, actual: $this->world->registration(id: self::REG)['paidFromCredit'], message: 'a change without credit leaves the share');
+		$kept = $this->world->registration(id: self::REG)['paidFromCredit'];
+		$this->assertSame(expected: 8500, actual: $kept, message: 'a change without credit leaves the share');
 
 		$request['settlements'][] = ['method' => 'credit', 'amount' => 10];
 		$request['settledVia'] = 'credit';
