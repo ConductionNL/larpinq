@@ -30,7 +30,11 @@
 		{ "key": "mcpCharacterCreate", "value": "" },
 		{ "key": "mcpAttendanceUpdate", "value": "" },
 		{ "key": "mcpCharId", "value": "" },
-		{ "key": "mcpAttendanceId", "value": "" }
+		{ "key": "mcpAttendanceId", "value": "" },
+		{ "key": "mcpAwardTool", "value": "" },
+		{ "key": "mcpSheetTool", "value": "" },
+		{ "key": "mcpAwardIds", "value": "" },
+		{ "key": "mcpAwardId", "value": "" }
 	],
 	"auth": { "type": "noauth" },
 	"item": [
@@ -710,8 +714,563 @@
 			]
 		},
 		{
+			"name": "6. Curated MCP tools (hermiq-ai-tooling)",
+			"description": "Live half of hermiq-ai-tooling Task 4 (REQ-001 to REQ-005). Reuses the MCP session, the agent-created character and its checked-in attendance from folder 5. Hermiq classifies a tool from its MCP annotations: readOnlyHint false is a write that needs approval, readOnlyHint true an ungated read; this folder checks the annotations the running OpenRegister publishes for the two curated tools. An approved gate ends in the tools/call made here: one award per checked-in character, each with awardedVia = mcp and awardedBy = the invoking user. A rejected gate never calls the tool, so no award can exist; the refused call (amount 0) checks that a call that does not go through writes nothing. The non-gamemaster refusal needs a second, non-admin account the suite does not seed; it stays with OpenRegister's object-level authorization tests and the unit test CuratedMcpToolsTest.",
+			"item": [
+				{
+					"name": "MCP tools/list: the two curated tools and their annotations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/list answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const tools = (pm.response.json().result || {}).tools || [];",
+									"const award = tools.find((t) => /awardXpToAttendees$/.test(t.name));",
+									"const sheet = tools.find((t) => /getCharacterSheet$/.test(t.name));",
+									"pm.test('awardXpToAttendees is listed', () => pm.expect(award, tools.map((t) => t.name).join(', ')).to.be.an('object'));",
+									"pm.test('getCharacterSheet is listed', () => pm.expect(sheet).to.be.an('object'));",
+									"const hint = (t, k) => ((t && t.annotations) || {})[k];",
+									"pm.test('awardXpToAttendees is a write (readOnlyHint false): Hermiq gates it behind approval', () => pm.expect(hint(award, 'readOnlyHint')).to.equal(false));",
+									"pm.test('awardXpToAttendees is not destructive', () => pm.expect(hint(award, 'destructiveHint')).to.equal(false));",
+									"pm.test('getCharacterSheet is a read (readOnlyHint true): ungated', () => pm.expect(hint(sheet, 'readOnlyHint')).to.equal(true));",
+									"const larpinq = tools.map((t) => t.name).filter((n) => /^larpinq\\./.test(n) || /(awardXpToAttendees|getCharacterSheet)$/.test(n));",
+									"pm.test('the larpinq catalog is the 21 derived tools plus the 2 curated ones', () => pm.expect(larpinq, larpinq.join(', ')).to.have.lengthOf(23));",
+									"pm.collectionVariables.set('mcpAwardTool', award ? award.name : '');",
+									"pm.collectionVariables.set('mcpSheetTool', sheet ? sheet.name : '');"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/list\",\n  \"params\": {}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP awardXpToAttendees refuses 0 XP and writes nothing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not a protocol error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"pm.test('the call is refused as a tool error', () => pm.expect(env.result.isError).to.equal(true));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpAwardTool}}\",\n    \"arguments\": {\n      \"eventId\": \"{{eventId}}\",\n      \"amount\": 0,\n      \"reason\": \"NEWMAN refused\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "No mcp award exists for the event before the approved call",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('xpAward search answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const b = pm.response.json();",
+									"const rows = (b.results || b.objects || []).filter((r) => (r.awardedVia || (r.object || {}).awardedVia) === 'mcp');",
+									"pm.test('zero agent awards on the event (a refused or rejected call writes nothing)', () => pm.expect(rows).to.be.empty);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/xpAward?event={{eventId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"xpAward"
+							],
+							"query": [
+								{
+									"key": "event",
+									"value": "{{eventId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP awardXpToAttendees awards every checked-in character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not a protocol error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"pm.test('the tool call succeeded', () => pm.expect(env.result.isError).to.equal(false));",
+									"const out = JSON.parse(env.result.content[0].text);",
+									"const results = out.results || [];",
+									"pm.test('one result per checked-in character, the agent character among them', () => pm.expect(results.map((r) => r.character)).to.include(pm.collectionVariables.get('mcpCharId')));",
+									"pm.test('every award was created', () => pm.expect(results.filter((r) => r.status !== 'created'), JSON.stringify(results)).to.be.empty);",
+									"pm.test('no character is awarded twice', () => pm.expect(new Set(results.map((r) => r.character)).size).to.equal(results.length));",
+									"pm.collectionVariables.set('mcpAwardIds', JSON.stringify(results.map((r) => r.award).filter(Boolean)));",
+									"pm.collectionVariables.set('mcpAwardId', (results.find((r) => r.character === pm.collectionVariables.get('mcpCharId')) || {}).award || '');"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpAwardTool}}\",\n    \"arguments\": {\n      \"eventId\": \"{{eventId}}\",\n      \"amount\": 5,\n      \"reason\": \"NEWMAN attended Saturday\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "The agent award is attributed to mcp and the invoking user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('xpAward answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const b = pm.response.json();",
+									"const d = b.object || b;",
+									"pm.test('awardedVia is mcp', () => pm.expect(d.awardedVia).to.equal('mcp'));",
+									"pm.test('awardedBy is the invoking user', () => pm.expect(d.awardedBy).to.equal(pm.collectionVariables.get('adminUser')));",
+									"pm.test('awardedAt is server-stamped', () => pm.expect(String(d.awardedAt || '')).to.match(/^\\d{4}-\\d{2}-\\d{2}T/));",
+									"pm.test('amount and reason are the call\\'s', () => { pm.expect(Number(d.amount)).to.equal(5); pm.expect(d.reason).to.equal('NEWMAN attended Saturday'); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/xpAward/{{mcpAwardId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"xpAward",
+								"{{mcpAwardId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP getCharacterSheet reads the calculated sheet without private notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not a protocol error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"pm.test('the tool call succeeded', () => pm.expect(env.result.isError).to.equal(false));",
+									"const sheet = JSON.parse(env.result.content[0].text);",
+									"pm.test('the sheet is the agent character', () => pm.expect(sheet.id || sheet.uuid || (sheet['@self'] || {}).id).to.equal(pm.collectionVariables.get('mcpCharId')));",
+									"pm.test('the game-master-only notes are left out', () => pm.expect(sheet).to.not.have.property('slNotesPrivate'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpSheetTool}}\",\n    \"arguments\": {\n      \"characterId\": \"{{mcpCharId}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP getCharacterSheet answers not-found for an unknown character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not a protocol error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"const out = JSON.parse(env.result.content[0].text);",
+									"pm.test('an unknown character answers not-found, the same as an unreadable one', () => { pm.expect(out.error).to.equal('not-found'); pm.expect(out).to.not.have.property('stats'); });"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpSheetTool}}\",\n    \"arguments\": {\n      \"characterId\": \"00000000-0000-4000-8000-000000000000\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "9. Teardown",
 			"item": [
+				{
+					"name": "Delete mcp xp awards",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const ids = JSON.parse(pm.collectionVariables.get('mcpAwardIds') || '[]');",
+									"const first = pm.collectionVariables.get('mcpAwardId') || ids[0] || 'none';",
+									"pm.variables.set('mcpAwardDeleteId', first);",
+									"const base = pm.collectionVariables.get('baseUrl') + '/index.php/apps/openregister/api/objects/' + pm.collectionVariables.get('register') + '/xpAward/';",
+									"ids.filter((id) => id !== first).forEach((id) => pm.sendRequest({url: base + id, method: 'DELETE', header: {'OCS-APIRequest': 'true'},",
+									"  auth: {type: 'basic', basic: [{key: 'username', value: pm.collectionVariables.get('adminUser')}, {key: 'password', value: pm.collectionVariables.get('adminPass')}]}}, () => {}));"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('mcp xp award deleted (2xx, or 404 when none was made)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204, 404]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/xpAward/{{mcpAwardDeleteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"xpAward",
+								"{{mcpAwardDeleteId}}"
+							]
+						}
+					}
+				},
 				{
 					"name": "Delete mcp attendance",
 					"event": [

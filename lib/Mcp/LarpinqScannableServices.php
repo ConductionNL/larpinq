@@ -18,7 +18,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
  */
 
 declare(strict_types=1);
@@ -32,7 +32,7 @@ use OCA\OpenRegister\Mcp\IMcpScannableServices;
 /**
  * The opt-in list of Larpinq classes with `#[McpTool]` methods.
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
  */
 class LarpinqScannableServices implements IMcpScannableServices {
 
@@ -41,7 +41,7 @@ class LarpinqScannableServices implements IMcpScannableServices {
 	 *
 	 * @return list<class-string> The classes.
 	 *
-	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in
 	 */
 	public function getScannableServiceClasses(): array {
 		return [EventRosterService::class, CharacterService::class];

@@ -18,7 +18,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
  */
 
 declare(strict_types=1);
@@ -28,7 +28,7 @@ namespace OCA\Larpinq\Service;
 /**
  * Reads and calculates one character sheet for an agent.
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
  */
 class AgentCharacterSheet {
 
@@ -50,7 +50,7 @@ class AgentCharacterSheet {
 	 *
 	 * @return array<string, mixed> The sheet without `slNotesPrivate`, or the not-found answer.
 	 *
-	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
 	 */
 	public function read(string $characterId, callable $calculate): array {
 		try {

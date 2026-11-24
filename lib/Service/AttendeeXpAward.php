@@ -19,7 +19,7 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ use InvalidArgumentException;
 /**
  * Awards XP to the checked-in characters of one event.
  *
- * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+ * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
  */
 class AttendeeXpAward {
 
@@ -65,7 +65,7 @@ class AttendeeXpAward {
 	 *
 	 * @throws InvalidArgumentException When the amount is not positive, the event cannot be read, or nobody is checked in.
 	 *
-	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
 	 */
 	public function award(string $eventId, array $grant): array {
 		$amount = (int)($grant['amount'] ?? 0);

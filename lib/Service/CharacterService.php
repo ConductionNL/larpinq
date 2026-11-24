@@ -422,7 +422,7 @@ class CharacterService {
 	 *
 	 * @return array<string, mixed> The calculated character, or `{error: 'not-found', character}`.
 	 *
-	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists
 	 */
 	#[McpTool(
 		name: 'getCharacterSheet',
