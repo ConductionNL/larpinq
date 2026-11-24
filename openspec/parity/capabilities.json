@@ -6391,14 +6391,14 @@
 			"pretix": "no",
 			"built": {
 				"state": "built",
-				"evidence": "src/manifest.json:2725-2728 (FeaturesRoadmap page, /features-roadmap, type 'roadmap', config only supplies documentationUrl); src/manifest.json menu entry (footer section) links to it",
+				"evidence": "src/manifest.json:2725-2728 (FeaturesRoadmap page, /features-roadmap, type 'roadmap', config supplies documentationUrl and roadmapLayout columns); src/manifest.json menu entry (footer section) links to it",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Features & roadmap page, route /features-roadmap",
-				"change": "openspec/changes/admin-roadmap-page",
+				"change": "openspec/changes/archive/2026-11-24-admin-roadmap-page",
 				"requirement": [
-					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-001 The roadmap lists the open feature requests by votes",
-					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-002 A user votes or asks for a feature on the forge",
-					"openspec/changes/admin-roadmap-page/specs/admin-roadmap-page :: REQ-ARM-003 The roadmap shows planned, in progress and available"
+					"openspec/specs/admin-roadmap-page :: REQ-ARM-001 The roadmap lists the open feature requests by votes",
+					"openspec/specs/admin-roadmap-page :: REQ-ARM-002 A user votes or asks for a feature on the forge",
+					"openspec/specs/admin-roadmap-page :: REQ-ARM-003 The roadmap shows planned, in progress and available"
 				]
 			},
 			"provider": "self",
