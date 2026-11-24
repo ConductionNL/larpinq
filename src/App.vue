@@ -93,8 +93,8 @@ import AgeCell from './components/cells/AgeCell.vue'
 import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
 import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import { startActiveWorld } from './services/activeWorld.js'
-import { invoiceDownloadLabel } from './services/invoiceDownload.js'
 import { centsAmount } from './services/centsAmount.js'
+import { invoiceDownloadLabel } from './services/invoiceDownload.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
 /**
