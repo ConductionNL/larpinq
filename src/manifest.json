@@ -3609,7 +3609,8 @@
 			"route": "/features-roadmap",
 			"type": "roadmap",
 			"title": "Features & roadmap",
-			"config": { "documentationUrl": "https://larpinq.conduction.nl" }
+			"config": { "documentationUrl": "https://larpinq.conduction.nl", "roadmapLayout": "columns" },
+			"_note": "REQ-ARM-003: config.roadmapLayout columns draws the Roadmap tab as Gepland, In ontwikkeling and Beschikbaar with counts (nextcloud-vue CnRoadmapTab columns layout, which also fetches the issues closed as completed)."
 		},
 		{
 			"id": "Flows",
