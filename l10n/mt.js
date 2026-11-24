@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "L-esperjenza mogħtija u min qalagħha.",
         "How much the world holds, and what characters actually carry.": "Kemm iżomm id-dinja, u x'iġorru tabilħaqq il-karattri.",
         "Marketplace": "Ħanut",
+        "Install into world": "Installa fid-dinja tal-logħba",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installa reġistri, skemi u flussi ppubblikati minn organizzazzjonijiet oħra.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s diġà għandu %2$s. Neħħih minn hemm l-ewwel.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s diġà jinsab fuq %2$s. Neħħih minn hemm l-ewwel.",

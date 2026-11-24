@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Suteikta patirtis ir kas ją užsidirbo.",
         "How much the world holds, and what characters actually carry.": "Kiek pasaulis apima ir ką personažai iš tikrųjų neša.",
         "Marketplace": "Parduotuvė",
+        "Install into world": "Įdiegti į žaidimo pasaulį",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Įdiekite registrus, schemas ir srautus, kuriuos paskelbė kitos organizacijos.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s jau priklauso %2$s. Pirmiausia pašalinkite jį iš ten.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s jau uždėta %2$s. Pirmiausia pašalinkite jį iš ten.",

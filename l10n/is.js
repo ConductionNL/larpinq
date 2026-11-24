@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Veitt reynsla og hver ávann sér hana.",
         "How much the world holds, and what characters actually carry.": "Hversu mikið heimurinn geymir og hvað persónur bera í raun.",
         "Marketplace": "Verslun",
+        "Install into world": "Setja upp í söguheim",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Settu upp skrár, skemu og flæði sem aðrar stofnanir hafa birt.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s er þegar í eigu %2$s. Fjarlægðu það þar fyrst.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s hvílir þegar á %2$s. Fjarlægðu það þar fyrst.",

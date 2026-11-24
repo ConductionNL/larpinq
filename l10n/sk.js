@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Udelené skúsenosti a kto si ich zaslúžil.",
         "How much the world holds, and what characters actually carry.": "Koľko svet obsahuje a čo postavy skutočne nesú.",
         "Marketplace": "Obchod",
+        "Install into world": "Nainštalovať do herného sveta",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Nainštalujte registre, schémy a toky zverejnené inými organizáciami.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s už má %2$s. Najprv ho odtiaľ odoberte.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s už je na %2$s. Najprv ho odtiaľ odoberte.",
