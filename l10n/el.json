@@ -1109,7 +1109,11 @@
         "Checked Out By": "Η αποχώρηση καταγράφηκε από",
         "Care details": "Στοιχεία υγείας",
         "Due for erasure": "Προς διαγραφή",
-        "No care records yet.": "Δεν υπάρχουν ακόμη στοιχεία υγείας."
+        "No care records yet.": "Δεν υπάρχουν ακόμη στοιχεία υγείας.",
+        "Paid from credit": "Πληρώθηκε από πίστωση",
+        "Still open": "Υπόλοιπο προς πληρωμή",
+        "The part of the payment paid from the player's credit in shillinq": "Το μέρος της πληρωμής που καλύφθηκε από την πίστωση του παίκτη στο shillinq",
+        "What is still to be paid after the credit": "Τι απομένει να πληρωθεί μετά την πίστωση"
     },
     "plurals": {}
 }

@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Cláraithe amach ag",
         "Care details": "Sonraí cúraim",
         "Due for erasure": "Le scriosadh",
-        "No care records yet.": "Níl aon sonraí cúraim fós."
+        "No care records yet.": "Níl aon sonraí cúraim fós.",
+        "Paid from credit": "Íoctha ó chreidmheas",
+        "Still open": "Fós le híoc",
+        "The part of the payment paid from the player's credit in shillinq": "An chuid den íocaíocht a íocadh ó chreidmheas an imreora in shillinq",
+        "What is still to be paid after the credit": "A bhfuil fós le híoc tar éis an chreidmheasa"
     },
     "nplurals=2; plural=(n != 1);"
 )

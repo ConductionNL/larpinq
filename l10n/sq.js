@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Largimi u regjistrua nga",
         "Care details": "Të dhëna shëndetësore",
         "Due for erasure": "Për t'u fshirë",
-        "No care records yet.": "Ende nuk ka të dhëna shëndetësore."
+        "No care records yet.": "Ende nuk ka të dhëna shëndetësore.",
+        "Paid from credit": "Paguar nga krediti",
+        "Still open": "Mbetet për t'u paguar",
+        "The part of the payment paid from the player's credit in shillinq": "Pjesa e pagesës e paguar nga krediti i lojtarit në shillinq",
+        "What is still to be paid after the credit": "Çfarë mbetet për t'u paguar pas kreditit"
     },
     "nplurals=2; plural=(n != 1);"
 )

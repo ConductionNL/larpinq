@@ -1109,7 +1109,11 @@
         "Checked Out By": "Odhod zabeležil",
         "Care details": "Zdravstveni podatki",
         "Due for erasure": "Za izbris",
-        "No care records yet.": "Še ni zdravstvenih podatkov."
+        "No care records yet.": "Še ni zdravstvenih podatkov.",
+        "Paid from credit": "Plačano z dobropisom",
+        "Still open": "Še odprto",
+        "The part of the payment paid from the player's credit in shillinq": "Del plačila, plačan z dobropisom igralca v shillinq",
+        "What is still to be paid after the credit": "Kar je treba še plačati po dobropisu"
     },
     "plurals": {}
 }

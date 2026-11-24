@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Uscita registrata da",
         "Care details": "Dati sanitari",
         "Due for erasure": "Da cancellare",
-        "No care records yet.": "Ancora nessun dato sanitario."
+        "No care records yet.": "Ancora nessun dato sanitario.",
+        "Paid from credit": "Pagato con credito",
+        "Still open": "Ancora da pagare",
+        "The part of the payment paid from the player's credit in shillinq": "La parte del pagamento coperta dal credito del giocatore in shillinq",
+        "What is still to be paid after the credit": "Quanto resta da pagare dopo il credito"
     },
     "nplurals=2; plural=(n != 1);"
 )

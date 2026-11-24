@@ -1109,7 +1109,11 @@
         "Checked Out By": "Utcheckad av",
         "Care details": "Hälsouppgifter",
         "Due for erasure": "Ska raderas",
-        "No care records yet.": "Inga hälsouppgifter än."
+        "No care records yet.": "Inga hälsouppgifter än.",
+        "Paid from credit": "Betalt med tillgodohavande",
+        "Still open": "Kvar att betala",
+        "The part of the payment paid from the player's credit in shillinq": "Den del av betalningen som betalats med spelarens tillgodohavande i shillinq",
+        "What is still to be paid after the credit": "Det som återstår att betala efter tillgodohavandet"
     },
     "plurals": {}
 }

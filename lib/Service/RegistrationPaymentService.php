@@ -67,6 +67,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @param IGroupManager $groups Who is a game master.
 	 * @param LoggerInterface $logger The logger.
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
+	 * @param RegistrationCreditShare $credit The part shillinq paid from the player's open credit.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -77,6 +78,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		private readonly IGroupManager $groups,
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
+		private readonly RegistrationCreditShare $credit,
 	) {
 	}//end __construct()
 
@@ -202,6 +204,8 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 *
 	 * @throws PaymentRequestRefusedException When shillinq refuses.
 	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 *
 	 * @psalm-suppress UnusedReturnValue Psalm 7 misses the caller that returns this value; the call inside try discards it on purpose.
 	 */
 	private function raise(array $registration, array $event): array {
@@ -226,6 +230,14 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		// Shillinq issues the invoice a player asked for while it creates the
 		// request (REQ-RPS-006), so it can land with the request itself.
 		$fields += $this->invoice->fields(registration: $registration, request: $created);
+
+		// Shillinq pays a new request from the player's open credit first
+		// (REQ-RCT-005); credit that covers it whole leaves nothing to pay.
+		$fields += $this->credit->fields(request: $created);
+		if ($this->credit->paidInFull(request: $created) === true) {
+			$fields['paymentState'] = self::PAID;
+			$fields['paymentMethod'] = RegistrationCreditShare::METHOD;
+		}
 
 		return $this->store(id: $id, fields: $fields);
 	}//end raise()

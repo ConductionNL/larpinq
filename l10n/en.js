@@ -1077,7 +1077,11 @@ OC.L10N.register(
         "Checked Out By": "Checked Out By",
         "Care details": "Care details",
         "Due for erasure": "Due for erasure",
-        "No care records yet.": "No care records yet."
+        "No care records yet.": "No care records yet.",
+        "Paid from credit": "Paid from credit",
+        "Still open": "Still open",
+        "The part of the payment paid from the player's credit in shillinq": "The part of the payment paid from the player's credit in shillinq",
+        "What is still to be paid after the credit": "What is still to be paid after the credit"
     },
     "nplurals=2; plural=(n != 1);"
 )

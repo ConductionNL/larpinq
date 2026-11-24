@@ -115,6 +115,28 @@
 							]
 						}
 					},
+					"paidFromCredit": {
+						"type": "number",
+						"minimum": 0,
+						"title": "Paid from credit",
+						"description": "The part of the payment paid from the player's credit in shillinq",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"amountOpen": {
+						"type": "number",
+						"minimum": 0,
+						"title": "Still open",
+						"description": "What is still to be paid after the credit",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
 					"settlementRequestedAt": {
 						"type": "string",
 						"format": "date-time",

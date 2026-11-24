@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Išvykimą užregistravo",
         "Care details": "Sveikatos duomenys",
         "Due for erasure": "Reikia ištrinti",
-        "No care records yet.": "Sveikatos duomenų dar nėra."
+        "No care records yet.": "Sveikatos duomenų dar nėra.",
+        "Paid from credit": "Apmokėta iš kredito",
+        "Still open": "Liko sumokėti",
+        "The part of the payment paid from the player's credit in shillinq": "Mokėjimo dalis, apmokėta iš žaidėjo kredito shillinq",
+        "What is still to be paid after the credit": "Kiek dar liko sumokėti po kredito"
     },
     "nplurals=2; plural=(n != 1);"
 )

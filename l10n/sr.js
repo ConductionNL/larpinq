@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Одлазак забележио",
         "Care details": "Здравствени подаци",
         "Due for erasure": "За брисање",
-        "No care records yet.": "Још нема здравствених података."
+        "No care records yet.": "Још нема здравствених података.",
+        "Paid from credit": "Плаћено из кредита",
+        "Still open": "Преостало за плаћање",
+        "The part of the payment paid from the player's credit in shillinq": "Део уплате плаћен из кредита играча у shillinq",
+        "What is still to be paid after the credit": "Шта још треба платити након кредита"
     },
     "nplurals=2; plural=(n != 1);"
 )

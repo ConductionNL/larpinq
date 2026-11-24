@@ -1109,7 +1109,11 @@
         "Checked Out By": "Ад'езд зафіксаваў",
         "Care details": "Медыцынскія даныя",
         "Due for erasure": "Трэба выдаліць",
-        "No care records yet.": "Медыцынскіх даных яшчэ няма."
+        "No care records yet.": "Медыцынскіх даных яшчэ няма.",
+        "Paid from credit": "Аплачана з крэдыту",
+        "Still open": "Засталося аплаціць",
+        "The part of the payment paid from the player's credit in shillinq": "Частка аплаты з крэдыту гульца ў shillinq",
+        "What is still to be paid after the credit": "Што яшчэ трэба аплаціць пасля крэдыту"
     },
     "plurals": {}
 }

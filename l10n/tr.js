@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Çıkış kaydını yapan",
         "Care details": "Sağlık bilgileri",
         "Due for erasure": "Silinecek",
-        "No care records yet.": "Henüz sağlık bilgisi yok."
+        "No care records yet.": "Henüz sağlık bilgisi yok.",
+        "Paid from credit": "Krediden ödendi",
+        "Still open": "Kalan tutar",
+        "The part of the payment paid from the player's credit in shillinq": "Ödemenin, oyuncunun shillinq'teki kredisinden ödenen kısmı",
+        "What is still to be paid after the credit": "Krediden sonra hâlâ ödenmesi gereken tutar"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -96,6 +96,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 * @param PaymentLeaf $leaf Shillinq's payment requests leaf.
 	 * @param LoggerInterface $logger The logger.
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
+	 * @param RegistrationCreditShare $credit The part shillinq paid from the player's open credit.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -104,6 +105,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 		private readonly PaymentLeaf $leaf,
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
+		private readonly RegistrationCreditShare $credit,
 	) {
 	}//end __construct()
 
@@ -262,6 +264,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
 	 * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function markPaid(array $registration, array $request): void {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];
@@ -276,6 +279,13 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 		}
 
 		$fields += $this->invoice->fields(registration: $registration, request: $request);
+
+		// The player paid what credit left open (REQ-RCT-005): the part paid
+		// from credit stays as shillinq reported it, nothing is open any more.
+		$fields += $this->credit->fields(request: $request);
+		if (array_key_exists('paidFromCredit', $fields) === true || is_numeric($registration['paidFromCredit'] ?? null) === true) {
+			$fields['amountOpen'] = 0.0;
+		}
 
 		$this->save(registration: $registration, fields: $fields);
 	}//end markPaid()

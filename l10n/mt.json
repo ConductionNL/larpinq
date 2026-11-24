@@ -1109,7 +1109,11 @@
         "Checked Out By": "Tluq irreġistrat minn",
         "Care details": "Dettalji tal-kura",
         "Due for erasure": "Għat-tħassir",
-        "No care records yet.": "Għad m'hemmx dettalji tal-kura."
+        "No care records yet.": "Għad m'hemmx dettalji tal-kura.",
+        "Paid from credit": "Imħallas mill-kreditu",
+        "Still open": "Għad irid jitħallas",
+        "The part of the payment paid from the player's credit in shillinq": "Il-parti tal-ħlas imħallsa mill-kreditu tal-plejer f'shillinq",
+        "What is still to be paid after the credit": "X'għad irid jitħallas wara l-kreditu"
     },
     "plurals": {}
 }

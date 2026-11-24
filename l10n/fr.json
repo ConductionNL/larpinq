@@ -1109,7 +1109,11 @@
         "Checked Out By": "Départ enregistré par",
         "Care details": "Données de santé",
         "Due for erasure": "À effacer",
-        "No care records yet.": "Pas encore de données de santé."
+        "No care records yet.": "Pas encore de données de santé.",
+        "Paid from credit": "Payé avec l'avoir",
+        "Still open": "Reste à payer",
+        "The part of the payment paid from the player's credit in shillinq": "La part du paiement réglée avec l'avoir du joueur dans shillinq",
+        "What is still to be paid after the credit": "Ce qui reste à payer après l'avoir"
     },
     "plurals": {}
 }

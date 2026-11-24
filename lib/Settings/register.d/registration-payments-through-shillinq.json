@@ -135,10 +135,12 @@
 					"paymentMethod": {
 						"type": "string",
 						"enum": [
-							"bank-transfer"
+							"bank-transfer",
+							"credit"
 						],
 						"x-enum-labels": {
-							"bank-transfer": "Bank transfer"
+							"bank-transfer": "Bank transfer",
+							"credit": "Paid from credit"
 						},
 						"title": "Payment method",
 						"description": "How the payment came in",

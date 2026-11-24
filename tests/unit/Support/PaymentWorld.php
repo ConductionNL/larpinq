@@ -36,6 +36,7 @@ use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationChangeService;
+use OCA\Larpinq\Service\RegistrationCreditShare;
 use OCA\Larpinq\Service\RegistrationInvoice;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationPaymentService;
@@ -94,6 +95,13 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 * @var array<int, array<string, mixed>>
 	 */
 	public array $creates = [];
+
+	/**
+	 * The debtor's open credit shillinq pays a new request from first (REQ-RCT-005).
+	 *
+	 * @var float
+	 */
+	public float $openCredit = 0.0;
 
 	/** @var int The next. */
 	private int $next = 1;
@@ -275,6 +283,17 @@ class FakePaymentLeaf implements IntegrationProvider {
 		// Shillinq issues the invoice asked for while it creates the request.
 		if (($payload['invoiceRequested'] ?? false) === true) {
 			$request['invoiceReference'] = sprintf('a0000000-0000-4000-8000-%012d', $this->next);
+		}
+
+		// Shillinq pays the new request from the debtor's open credit first.
+		$take = round(min($this->openCredit, (float)($request['amount'] ?? 0)), 2);
+		if ($take > 0.0) {
+			$this->openCredit = round(($this->openCredit - $take), 2);
+			$request['settlements'] = [['method' => 'credit', 'amount' => $take, 'reference' => 'credit-1']];
+			if ($take >= (float)$request['amount']) {
+				$request['settledAt'] = '2026-11-01T10:00:00Z';
+				$request['settledVia'] = 'credit';
+			}
 		}
 
 		$this->requests[$id] = array_merge($request, ['id' => $id, 'paymentLink' => 'https://pay.example.org/r/' . $id]);
@@ -577,7 +596,8 @@ class PaymentWorld {
 			builder: $builder,
 			groups: $this->groups(),
 			logger: new NullLogger(),
-			invoice: $this->invoice()
+			invoice: $this->invoice(),
+			credit: new RegistrationCreditShare()
 		);
 	}
 
@@ -587,7 +607,7 @@ class PaymentWorld {
 	 * @return PaymentFollowUp The payment follow-up.
 	 */
 	public function followUp(): PaymentFollowUp {
-		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger(), invoice: $this->invoice());
+		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger(), invoice: $this->invoice(), credit: new RegistrationCreditShare());
 	}
 
 	/**

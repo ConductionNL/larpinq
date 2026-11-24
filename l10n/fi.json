@@ -1109,7 +1109,11 @@
         "Checked Out By": "Lähdön kirjaaja",
         "Care details": "Terveystiedot",
         "Due for erasure": "Poistettavana",
-        "No care records yet.": "Ei vielä terveystietoja."
+        "No care records yet.": "Ei vielä terveystietoja.",
+        "Paid from credit": "Maksettu hyvityksellä",
+        "Still open": "Vielä maksamatta",
+        "The part of the payment paid from the player's credit in shillinq": "Maksun osa, joka maksettiin pelaajan hyvityksellä shillinqissä",
+        "What is still to be paid after the credit": "Mitä hyvityksen jälkeen on vielä maksettava"
     },
     "plurals": {}
 }

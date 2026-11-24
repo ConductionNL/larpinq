@@ -1109,7 +1109,11 @@
         "Checked Out By": "Saída registada por",
         "Care details": "Dados de saúde",
         "Due for erasure": "Por apagar",
-        "No care records yet.": "Ainda não há dados de saúde."
+        "No care records yet.": "Ainda não há dados de saúde.",
+        "Paid from credit": "Pago com crédito",
+        "Still open": "Ainda em aberto",
+        "The part of the payment paid from the player's credit in shillinq": "A parte do pagamento paga com o crédito do jogador no shillinq",
+        "What is still to be paid after the credit": "O que ainda falta pagar depois do crédito"
     },
     "plurals": {}
 }

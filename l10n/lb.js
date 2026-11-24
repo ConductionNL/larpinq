@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Ofgemellt vun",
         "Care details": "Gesondheetsdaten",
         "Due for erasure": "Ze läschen",
-        "No care records yet.": "Nach keng Gesondheetsdaten."
+        "No care records yet.": "Nach keng Gesondheetsdaten.",
+        "Paid from credit": "Mat Guthaben bezuelt",
+        "Still open": "Nach op",
+        "The part of the payment paid from the player's credit in shillinq": "Den Deel vun der Bezuelung, deen aus dem Guthaben vum Spiller an shillinq bezuelt gouf",
+        "What is still to be paid after the credit": "Wat nom Guthaben nach ze bezuelen ass"
     },
     "nplurals=2; plural=(n != 1);"
 )

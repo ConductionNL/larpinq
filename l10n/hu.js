@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "A távozást rögzítette",
         "Care details": "Egészségügyi adatok",
         "Due for erasure": "Törlendő",
-        "No care records yet.": "Még nincsenek egészségügyi adatok."
+        "No care records yet.": "Még nincsenek egészségügyi adatok.",
+        "Paid from credit": "Jóváírásból fizetve",
+        "Still open": "Még fizetendő",
+        "The part of the payment paid from the player's credit in shillinq": "A fizetés azon része, amelyet a játékos shillinq-jóváírásából fizettek",
+        "What is still to be paid after the credit": "Ami a jóváírás után még fizetendő"
     },
     "nplurals=2; plural=(n != 1);"
 )

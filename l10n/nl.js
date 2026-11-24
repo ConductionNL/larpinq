@@ -1199,7 +1199,11 @@ OC.L10N.register(
         "Checked Out By": "Uitgecheckt door",
         "Care details": "Zorggegevens",
         "Due for erasure": "Te wissen",
-        "No care records yet.": "Nog geen zorggegevens."
+        "No care records yet.": "Nog geen zorggegevens.",
+        "Paid from credit": "Betaald uit tegoed",
+        "Still open": "Nog open",
+        "The part of the payment paid from the player's credit in shillinq": "Het deel van de betaling dat uit het tegoed van de speler in shillinq is betaald",
+        "What is still to be paid after the credit": "Wat er na het tegoed nog betaald moet worden"
     },
     "nplurals=2; plural=(n != 1);"
 )

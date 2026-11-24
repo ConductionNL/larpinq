@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Тръгването е отбелязано от",
         "Care details": "Здравни данни",
         "Due for erasure": "За изтриване",
-        "No care records yet.": "Все още няма здравни данни."
+        "No care records yet.": "Все още няма здравни данни.",
+        "Paid from credit": "Платено от кредит",
+        "Still open": "Остава за плащане",
+        "The part of the payment paid from the player's credit in shillinq": "Частта от плащането, платена от кредита на играча в shillinq",
+        "What is still to be paid after the credit": "Какво остава за плащане след кредита"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Plecare înregistrată de",
         "Care details": "Date de sănătate",
         "Due for erasure": "De șters",
-        "No care records yet.": "Încă nu există date de sănătate."
+        "No care records yet.": "Încă nu există date de sănătate.",
+        "Paid from credit": "Plătit din credit",
+        "Still open": "Rămas de plată",
+        "The part of the payment paid from the player's credit in shillinq": "Partea din plată achitată din creditul jucătorului în shillinq",
+        "What is still to be paid after the credit": "Ce mai rămâne de plătit după credit"
     },
     "nplurals=2; plural=(n != 1);"
 )
