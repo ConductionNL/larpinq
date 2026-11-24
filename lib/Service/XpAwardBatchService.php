@@ -185,6 +185,8 @@ class XpAwardBatchService implements XpAwardBatchServiceInterface {
 	 * @param mixed $row The raw row.
 	 *
 	 * @return array{character: string, amount: int|float|null, reason: string, extra: bool} The row.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
 	 */
 	private function normaliseRow(mixed $row): array {
 		if (is_array($row) === false) {
@@ -193,7 +195,7 @@ class XpAwardBatchService implements XpAwardBatchServiceInterface {
 
 		$amount = ($row['amount'] ?? null);
 		if (is_string($amount) === true && is_numeric($amount) === true) {
-			$amount = ($amount + 0);
+			$amount = $this->numericString(value: $amount);
 		}
 
 		if (is_int($amount) === false && is_float($amount) === false) {
@@ -217,6 +219,23 @@ class XpAwardBatchService implements XpAwardBatchServiceInterface {
 			'extra' => ($row['extra'] ?? false) === true,
 		];
 	}//end normaliseRow()
+
+	/**
+	 * A numeric string as the number it spells: an int for a whole number, a float otherwise.
+	 *
+	 * @param string $value A string that passes is_numeric().
+	 *
+	 * @return int|float The number.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 */
+	private function numericString(string $value): int|float {
+		if (preg_match('/^[+-]?[0-9]+$/', trim($value)) === 1) {
+			return (int) $value;
+		}
+
+		return (float) $value;
+	}//end numericString()
 
 	/**
 	 * Why a row is refused, or null when it may be written.

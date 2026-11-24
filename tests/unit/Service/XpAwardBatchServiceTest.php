@@ -303,4 +303,21 @@ class XpAwardBatchServiceTest extends TestCase {
 		$this->assertContains(needle: 'xpaward_register', haystack: $keys);
 		$this->assertContains(needle: 'xpaward_source', haystack: $keys);
 	}//end testTheImportConfiguresTheAwardSchema()
+
+	/**
+	 * A numeric string amount becomes an int when whole and a float otherwise.
+	 *
+	 * @return void
+	 */
+	public function testNumericStringAmountsKeepTheirKind(): void {
+		$method = (new ReflectionClass(XpAwardBatchService::class))->getMethod('normaliseRow');
+		$read = fn (mixed $amount): mixed => $method->invoke($this->service, ['character' => self::MIRELA, 'amount' => $amount])['amount'];
+
+		$this->assertSame(expected: 2, actual: $read('2'));
+		$this->assertSame(expected: -3, actual: $read(' -3 '));
+		$this->assertSame(expected: 2.5, actual: $read('2.5'));
+		$this->assertSame(expected: 1000.0, actual: $read('1e3'));
+		$this->assertNull(actual: $read('lots'));
+		$this->assertSame(expected: 4, actual: $read(4));
+	}//end testNumericStringAmountsKeepTheirKind()
 }//end class
