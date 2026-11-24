@@ -99,10 +99,18 @@ class RegistrationPaymentsFragmentTest extends TestCase {
 		$this->assertSame(expected: 'boolean', actual: $properties['invoiceRequested']['type']);
 		$this->assertSame(expected: ['gamemasters', ['group' => 'larpers', 'match' => ['playerUid' => '$userId']]], actual: $properties['invoiceRequested']['authorization']['update'], message: 'the player asks for an invoice');
 		$this->assertContains(needle: 'unpaid', haystack: $properties['cancelReason']['enum']);
-		// REQ-RPS-007: a request a bank statement line settled shows paid by bank transfer.
-		$this->assertSame(expected: ['bank-transfer'], actual: $properties['paymentMethod']['enum']);
+		// REQ-RPS-007: a request a bank statement line settled shows paid by bank transfer;
+		// REQ-RCT-005: one the player's open credit paid whole shows paid from credit.
+		$this->assertSame(expected: ['bank-transfer', 'credit'], actual: $properties['paymentMethod']['enum']);
 		$this->assertSame(expected: 'uuid', actual: $properties['invoiceId']['format'], message: 'the invoice shillinq issued (REQ-RPS-006)');
 		$this->assertSame(expected: 'uri', actual: $properties['invoiceUrl']['format']);
+		foreach (['paidFromCredit', 'amountOpen'] as $field) {
+			// REQ-RCT-005: read from shillinq's request, written by larpinq only.
+			$this->assertSame(expected: 'number', actual: $properties[$field]['type']);
+			$this->assertSame(expected: 0, actual: $properties[$field]['minimum']);
+			$this->assertSame(expected: ['gamemasters'], actual: $properties[$field]['authorization']['update']);
+		}
+
 		foreach (['invoiceId', 'invoiceUrl'] as $field) {
 			$this->assertSame(expected: ['gamemasters'], actual: $properties[$field]['authorization']['update'], message: "{$field} is set by larpinq, not by the player");
 		}
