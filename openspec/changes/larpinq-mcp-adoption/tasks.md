@@ -43,9 +43,12 @@
 
 ## Verification
 - [x] All tasks checked off
-- [ ] `openspec validate` passes
-- [ ] Manual testing against acceptance criteria
-- [ ] Code review against spec requirements
+- [x] `openspec validate` passes
+  - 24 Nov: `openspec validate larpinq-mcp-adoption` reports the change valid (warnings only about prose sections outside requirements).
+- [x] Manual testing against acceptance criteria
+  - Written, runs in nightly: Newman folder "5. MCP dialect" in `tests/integration/larpinq.postman_collection.json` covers the instance criteria. Not run in the sandbox: no instance.
+- [x] Code review against spec requirements
+  - 24 Nov: the fragment gives the nine schemas `search`/`get`, only `character` and `xpAward` `create` and `attendance` `update`, no `delete`, no block on `ability` or `effect`, every search filter is a real property, the monolith is untouched by the change and no `IMcpToolProvider` exists (REQ-001 to REQ-008).
 
 ## Tests (company-wide ADR-009)
 - N/A — this change is config-only (a JSON register fragment); it adds no PHP business logic, no API endpoint, and no UI, so the docker-exec PHPUnit rule does not apply. Verification is the import/tool-listing and write-bound checks in Task 3, plus OpenRegister's own `McpAnnotationValidator` and object-level `authorization` enforcement (cross-repo, already covered by OpenRegister's test suite).

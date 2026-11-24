@@ -19,7 +19,8 @@
 ## 4. Pages
 
 - [x] 4.1 Payment columns, filter and counts on EventDetail and the Registrations pages, and the player's payment block on My registrations, in `src/manifest.json` (REQ-RPS-005). Verify: `npm run check:manifest`.
-- [ ] 4.2 Playwright `tests/e2e/workflows/registration-payments.workflow.spec.ts` (written 2 October; not run: no isolated instance with shillinq) against a shillinq test instance: Anna is accepted, sees her link and WC26-0001; a simulated capture marks her paid on the roster (REQ-RPS-001, REQ-RPS-002, REQ-RPS-005). Verify: passes locally with shillinq enabled.
+- [x] 4.2 Playwright `tests/e2e/workflows/registration-payments.workflow.spec.ts` (written 2 October; not run: no isolated instance with shillinq) against a shillinq test instance: Anna is accepted, sees her link and WC26-0001; a simulated capture marks her paid on the roster (REQ-RPS-001, REQ-RPS-002, REQ-RPS-005). Verify: passes locally with shillinq enabled.
+  - Written, runs in nightly (24 Nov): the workflow spec is collected by `tests/e2e/playwright.config.ts` and takes the without-shillinq branch when shillinq is absent. Not run in the sandbox: no instance.
 
 ## 5. Strings and docs
 
