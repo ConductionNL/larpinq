@@ -103,6 +103,8 @@ class FactionMembershipListener implements IEventListener {
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
 	 *
 	 * @spec openspec/specs/character-connections/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
 		if (PreWriteEvent::isPreWrite(event: $event) === false) {
@@ -129,6 +131,8 @@ class FactionMembershipListener implements IEventListener {
 	 * @return array<string, string>|null The errors payload, or null to allow.
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister entity is an optional dependency.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function collectVeto(Event $event): ?array {
 		[$entity, $old] = PreWriteEvent::entitiesOf(event: $event);

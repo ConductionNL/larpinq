@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 use OCA\Larpinq\Kernel\Contracts\EventFeedbackServiceInterface;
@@ -96,6 +97,13 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	private array $answered = [];
 
 	/**
+	 * Reads the checked-in participants and their characters.
+	 *
+	 * @var FeedbackParticipants
+	 */
+	private readonly FeedbackParticipants $participants;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher  Reads and stamps the register with the app's authority.
@@ -104,6 +112,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param LoggerInterface       $logger   The logger.
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -111,6 +120,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 		private readonly FeedbackAnswers $answers,
 		private readonly LoggerInterface $logger,
 	) {
+		$this->participants = new FeedbackParticipants(fetcher: $fetcher);
 	}//end __construct()
 
 	/**
@@ -155,6 +165,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @return array<string, mixed> formId, opensAt, closesAt, invited, answered (int|null) and notAnswered (list of uid and character, or null).
 	 *
 	 * @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md#requirement-game-masters-see-who-answered-req-eps-004
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	public function summary(array $event): array {
 		$formId  = (int)($event['feedbackForm'] ?? 0);
@@ -171,7 +182,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 			return $summary;
 		}
 
-		return $this->withAnswers(summary: $summary, invited: $this->invitees(eventId: (string)$event['id']));
+		return $this->withAnswers(summary: $summary, invited: $this->participants->invitees(eventId: (string)$event['id']));
 	}//end summary()
 
 	/**
@@ -233,7 +244,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 			return null;
 		}
 
-		$closes = self::moment(value: ($event['feedbackClosesAt'] ?? null)) ?? $opens->add(new \DateInterval(self::DEFAULT_OPEN_FOR));
+		$closes = self::moment(value: ($event['feedbackClosesAt'] ?? null)) ?? $opens->add(new DateInterval(self::DEFAULT_OPEN_FOR));
 
 		return ['opens' => $opens, 'closes' => $closes];
 	}//end window()
@@ -256,7 +267,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 		return [
 			'event'      => $event,
 			'formId'     => $formId,
-			'remindFrom' => $window['closes']->sub(new \DateInterval(self::REMIND_BEFORE)),
+			'remindFrom' => $window['closes']->sub(new DateInterval(self::REMIND_BEFORE)),
 			'now'        => $now,
 		];
 	}//end openRun()
@@ -280,11 +291,12 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param array{event: array, formId: int, remindFrom: DateTimeImmutable, now: DateTimeImmutable} $run The event's run.
 	 *
 	 * @return array{invited: int, reminded: int}
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	private function forEvent(array $run): array {
 		$done           = ['invited' => 0, 'reminded' => 0];
 		$this->answered = [];
-		foreach ($this->checkedIn(eventId: (string)($run['event']['id'] ?? '')) as $attendance) {
+		foreach ($this->participants->checkedIn(eventId: (string)($run['event']['id'] ?? '')) as $attendance) {
 			$due = $this->dueFor(attendance: $attendance, run: $run);
 			if ($due !== null) {
 				$done[self::COUNTED_AS[$due['field']]] += $this->step(attendance: $attendance, ask: $run + $due);
@@ -303,6 +315,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 	 * @param array{formId: int, remindFrom: DateTimeImmutable, now: DateTimeImmutable} $run        The event's run.
 	 *
 	 * @return array{owner: string, field: string}|null
+	 * @spec openspec/specs/event-feedback/spec.md
 	 */
 	private function dueFor(array $attendance, array $run): ?array {
 		$field = self::dueStamp(attendance: $attendance, run: $run);
@@ -310,7 +323,7 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 			return null;
 		}
 
-		$owner = $this->ownerOf(attendance: $attendance);
+		$owner = $this->participants->ownerOf(attendance: $attendance);
 		if ($field === self::REMINDED_AT) {
 			$field = self::unlessAnswered(owner: $owner, uids: $this->answeredUids(formId: $run['formId']));
 		}
@@ -373,24 +386,6 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 		return self::REMINDED_AT;
 	}//end dueStamp()
 
-	/**
-	 * The checked-in attendances of an event.
-	 *
-	 * The filter already asks for checked-in; a no-show is never included even if a store ignores it.
-	 *
-	 * @param string $eventId The event.
-	 *
-	 * @return array<int, array> The attendance records.
-	 */
-	private function checkedIn(string $eventId): array {
-		$rows = $this->fetcher->getObjectsWithAppAuthority(
-			objectType: 'attendance',
-			filters: ['event' => $eventId, 'status' => self::CHECKED_IN],
-			limit: self::PAGE
-		);
-
-		return array_values(array_filter($rows, static fn (array $row): bool => (string)($row['status'] ?? '') === self::CHECKED_IN));
-	}//end checkedIn()
 
 	/**
 	 * Send one invitation or reminder and stamp it. A participant whose
@@ -421,80 +416,9 @@ class EventFeedbackService implements EventFeedbackServiceInterface {
 		return 0;
 	}//end step()
 
-	/**
-	 * The account that plays the attendance's character, or ''.
-	 *
-	 * @param array $attendance The attendance record.
-	 *
-	 * @return string The user id.
-	 */
-	private function ownerOf(array $attendance): string {
-		return $this->characterField(attendance: $attendance, field: 'ownerUid');
-	}//end ownerOf()
 
-	/**
-	 * One field of the attendance's character, read from the register, or ''.
-	 *
-	 * @param array  $attendance The attendance record.
-	 * @param string $field      The character field.
-	 *
-	 * @return string The value.
-	 */
-	private function characterField(array $attendance, string $field): string {
-		$character = $attendance['character'] ?? '';
-		if (is_array($character) === true) {
-			$character = ($character['id'] ?? ($character['@self']['id'] ?? ''));
-		}
 
-		if (is_string($character) === false || $character === '') {
-			return '';
-		}
 
-		try {
-			return (string)($this->fetcher->getObject(objectType: 'character', id: $character)[$field] ?? '');
-		} catch (Throwable $e) {
-			return '';
-		}
-	}//end characterField()
-
-	/**
-	 * The participants of an event who were invited, by user id, with the name of their character.
-	 *
-	 * @param string $eventId The event.
-	 *
-	 * @return array<string, string> Character name by user id.
-	 */
-	private function invitees(string $eventId): array {
-		$invited = [];
-		foreach ($this->checkedIn(eventId: $eventId) as $attendance) {
-			if ((string)($attendance['feedbackInvitedAt'] ?? '') === '') {
-				continue;
-			}
-
-			$owner = $this->ownerOf(attendance: $attendance);
-			if ($owner !== '') {
-				$invited[$owner] = $this->characterName(attendance: $attendance);
-			}
-		}
-
-		return $invited;
-	}//end invitees()
-
-	/**
-	 * The name of the attendance's character, or ''.
-	 *
-	 * @param array $attendance The attendance record.
-	 *
-	 * @return string The name.
-	 */
-	private function characterName(array $attendance): string {
-		$character = $attendance['character'] ?? '';
-		if (is_array($character) === true && (string)($character['name'] ?? '') !== '') {
-			return (string)$character['name'];
-		}
-
-		return $this->characterField(attendance: $attendance, field: 'name');
-	}//end characterName()
 
 	/**
 	 * A stored date-time, or null.

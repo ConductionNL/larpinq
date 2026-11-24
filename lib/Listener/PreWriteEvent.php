@@ -77,6 +77,9 @@ final class PreWriteEvent {
 	/**
 	 * Stop the write and hand OpenRegister the errors, when a rule found any.
 	 *
+	 * Only OpenRegister's pre-write events carry errors; any other event is
+	 * stopped without them.
+	 *
 	 * @param Event $event The pre-write event.
 	 * @param array<string, mixed>|null $errors The errors, or null to let the write pass.
 	 *
@@ -85,12 +88,36 @@ final class PreWriteEvent {
 	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public static function refuseOnErrors(Event $event, ?array $errors): void {
-		if ($errors !== null) {
-			$event->stopPropagation();
-			// @phpstan-ignore-next-line
+		if ($errors === null) {
+			return;
+		}
+
+		$event->stopPropagation();
+		if (self::isPreWrite(event: $event) === true) {
 			$event->setErrors($errors);
 		}
 	}//end refuseOnErrors()
+
+	/**
+	 * Merge fields into what other listeners changed on a pre-write event.
+	 *
+	 * Nothing is merged for an empty set of fields or for an event that is not
+	 * one of OpenRegister's pre-write events, which carry no modified data.
+	 *
+	 * @param Event               $event The pre-write event.
+	 * @param array<string,mixed> $data  The fields.
+	 *
+	 * @return void
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 */
+	public static function mergeModified(Event $event, array $data): void {
+		if ($data === [] || self::isPreWrite(event: $event) === false) {
+			return;
+		}
+
+		$event->setModifiedData(array_merge($event->getModifiedData(), $data));
+	}//end mergeModified()
 
 	/**
 	 * The object's data with its uuid as `id`.

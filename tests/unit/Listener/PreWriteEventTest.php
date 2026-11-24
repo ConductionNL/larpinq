@@ -80,6 +80,42 @@ class PreWriteEventTest extends TestCase {
 	}
 
 	/**
+	 * An event that is not a pre-write event is stopped but given no errors,
+	 * since only OpenRegister's pre-write events carry them.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAnotherEventIsStoppedWithoutErrors(): void {
+		$event = new \OCP\EventDispatcher\Event();
+
+		PreWriteEvent::refuseOnErrors(event: $event, errors: ['name' => 'Required.']);
+
+		$this->assertTrue(condition: $event->isPropagationStopped());
+	}
+
+	/**
+	 * Fields merge into what other listeners changed, only on a pre-write event
+	 * and only when there are any.
+	 *
+	 * @spec openspec/specs/rpg-system/spec.md
+	 *
+	 * @return void
+	 */
+	public function testFieldsMergeOnlyIntoAPreWriteEvent(): void {
+		$event = new ObjectCreatingEvent(new PreWriteEntity('u-1', []));
+		PreWriteEvent::mergeModified(event: $event, data: ['askerUid' => 'anna']);
+		PreWriteEvent::mergeModified(event: $event, data: ['author' => 'anna']);
+		PreWriteEvent::mergeModified(event: $event, data: []);
+		$this->assertSame(expected: ['askerUid' => 'anna', 'author' => 'anna'], actual: $event->getModifiedData());
+
+		$plain = new \OCP\EventDispatcher\Event();
+		PreWriteEvent::mergeModified(event: $plain, data: ['askerUid' => 'anna']);
+		$this->assertFalse(condition: $plain->isPropagationStopped());
+	}
+
+	/**
 	 * No errors (null) leaves the event running; an empty list still refuses.
 	 *
 	 * @return void

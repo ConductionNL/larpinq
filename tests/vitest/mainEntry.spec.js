@@ -10,7 +10,7 @@
  * factories. The router, its base, the icon and translation registration and
  * the t / n mixin are mountCnApp's work and are tested in the library.
  *
- * @spec openspec/changes/larpinq-manifest-tier-4/specs/larpinq-manifest-tier-4/spec.md#requirement-cnapproot-shall-be-the-boot-entry-point
+ * @spec openspec/specs/app-manifest/spec.md#requirement-cnapproot-shall-be-the-boot-entry-point
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'

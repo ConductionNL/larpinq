@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Távozott: {day} {time}",
         "On site now: {count}": "Most a helyszínen: {count}",
         "Checked Out At": "Távozás rögzítve ekkor",
-        "Checked Out By": "A távozást rögzítette"
+        "Checked Out By": "A távozást rögzítette",
+        "Care details": "Egészségügyi adatok",
+        "Due for erasure": "Törlendő",
+        "No care records yet.": "Még nincsenek egészségügyi adatok."
     },
     "nplurals=2; plural=(n != 1);"
 )

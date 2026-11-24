@@ -110,6 +110,8 @@ class PaymentRequestListener implements IEventListener {
 	 * @return void
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function changed(object $entity, ?object $old): void {
 		$data = PreWriteEvent::dataOf(entity: $entity);

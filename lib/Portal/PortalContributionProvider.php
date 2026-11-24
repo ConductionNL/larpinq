@@ -800,7 +800,7 @@ class PortalContributionProvider {
 	 * @spec openspec/changes/portal-contribution/specs/portal-contribution/spec.md
 	 */
 	private function catalogCollections(): array {
-		return array_map([$this, 'publicList'], self::PUBLIC_CATALOGS);
+		return array_map($this->publicList(...), self::PUBLIC_CATALOGS);
 	}//end catalogCollections()
 
 	/**

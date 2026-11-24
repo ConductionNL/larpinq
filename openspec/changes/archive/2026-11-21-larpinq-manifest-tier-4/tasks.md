@@ -44,7 +44,9 @@
 ## Phase 4 — Verification
 
 - [x] 4.1 `npm run check:manifest` clean.
-- [ ] 4.2 `composer check:strict` clean.
+- [x] 4.2 `composer check:strict` clean.
+  - 21 Nov, development after #1130, #1132 and #1134 (OpenRegister main beside the app): lint, phpcs (0 errors), psalm (no errors), phpstan (no errors) and test:all (1405 tests, OK) pass. phpmd keeps 9 findings: coupling in StaffInvitesController, CharacterRequirementListener, HelpMessageListener, RegistrationListener, RegisterObjectFetcher and StaffInviteService; class complexity in EventFeedbackService, RegistrationService and StaffInviteService. Each needs a collaborator extracted.
+  - 21 Nov, branch `cloud/b-larpinq-phpmd-collaborators`: the 9 phpmd findings are gone. Collaborators extracted: `StaffInviteState`, `StaffTeam` and `StaffInviteLink` (StaffInviteService, StaffInvitesController), `RegisterCallOptions` (RegisterObjectFetcher), `FeedbackParticipants` (EventFeedbackService), `EventCapacityLock` and `RegistrationPlaces::playersAfter()` (RegistrationService); the listeners read the event shape through `PreWriteEvent`. lint, phpcs (0 errors), phpmd (none), psalm (no errors), phpstan (no errors) and test:all (1424 tests, OK) pass.
 - [x] 4.3 Live-deploy regression: each manifest menu item, page widget
       slot, and detail tab renders against the dev container.
   - Passed live 17 Nov on a fresh rig: `index-pages.spec.ts`, `spa-ui.spec.ts`, `detail-forms-admin.spec.ts` and `app-chrome.spec.ts` render every menu entry, index, detail page and sidebar tab (selector drift fixed in the same PR).

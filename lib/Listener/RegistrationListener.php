@@ -99,15 +99,13 @@ class RegistrationListener implements IEventListener {
 	 * @psalm-suppress MixedArgument    OpenRegister event/entity classes are optional dependencies.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-			$this->beforeWrite(event: $event, entity: $event->getObject(), old: null);
-			return;
-		}
-
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent) {
-			$this->beforeWrite(event: $event, entity: $event->getNewObject(), old: $event->getOldObject());
+		if (PreWriteEvent::isPreWrite(event: $event) === true) {
+			[$entity, $old] = PreWriteEvent::entitiesOf(event: $event);
+			$this->beforeWrite(event: $event, entity: $entity, old: $old);
 			return;
 		}
 
@@ -137,6 +135,8 @@ class RegistrationListener implements IEventListener {
 	 * @return void
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister event/entity classes are optional dependencies.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function beforeWrite(object $event, object $entity, ?object $old): void {
 		if ($this->isRegistration(entity: $entity) === false) {

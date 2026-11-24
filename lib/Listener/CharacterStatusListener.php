@@ -73,6 +73,8 @@ class CharacterStatusListener implements IEventListener {
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
 	 *
 	 * @spec openspec/specs/character-management/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
 		[$entity, $old] = $this->entitiesOf(event: $event);

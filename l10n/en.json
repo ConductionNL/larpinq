@@ -1072,7 +1072,10 @@
         "Checked out {day} {time}": "Checked out {day} {time}",
         "On site now: {count}": "On site now: {count}",
         "Checked Out At": "Checked Out At",
-        "Checked Out By": "Checked Out By"
+        "Checked Out By": "Checked Out By",
+        "Care details": "Care details",
+        "Due for erasure": "Due for erasure",
+        "No care records yet.": "No care records yet."
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

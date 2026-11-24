@@ -200,7 +200,7 @@ const STATUS_META = {
  *
  * @param {Array<{status: string}>} rows The roster rows.
  * @return {number} The count.
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
  */
 export function countOnSite(rows) {
 	return rows.filter((row) => row.status === 'checked-in').length
@@ -213,7 +213,7 @@ export function countOnSite(rows) {
  * @param {string} stamp The ISO-8601 `checkedOutAt`.
  * @param {string} locale The BCP 47 locale, e.g. `nl-NL`.
  * @return {{day: string, time: string}|null} The parts.
- * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
  */
 export function checkOutMoment(stamp, locale) {
 	const date = stamp ? new Date(stamp) : null
@@ -391,7 +391,7 @@ export default {
 		 * How many participants are on site now.
 		 *
 		 * @return {number}
-		 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-roster-shows-who-is-on-site-now-req-eco-002
 		 */
 		onSiteCount() {
 			return countOnSite(this.participants)
@@ -621,7 +621,7 @@ export default {
 		 *
 		 * @param {object} row The participant row.
 		 * @return {string}
-		 * @spec openspec/changes/events-check-out-and-on-site-count/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
 		 */
 		checkedOutLabel(row) {
 			const moment = row.status === 'checked-out'
@@ -664,13 +664,6 @@ export default {
  */
 .event-roster {
 	container-type: inline-size;
-}
-
-@container (max-width: 600px) {
-	.event-roster__action {
-		min-width: 44px;
-		min-height: 44px;
-	}
 }
 
 .event-roster__scan {
@@ -722,5 +715,40 @@ export default {
 	background-color: var(--color-background-hover);
 	color: var(--color-text-maxcontrast);
 	font-size: 0.9em;
+}
+
+@container (max-width: 600px) {
+	.event-roster__action {
+		min-width: 44px;
+		min-height: 44px;
+	}
+
+	/*
+	 * The scan field spans the width, its button sits below it at 44 pixels,
+	 * and the code text is 16 pixels so the phone does not zoom in while the
+	 * steward types (REQ-APF-002).
+	 *
+	 * @spec openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages/spec.md
+	 */
+	.event-roster__scan {
+		align-items: stretch;
+	}
+
+	.event-roster__scan-panel {
+		max-width: none;
+	}
+
+	.event-roster__scan-form {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.event-roster__scan-form :deep(input) {
+		font-size: 16px;
+	}
+
+	.event-roster__scan :deep(button) {
+		min-height: 44px;
+	}
 }
 </style>

@@ -25,7 +25,7 @@
  * @e2e exclude GM render context keeps GM-private notes — same reason;
  *   covered by CharactersControllerTest.
  *
- * @spec openspec/changes/player-character-sheet-access/specs/pdf-export/spec.md
+ * @spec openspec/specs/pdf-export/spec.md
  */
 
 import type { APIRequestContext, APIResponse } from '@playwright/test'

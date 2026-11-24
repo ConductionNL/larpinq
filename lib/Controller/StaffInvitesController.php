@@ -25,6 +25,7 @@ namespace OCA\Larpinq\Controller;
 
 use DomainException;
 use InvalidArgumentException;
+use OCA\Larpinq\Service\StaffInviteLink;
 use OCA\Larpinq\Service\StaffInviteService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Controller;
@@ -33,9 +34,6 @@ use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\UserRateLimit;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
-use OCP\IURLGenerator;
-use OCP\Lock\ILockingProvider;
-use OCP\Lock\LockedException;
 use OutOfBoundsException;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -74,17 +72,17 @@ class StaffInvitesController extends Controller {
 	 * @param IRequest $request The request.
 	 * @param StaffInviteService $invites The staff invites.
 	 * @param CallerAccess $callerAccess The caller checks.
-	 * @param IURLGenerator $urlGenerator Builds the invite link.
+	 * @param StaffInviteLink $inviteLink Builds the invite link and holds the redeem lock.
 	 * @param LoggerInterface $logger The logger.
-	 * @param ILockingProvider $lockingProvider Runs the redeems of one invite one at a time.
+	 *
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	public function __construct(
 		IRequest $request,
 		private readonly StaffInviteService $invites,
 		private readonly CallerAccess $callerAccess,
-		private readonly IURLGenerator $urlGenerator,
+		private readonly StaffInviteLink $inviteLink,
 		private readonly LoggerInterface $logger,
-		private readonly ILockingProvider $lockingProvider,
 	) {
 		parent::__construct(appName: 'larpinq', request: $request);
 	}//end __construct()
@@ -97,6 +95,7 @@ class StaffInvitesController extends Controller {
 	 * @return JSONResponse 201 with the invite, token and link; 400, 401 or 403.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	#[NoAdminRequired]
 	public function create(): JSONResponse {
@@ -119,7 +118,7 @@ class StaffInvitesController extends Controller {
 			return new JSONResponse(data: ['error' => 'The invite could not be created'], statusCode: Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
-		$created['link'] = $this->urlGenerator->linkToRouteAbsolute('larpinq.dashboard.page') . 'staff-invite/' . $created['token'];
+		$created['link'] = $this->inviteLink->url(token: $created['token']);
 		return new JSONResponse(data: $created, statusCode: Http::STATUS_CREATED);
 	}//end create()
 
@@ -164,6 +163,7 @@ class StaffInvitesController extends Controller {
 	 * the signed-in caller to the invite's staff role. Rate limited per user.
 	 *
 	 * @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md#requirement-a-game-master-invites-with-a-link-req-asr-004
+	 * @spec openspec/specs/staff-roles/spec.md
 	 */
 	#[NoAdminRequired]
 	#[UserRateLimit(limit: 10, period: 300)]
@@ -176,10 +176,7 @@ class StaffInvitesController extends Controller {
 		$token = (string)$this->request->getParam('token', '');
 		// One redeem of an invite at a time: the service reads the invite under this
 		// lock, so concurrent redeems of a link with one use left add one user.
-		$lock = 'larpinq/staff-invite/' . StaffInviteService::hashToken(token: $token);
-		try {
-			$this->lockingProvider->acquireLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
-		} catch (LockedException) {
+		if ($this->inviteLink->lock(token: $token) === false) {
 			return new JSONResponse(data: ['error' => 'The invite is being redeemed, try again'], statusCode: Http::STATUS_CONFLICT);
 		}
 
@@ -194,7 +191,7 @@ class StaffInvitesController extends Controller {
 			$this->logger->error('[StaffInvitesController] redeeming an invite failed: ' . $exception->getMessage());
 			return new JSONResponse(data: ['error' => 'The invite could not be redeemed'], statusCode: Http::STATUS_INTERNAL_SERVER_ERROR);
 		} finally {
-			$this->lockingProvider->releaseLock($lock, ILockingProvider::LOCK_EXCLUSIVE);
+			$this->inviteLink->unlock(token: $token);
 		}
 	}//end redeem()
 

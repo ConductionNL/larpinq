@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Выехаў {day} {time}",
         "On site now: {count}": "Цяпер на месцы: {count}",
         "Checked Out At": "Ад'езд зафіксаваны",
-        "Checked Out By": "Ад'езд зафіксаваў"
+        "Checked Out By": "Ад'езд зафіксаваў",
+        "Care details": "Медыцынскія даныя",
+        "Due for erasure": "Трэба выдаліць",
+        "No care records yet.": "Медыцынскіх даных яшчэ няма."
     },
     "nplurals=2; plural=(n != 1);"
 )

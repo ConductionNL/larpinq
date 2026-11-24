@@ -21,6 +21,7 @@ use DomainException;
 use InvalidArgumentException;
 use OCA\Larpinq\Controller\CallerAccess;
 use OCA\Larpinq\Controller\StaffInvitesController;
+use OCA\Larpinq\Service\StaffInviteLink;
 use OCA\Larpinq\Service\StaffInviteService;
 use OCA\Larpinq\Support\AppIdentity;
 use OCP\AppFramework\Http\Attribute\UserRateLimit;
@@ -45,6 +46,7 @@ use ReflectionMethod;
 #[CoversClass(StaffInvitesController::class)]
 #[UsesClass(CallerAccess::class)]
 #[UsesClass(StaffInviteService::class)]
+#[CoversClass(StaffInviteLink::class)]
 class StaffInvitesControllerTest extends TestCase {
 
 	private const CODE = '0123456789abcdef0123456789abcdef';
@@ -85,9 +87,8 @@ class StaffInvitesControllerTest extends TestCase {
 			request: $request,
 			invites: $this->invites,
 			callerAccess: new CallerAccess(userSession: $session, groupManager: $groupManager),
-			urlGenerator: $urls,
+			inviteLink: new StaffInviteLink(urlGenerator: $urls, lockingProvider: $this->locks),
 			logger: new NullLogger(),
-			lockingProvider: $this->locks,
 		);
 	}//end controllerFor()
 

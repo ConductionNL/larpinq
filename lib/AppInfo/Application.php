@@ -26,9 +26,6 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\AppInfo;
 
-use OCA\Larpinq\Listener\CharacterRequirementListener;
-use OCA\Larpinq\Listener\DeepLinkRegistrationListener;
-use OCA\Larpinq\Mcp\LarpinqScannableServices;
 use OCA\Larpinq\Middleware\ApiContractMiddleware;
 use OCA\Larpinq\Notification\Notifier;
 use OCA\Larpinq\Service\FeedbackAnswers;
@@ -163,43 +160,6 @@ class Application extends App implements IBootstrap {
 
 		// API-Version header and problem details on the JSON API (spec api-contract).
 		$context->registerMiddleware(ApiContractMiddleware::class);
-
-		// The curated MCP tools (hermiq-ai-tooling REQ-004): OpenRegister scans
-		// the classes this lists for #[McpTool] methods. The interface is
-		// OpenRegister's, so the alias is only registered when it is there.
-		if (interface_exists('OCA\OpenRegister\Mcp\IMcpScannableServices') === true) {
-			$context->registerServiceAlias(
-				'OCA\OpenRegister\Mcp\IMcpScannableServices::' . self::APP_ID,
-				LarpinqScannableServices::class
-			);
-		}
-
-		// Register the deep link listener for OpenRegister unified search.
-		// The event class is only available when OpenRegister is installed.
-		if (class_exists('OCA\OpenRegister\Event\DeepLinkRegistrationEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\DeepLinkRegistrationEvent',
-				DeepLinkRegistrationListener::class
-			);
-		}
-
-		// Server-authoritative skill-requirement / XP-budget enforcement on
-		// character writes. The OR pre-write event classes only exist on
-		// newer OpenRegister releases; guard so older deployments degrade to
-		// data-only instead of fataling at boot (skill-requirement-enforcement).
-		if (class_exists('OCA\OpenRegister\Event\ObjectCreatingEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\ObjectCreatingEvent',
-				CharacterRequirementListener::class
-			);
-		}
-
-		if (class_exists('OCA\OpenRegister\Event\ObjectUpdatingEvent') === true) {
-			$context->registerEventListener(
-				'OCA\OpenRegister\Event\ObjectUpdatingEvent',
-				CharacterRequirementListener::class
-			);
-		}
 
 		(new ServiceContractRegistrar())->register(context: $context);
 		(new ObjectListenerRegistrar())->register(context: $context);

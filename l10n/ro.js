@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Plecat {day} {time}",
         "On site now: {count}": "Acum la fața locului: {count}",
         "Checked Out At": "Plecare înregistrată la",
-        "Checked Out By": "Plecare înregistrată de"
+        "Checked Out By": "Plecare înregistrată de",
+        "Care details": "Date de sănătate",
+        "Due for erasure": "De șters",
+        "No care records yet.": "Încă nu există date de sănătate."
     },
     "nplurals=2; plural=(n != 1);"
 )

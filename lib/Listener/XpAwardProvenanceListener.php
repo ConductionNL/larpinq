@@ -103,6 +103,8 @@ class XpAwardProvenanceListener implements IEventListener {
 	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress MixedAssignment  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) WriteStamp is a pure helper over the fields it is handed.
 	 */
 	private function keepProvenance(Event $event): void {
 		// @phpstan-ignore-next-line
@@ -128,6 +130,8 @@ class XpAwardProvenanceListener implements IEventListener {
 	 *
 	 * @psalm-suppress MixedMethodCall  OpenRegister event/entity classes are optional dependencies.
 	 * @psalm-suppress UndefinedMethod  The OpenRegister event accessors are resolved at runtime.
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) WriteStamp is a pure helper over the fields it is handed.
 	 */
 	private function stampProvenance(Event $event): void {
 		$user = $this->userSession->getUser();

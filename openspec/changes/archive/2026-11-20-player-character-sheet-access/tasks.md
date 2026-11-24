@@ -20,10 +20,12 @@
 
 ## 3. Spec sync
 
-- [ ] 3.1 On archive, fold the delta into `openspec/specs/pdf-export/spec.md`: replace the "Non-admin user downloads PDF" scenario under Route and Security Configuration with the owner-scoped scenarios and add the access-matrix + redaction requirements
+- [x] 3.1 On archive, fold the delta into `openspec/specs/pdf-export/spec.md`: replace the "Non-admin user downloads PDF" scenario under Route and Security Configuration with the owner-scoped scenarios and add the access-matrix + redaction requirements
+  - Done on archive (20 Nov): `openspec/specs/pdf-export/spec.md` goes from 11 to 13 requirements; Route and Security Configuration carries the matrix wording and the owner scenario.
 - [x] 3.2 Update `docs/FEATURES.md` (players can download their own character sheet)
 
 ## 4. Quality
 
-- [ ] 4.1 `composer check` green (php -l, phpcs, PHPUnit); hydra gates green on the diff — the changed route must keep passing gate-5 (route-auth), gate-7 (no-admin-idor: the per-object guard is now the owner/GM/admin matrix), gate-9 (semantic-auth)
+- [x] 4.1 `composer check` green (php -l, phpcs, PHPUnit); hydra gates green on the diff — the changed route must keep passing gate-5 (route-auth), gate-7 (no-admin-idor: the per-object guard is now the owner/GM/admin matrix), gate-9 (semantic-auth)
   - Measured on development (round 2): `composer lint` passes, `composer phpcs` passes (0 errors), and the unit suite is green (1236 tests, 20 skipped; `CharactersControllerTest` 16 OK). Psalm is clean on `CharactersController.php`. Whole-app `composer psalm` fails on files this change does not touch (`HelpMessageListener`, `PreWriteEvent`, `LarpinqScannableServices`: OCP and OpenRegister symbols), so `composer check` as a whole is not green. `downloadPdf` keeps `#[NoAdminRequired]` + `#[NoCSRFRequired]` and its per-object owner/GM/admin guard, checked by hand; the hydra gate script is not in this repository.
+  - Measured 20 Nov on development after #1130, with OpenRegister main beside the app: `composer check` prints ALL CHECKS PASSED (lint; phpcs 0 errors; psalm no errors; test:unit 1404 tests OK). hydra gates (ConductionNL/.github hydra-gates, `--full`): gate-5 route-auth PASS, gate-9 semantic-auth PASS; gate-7 no-admin-idor fails on 8 methods in PreferencesController and RegistrationChangesController, and `CharactersController::downloadPdf` is not among them.

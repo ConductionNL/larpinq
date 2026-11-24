@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md
+ * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
  */
 
 declare(strict_types=1);

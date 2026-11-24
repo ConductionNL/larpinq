@@ -1106,7 +1106,10 @@ OC.L10N.register(
         "Checked out {day} {time}": "Cláraithe amach {day} {time}",
         "On site now: {count}": "Ar an láthair anois: {count}",
         "Checked Out At": "Clárú amach ar",
-        "Checked Out By": "Cláraithe amach ag"
+        "Checked Out By": "Cláraithe amach ag",
+        "Care details": "Sonraí cúraim",
+        "Due for erasure": "Le scriosadh",
+        "No care records yet.": "Níl aon sonraí cúraim fós."
     },
     "nplurals=2; plural=(n != 1);"
 )

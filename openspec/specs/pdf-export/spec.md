@@ -264,7 +264,12 @@ The data context passed to DocuDesk's `PdfService::renderPdf()` MUST expose char
 
 ### Requirement: Route and Security Configuration
 
-The PDF download route MUST be properly configured with appropriate access controls.
+The PDF download route MUST be properly configured with appropriate
+access controls. The endpoint MUST carry `@NoAdminRequired` (players are
+non-admins) and `@NoCSRFRequired` (direct URL access in a new tab), and
+the in-body guard MUST enforce the Character Sheet Access Matrix — the
+route being reachable by non-admins MUST NOT mean every non-admin may
+download every character.
 
 | ID | Requirement | Priority | Status |
 |----|------------|----------|--------|
@@ -273,11 +278,11 @@ The PDF download route MUST be properly configured with appropriate access contr
 | PDF-062 | The endpoint MUST have `@NoAdminRequired` (accessible by non-admin users) | MUST | Implemented |
 | PDF-063 | The endpoint MUST have `@NoCSRFRequired` (required for direct URL access in new tab) | MUST | Implemented |
 
-#### Scenario: Non-admin user downloads PDF
+#### Scenario: Non-admin owner download succeeds
 
-- GIVEN a regular user has access to Larpinq
+- GIVEN a regular user who owns the character (`ownerUid` matches)
 - AND DocuDesk is installed
-- WHEN the user navigates to a character PDF download URL
+- WHEN the user navigates to the character PDF download URL
 - THEN the PDF MUST be generated and returned
 - AND no admin rights MUST be required
 
@@ -292,6 +297,64 @@ The PDF download route MUST be properly configured with appropriate access contr
 - GIVEN no user is logged in
 - WHEN someone navigates to a character PDF download URL
 - THEN Nextcloud's authentication MUST redirect to the login page
+
+---
+
+### Requirement: Character Sheet Access Matrix
+
+The character PDF download endpoint MUST authorize exactly three caller
+classes: Nextcloud administrators, members of the GM group
+(`gamemasters`), and the character's owning player (the authenticated
+user whose uid equals the character's `ownerUid`). Every other
+authenticated caller MUST receive 403, and the 403 MUST NOT reveal
+whether the character id exists.
+
+#### Scenario: Owner downloads their own character sheet
+
+- GIVEN character "Sir Lancelot" with `ownerUid` "alice"
+- AND user "alice" is authenticated and is neither admin nor in `gamemasters`
+- AND DocuDesk is installed
+- WHEN "alice" requests `GET /characters/{id}/download/{template}` for "Sir Lancelot"
+- THEN the PDF MUST be generated and returned as a `DataDownloadResponse`
+
+#### Scenario: Non-owner player is denied without id disclosure
+
+- GIVEN character "Sir Lancelot" with `ownerUid` "alice"
+- AND user "bob" is authenticated and is neither admin nor in `gamemasters`
+- WHEN "bob" requests the character sheet download for "Sir Lancelot"
+- THEN the response MUST be 403 `{"error": "Access denied"}`
+- AND the response MUST be identical for existing and non-existing character ids
+
+#### Scenario: GM-group member downloads any character sheet
+
+- GIVEN user "gm-carol" is a member of the `gamemasters` group and is not an NC admin
+- WHEN "gm-carol" requests the character sheet download for any character
+- THEN the PDF MUST be generated and returned
+
+#### Scenario: Character without ownerUid grants no player access
+
+- GIVEN a character whose `ownerUid` is empty or absent
+- AND an authenticated non-admin, non-GM user
+- WHEN the user requests the character sheet download
+- THEN the response MUST be 403 (an empty owner never matches any caller)
+
+### Requirement: GM-Private Redaction for Owner Downloads
+
+When the caller is authorized by ownership only (not admin and not in the GM group), the render context passed to DocuDesk MUST NOT contain the `slNotesPrivate` field, so no template — including GM-authored templates — can leak GM-private notes into a player-triggered render.
+`slNotesPublic` MUST remain available to owner renders.
+
+#### Scenario: Owner render context excludes GM-private notes
+
+- GIVEN character "Sir Lancelot" owned by "alice" with non-empty `slNotesPrivate` and `slNotesPublic`
+- WHEN "alice" (owner, non-admin, non-GM) downloads the character sheet
+- THEN the context handed to `PdfService::renderPdf()` MUST NOT contain `slNotesPrivate`
+- AND the context MUST contain `slNotesPublic`
+
+#### Scenario: GM render context keeps GM-private notes
+
+- GIVEN the same character
+- WHEN an admin or `gamemasters` member downloads the character sheet
+- THEN the render context MUST contain `slNotesPrivate` unchanged
 
 ---
 
@@ -409,6 +472,35 @@ modal pattern and graceful degradation as the character sheet.
 - WHEN the GM opens the run-sheet modal
 - THEN the modal MUST state that no run-sheet templates are available and reference DocuDesk template management
 - AND MUST NOT offer character-sheet templates as a fallback
+
+### Requirement: Runsheet Cast Query MUST Be Scoped to the Target Event
+
+`EventsController::buildRunsheetContext()` MUST NOT load every `character` and every `player` in
+the OpenRegister register to compute one event's cast list. The character query MUST be narrowed
+with a server-side filter (or a bounded, paginated scan if the OpenRegister filter contract does
+not support the required array-contains match) so the query cost scales with the target event's
+cast size, not with the total number of characters ever created across all events and seasons.
+The player lookup MUST be limited to the ids referenced by the (already scoped) cast, not every
+player in the register.
+
+**Feature tier**: MVP
+
+#### Scenario: Runsheet query does not scan unrelated characters
+
+- GIVEN an OpenRegister `character` register containing characters linked to many different
+  events, including characters with no `events` reference to the target event
+- WHEN an event's runsheet PDF is downloaded via `downloadRunsheet()`
+- THEN the underlying OpenRegister query for characters MUST be filtered (or paginated with an
+  early stop) rather than an unconditional `findAll()` over the whole register
+- AND the resulting cast list MUST still be correct: it MUST include exactly the characters whose
+  `events` array references the target event, and no others
+
+#### Scenario: Player lookup is scoped to the cast, not the whole register
+
+- GIVEN a `player` register containing players unrelated to the target event's cast
+- WHEN the runsheet context is built
+- THEN the player lookup MUST resolve only the player ids referenced by the scoped cast list
+- AND MUST NOT issue an unfiltered `findAll()` over the entire `player` register
 
 ## User Interface
 

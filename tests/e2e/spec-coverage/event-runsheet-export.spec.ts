@@ -26,7 +26,7 @@
  * stay out, a character of this event must be in.
  *
  * @spec openspec/specs/pdf-export/spec.md
- * @spec openspec/changes/larpinq-runsheet-scoped-cast-query/tasks.md#4-tests
+ * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
  */
 
 import type { APIRequestContext } from '@playwright/test'

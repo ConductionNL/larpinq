@@ -135,9 +135,11 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 * @spec openspec/specs/character-custom-fields/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	public function handle(Event $event): void {
-		if ($this->isPreWrite(event: $event) === false) {
+		if (PreWriteEvent::isPreWrite(event: $event) === false) {
 			return;
 		}
 
@@ -199,9 +201,12 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @psalm-suppress MixedMethodCall OpenRegister entity classes are optional dependencies.
 	 * @psalm-suppress MixedArgument   OpenRegister entity classes are optional dependencies.
+	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function characterEntities(Event $event): ?array {
-		[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+		[$newEntity, $oldEntity] = PreWriteEvent::entitiesOf(event: $event);
 		try {
 			$isCharacter = $this->isCharacterSchema(entity: $newEntity);
 		} catch (\Throwable $e) {
@@ -242,20 +247,6 @@ class CharacterRequirementListener implements IEventListener {
 	}//end gameRuleVeto()
 
 	/**
-	 * Whether the event is one of OpenRegister's vetoable pre-write events.
-	 *
-	 * @param Event $event The dispatched event.
-	 *
-	 * @return bool True for ObjectCreatingEvent and ObjectUpdatingEvent.
-	 *
-	 * @psalm-assert-if-true \OCA\OpenRegister\Event\ObjectCreatingEvent|\OCA\OpenRegister\Event\ObjectUpdatingEvent $event
-	 */
-	private function isPreWrite(Event $event): bool {
-		return $event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent
-			|| $event instanceof \OCA\OpenRegister\Event\ObjectUpdatingEvent;
-	}//end isPreWrite()
-
-	/**
 	 * The errors that veto a pre-write event, or null when the write may pass.
 	 *
 	 * @param Event $event The dispatched pre-write event.
@@ -268,9 +259,11 @@ class CharacterRequirementListener implements IEventListener {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 * @spec openspec/specs/character-custom-fields/spec.md
+	 *
+	 * @SuppressWarnings(PHPMD.StaticAccess) PreWriteEvent is a pure helper over the event it is handed.
 	 */
 	private function vetoFor(Event $event): ?array {
-		[$newEntity, $oldEntity] = $this->extractEntities(event: $event);
+		[$newEntity, $oldEntity] = PreWriteEvent::entitiesOf(event: $event);
 
 		if ($this->isCharacterSchema(entity: $newEntity) === false) {
 			return null;
@@ -293,37 +286,6 @@ class CharacterRequirementListener implements IEventListener {
 		return $errors;
 	}//end vetoFor()
 
-	/**
-	 * Extract the [new, old] entity pair from a vetoable pre-write event.
-	 *
-	 * A create carries only the new object; an update carries both. Returning
-	 * the pair keeps the event-shape knowledge in one place.
-	 *
-	 * @param Event $event The dispatched pre-write event.
-	 *
-	 * @return array{0: object, 1: object|null} The [newEntity, oldEntity] pair.
-	 *
-	 * @psalm-suppress MixedMethodCall     OpenRegister event classes are optional dependencies.
-	 * @psalm-suppress MixedReturnStatement OpenRegister event classes are optional dependencies.
-	 * @psalm-suppress MixedInferredReturnType OpenRegister event classes are optional dependencies.
-	 * @psalm-suppress UndefinedMethod     `getNewObject()`/`getOldObject()` are declared on
-	 *                                     OCA\OpenRegister\Event\ObjectUpdatingEvent, which Psalm
-	 *                                     resolves as the base OCP Event because OpenRegister is an
-	 *                                     optional dependency. The `instanceof` above narrows it at
-	 *                                     runtime; the two pre-existing errors this suppresses were
-	 *                                     the only Psalm findings in the app.
-	 *
-	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
-	 */
-	private function extractEntities(Event $event): array {
-		if ($event instanceof \OCA\OpenRegister\Event\ObjectCreatingEvent) {
-			// @phpstan-ignore-next-line
-			return [$event->getObject(), null];
-		}
-
-		// @phpstan-ignore-next-line
-		return [$event->getNewObject(), $event->getOldObject()];
-	}//end extractEntities()
 
 	/**
 	 * Collect the veto payload for a candidate write, or null when it may pass.
