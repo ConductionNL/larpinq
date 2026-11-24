@@ -6,7 +6,7 @@
  * its Roadmap tab as three columns, Gepland, In ontwikkeling and Beschikbaar
  * (REQ-ARM-003).
  *
- * @spec openspec/changes/admin-roadmap-page/specs/admin-roadmap-page/spec.md#requirement-req-arm-003-the-roadmap-shows-planned-in-progress-and-available
+ * @spec openspec/specs/admin-roadmap-page/spec.md#requirement-req-arm-003-the-roadmap-shows-planned-in-progress-and-available
  */
 
 import { describe, expect, it } from 'vitest'
