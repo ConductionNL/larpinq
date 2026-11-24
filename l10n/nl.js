@@ -462,6 +462,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Toegekende ervaring, en wie die verdiend heeft.",
         "How much the world holds, and what characters actually carry.": "Hoeveel de wereld bevat, en wat personages werkelijk dragen.",
         "Marketplace": "Marktplaats",
+        "Install into world": "Installeren in wereld",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Installeer registers, schema's en flows die andere organisaties hebben gepubliceerd.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s is al in bezit van %2$s. Haal het daar eerst weg.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s rust al op %2$s. Haal het daar eerst weg.",

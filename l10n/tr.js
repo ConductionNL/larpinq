@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Verilen deneyim ve onu kimin kazandığı.",
         "How much the world holds, and what characters actually carry.": "Dünyanın ne kadar barındırdığı ve karakterlerin gerçekte ne taşıdığı.",
         "Marketplace": "Mağaza",
+        "Install into world": "Oyun dünyasına yükle",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Diğer kuruluşların yayımladığı kayıtları, şemaları ve akışları yükleyin.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s zaten %2$s adlı karakterde. Önce oradan kaldırın.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s zaten %2$s üzerinde. Önce oradan kaldırın.",

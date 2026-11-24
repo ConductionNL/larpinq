@@ -29,6 +29,7 @@ OC.L10N.register(
         "Where the list comes in the rulebook; lower comes first.": "Where the list comes in the rulebook; lower comes first.",
         "Whether the list holds skills, spells or powers.": "Whether the list holds skills, spells or powers.",
         "Marketplace": "Marketplace",
+        "Install into world": "Install into world",
         "Load example data?": "Load example data?",
         "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.": "Example data fills the lists, detail pages and dashboards so you can see the app working straight away. Pick \"None\" on a production install.",
         "Load the example data": "Load the example data",
