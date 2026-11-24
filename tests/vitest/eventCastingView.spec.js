@@ -7,7 +7,7 @@
  * confirms, the crew places, and a player's ranking. Only fetch is faked; the
  * real eventCasting service runs.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'

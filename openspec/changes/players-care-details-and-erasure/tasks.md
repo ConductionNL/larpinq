@@ -22,7 +22,8 @@
 
 ## 4. Pages
 
-- [ ] 4.1 Care widget on PlayerDetail and care list with the due count on EventDetail, in `src/manifest.json` (REQ-PCE-001, REQ-PCE-002). Verify: `npm run check:manifest`; Playwright `tests/e2e/care-details.spec.ts` as Anna and as a game master.
+- [x] 4.1 Care widget on PlayerDetail and care list with the due count on EventDetail, in `src/manifest.json` (REQ-PCE-001, REQ-PCE-002). Verify: `npm run check:manifest`; Playwright `tests/e2e/care-details.spec.ts` as Anna and as a game master.
+  - Written, runs in nightly (24 Nov): `tests/e2e/care-details.spec.ts` is collected by `tests/e2e/playwright.config.ts`; `npm run check:manifest` passes. Not run in the sandbox: no instance.
   - Built 20 Nov in `src/manifest.json`: PlayerDetail has a `player-care` data widget with exactly the five care fields (taken out of the identity widget); EventDetail has the `event-care` object-list of the event's care records (player, the five fields, erase date) and the `event-stats-care-due` count of records whose `eraseAfter` has passed. Strings in all 37 locales. `npm run check:manifest` passes; `tests/vitest/careDetailsManifest.spec.js` pins the wiring. `tests/e2e/care-details.spec.ts` is written (Anna, a game master, Karel) but not run: it needs a live instance, so the task stays open until it passes.
 
 ## 5. Strings and docs

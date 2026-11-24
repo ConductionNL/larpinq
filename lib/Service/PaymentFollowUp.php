@@ -223,8 +223,8 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
-	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+	 * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
 	 */
 	private function markPaid(array $registration, array $request): void {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];

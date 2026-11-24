@@ -95,7 +95,7 @@ class EventsController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/tasks.md#4-run-sheet-download
+	 * @spec openspec/changes/archive/2026-11-24-capability-rows-missing-requirements/tasks.md#4-run-sheet-download
 	 */
 	#[NoAdminRequired]
 	public function runsheetAccess(): JSONResponse {

@@ -77,7 +77,7 @@ export default {
 	// The language switch on the phone pages (platform-baseline-on-nextcloud,
 	// REQ-PLB-007): the actions of the player's own character list, the page a
 	// player opens on a phone. It saves the user's Nextcloud language.
-	// @spec openspec/changes/platform-baseline-on-nextcloud
+	// @spec openspec/specs/platform-baseline/spec.md#requirement-req-plb-007-a-player-switches-the-language-on-the-phone-pages
 	LanguageSwitch: {
 		kind: 'actions',
 		component: LanguageSwitch,
@@ -93,7 +93,7 @@ export default {
 	},
 	// CharacterDetail "Buy item" header action: the priced items of the
 	// character's world, bought with its in-game money in one server write.
-	// @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	// @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 	BuyItemDialog: {
 		kind: 'modal',
 		component: BuyItemDialog,
@@ -102,7 +102,7 @@ export default {
 	// CharacterDetail "Override a requirement" header action, game masters
 	// only: a skill and a reason, written with its requirementOverrides[]
 	// entry in one save so the server check and the audit trail apply.
-	// @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	// @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
 	OverrideRequirementDialog: {
 		kind: 'modal',
 		component: OverrideRequirementDialog,
@@ -110,7 +110,7 @@ export default {
 	},
 	// CharacterDetail "Reject" header action, game masters only: the
 	// approval lifecycle's reject transition with its required reason.
-	// @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	// @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
 	RejectCharacterDialog: {
 		kind: 'modal',
 		component: RejectCharacterDialog,
@@ -140,7 +140,7 @@ export default {
 	// EventDetail "Email participants" header action
 	// (communication-mail-participants), game masters only: write, preview
 	// the recipients and send one mail each.
-	// @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+	// @spec openspec/specs/event-messages/spec.md
 	EmailParticipantsDialog: {
 		kind: 'modal',
 		component: EmailParticipantsDialog,
@@ -180,7 +180,7 @@ export default {
 	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
 	// Casting tab on the event page and on the registration page
 	// (events-casting-and-crew-roles).
-	// @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+	// @spec openspec/specs/event-casting/spec.md
 	EventCasting: { kind: 'section', component: EventCasting },
 	RegistrationCasting: { kind: 'section', component: RegistrationCasting },
 	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
@@ -227,7 +227,7 @@ export default {
 	// Registrations header action "Upload and match a bank statement"
 	// (registration-payments-through-shillinq REQ-RPS-007): opens shillinq's
 	// bank statement import, which matches transfers by their reference.
-	// @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+	// @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
 	larpinqOpenBankStatementImport: {
 		kind: 'handler',
 		handler: openBankStatementImportAction,

@@ -8,7 +8,7 @@
  * purchase request and its refusals, BuyItemDialog, and the manifest wiring.
  * Only fetch is faked; the real service runs under the dialog.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+ * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
  */
 
 import fs from 'fs'

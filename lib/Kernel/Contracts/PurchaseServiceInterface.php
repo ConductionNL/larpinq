@@ -49,7 +49,7 @@ interface PurchaseServiceInterface {
 	 *
 	 * @throws \OCA\Larpinq\Service\PurchaseRefusedException 404 for an unknown item, 409 when the purchase is not possible.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function buy(array $character, string $itemId): array;
 
@@ -62,7 +62,7 @@ interface PurchaseServiceInterface {
 	 *
 	 * @throws \OCA\Larpinq\Service\PurchaseRefusedException 404 when there is no such character.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function character(string $characterId): array;
 }//end interface

@@ -6,7 +6,7 @@
  * message reaches, save it as a draft and send it, through larpinq's
  * game-master endpoints under `/api/events/{id}/messages`.
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  */
 
 import { getRequestToken } from '@nextcloud/auth'
@@ -51,7 +51,7 @@ function headers(json = false) {
  *
  * @param {{statuses: string[], checkedIn: boolean, paymentOpen: boolean, ticketRoles: string[]}} audience The audience.
  * @return {string} The query string, without `?`.
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+ * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
  */
 export function audienceQuery(audience) {
 	const query = new URLSearchParams()
@@ -76,7 +76,7 @@ export function audienceQuery(audience) {
  * @param {string} eventId The event UUID.
  * @param {object} audience The audience.
  * @return {Promise<{ok: boolean, count: number, names: string[], noAddressCount: number, noAddressNames: string[], error: string}>}
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+ * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
  */
 export async function previewAudience(eventId, audience) {
 	const empty = { count: 0, names: [], noAddressCount: 0, noAddressNames: [] }
@@ -108,7 +108,7 @@ export async function previewAudience(eventId, audience) {
  * @param {string} eventId The event UUID.
  * @param {{subject: string, body: string, audience: object}} message The message.
  * @return {Promise<{ok: boolean, message: object|null, error: string}>}
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+ * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
  */
 export async function sendMessage(eventId, message) {
 	try {

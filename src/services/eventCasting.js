@@ -8,7 +8,7 @@
  * types, crew roles and crew assignments, and a player's ranking of the
  * characters open for casting.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -29,7 +29,7 @@ const LIST_LIMIT = 500
  * @param {object} object The object.
  * @return {string} Its uuid, or ''.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 export function idOf(object) {
 	return String(object?.id ?? object?.['@self']?.id ?? object?.uuid ?? '')
@@ -42,7 +42,7 @@ export function idOf(object) {
  * @param {object} filters The field filters.
  * @return {Promise<Array<object>|null>} The objects, or null when they cannot be read.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 export async function listObjects(schema, filters) {
 	const query = new URLSearchParams({ ...filters, _limit: String(LIST_LIMIT) })
@@ -109,7 +109,7 @@ async function deleteObject(schema, id) {
  * @param {string} eventId The event uuid.
  * @return {Promise<object>} `{state: 'ok', pairs, unmatched, characters}`, or `{state: 'refused'|'failed'}`.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 export async function fetchProposal(eventId) {
 	if (!eventId) {
@@ -138,7 +138,7 @@ export async function fetchProposal(eventId) {
  * @param {Array<{registration: string, character: string}>} pairs The pairs.
  * @return {Promise<{ok: boolean, written: Array<object>, refused: Array<object>}>} The result.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+ * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
  */
 export async function confirmCasting(eventId, pairs) {
 	const kept = (pairs ?? [])
@@ -173,7 +173,7 @@ export async function confirmCasting(eventId, pairs) {
  * @param {object} registration The registration.
  * @return {string} The name.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 export function registrationLabel(registration) {
 	return String(
@@ -190,7 +190,7 @@ export function registrationLabel(registration) {
  * @param {Array<object>} assignments The role's assignments.
  * @return {Array<object>} The registrations.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+ * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
  */
 export function volunteersFor(registrations, ticketTypes, assignments) {
 	const volunteerTickets = new Set(
@@ -219,7 +219,7 @@ export function volunteersFor(registrations, ticketTypes, assignments) {
  * @param {Array<object>} assignments The assignments of those roles.
  * @return {Array<object>} `{id, name, kind, places, filled, open, assignments}` per role.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+ * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
  */
 export function crewPlaces(roles, assignments) {
 	return (roles ?? []).map((role) => {
@@ -246,7 +246,7 @@ export function crewPlaces(roles, assignments) {
  * @param {string} eventId The event uuid.
  * @return {Promise<object>} `{state, proposal, registrations, ticketTypes, roles, assignments}`.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 export async function fetchEventCasting(eventId) {
 	const proposal = await fetchProposal(eventId)
@@ -278,7 +278,7 @@ export async function fetchEventCasting(eventId) {
  * @param {string} registrationId The registration uuid.
  * @return {Promise<{ok: boolean, message: string}>} The result.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
+ * @spec openspec/specs/event-casting/spec.md#requirement-volunteers-fill-crew-and-npc-roles-req-ecc-004
  */
 export function assignCrew(roleId, registrationId) {
 	return writeObject('larping_crew_assignment', {
@@ -294,7 +294,7 @@ export function assignCrew(roleId, registrationId) {
  * @param {Date} now The moment.
  * @return {boolean} True when it has closed.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 export function rankingClosed(event, now = new Date()) {
 	const deadline = Date.parse(String(event?.castingDeadline ?? ''))
@@ -307,7 +307,7 @@ export function rankingClosed(event, now = new Date()) {
  * @param {object} ranks Rank per character id; 0 or '' for not ranked.
  * @return {boolean} True when it can be saved.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 export function rankingIsValid(ranks) {
 	const given = Object.values(ranks ?? {})
@@ -327,7 +327,7 @@ export function rankingIsValid(ranks) {
  * @param {object} ranks The wanted rank per character id; 0 or '' for not ranked.
  * @return {{create: Array<object>, update: Array<object>, remove: Array<string>}} The writes.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 export function rankingChanges(stored, ranks) {
 	const byCharacter = new Map(
@@ -362,7 +362,7 @@ export function rankingChanges(stored, ranks) {
  * @param {string} registrationId The registration uuid.
  * @return {Promise<object>} `{state, registration, event, characters, preferences, crew}`.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 export async function fetchRegistrationCasting(registrationId) {
 	if (!registrationId) {
@@ -423,7 +423,7 @@ export async function fetchRegistrationCasting(registrationId) {
  * @param {object} ranks The wanted rank per character id.
  * @return {Promise<{ok: boolean, message: string}>} The result.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 export async function saveRanking(registration, stored, ranks) {
 	const { create, update, remove } = rankingChanges(stored, ranks)

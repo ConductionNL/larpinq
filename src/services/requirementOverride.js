@@ -9,7 +9,7 @@
  * master and one without a reason, and OpenRegister's audit trail records who
  * wrote it, so this module sends nothing else.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -23,7 +23,7 @@ const OBJECTS = '/apps/openregister/api/objects/larpinq'
  *
  * @param {unknown} value The stored list.
  * @return {Array<string>} The ids.
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 export function idsOf(value) {
 	return (Array.isArray(value) ? value : [])
@@ -37,7 +37,7 @@ export function idsOf(value) {
  * @param {string} characterId The character.
  * @return {Promise<{character: object, skills: Array<{id: string, name: string}>}|null>} Null when the character cannot be read.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 export async function fetchOverrideOptions(characterId) {
 	if (!characterId) {
@@ -76,7 +76,7 @@ export async function fetchOverrideOptions(characterId) {
  * @param {string} reason Why the requirements are waived.
  * @return {{skills: Array<string>, requirementOverrides: Array<object>}} The PATCH body.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 export function overrideBody(character, skillId, reason) {
 	const skills = idsOf(character?.skills)
@@ -95,7 +95,7 @@ export function overrideBody(character, skillId, reason) {
  * @param {string} reason Why the requirements are waived.
  * @return {Promise<{ok: boolean, message: string}>} The outcome; `message` is the server's refusal.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+ * @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
  */
 export async function grantWithOverride(character, skillId, reason) {
 	const id = String(character?.id ?? character?.['@self']?.id ?? '')

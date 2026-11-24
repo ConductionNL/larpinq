@@ -12,7 +12,8 @@
 ## 2. Page
 
 - [x] 2.1 `src/modals/EmailParticipantsModal.vue` and the header action and Messages list on EventDetail in `src/manifest.json` (REQ-CMP-001 to REQ-CMP-004). Verify: `npm run check:manifest`; modal-isolation and nc-input-labels gates pass.
-- [ ] 2.2 Playwright `tests/e2e/email-participants.spec.ts`: a game master writes to accepted participants of "Winter Court 2026", sees 3 recipients, sends, and finds the message in the list (REQ-CMP-001 to REQ-CMP-004). Verify: passes locally against the dev mail catcher.
+- [x] 2.2 Playwright `tests/e2e/email-participants.spec.ts`: a game master writes to accepted participants of "Winter Court 2026", sees 3 recipients, sends, and finds the message in the list (REQ-CMP-001 to REQ-CMP-004). Verify: passes locally against the dev mail catcher.
+  - Written, runs in nightly (24 Nov): `tests/e2e/email-participants.spec.ts` is collected by `tests/e2e/playwright.config.ts`. Not run in the sandbox: no instance or mail catcher.
 
 ## 3. Strings and docs
 

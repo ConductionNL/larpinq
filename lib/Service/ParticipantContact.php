@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -66,7 +66,7 @@ class ParticipantContact {
 	 *
 	 * @return array{key: string, name: string, email: string}
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	public function forRegistration(array $registration): array {
 		$playerId = (string)($registration['player'] ?? '');
@@ -103,7 +103,7 @@ class ParticipantContact {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function personKey(array $registration, string $playerId, string $uid): string {
 		if ($uid !== '') {
@@ -128,7 +128,7 @@ class ParticipantContact {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function personName(array $player, ?IUser $user, string $uid, string $playerId): string {
 		$name = (string)($player['name'] ?? '');
@@ -151,7 +151,7 @@ class ParticipantContact {
 	 *
 	 * @return array<string, mixed>
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function readPlayer(string $playerId): array {
 		if ($playerId === '') {
@@ -175,7 +175,7 @@ class ParticipantContact {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function contactEmail(string $playerId): string {
 		$addresses = [];
@@ -203,7 +203,7 @@ class ParticipantContact {
 	 *
 	 * @return array<int|string, mixed>
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function contactLinks(string $playerId): array {
 		if ($this->container === null || interface_exists(self::CONTACT_SERVICE) === false) {
@@ -226,7 +226,7 @@ class ParticipantContact {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	private function activeAddress(mixed $link): string {
 		if (is_array($link) === false || ($link['active'] ?? true) === false) {

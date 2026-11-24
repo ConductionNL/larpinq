@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 
 declare(strict_types=1);
@@ -32,7 +32,7 @@ use OCP\IRequest;
 /**
  * POST /api/characters/{id}/resubmit: the owner sends a rejected character back to the game masters.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 class CharacterResubmissionController extends Controller {
 
@@ -43,7 +43,7 @@ class CharacterResubmissionController extends Controller {
 	 * @param CharacterResubmissionService $resubmission Moves a rejected character back to waiting.
 	 * @param CallerAccess                 $callerAccess The signed-in caller and the game master check.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function __construct(
 		IRequest $request,
@@ -62,7 +62,7 @@ class CharacterResubmissionController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	 * @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
 	 */
 	#[NoAdminRequired]
 	public function resubmit(string $id): JSONResponse {

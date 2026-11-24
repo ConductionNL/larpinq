@@ -18,7 +18,7 @@
  * Fixtures carry RUN_ID and are removed in afterAll. The casting deadline is
  * set a month ahead, so ranking is open whatever day the suite runs.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/tasks.md#task-3.2
+ * @spec openspec/changes/archive/2026-11-24-events-casting-and-crew-roles/tasks.md#task-3.2
  */
 import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
