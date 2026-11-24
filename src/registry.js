@@ -77,7 +77,7 @@ export default {
 	// The language switch on the phone pages (platform-baseline-on-nextcloud,
 	// REQ-PLB-007): the actions of the player's own character list, the page a
 	// player opens on a phone. It saves the user's Nextcloud language.
-	// @spec openspec/changes/platform-baseline-on-nextcloud
+	// @spec openspec/specs/platform-baseline/spec.md#requirement-req-plb-007-a-player-switches-the-language-on-the-phone-pages
 	LanguageSwitch: {
 		kind: 'actions',
 		component: LanguageSwitch,
