@@ -106,7 +106,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -125,8 +125,8 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function requestChanged(array $request): void {
 		$requestId = (string)($request['id'] ?? '');
@@ -166,7 +166,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @return bool True when the registration may need updating.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function hasNews(array $request): bool {
 		if (trim((string)($request['invoiceReference'] ?? '')) !== '') {
@@ -183,7 +183,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @return bool True when the request's money went back, so nothing else follows.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	private function moneyBack(array $request): bool {
 		$requestId = (string)($request['id'] ?? '');
@@ -292,7 +292,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
 	 * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function markPaid(array $registration, array $request): void {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];
@@ -320,7 +320,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @return bool True when paid.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function isPaid(array $request): bool {
 		if (in_array((string)($request['state'] ?? ''), self::CAPTURED, true) === true) {

@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
  */
 
 declare(strict_types=1);
@@ -36,7 +36,7 @@ use Throwable;
  * @category Service
  * @package  OCA\Larpinq\Service
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
  */
 class PaymentSettlementCommand {
 
@@ -90,7 +90,7 @@ class PaymentSettlementCommand {
 	 *                     (`refund_requested` or `credited`), or null when the
 	 *                     app is absent or refused the command.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	public function send(RegistrationSettlementRequested $event, string $reason): ?string {
 		$this->dispatcher->dispatchTyped($event);

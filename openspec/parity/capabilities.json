@@ -4605,10 +4605,10 @@
 			"pretix": "yes",
 			"built": {
 				"state": "specified",
-				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationRefundRequested and records settlement refund-requested; nothing in shillinq listens yet and PaymentRequest has no refunded state, so the refund itself is not done (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
+				"evidence": "larpinq half built in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationRefundRequested and records settlement refund-requested; nothing in shillinq listens yet and PaymentRequest has no refunded state, so the refund itself is not done (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
 				"change": "registration-cancel-transfer-refund",
-				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)"
+				"requirement": "openspec/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4622,7 +4622,7 @@
 				"kanka": "source read at tag 3.15: no registration payments",
 				"pretix": "source read at tag v2026.7.0: src/pretix/control/views/orders.py:1086 OrderRefundView creates refunds to the original payment method or a gift card, stored as src/pretix/base/models/orders.py:2128 OrderRefund; buyers can self-cancel via src/pretix/presale/views/order.py:1014 OrderCancel"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"
@@ -6864,9 +6864,9 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/registration-cancel-transfer-refund.json (event.cancellationPolicy; registration.bookingGroup, bookedByUid, cancelledBy; read rule on bookedByUid), lib/Service/RegistrationChangeService.php (addParticipant: a registration of their own in the booker's group, decided like any sign-up; cancel by the participant or booker until cancel-by, game masters always), lib/Service/CancellationPolicy.php, lib/Controller/RegistrationChangesController.php (POST /api/registrations/{id}/participants, /cancel), src/views/RegistrationChanges.vue; tests/unit/Service/RegistrationChangeServiceTest.php::testMilaDropsOutOfJorisBooking",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/registration-cancel-transfer-refund",
+				"change": "openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund",
 				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Add to my booking, Cancel this registration",
-				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: One participant of a group booking cancels alone (REQ-RCT-002)"
+				"requirement": "openspec/specs/event-registration :: One participant of a group booking cancels alone (REQ-RCT-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6882,7 +6882,7 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/services/orders.py:1587,1859 OrderChangeManager.cancel removes one position from an order, used by staff via src/pretix/control/urls.py:424 order change and by buyers via src/pretix/presale/urls.py:163 OrderPositionChange when allowed (src/pretix/base/settings.py:2055)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"
@@ -7029,13 +7029,13 @@
 			"pretix": "yes",
 			"built": {
 				"state": "specified",
-				"evidence": "larpinq half built in openspec/changes/registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationCreditRequested and records settlement credit-requested; the balance is shillinq's (ADR-107) and nothing in shillinq listens yet (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
+				"evidence": "larpinq half built in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund: lib/Service/RegistrationSettlement.php dispatches OCA\\Larpinq\\Event\\RegistrationCreditRequested and records settlement credit-requested; the balance is shillinq's (ADR-107) and nothing in shillinq listens yet (task 5.1, for-ruben shillinq-registration-refund-and-credit-events)",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing yet: shillinq books the credit",
 				"change": "registration-cancel-transfer-refund",
 				"requirement": [
-					"openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)",
-					"openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A credit pays towards the player's next registration (REQ-RCT-005)"
+					"openspec/specs/event-registration :: A paid cancellation is refunded or credited through shillinq (REQ-RCT-003)",
+					"openspec/specs/event-registration :: A credit pays towards the player's next registration (REQ-RCT-005)"
 				]
 			},
 			"provider": "self",
@@ -7052,7 +7052,7 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/giftcards.py:64,83 GiftCard linked to a customer account and offered at checkout; refunds can go to a gift card (src/pretix/control/views/orders.py:1086)"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"
@@ -7470,9 +7470,9 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/registration-cancel-transfer-refund.json (registration.transferTo, transferToUid, transferStatus, transferOfferedAt, transferredFrom, transferredAt; read rule on transferToUid; transfer-offered notification), lib/Service/TransferOffers.php (offer by the participant, accept by the named account: player, playerUid, character cleared, place/ticket/lines/payment kept; withdraw; lapse after 7 days or at the cancel-by date), lib/BackgroundJob/RegistrationPaymentJob.php (daily lapse), lib/Controller/RegistrationChangesController.php (POST /api/registrations/{id}/transfer, /transfer/accept, /transfer/withdraw), src/views/RegistrationChanges.vue; tests/unit/Service/TransferOffersTest.php (real registration and payment listeners), tests/unit/Controller/RegistrationChangesControllerTest.php",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/registration-cancel-transfer-refund",
+				"change": "openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund",
 				"reachedOn": "Registration page (/registrations/:id), Cancel or hand over tab: Offer my place, Accept the place, Withdraw the offer",
-				"requirement": "openspec/changes/registration-cancel-transfer-refund/specs/event-registration :: A registration can be transferred to another player (REQ-RCT-004)"
+				"requirement": "openspec/specs/event-registration :: A registration can be transferred to another player (REQ-RCT-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7488,7 +7488,7 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:1929 allow_modifications and :2042 change_allow_attendee let the buyer or the attendee change the ticket holder's name and email (src/pretix/presale/views/order.py:942 OrderPositionModify); staff can do the same in the backend order view"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-cancel-transfer-refund (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-cancel-transfer-refund (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"

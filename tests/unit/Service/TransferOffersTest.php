@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 declare(strict_types=1);
