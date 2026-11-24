@@ -8,5 +8,7 @@
 
 ## 1. Three columns
 
-- [ ] 1.1 nextcloud-vue `src/components/CnRoadmapTab/CnRoadmapTab.vue`: a `columns` mode that groups items by state and an in-progress label into Gepland, In ontwikkeling and Beschikbaar with counts; the proxy call adds closed issues with `state_reason: completed` (REQ-ARM-003). Verify: its unit test groups three fixture issues into the three columns.
-- [ ] 1.2 `src/manifest.json` page `FeaturesRoadmap`: `config.layout: "columns"` once 1.1 is released (REQ-ARM-003). Verify: `npm run check:manifest`.
+- [x] 1.1 nextcloud-vue `src/components/CnRoadmapTab/CnRoadmapTab.vue`: a `columns` mode that groups items by state and an in-progress label into Gepland, In ontwikkeling and Beschikbaar with counts; the proxy call adds closed issues with `state_reason: completed` (REQ-ARM-003). Verify: its unit test groups three fixture issues into the three columns.
+  - Built in nextcloud-vue (change `roadmap-tab-columns`, `tests/components/CnRoadmapTabColumns.spec.js`) and published in 2.203.0, which larpinq pins; the page config key is `roadmapLayout`.
+- [x] 1.2 `src/manifest.json` page `FeaturesRoadmap`: `config.layout: "columns"` once 1.1 is released (REQ-ARM-003). Verify: `npm run check:manifest`.
+  - Built 24 Nov as `config.roadmapLayout: "columns"` (the key CnFeaturesAndRoadmapPage reads); `tests/vitest/roadmapColumnsManifest.spec.js`.
