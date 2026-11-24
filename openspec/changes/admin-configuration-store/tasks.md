@@ -8,7 +8,9 @@
 
 ## 1. Install into a world
 
-- [ ] 1.1 nextcloud-vue `src/components/CnStorePage/CnStorePage.vue`: an optional `targets` prop (a list of `{ id, label }`) and a target picker before Install; the chosen id goes in the install body as `target` (REQ-ACS-003). Verify: its unit test sends `target` and keeps the old call when `targets` is empty.
+- [x] 1.1 nextcloud-vue `src/components/CnStorePage/CnStorePage.vue`: an optional `targets` prop (a list of `{ id, label }`) and a target picker before Install; the chosen id goes in the install body as `target` (REQ-ACS-003). Verify: its unit test sends `target` and keeps the old call when `targets` is empty.
+  - Built in nextcloud-vue (`targets` prop, `store-target` picker, `{ target }` install body; openspec change `store-install-target` there) and published in every release from 2.203.0, larpinq's floor.
 - [ ] 1.2 ConductionNL/openregister store install endpoint: a `target` world id stamps the installed objects' world relation (`setting` for larpinq skills, conditions and effects), with an OpenSpec change there (REQ-ACS-003). Verify: its unit test installs a skill bundle into one world.
 - [ ] 1.3 `src/manifest.json` page `Store`: `config.targets` from the larpinq worlds (`setting` schema), the "Past bij" filter on the active world, and "Geïnstalleerd in" per card (REQ-ACS-003). Verify: `npm run check:manifest`; Playwright `tests/e2e/store.spec.ts` installs a seeded bundle into one world.
   - `tests/e2e/store.spec.ts` written 20 Nov from the scenarios, not run: the no-registry and no-Install-for-a-player tests run now; browsing a published bundle and installing into one world are `test.fixme` until 1.1, 1.2 and a seeded registry exist.
+  - 24 Nov: `config.targets` reads the worlds (`setting`, labelled by `name`) with the label "Install into world"; `tests/vitest/storeTargetsManifest.spec.js` pins it. Still open: the "Past bij" filter and "Geïnstalleerd in" per card (CnStorePage has neither yet) and 1.2 on the server.

@@ -347,6 +347,7 @@ OC.L10N.register(
         "Experience awarded, and who earned it.": "Përvoja e dhënë dhe kush e fitoi atë.",
         "How much the world holds, and what characters actually carry.": "Sa mban bota dhe çfarë mbajnë vërtet personazhet.",
         "Marketplace": "Dyqani",
+        "Install into world": "Instalo në botën e lojës",
         "Install game configurations that other organisations have published: a skill tree, a set of conditions, or the flows behind an event.": "Instaloni regjistra, skema dhe rrjedha të publikuara nga organizata të tjera.",
         "%1$s is already held by %2$s. Remove it there first.": "%1$s e ka tashmë %2$s. Hiqeni së pari prej andej.",
         "%1$s is already on %2$s. Remove it there first.": "%1$s është tashmë te %2$s. Hiqeni së pari prej andej.",
