@@ -201,6 +201,8 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @return array<string, mixed> The registration as stored.
 	 *
 	 * @throws PaymentRequestRefusedException When shillinq refuses.
+	 *
+	 * @psalm-suppress UnusedReturnValue Psalm 7 misses the caller that returns this value; the call inside try discards it on purpose.
 	 */
 	private function raise(array $registration, array $event): array {
 		$id = (string)($registration['id'] ?? '');

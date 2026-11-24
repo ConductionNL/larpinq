@@ -258,6 +258,8 @@ class TransferOffers implements TransferOffersInterface {
 	 * @param array<string, mixed> $fields The fields.
 	 *
 	 * @return array<string, mixed> The stored registration.
+	 *
+	 * @psalm-suppress UnusedReturnValue Psalm 7 misses the caller that returns this value; the call inside try discards it on purpose.
 	 */
 	private function save(string $registrationId, array $fields): array {
 		return $this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $fields, uuid: $registrationId);

@@ -105,10 +105,10 @@
   },
   "components": [
     {
-      "bom-ref": "symfony/deprecation-contracts-3.7.1.0",
+      "bom-ref": "symfony/deprecation-contracts-3.8.1.0",
       "type": "library",
       "name": "deprecation-contracts",
-      "version": "v3.7.1",
+      "version": "v3.8.1",
       "group": "symfony",
       "description": "A generic function and convention to trigger deprecation notices",
       "author": "Nicolas Grekas, Symfony Community",
@@ -119,17 +119,17 @@
           }
         }
       ],
-      "purl": "pkg:composer/symfony/deprecation-contracts@v3.7.1",
+      "purl": "pkg:composer/symfony/deprecation-contracts@v3.8.1",
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/f3202fa1b5097b0af062dc978b32ecf63404e31d",
-          "comment": "dist reference: f3202fa1b5097b0af062dc978b32ecf63404e31d"
+          "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/feb1edf4e546af3b85c5caebe8359a20db230ca3",
+          "comment": "dist reference: feb1edf4e546af3b85c5caebe8359a20db230ca3"
         },
         {
           "type": "vcs",
           "url": "https://github.com/symfony/deprecation-contracts.git",
-          "comment": "source reference: f3202fa1b5097b0af062dc978b32ecf63404e31d"
+          "comment": "source reference: feb1edf4e546af3b85c5caebe8359a20db230ca3"
         },
         {
           "type": "website",
@@ -138,18 +138,18 @@
         },
         {
           "type": "vcs",
-          "url": "https://github.com/symfony/deprecation-contracts/tree/v3.7.1",
+          "url": "https://github.com/symfony/deprecation-contracts/tree/v3.8.1",
           "comment": "as detected from Composer manifest 'support.source'"
         }
       ],
       "properties": [
         {
           "name": "cdx:composer:package:distReference",
-          "value": "f3202fa1b5097b0af062dc978b32ecf63404e31d"
+          "value": "feb1edf4e546af3b85c5caebe8359a20db230ca3"
         },
         {
           "name": "cdx:composer:package:sourceReference",
-          "value": "f3202fa1b5097b0af062dc978b32ecf63404e31d"
+          "value": "feb1edf4e546af3b85c5caebe8359a20db230ca3"
         },
         {
           "name": "cdx:composer:package:type",
@@ -211,10 +211,10 @@
       ]
     },
     {
-      "bom-ref": "symfony/polyfill-mbstring-1.38.2.0",
+      "bom-ref": "symfony/polyfill-mbstring-1.43.3.0",
       "type": "library",
       "name": "polyfill-mbstring",
-      "version": "v1.38.2",
+      "version": "v1.43.3",
       "group": "symfony",
       "description": "Symfony polyfill for the Mbstring extension",
       "author": "Nicolas Grekas, Symfony Community",
@@ -225,17 +225,17 @@
           }
         }
       ],
-      "purl": "pkg:composer/symfony/polyfill-mbstring@v1.38.2",
+      "purl": "pkg:composer/symfony/polyfill-mbstring@v1.43.3",
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6",
-          "comment": "dist reference: d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
+          "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/122889ed24dc000165bcbfd77ec412f15cbdfc6a",
+          "comment": "dist reference: 122889ed24dc000165bcbfd77ec412f15cbdfc6a"
         },
         {
           "type": "vcs",
           "url": "https://github.com/symfony/polyfill-mbstring.git",
-          "comment": "source reference: d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
+          "comment": "source reference: 122889ed24dc000165bcbfd77ec412f15cbdfc6a"
         },
         {
           "type": "website",
@@ -244,18 +244,18 @@
         },
         {
           "type": "vcs",
-          "url": "https://github.com/symfony/polyfill-mbstring/tree/v1.38.2",
+          "url": "https://github.com/symfony/polyfill-mbstring/tree/v1.43.3",
           "comment": "as detected from Composer manifest 'support.source'"
         }
       ],
       "properties": [
         {
           "name": "cdx:composer:package:distReference",
-          "value": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
+          "value": "122889ed24dc000165bcbfd77ec412f15cbdfc6a"
         },
         {
           "name": "cdx:composer:package:sourceReference",
-          "value": "d3d318bad5e7a1bfbd026009c8bfb8d8f99ae6b6"
+          "value": "122889ed24dc000165bcbfd77ec412f15cbdfc6a"
         },
         {
           "name": "cdx:composer:package:type",
@@ -25248,20 +25248,20 @@
   ],
   "dependencies": [
     {
-      "ref": "symfony/deprecation-contracts-3.7.1.0"
+      "ref": "symfony/deprecation-contracts-3.8.1.0"
     },
     {
       "ref": "symfony/polyfill-ctype-1.37.0.0"
     },
     {
-      "ref": "symfony/polyfill-mbstring-1.38.2.0"
+      "ref": "symfony/polyfill-mbstring-1.43.3.0"
     },
     {
       "ref": "twig/twig-3.30.0.0",
       "dependsOn": [
-        "symfony/deprecation-contracts-3.7.1.0",
+        "symfony/deprecation-contracts-3.8.1.0",
         "symfony/polyfill-ctype-1.37.0.0",
-        "symfony/polyfill-mbstring-1.38.2.0"
+        "symfony/polyfill-mbstring-1.43.3.0"
       ]
     },
     {
