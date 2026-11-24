@@ -54,6 +54,14 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	private const CAPTURED = ['captured', 'captured_unapplied'];
 
 	/**
+	 * Shillinq's states of a request whose money went back: the registration
+	 * shows the same word as its `settlement` (REQ-RCT-003).
+	 *
+	 * @var array<int, string>
+	 */
+	private const SETTLED = [RegistrationSettlement::REFUNDED, RegistrationSettlement::CREDITED];
+
+	/**
 	 * How shillinq marks a request settled from a bank statement line, and the
 	 * payment method a registration then shows.
 	 * @var string
@@ -107,9 +115,14 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	public function requestChanged(array $request): void {
 		$requestId = (string)($request['id'] ?? '');
+		if ($this->moneyBack(request: $request) === true) {
+			return;
+		}
+
 		$captured = $this->isCaptured(request: $request);
 		$hasInvoice = trim((string)($request['invoiceReference'] ?? '')) !== '';
 		if ($requestId === '' || ($captured === false && $hasInvoice === false)) {
@@ -132,6 +145,30 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 			$this->save(registration: $rows[0], fields: $invoice);
 		}
 	}//end requestChanged()
+
+	/**
+	 * Shillinq refunded or credited a request: the registration it paid shows it once.
+	 *
+	 * @param array<string, mixed> $request The payment request, with its `id` and `state`.
+	 *
+	 * @return bool True when the request's money went back, so nothing else follows.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 */
+	private function moneyBack(array $request): bool {
+		$requestId = (string)($request['id'] ?? '');
+		$state = (string)($request['state'] ?? '');
+		if ($requestId === '' || in_array($state, self::SETTLED, true) === false) {
+			return false;
+		}
+
+		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['paymentRequestId' => $requestId], limit: 1);
+		if ($rows !== [] && (string)($rows[0]['settlement'] ?? '') !== $state) {
+			$this->save(registration: $rows[0], fields: ['settlement' => $state]);
+		}
+
+		return true;
+	}//end moneyBack()
 
 	/**
 	 * The daily pass over open registrations.

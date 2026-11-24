@@ -218,4 +218,32 @@ class PaymentEdgeCasesTest extends TestCase {
 		$raised = $this->world->payments()->request(registrationId: 'e0000000-0000-4000-8000-000000000004', actingUid: 'gm');
 		$this->assertSame(expected: 'open', actual: $raised['paymentState'], message: 'the request goes out with the registration\'s own date or 14 days');
 	}//end testAGameMastersRequestIsRefusedWhenItCannotBePaid()
+	/**
+	 * Shillinq refunded or credited a paid request: its registration shows the
+	 * same word once, and other requests change nothing (REQ-RCT-003).
+	 *
+	 * @return void
+	 */
+	public function testShillinqsRefundOrCreditShowsOnTheRegistration(): void {
+		$request = 'f0000000-0000-4000-8000-000000000001';
+		$this->world->seedRegistration(
+			id: self::REG,
+			player: PaymentWorld::ANNA,
+			status: 'cancelled',
+			more: ['paymentState' => 'paid', 'paymentRequestId' => $request, 'settlement' => 'refund-requested']
+		);
+
+		$this->world->followUp()->requestChanged(request: ['id' => $request, 'state' => 'refund_requested']);
+		$this->assertSame(expected: 'refund-requested', actual: $this->world->registration(id: self::REG)['settlement']);
+
+		$this->world->followUp()->requestChanged(request: ['id' => 'f0000000-0000-4000-8000-000000000099', 'state' => 'refunded']);
+		$this->assertSame(expected: 'refund-requested', actual: $this->world->registration(id: self::REG)['settlement']);
+
+		$this->world->followUp()->requestChanged(request: ['id' => $request, 'state' => 'refunded']);
+		$this->assertSame(expected: 'refunded', actual: $this->world->registration(id: self::REG)['settlement']);
+		$this->assertSame(expected: 'paid', actual: $this->world->registration(id: self::REG)['paymentState']);
+
+		$this->world->followUp()->requestChanged(request: ['id' => $request, 'state' => 'credited']);
+		$this->assertSame(expected: 'credited', actual: $this->world->registration(id: self::REG)['settlement']);
+	}//end testShillinqsRefundOrCreditShowsOnTheRegistration()
 }//end class

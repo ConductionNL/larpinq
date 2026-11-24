@@ -24,7 +24,6 @@ use DateTimeInterface;
 use OCA\Larpinq\Event\RegistrationCreditRequested;
 use OCA\Larpinq\Event\RegistrationRefundRequested;
 use OCA\Larpinq\Kernel\Contracts\RegistrationSettlementInterface;
-use OCP\EventDispatcher\IEventDispatcher;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -46,14 +45,28 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	private const CANCELLED = 'cancelled';
 
 	/**
+	 * Shillinq's state of a request whose money became credit.
+	 *
+	 * @var string
+	 */
+	public const CREDITED = 'credited';
+
+	/**
+	 * Shillinq's state of a request whose money was paid back.
+	 *
+	 * @var string
+	 */
+	public const REFUNDED = 'refunded';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads the event, writes the registration.
 	 * @param CancellationPolicy $policy What a paid cancellation gets.
 	 * @param PaymentRequestBuilder $builder Amount, currency, debtor and the clock.
 	 * @param PaymentLeaf $leaf The paid request as shillinq holds it.
-	 * @param IEventDispatcher $dispatcher Sends the request to shillinq.
 	 * @param LoggerInterface $logger The logger.
+	 * @param PaymentSettlementCommand $command Sends the refund or credit, to larpinq's listeners and to shillinq.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -62,8 +75,8 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		private readonly CancellationPolicy $policy,
 		private readonly PaymentRequestBuilder $builder,
 		private readonly PaymentLeaf $leaf,
-		private readonly IEventDispatcher $dispatcher,
 		private readonly LoggerInterface $logger,
+		private readonly PaymentSettlementCommand $command,
 	) {
 	}//end __construct()
 
@@ -76,6 +89,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	public function afterWrite(array $new, ?array $old): void {
 		if ((string)($new['status'] ?? '') !== self::CANCELLED || (string)($old['status'] ?? '') === self::CANCELLED) {
@@ -100,15 +114,44 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		$outcome = $this->policy->paidOutcome(event: $event, choice: (string)($new['settlementChoice'] ?? ''));
 		$fields = ['settlement' => CancellationPolicy::NONE];
 		if ($outcome !== CancellationPolicy::NONE) {
-			$this->dispatcher->dispatchTyped($this->command(registration: $new, outcome: $outcome));
 			$fields = [
-				'settlement' => $outcome . '-requested',
+				'settlement' => $this->handOff(registration: $new, outcome: $outcome),
 				'settlementRequestedAt' => $this->builder->now()->format(DateTimeInterface::ATOM),
 			];
 		}
 
 		$this->fetcher->saveObjectWithAppAuthority(objectType: 'registration', data: $fields, uuid: $id);
 	}//end afterWrite()
+
+	/**
+	 * Send the refund or credit and say what the registration shows.
+	 *
+	 * Shillinq answers a credit as booked at once (`credited`) and a refund as
+	 * waiting for finance (`refund_requested`; its object event later reads
+	 * `refunded`). Without shillinq, or when it refuses, the registration
+	 * shows the request as asked, so a game master sees it is still open.
+	 *
+	 * @param array<string, mixed> $registration The cancelled, paid registration.
+	 * @param string $outcome `refund` or `credit`.
+	 *
+	 * @return string The registration's `settlement`.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 */
+	private function handOff(array $registration, string $outcome): string {
+		$reason = 'Registration cancelled';
+		$cancelReason = trim((string)($registration['cancelReason'] ?? ''));
+		if ($cancelReason !== '') {
+			$reason .= ': ' . $cancelReason;
+		}
+
+		$state = $this->command->send(event: $this->request(registration: $registration, outcome: $outcome), reason: $reason);
+		if ($state === self::CREDITED || $state === self::REFUNDED) {
+			return $state;
+		}
+
+		return $outcome . '-requested';
+	}//end handOff()
 
 	/**
 	 * The refund or credit request for a registration.
@@ -118,7 +161,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 *
 	 * @return RegistrationRefundRequested|RegistrationCreditRequested The command.
 	 */
-	private function command(array $registration, string $outcome): RegistrationRefundRequested|RegistrationCreditRequested {
+	private function request(array $registration, string $outcome): RegistrationRefundRequested|RegistrationCreditRequested {
 		$id = (string)($registration['id'] ?? '');
 		$requestId = (string)($registration['paymentRequestId'] ?? '');
 		$args = [
@@ -136,7 +179,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		}
 
 		return new RegistrationRefundRequested(...$args);
-	}//end command()
+	}//end request()
 
 	/**
 	 * The amount of the paid request as shillinq holds it, else the registration's price lines.

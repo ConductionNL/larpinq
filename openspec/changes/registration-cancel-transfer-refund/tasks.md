@@ -10,7 +10,8 @@
 
 - [x] 2.1 Pre-write guards for cancel, offer and accept (REQ-RCT-001, REQ-RCT-002, REQ-RCT-004). Verify: PHPUnit per caller (participant, booker, other player, game master) and before and after the cancel-by date.
 - [x] 2.2 Group bookings: adding a participant to a booking group through `decide()` (REQ-RCT-002). Verify: PHPUnit: cancelling one group member leaves the others accepted.
-- [ ] 2.3 `settle()` and the two typed events; the payments listener sets `refunded` or `credited` (REQ-RCT-003). Verify: PHPUnit asserts the dispatched event and its fields; `git grep "new RegistrationRefundRequested"` finds the dispatch site.
+- [x] 2.3 `settle()` and the two typed events; the payments listener sets `refunded` or `credited` (REQ-RCT-003). Verify: PHPUnit asserts the dispatched event and its fields; `git grep "new RegistrationRefundRequested"` finds the dispatch site.
+  - Built 24 Nov on shillinq's agreed fleet events (larpinq#1163): `PaymentSettlementCommand` dispatches `OCA\Shillinq\Event\PaymentRefundRequestedEvent` or `PaymentCreditRequestedEvent` (looked up by name, fails closed without shillinq) after larpinq's own `RegistrationRefundRequested` / `RegistrationCreditRequested`; a credit shillinq books shows `credited` at once. `PaymentFollowUp::requestChanged()` maps shillinq's object event `refunded` / `credited` onto the registration's `settlement`. PHPUnit: `PaymentSettlementCommandTest`, `RegistrationSettlementTest`, `PaymentEdgeCasesTest::testShillinqsRefundOrCreditShowsOnTheRegistration`.
 - [x] 2.4 Expiry of transfer offers in the daily payments job (REQ-RCT-004). Verify: PHPUnit with a fixed clock.
 
 ## 3. Pages
@@ -25,6 +26,6 @@
 
 ## 5. Shillinq (open)
 
-- [ ] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request (REQ-RCT-005), and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Larpinq then shows the part paid from credit on the registration (REQ-RCT-005). Task 2.3's dispatch half is built; its "payments listener sets refunded or credited" half waits for this.
+- [ ] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request (REQ-RCT-005), and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Larpinq then shows the part paid from credit on the registration (REQ-RCT-005). Shillinq's half is built (larpinq#1163, shillinq `receivables-object-request-refund-and-credit`) and task 2.3 now dispatches its commands and maps `refunded` / `credited`. Left here: showing the part paid from credit on the next registration (REQ-RCT-005).
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.

@@ -26,8 +26,12 @@ use OCA\Larpinq\Event\RegistrationSettlementRequested;
 use OCA\Larpinq\Service\CancellationPolicy;
 use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
+use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationSettlement;
+use OCA\Shillinq\Event\PaymentCreditRequestedEvent;
+use OCA\Shillinq\Event\PaymentRefundRequestedEvent;
+use OCA\Shillinq\Event\PaymentSettlementCommandEvent;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -43,6 +47,7 @@ use RuntimeException;
  * @uses   \OCA\Larpinq\Event\RegistrationSettlementRequested
  * @uses   \OCA\Larpinq\Event\RegistrationRefundRequested
  * @uses   \OCA\Larpinq\Event\RegistrationCreditRequested
+ * @uses   \OCA\Larpinq\Service\PaymentSettlementCommand
  */
 class RegistrationSettlementTest extends TestCase {
 
@@ -91,8 +96,34 @@ class RegistrationSettlementTest extends TestCase {
 			policy: new CancellationPolicy(groups: $this->createMock(originalClassName: IGroupManager::class)),
 			builder: $this->builder,
 			leaf: $this->leaf,
-			dispatcher: $this->dispatcher,
-			logger: $this->logger
+			logger: $this->logger,
+			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger, commands: [])
+		);
+	}
+
+	/**
+	 * The settlement with shillinq installed, answering every command with this state.
+	 *
+	 * @param string $state What shillinq answers.
+	 * @param array<int, object> $sent Collects every dispatched event.
+	 *
+	 * @return RegistrationSettlement
+	 */
+	private function withShillinq(string $state, array &$sent): RegistrationSettlement {
+		$this->dispatcher->method('dispatchTyped')->willReturnCallback(static function (object $event) use ($state, &$sent): void {
+			$sent[] = $event;
+			if ($event instanceof PaymentSettlementCommandEvent) {
+				$event->accept(state: $state);
+			}
+		});
+
+		return new RegistrationSettlement(
+			fetcher: $this->fetcher,
+			policy: new CancellationPolicy(groups: $this->createMock(originalClassName: IGroupManager::class)),
+			builder: $this->builder,
+			leaf: $this->leaf,
+			logger: $this->logger,
+			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger)
 		);
 	}
 
@@ -317,5 +348,66 @@ class RegistrationSettlementTest extends TestCase {
 		$this->assertSame(expected: 'pr1', actual: $sent->getPaymentRequestId());
 		$this->assertSame(expected: 'ev1', actual: $sent->getEventId());
 		$this->assertSame(expected: 'p1', actual: $sent->getPlayerId());
+	}
+	/**
+	 * Shillinq books a credit at once: the registration shows it credited.
+	 *
+	 * @return void
+	 */
+	public function testACreditShillinqBookedShowsCredited(): void {
+		$this->eventWithPolicy(paidCancellation: 'credit');
+		$this->leaf->method('requests')->willReturn([]);
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'credited', sent: $sent);
+		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
+			'registration',
+			['settlement' => 'credited', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
+			'r1'
+		);
+
+		$settlement->afterWrite(new: self::cancelledPaid(fields: ['cancelReason' => 'illness']), old: ['status' => 'accepted']);
+
+		$this->assertCount(expectedCount: 2, haystack: $sent);
+		$this->assertInstanceOf(expected: RegistrationCreditRequested::class, actual: $sent[0]);
+		$this->assertInstanceOf(expected: PaymentCreditRequestedEvent::class, actual: $sent[1]);
+		$this->assertSame(expected: 'Registration cancelled: illness', actual: $sent[1]->getReason());
+		$this->assertSame(expected: 'r1', actual: $sent[1]->getCorrelationId());
+	}
+
+	/**
+	 * A refund waits for finance: shillinq's refund_requested shows as requested.
+	 *
+	 * @return void
+	 */
+	public function testARefundShillinqTookStaysRequested(): void {
+		$this->eventWithPolicy(paidCancellation: 'refund');
+		$this->leaf->method('requests')->willReturn([]);
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'refund_requested', sent: $sent);
+		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
+			'registration',
+			['settlement' => 'refund-requested', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
+			'r1'
+		);
+
+		$settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+
+		$this->assertInstanceOf(expected: PaymentRefundRequestedEvent::class, actual: $sent[1]);
+		$this->assertSame(expected: 'Registration cancelled', actual: $sent[1]->getReason());
+	}
+
+	/**
+	 * Nothing back asks shillinq for nothing.
+	 *
+	 * @return void
+	 */
+	public function testNothingBackAsksShillinqForNothing(): void {
+		$this->eventWithPolicy(paidCancellation: 'none');
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'credited', sent: $sent);
+
+		$settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+
+		$this->assertSame(expected: [], actual: $sent);
 	}
 }

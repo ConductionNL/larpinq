@@ -33,6 +33,7 @@ use OCA\Larpinq\Service\CancellationPolicy;
 use OCA\Larpinq\Service\PaymentFollowUp;
 use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
+use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationChangeService;
 use OCA\Larpinq\Service\RegistrationInvoice;
@@ -652,8 +653,8 @@ class PaymentWorld {
 			policy: $this->policy(),
 			builder: $builder,
 			leaf: $this->paymentLeaf(),
-			dispatcher: $this->dispatcher(),
-			logger: new NullLogger()
+			logger: new NullLogger(),
+			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher(), logger: new NullLogger())
 		);
 	}
 

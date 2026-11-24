@@ -29,6 +29,8 @@ use OCA\Larpinq\Event\RegistrationCreditRequested;
 use OCA\Larpinq\Event\RegistrationRefundRequested;
 use OCA\Larpinq\Service\RegistrationChangeRefusedException;
 use OCA\Larpinq\Tests\Unit\Support\PaymentWorld;
+use OCA\Shillinq\Event\PaymentCreditRequestedEvent;
+use OCA\Shillinq\Event\PaymentRefundRequestedEvent;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -214,7 +216,13 @@ class RegistrationChangeServiceTest extends TestCase {
 
 		$this->world->changes()->cancel(registrationId: $milaId, actingUid: 'joris', choice: 'credit');
 
-		$this->assertCount(expectedCount: 1, haystack: $this->world->dispatched);
+		// Larpinq's own command, then shillinq's credit command (larpinq#1163).
+		$this->assertCount(expectedCount: 2, haystack: $this->world->dispatched);
+		$command = $this->world->dispatched[1];
+		$this->assertInstanceOf(expected: PaymentCreditRequestedEvent::class, actual: $command);
+		$this->assertSame(expected: 'larpinq', actual: $command->getSourceApp());
+		$this->assertSame(expected: 'f0000000-0000-4000-8000-000000000009', actual: $command->getPaymentRequestId());
+		$this->assertSame(expected: $milaId, actual: $command->getCorrelationId());
 		$event = $this->world->dispatched[0];
 		$this->assertInstanceOf(expected: RegistrationCreditRequested::class, actual: $event);
 		$this->assertSame(expected: $milaId, actual: $event->getRegistrationId());
@@ -224,6 +232,7 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->assertSame(expected: 'EUR', actual: $event->getCurrency());
 		$this->assertSame(expected: 'Mila', actual: $event->getDebtor()['name']);
 
+		// No shillinq listener answered in this world, so the request stays as asked.
 		$stored = $this->world->registration(id: $milaId);
 		$this->assertSame(expected: 'credit-requested', actual: $stored['settlement']);
 		$this->assertSame(expected: 'credit', actual: $stored['settlementChoice']);
@@ -252,7 +261,8 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'none';
 		$this->world->seedRegistration(id: self::PIETER_REG, player: PaymentWorld::PIETER, status: 'accepted', more: $paid);
 		$this->world->update(id: self::PIETER_REG, data: ['status' => 'cancelled']);
-		$this->assertCount(expectedCount: 1, haystack: $this->world->dispatched, message: 'nothing back: no request to shillinq');
+		$this->assertInstanceOf(expected: PaymentRefundRequestedEvent::class, actual: $this->world->dispatched[1]);
+		$this->assertCount(expectedCount: 2, haystack: $this->world->dispatched, message: 'nothing back: no request to shillinq');
 		$this->assertSame(expected: 'none', actual: $this->world->registration(id: self::PIETER_REG)['settlement']);
 
 		$this->world->store->objects['event'][PaymentWorld::EVENT]['cancellationPolicy']['paidCancellation'] = 'player-chooses';
@@ -260,7 +270,7 @@ class RegistrationChangeServiceTest extends TestCase {
 		$this->world->update(id: self::JORIS_REG, data: ['status' => 'cancelled']);
 		$this->assertInstanceOf(
 			expected: RegistrationRefundRequested::class,
-			actual: $this->world->dispatched[1],
+			actual: $this->world->dispatched[2],
 			message: 'a game master cancelling on the object page without a choice: a refund'
 		);
 	}//end testThePolicyDecidesTheMoneyBack()
