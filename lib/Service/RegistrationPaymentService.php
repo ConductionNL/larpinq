@@ -59,6 +59,13 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	private const ACCEPTED = 'accepted';
 
 	/**
+	 * Reads the part shillinq paid from the player's open credit (REQ-RCT-005).
+	 *
+	 * @var RegistrationCreditShare
+	 */
+	private readonly RegistrationCreditShare $credit;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
@@ -67,7 +74,6 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @param IGroupManager $groups Who is a game master.
 	 * @param LoggerInterface $logger The logger.
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
-	 * @param RegistrationCreditShare $credit The part shillinq paid from the player's open credit.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -78,8 +84,8 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		private readonly IGroupManager $groups,
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
-		private readonly RegistrationCreditShare $credit,
 	) {
+		$this->credit = new RegistrationCreditShare();
 	}//end __construct()
 
 	/**

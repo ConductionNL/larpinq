@@ -36,7 +36,6 @@ use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationChangeService;
-use OCA\Larpinq\Service\RegistrationCreditShare;
 use OCA\Larpinq\Service\RegistrationInvoice;
 use OCA\Larpinq\Service\RegistrationCharacterCheck;
 use OCA\Larpinq\Service\RegistrationPaymentService;
@@ -596,8 +595,7 @@ class PaymentWorld {
 			builder: $builder,
 			groups: $this->groups(),
 			logger: new NullLogger(),
-			invoice: $this->invoice(),
-			credit: new RegistrationCreditShare()
+			invoice: $this->invoice()
 		);
 	}
 
@@ -607,7 +605,7 @@ class PaymentWorld {
 	 * @return PaymentFollowUp The payment follow-up.
 	 */
 	public function followUp(): PaymentFollowUp {
-		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger(), invoice: $this->invoice(), credit: new RegistrationCreditShare());
+		return new PaymentFollowUp(fetcher: $this->fetcher(), leaf: $this->paymentLeaf(), logger: new NullLogger(), invoice: $this->invoice());
 	}
 
 	/**

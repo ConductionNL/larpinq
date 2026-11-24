@@ -90,13 +90,19 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	private const PAGE = 500;
 
 	/**
+	 * Reads the part shillinq paid from the player's open credit (REQ-RCT-005).
+	 *
+	 * @var RegistrationCreditShare
+	 */
+	private readonly RegistrationCreditShare $credit;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
 	 * @param PaymentLeaf $leaf Shillinq's payment requests leaf.
 	 * @param LoggerInterface $logger The logger.
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
-	 * @param RegistrationCreditShare $credit The part shillinq paid from the player's open credit.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -105,8 +111,8 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 		private readonly PaymentLeaf $leaf,
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
-		private readonly RegistrationCreditShare $credit,
 	) {
+		$this->credit = new RegistrationCreditShare();
 	}//end __construct()
 
 	/**

@@ -30,7 +30,6 @@ use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\PaymentRequestRefusedException;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
-use OCA\Larpinq\Service\RegistrationCreditShare;
 use OCA\Larpinq\Tests\Unit\Support\PaymentWorld;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -123,7 +122,7 @@ class PaymentEdgeCasesTest extends TestCase {
 		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->method('getObjectsWithAppAuthority')->willReturn([['id' => self::REG, 'paymentState' => 'open', 'payBy' => '2026-10-16T00:00:00+00:00']]);
 		$fetcher->method('saveObjectWithAppAuthority')->willThrowException(new RuntimeException('database gone'));
-		$counts = (new PaymentFollowUp(fetcher: $fetcher, leaf: $this->world->paymentLeaf(), logger: new NullLogger(), invoice: $this->world->invoice(), credit: new RegistrationCreditShare()))->daily(
+		$counts = (new PaymentFollowUp(fetcher: $fetcher, leaf: $this->world->paymentLeaf(), logger: new NullLogger(), invoice: $this->world->invoice()))->daily(
 			now: new DateTimeImmutable(datetime: '2026-10-15T10:00:00+00:00')
 		);
 		$this->assertSame(expected: 0, actual: array_sum($counts), message: 'a failed write is logged and the run goes on');

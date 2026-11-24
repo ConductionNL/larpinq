@@ -145,7 +145,8 @@ class RegistrationCreditShareTest extends TestCase {
 
 		$this->assertSame(expected: ['paidFromCredit' => 85.0, 'amountOpen' => 5.0], actual: $share->fields(request: $request));
 		$this->assertFalse(condition: $share->paidInFull(request: $request));
-		$this->assertSame(expected: [], actual: $share->fields(request: ['amount' => 95.0, 'settlements' => [['method' => 'bank-transfer', 'amount' => 95.0]]]));
+		$byBank = ['amount' => 95.0, 'settlements' => [['method' => 'bank-transfer', 'amount' => 95.0]]];
+		$this->assertSame(expected: [], actual: $share->fields(request: $byBank));
 		$this->assertSame(expected: [], actual: $share->fields(request: ['amount' => 95.0, 'settlements' => 'broken']));
 		$this->assertSame(expected: [], actual: $share->fields(request: ['amount' => 95.0]));
 		$this->assertTrue(condition: $share->paidInFull(request: ['amount' => 40.0, 'settlements' => [['method' => 'credit', 'amount' => 60.0]]]));
