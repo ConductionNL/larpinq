@@ -89,7 +89,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 * @return void
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	public function afterWrite(array $new, ?array $old): void {
 		if ((string)($new['status'] ?? '') !== self::CANCELLED || (string)($old['status'] ?? '') === self::CANCELLED) {
@@ -136,7 +136,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 *
 	 * @return string The registration's `settlement`.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
 	private function handOff(array $registration, string $outcome): string {
 		$reason = 'Registration cancelled';

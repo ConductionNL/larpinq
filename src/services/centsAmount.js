@@ -8,7 +8,7 @@
  * name another ISO-4217 code. Empty and non-numeric values show nothing, so
  * a registration without credit leaves the cell blank.
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
  */
 
 /**
@@ -19,7 +19,7 @@
  * @param {object} [_property] The schema property (unused).
  * @param {{currency?: string}} [options] The column's `formatterOptions`.
  * @return {string} The formatted amount, or '' when there is none.
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
  */
 export function centsAmount(value, _row, _property, options) {
 	if (value === null || value === undefined || value === '' || typeof value === 'boolean') {

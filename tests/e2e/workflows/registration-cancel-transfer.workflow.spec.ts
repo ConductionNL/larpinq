@@ -9,7 +9,7 @@
  * schema slug. The steps run through larpinq's endpoints, as the Cancel or hand
  * over tab does.
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 import type { APIRequestContext } from '@playwright/test'
@@ -112,7 +112,7 @@ test.afterAll(async () => {
 })
 
 test.describe.serial('cancel, book for others, money back and hand over', () => {
-	// @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#mila-drops-out
+	// @e2e openspec/specs/event-registration/spec.md#mila-drops-out
 	test('one participant of a group booking cancels alone', async () => {
 		ids.joris = await make('larping_registration', {
 			event: ids.event,
@@ -130,7 +130,7 @@ test.describe.serial('cancel, book for others, money back and hand over', () => 
 		expect((await registration(ids.joris)).status).toBe('accepted')
 	})
 
-	// @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#anna-cancels-in-time
+	// @e2e openspec/specs/event-registration/spec.md#anna-cancels-in-time
 	test('a cancelled place goes to the waiting list', async () => {
 		ids.second = await make('larping_registration', {
 			event: ids.event,
@@ -148,7 +148,7 @@ test.describe.serial('cancel, book for others, money back and hand over', () => 
 		expect((await registration(ids.waiting)).status).toBe('accepted')
 	})
 
-	// @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#milas-fee-becomes-credit
+	// @e2e openspec/specs/event-registration/spec.md#milas-fee-becomes-credit
 	test('a paid cancellation records the credit requested', async () => {
 		const res = await admin.patch(
 			`${OR_BASE}/larpinq/larping_registration/${ids.joris}`,
@@ -166,7 +166,7 @@ test.describe.serial('cancel, book for others, money back and hand over', () => 
 		expect(cancelled.settlementRequestedAt).toBeTruthy()
 	})
 
-	// @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#sanne-hands-her-place-to-pieter
+	// @e2e openspec/specs/event-registration/spec.md#sanne-hands-her-place-to-pieter
 	// The accept step needs a second account; TransferOffersTest covers it with the real listeners.
 	test('a hand-over goes only to an account with a player', async () => {
 		const allowed = await admin.get(`${API}/${ids.waiting}/changes`, {

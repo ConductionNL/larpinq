@@ -19,7 +19,7 @@
  *
  * Not run in the build that wrote it: it needs a live instance.
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md
+ * @spec openspec/specs/event-registration/spec.md
  */
 
 import type { APIRequestContext, Browser, Page } from '@playwright/test'
@@ -187,7 +187,7 @@ test.afterAll(async () => {
 
 test.describe('registration-cancel-transfer-refund pages', () => {
 	/**
-	 * @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#mila-drops-out
+	 * @e2e openspec/specs/event-registration/spec.md#mila-drops-out
 	 */
 	test('Joris cancels Mila and keeps his own place', async ({ browser }) => {
 		const page = await pageAs(browser, joris)
@@ -205,7 +205,7 @@ test.describe('registration-cancel-transfer-refund pages', () => {
 	})
 
 	/**
-	 * @e2e openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#sanne-hands-her-place-to-pieter
+	 * @e2e openspec/specs/event-registration/spec.md#sanne-hands-her-place-to-pieter
 	 */
 	test('Sanne offers her place and Pieter accepts it', async ({ browser }) => {
 		const asSanne = await pageAs(browser, sanne)

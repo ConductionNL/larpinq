@@ -77,7 +77,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -215,7 +215,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @psalm-suppress UnusedReturnValue Psalm 7 misses the caller that returns this value; the call inside try discards it on purpose.
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function raise(array $registration, array $event): array {
 		$id = (string)($registration['id'] ?? '');

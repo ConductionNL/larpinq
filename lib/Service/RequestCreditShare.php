@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
  */
 
 declare(strict_types=1);
@@ -34,7 +34,7 @@ namespace OCA\Larpinq\Service;
  * @category Service
  * @package  OCA\Larpinq\Service
  *
- * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
  */
 class RequestCreditShare {
 
@@ -55,7 +55,7 @@ class RequestCreditShare {
 	 *                            or nothing when no credit was used or the
 	 *                            registration already shows these numbers.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function fields(array $registration, array $request): array {
 		$credit = $this->creditCents(request: $request);
@@ -82,7 +82,7 @@ class RequestCreditShare {
 	 *
 	 * @return bool True when the request is settled by credit.
 	 *
-	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function coversAll(array $request): bool {
 		return (string)($request['settledVia'] ?? '') === self::CREDIT
