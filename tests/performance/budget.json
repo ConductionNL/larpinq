@@ -1,0 +1,11 @@
+{
+	"app": "larpinq",
+	"pages": [
+		{ "name": "Dashboard", "path": "/index.php/apps/larpinq/" },
+		{ "name": "Characters", "path": "/index.php/apps/larpinq/characters" },
+		{ "name": "Players", "path": "/index.php/apps/larpinq/players" },
+		{ "name": "Events", "path": "/index.php/apps/larpinq/events" },
+		{ "name": "Items", "path": "/index.php/apps/larpinq/items" },
+		{ "name": "Skills", "path": "/index.php/apps/larpinq/skills" }
+	]
+}
