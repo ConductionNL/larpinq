@@ -97,14 +97,39 @@ describe('the map page (REQ-WMP-002)', () => {
 		}
 	})
 
-	it('places each widget once, the pins below the map data', () => {
+	it('places each widget once: the map data, the map under it, the pins below the map', () => {
 		const [data] = cells(detail, 'map-data')
+		const [view] = cells(detail, 'map-view')
 		const [pins] = cells(detail, 'map-pins')
 		expect(cells(detail, 'map-data')).toHaveLength(1)
+		expect(cells(detail, 'map-view')).toHaveLength(1)
 		expect(cells(detail, 'map-pins')).toHaveLength(1)
-		expect(pins.gridY).toBe(data.gridY + data.gridHeight)
-		expect(data.gridWidth).toBe(12)
-		expect(pins.gridWidth).toBe(12)
+		expect(view.gridY).toBe(data.gridY + data.gridHeight)
+		expect(pins.gridY).toBe(view.gridY + view.gridHeight)
+		for (const cell of [data, view, pins]) {
+			expect(cell.gridWidth).toBe(12)
+		}
+	})
+
+	// tasks.md 2.2: the map's own picture from the record, pins in pixels, a pin opens its lore page.
+	it('draws the map object\'s picture with its pins (REQ-WMP-002)', () => {
+		const view = widget(detail, 'map-view')
+		expect(view.type).toBe('map')
+		expect(view.content.layers).toEqual([
+			{ type: 'image', url: '@object.image', width: '@object.width', height: '@object.height' },
+		])
+		const map = schemaBySlug('larping_world_map').properties
+		for (const field of ['image', 'width', 'height']) {
+			expect(Object.keys(map)).toContain(field)
+		}
+		const markers = view.content.markers
+		expect(markers.dataSource).toEqual({ register: 'larpinq', schema: 'larping_map_pin', filter: { map: '@objectId' } })
+		expect([markers.xField, markers.yField, markers.popupField]).toEqual(['x', 'y', 'label'])
+		const pin = Object.keys(schemaBySlug('larping_map_pin').properties)
+		for (const field of ['x', 'y', 'label', 'lorePage']) {
+			expect(pin).toContain(field)
+		}
+		expect(markers.detailLink).toBe('/index.php/apps/larpinq/lore/{lorePage}')
 	})
 
 	it('only lays out widgets the page declares', () => {
