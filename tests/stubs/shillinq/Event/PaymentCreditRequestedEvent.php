@@ -14,11 +14,13 @@
  *
  * @link https://conduction.nl
  *
- * @spec openspec/changes/archive/2026-11-24-receivables-object-request-refund-and-credit/specs/object-payment-requests/spec.md (REQ-ORC-003)
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
  */
+
+// Test stub: shillinq's lib/Event/PaymentCreditRequestedEvent.php at 3fb5d8a, verbatim but for its @spec
+// tags (they name shillinq specs). Loaded only by tests/bootstrap.php when shillinq is absent.
 
 declare(strict_types=1);
 
@@ -27,7 +29,6 @@ namespace OCA\Shillinq\Event;
 /**
  * The credit command.
  *
- * @spec openspec/changes/archive/2026-11-24-receivables-object-request-refund-and-credit/specs/object-payment-requests/spec.md (REQ-ORC-003)
  */
 final class PaymentCreditRequestedEvent extends PaymentSettlementCommandEvent {
 }//end class

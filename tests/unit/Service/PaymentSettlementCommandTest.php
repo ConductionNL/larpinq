@@ -91,7 +91,7 @@ class PaymentSettlementCommandTest extends TestCase {
 	 */
 	public function testARefundIsShillinqsRefundCommand(): void {
 		$sent = null;
-		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped')
+		$this->dispatcher->expects($this->exactly(count: 2))->method('dispatchTyped')
 			->willReturnCallback(static function (Event $event) use (&$sent): void {
 				if ($event instanceof RegistrationSettlementRequested) {
 					return;
@@ -119,7 +119,7 @@ class PaymentSettlementCommandTest extends TestCase {
 	 */
 	public function testACreditIsShillinqsCreditCommand(): void {
 		$sent = null;
-		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped')
+		$this->dispatcher->expects($this->exactly(count: 2))->method('dispatchTyped')
 			->willReturnCallback(static function (Event $event) use (&$sent): void {
 				if ($event instanceof RegistrationSettlementRequested) {
 					return;
@@ -162,7 +162,7 @@ class PaymentSettlementCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnUnansweredCommandReturnsNull(): void {
-		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped');
+		$this->dispatcher->expects($this->exactly(count: 2))->method('dispatchTyped');
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
 			->send(event: self::request(kind: 'credit', paymentRequestId: 'pr1'), reason: '');
