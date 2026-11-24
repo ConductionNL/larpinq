@@ -26,6 +26,7 @@ use OCA\Larpinq\Event\RegistrationSettlementRequested;
 use OCA\Larpinq\Service\CancellationPolicy;
 use OCA\Larpinq\Service\PaymentLeaf;
 use OCA\Larpinq\Service\PaymentRequestBuilder;
+use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationSettlement;
 use OCP\EventDispatcher\IEventDispatcher;
@@ -61,6 +62,9 @@ class RegistrationSettlementTest extends TestCase {
 	/** @var LoggerInterface&MockObject */
 	private LoggerInterface $logger;
 
+	/** @var PaymentSettlementCommand&MockObject */
+	private PaymentSettlementCommand $command;
+
 	/**
 	 * The settlement.
 	 *
@@ -79,6 +83,7 @@ class RegistrationSettlementTest extends TestCase {
 		$this->leaf = $this->createMock(originalClassName: PaymentLeaf::class);
 		$this->dispatcher = $this->createMock(originalClassName: IEventDispatcher::class);
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
+		$this->command = $this->createMock(originalClassName: PaymentSettlementCommand::class);
 
 		$this->builder->method('now')->willReturn(new DateTimeImmutable(datetime: '2026-03-04T05:06:07+00:00'));
 		$this->builder->method('debtor')->willReturn(['name' => 'Alice']);
@@ -92,7 +97,8 @@ class RegistrationSettlementTest extends TestCase {
 			builder: $this->builder,
 			leaf: $this->leaf,
 			dispatcher: $this->dispatcher,
-			logger: $this->logger
+			logger: $this->logger,
+			command: $this->command
 		);
 	}
 
@@ -317,5 +323,56 @@ class RegistrationSettlementTest extends TestCase {
 		$this->assertSame(expected: 'pr1', actual: $sent->getPaymentRequestId());
 		$this->assertSame(expected: 'ev1', actual: $sent->getEventId());
 		$this->assertSame(expected: 'p1', actual: $sent->getPlayerId());
+	}
+	/**
+	 * Shillinq books a credit at once: the registration shows it credited.
+	 *
+	 * @return void
+	 */
+	public function testACreditShillinqBookedShowsCredited(): void {
+		$this->eventWithPolicy(paidCancellation: 'credit');
+		$this->leaf->method('requests')->willReturn([]);
+		$this->command->expects($this->once())->method('ask')
+			->with('credit', 'pr1', 'r1', 'Registration cancelled: illness')
+			->willReturn('credited');
+		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
+			'registration',
+			['settlement' => 'credited', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
+			'r1'
+		);
+
+		$this->settlement->afterWrite(new: self::cancelledPaid(fields: ['cancelReason' => 'illness']), old: ['status' => 'accepted']);
+	}
+
+	/**
+	 * A refund waits for finance: shillinq's refund_requested shows as requested.
+	 *
+	 * @return void
+	 */
+	public function testARefundShillinqTookStaysRequested(): void {
+		$this->eventWithPolicy(paidCancellation: 'refund');
+		$this->leaf->method('requests')->willReturn([]);
+		$this->command->expects($this->once())->method('ask')
+			->with('refund', 'pr1', 'r1', 'Registration cancelled')
+			->willReturn('refund_requested');
+		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
+			'registration',
+			['settlement' => 'refund-requested', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
+			'r1'
+		);
+
+		$this->settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+	}
+
+	/**
+	 * Nothing back asks shillinq for nothing.
+	 *
+	 * @return void
+	 */
+	public function testNothingBackAsksShillinqForNothing(): void {
+		$this->eventWithPolicy(paidCancellation: 'none');
+		$this->command->expects($this->never())->method('ask');
+
+		$this->settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
 	}
 }

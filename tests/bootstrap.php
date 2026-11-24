@@ -110,4 +110,7 @@ if ($composerAutoloader instanceof \Composer\Autoload\ClassLoader) {
 	// Nextcloud Forms' submit event in its real shape, for the sign-up listener
 	// (registration-intake-and-capacity). Same rule: appended, so a real forms wins.
 	$composerAutoloader->addPsr4('OCA\\Forms\\', __DIR__ . '/stubs/forms/');
+	// Shillinq's refund and credit commands, verbatim, for the money of a
+	// cancelled registration (registration-cancel-transfer-refund). Same rule.
+	$composerAutoloader->addPsr4('OCA\\Shillinq\\', __DIR__ . '/stubs/shillinq/');
 }
