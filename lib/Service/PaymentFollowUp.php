@@ -119,8 +119,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 */
 	public function requestChanged(array $request): void {
 		$requestId = (string)($request['id'] ?? '');
-		if ($requestId !== '' && in_array((string)($request['state'] ?? ''), self::SETTLED, true) === true) {
-			$this->moneyBack(requestId: $requestId, state: (string)$request['state']);
+		if ($this->moneyBack(request: $request) === true) {
 			return;
 		}
 
@@ -150,20 +149,25 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	/**
 	 * Shillinq refunded or credited a request: the registration it paid shows it once.
 	 *
-	 * @param string $requestId The request.
-	 * @param string $state `refunded` or `credited`.
+	 * @param array<string, mixed> $request The payment request, with its `id` and `state`.
 	 *
-	 * @return void
+	 * @return bool True when the request's money went back, so nothing else follows.
 	 *
 	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
-	private function moneyBack(string $requestId, string $state): void {
-		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['paymentRequestId' => $requestId], limit: 1);
-		if ($rows === [] || (string)($rows[0]['settlement'] ?? '') === $state) {
-			return;
+	private function moneyBack(array $request): bool {
+		$requestId = (string)($request['id'] ?? '');
+		$state = (string)($request['state'] ?? '');
+		if ($requestId === '' || in_array($state, self::SETTLED, true) === false) {
+			return false;
 		}
 
-		$this->save(registration: $rows[0], fields: ['settlement' => $state]);
+		$rows = $this->fetcher->getObjectsWithAppAuthority(objectType: 'registration', filters: ['paymentRequestId' => $requestId], limit: 1);
+		if ($rows !== [] && (string)($rows[0]['settlement'] ?? '') !== $state) {
+			$this->save(registration: $rows[0], fields: ['settlement' => $state]);
+		}
+
+		return true;
 	}//end moneyBack()
 
 	/**

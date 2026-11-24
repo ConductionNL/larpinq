@@ -107,7 +107,7 @@ class PaymentSettlementCommandTest extends TestCase {
 			$event->refuse(error: 'not settled');
 		});
 		$this->logger->expects($this->once())->method('warning')
-			->with($this->anything(), $this->callback(static fn (array $context): bool => $context['error'] === 'not settled'));
+			->with($this->anything(), $this->callback(callback: static fn (array $context): bool => $context['error'] === 'not settled'));
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
 			->ask(outcome: 'refund', paymentRequestId: 'pr1', correlationId: 'r1', reason: '');
