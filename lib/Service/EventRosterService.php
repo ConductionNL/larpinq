@@ -323,7 +323,7 @@ class EventRosterService {
 	 *
 	 * @throws \InvalidArgumentException When the amount is not positive, the event cannot be read, or nobody is checked in.
 	 *
-	 * @spec openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
 	 */
 	#[McpTool(
 		name: 'awardXpToAttendees',

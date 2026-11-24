@@ -40,8 +40,9 @@
   - GIVEN an approved gate for a five-character event WHEN the chat flow "award 5 XP to everyone who attended Saturday's event" completes THEN five awards exist, each attributed `mcp` with the invoking principal
   - GIVEN a rejected gate WHEN the flow ends THEN zero awards exist
   - GIVEN a non-gamemaster caller WHEN the fan-out attempts its writes THEN OR's `authorization.create` on `xpAward` rejects them
-- [ ] Implement
-- [ ] Test
+- [x] Implement
+- [x] Test
+  - Written, runs in nightly: Newman folder "6. Curated MCP tools (hermiq-ai-tooling)" in `tests/integration/larpinq.postman_collection.json`. It checks the annotations Hermiq classifies by (`awardXpToAttendees` `readOnlyHint` false, a gated write; `getCharacterSheet` `readOnlyHint` true, an ungated read), the 21 + 2 tool catalog, that the approved call awards every checked-in character once with `awardedVia` = `mcp` and `awardedBy` = the caller, that a call which does not go through (0 XP) leaves zero awards, and that the sheet leaves out `slNotesPrivate`. The approve and reject clicks themselves happen in Hermiq, which the nightly stack does not run; a rejected gate never reaches the tool, so the zero-awards check stands in for it. The non-gamemaster refusal needs a second, non-admin account the suite does not seed; `CuratedMcpToolsTest` and OpenRegister's object authorization cover it. Not run in the sandbox: no live instance.
 
 ### Task 5: Quality gates and CHANGELOG
 - **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-005--agent-created-xp-awards-are-attributable-and-grants-are-default-deny`
@@ -59,5 +60,5 @@
 - Task 3: `lib/Mcp/LarpinqScannableServices.php`, aliased as `OCA\OpenRegister\Mcp\IMcpScannableServices::larpinq` when the interface exists. The listing on a dev instance (21 derived + 2) is a live check and stays open under Task 4.
 - REQ-005 attribution: `xpAward` gains the optional `awardedVia` (`ui` | `mcp`); register 1.3.0 to 1.4.0.
 - Task 5: CHANGELOG under Unreleased; phpcs, phpstan, phpmd and psalm clean on the touched files, unit suite with no failures. The OpenRegister MCP attribute and interface are copied unchanged (openregister main 35e2566) into `tests/stubs/openregister/Mcp/` and mapped in `phpstan-bootstrap.php`.
-- Task 4 is left: it is the end-to-end check against a live Hermiq and OpenRegister.
+- Task 4: written as Newman folder 6, runs in nightly (see Task 4 above).
 

@@ -7764,13 +7764,13 @@
 			"pretix": "no",
 			"built": {
 				"state": "specified",
-				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/archive/2026-11-24-larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees, getCharacterSheet) proposed in openspec/changes/hermiq-ai-tooling/ are NOT built: its tasks.md is entirely unchecked ([ ]) and lib/Mcp/LarpinqScannableServices.php does not exist (find lib -iname '*Mcp*': only the register.d json).",
+				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/archive/2026-11-24-larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees on EventRosterService, getCharacterSheet on CharacterService) are built under openspec/changes/archive/2026-11-24-hermiq-ai-tooling/ and opted in by lib/Mcp/LarpinqScannableServices.php; their live check is Newman folder 6 in tests/integration/larpinq.postman_collection.json.",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "nothing confirmable from this repo: whether OpenRegister actually derives and exposes MCP tools from the x-openregister-mcp dialect cannot be verified by reading larpinq's own code",
 				"change": "openspec/changes/archive/2026-11-24-larpinq-mcp-adoption",
 				"plan": [
 					"openspec/changes/archive/2026-11-24-larpinq-mcp-adoption",
-					"openspec/changes/hermiq-ai-tooling"
+					"openspec/changes/archive/2026-11-24-hermiq-ai-tooling"
 				],
 				"requirement": [
 					"openspec/specs/larpinq-mcp-adoption :: REQ-001 — Curated read-only MCP dialect on 6 reference/lookup schemas",
@@ -7781,11 +7781,11 @@
 					"openspec/specs/larpinq-mcp-adoption :: REQ-006 — No excluded schema, and no undeclared verb, is exposed",
 					"openspec/specs/larpinq-mcp-adoption :: REQ-007 — MCP dialect is declared via a register fragment, not the monolith",
 					"openspec/specs/larpinq-mcp-adoption :: REQ-008 — MCP tools are derived without app-level PHP",
-					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-001 — A curated event-scoped XP award tool exists",
-					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-002 — XP awards and sheet-affecting writes require a game-master approval gate",
-					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-003 — A curated calculated-character-sheet read tool exists",
-					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-004 — Curated tools are exposed via the scannable-services opt-in",
-					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-005 — Agent-created XP awards are attributable and grants are default-deny"
+					"openspec/specs/hermiq-ai-tooling :: REQ-001 — A curated event-scoped XP award tool exists",
+					"openspec/specs/hermiq-ai-tooling :: REQ-002 — XP awards and sheet-affecting writes require a game-master approval gate",
+					"openspec/specs/hermiq-ai-tooling :: REQ-003 — A curated calculated-character-sheet read tool exists",
+					"openspec/specs/hermiq-ai-tooling :: REQ-004 — Curated tools are exposed via the scannable-services opt-in",
+					"openspec/specs/hermiq-ai-tooling :: REQ-005 — Agent-created XP awards are attributable and grants are default-deny"
 				],
 				"note": "Plan: larpinq-mcp-adoption (tasks 1 to 4: the register.d MCP fragment, filter cross-check, import and RBAC check) then hermiq-ai-tooling (curated XP award and character sheet tools with a game-master approval gate)."
 			},
