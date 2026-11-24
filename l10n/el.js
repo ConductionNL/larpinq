@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Η αποχώρηση καταγράφηκε από",
         "Care details": "Στοιχεία υγείας",
         "Due for erasure": "Προς διαγραφή",
-        "No care records yet.": "Δεν υπάρχουν ακόμη στοιχεία υγείας."
+        "No care records yet.": "Δεν υπάρχουν ακόμη στοιχεία υγείας.",
+        "Paid from credit": "Πληρώθηκε από πίστωση",
+        "Still to pay": "Υπόλοιπο προς πληρωμή",
+        "Paid from the player's credit in shillinq, in cents": "Πληρώθηκε από την πίστωση του παίκτη στο shillinq, σε λεπτά",
+        "Still open after the credit, in cents": "Ακόμη ανοιχτό μετά την πίστωση, σε λεπτά"
     },
     "nplurals=2; plural=(n != 1);"
 )

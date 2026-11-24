@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Tluq irreġistrat minn",
         "Care details": "Dettalji tal-kura",
         "Due for erasure": "Għat-tħassir",
-        "No care records yet.": "Għad m'hemmx dettalji tal-kura."
+        "No care records yet.": "Għad m'hemmx dettalji tal-kura.",
+        "Paid from credit": "Imħallas mill-kreditu",
+        "Still to pay": "Għad irid jitħallas",
+        "Paid from the player's credit in shillinq, in cents": "Imħallas mill-kreditu tal-plejer f'shillinq, f'ċenteżmi",
+        "Still open after the credit, in cents": "Għadu miftuħ wara l-kreditu, f'ċenteżmi"
     },
     "nplurals=2; plural=(n != 1);"
 )

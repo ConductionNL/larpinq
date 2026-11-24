@@ -59,6 +59,13 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	private const ACCEPTED = 'accepted';
 
 	/**
+	 * The part shillinq paid from the player's credit (REQ-RCT-005).
+	 *
+	 * @var RequestCreditShare
+	 */
+	private readonly RequestCreditShare $credit;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes the register.
@@ -69,6 +76,8 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -78,6 +87,7 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
 	) {
+		$this->credit = new RequestCreditShare();
 	}//end __construct()
 
 	/**
@@ -203,6 +213,9 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 	 * @throws PaymentRequestRefusedException When shillinq refuses.
 	 *
 	 * @psalm-suppress UnusedReturnValue Psalm 7 misses the caller that returns this value; the call inside try discards it on purpose.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function raise(array $registration, array $event): array {
 		$id = (string)($registration['id'] ?? '');
@@ -226,6 +239,14 @@ class RegistrationPaymentService implements RegistrationPaymentServiceInterface 
 		// Shillinq issues the invoice a player asked for while it creates the
 		// request (REQ-RPS-006), so it can land with the request itself.
 		$fields += $this->invoice->fields(registration: $registration, request: $created);
+
+		// Shillinq pays a new request from the player's open credit first
+		// (REQ-RCT-005): the registration shows that part and what is still
+		// open, and a request the credit covers whole is paid at once.
+		$fields += $this->credit->fields(registration: $registration, request: $created);
+		if ($this->credit->coversAll(request: $created) === true) {
+			$fields['paymentState'] = self::PAID;
+		}
 
 		return $this->store(id: $id, fields: $fields);
 	}//end raise()

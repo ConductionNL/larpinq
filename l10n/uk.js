@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Відбуття зафіксував",
         "Care details": "Медичні дані",
         "Due for erasure": "До видалення",
-        "No care records yet.": "Медичних даних ще немає."
+        "No care records yet.": "Медичних даних ще немає.",
+        "Paid from credit": "Сплачено з кредиту",
+        "Still to pay": "Залишилося сплатити",
+        "Paid from the player's credit in shillinq, in cents": "Сплачено з кредиту гравця в shillinq, у центах",
+        "Still open after the credit, in cents": "Ще відкрито після кредиту, у центах"
     },
     "nplurals=2; plural=(n != 1);"
 )

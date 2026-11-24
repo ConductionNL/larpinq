@@ -95,6 +95,14 @@ class FakePaymentLeaf implements IntegrationProvider {
 	 */
 	public array $creates = [];
 
+	/**
+	 * The debtor's open credit in shillinq, in currency units: create() pays
+	 * a new request from it first, as shillinq's DebtorCreditService does.
+	 *
+	 * @var float
+	 */
+	public float $openCredit = 0.0;
+
 	/** @var int The next. */
 	private int $next = 1;
 
@@ -215,6 +223,9 @@ class FakePaymentLeaf implements IntegrationProvider {
 					'description' => $request['description'],
 					'dueAt' => (string)($request['dueAt'] ?? ''),
 					'paymentLink' => (string)($request['paymentLink'] ?? ''),
+					'settledAt' => (string)($request['settledAt'] ?? ''),
+					'settledVia' => (string)($request['settledVia'] ?? ''),
+					'settlements' => (array)($request['settlements'] ?? []),
 				];
 			}
 		}
@@ -277,8 +288,34 @@ class FakePaymentLeaf implements IntegrationProvider {
 			$request['invoiceReference'] = sprintf('a0000000-0000-4000-8000-%012d', $this->next);
 		}
 
+		$request = $this->payFromCredit(request: $request);
 		$this->requests[$id] = array_merge($request, ['id' => $id, 'paymentLink' => 'https://pay.example.org/r/' . $id]);
 		return $this->requests[$id];
+	}
+
+	/**
+	 * Use the open credit first, as shillinq's DebtorCreditService::applyOpenCredit()
+	 * does: one `credit` settlement, and `settledVia: credit` when it covers the whole amount.
+	 *
+	 * @param array<string, mixed> $request The request about to be saved.
+	 *
+	 * @return array<string, mixed> The request.
+	 */
+	private function payFromCredit(array $request): array {
+		$due = round((float)($request['amount'] ?? 0), 2);
+		$used = round(min($this->openCredit, $due), 2);
+		if ($used <= 0.0) {
+			return $request;
+		}
+
+		$this->openCredit = round($this->openCredit - $used, 2);
+		$request['settlements'] = [['method' => 'credit', 'amount' => $used, 'reason' => 'Paid from the debtor\'s open credit']];
+		if ($used >= $due) {
+			$request['settledAt'] = '2026-10-15T10:00:00Z';
+			$request['settledVia'] = 'credit';
+		}
+
+		return $request;
 	}
 
 	/**

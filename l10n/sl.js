@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Odhod zabeležil",
         "Care details": "Zdravstveni podatki",
         "Due for erasure": "Za izbris",
-        "No care records yet.": "Še ni zdravstvenih podatkov."
+        "No care records yet.": "Še ni zdravstvenih podatkov.",
+        "Paid from credit": "Plačano z dobroimetjem",
+        "Still to pay": "Še za plačilo",
+        "Paid from the player's credit in shillinq, in cents": "Plačano z dobroimetjem igralca v shillinq, v centih",
+        "Still open after the credit, in cents": "Še odprto po dobroimetju, v centih"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -93,6 +93,7 @@ import AgeCell from './components/cells/AgeCell.vue'
 import TranslatedNameCell from './components/cells/TranslatedNameCell.vue'
 import RegistrationQrCode from './components/RegistrationQrCode.vue'
 import { startActiveWorld } from './services/activeWorld.js'
+import { centsAmount } from './services/centsAmount.js'
 import { invoiceDownloadLabel } from './services/invoiceDownload.js'
 import { setObjectStoreTenantUuid, useObjectStore } from './store/modules/object.js'
 
@@ -264,7 +265,9 @@ export default {
 			// Column formatters an index column names with `formatter`.
 			// `invoiceDownload` words an invoice link cell as "Download invoice"
 			// instead of the URL (registration-payments-through-shillinq REQ-RPS-006).
-			formatters: { invoiceDownload: invoiceDownloadLabel },
+			// `cents` shows an amount stored in cents as money, such as the part
+			// paid from credit (registration-cancel-transfer-refund REQ-RCT-005).
+			formatters: { invoiceDownload: invoiceDownloadLabel, cents: centsAmount },
 			objectSidebarState: reactive({
 				active: false,
 				open: true,

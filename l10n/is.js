@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Brottför skráð af",
         "Care details": "Heilsufarsupplýsingar",
         "Due for erasure": "Til eyðingar",
-        "No care records yet.": "Engar heilsufarsupplýsingar enn."
+        "No care records yet.": "Engar heilsufarsupplýsingar enn.",
+        "Paid from credit": "Greitt með inneign",
+        "Still to pay": "Eftir að greiða",
+        "Paid from the player's credit in shillinq, in cents": "Greitt með inneign leikmannsins í shillinq, í sentum",
+        "Still open after the credit, in cents": "Enn opið eftir inneignina, í sentum"
     },
     "nplurals=2; plural=(n != 1);"
 )

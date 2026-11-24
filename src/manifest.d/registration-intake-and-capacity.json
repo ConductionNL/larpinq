@@ -46,6 +46,16 @@
 						"label": "Reference"
 					},
 					{
+						"key": "paidFromCredit",
+						"label": "Paid from credit",
+						"formatter": "cents"
+					},
+					{
+						"key": "amountOpen",
+						"label": "Still to pay",
+						"formatter": "cents"
+					},
+					{
 						"key": "settlement",
 						"label": "Money back"
 					},
@@ -96,6 +106,16 @@
 					{
 						"key": "payBy",
 						"label": "Pay by"
+					},
+					{
+						"key": "paidFromCredit",
+						"label": "Paid from credit",
+						"formatter": "cents"
+					},
+					{
+						"key": "amountOpen",
+						"label": "Still to pay",
+						"formatter": "cents"
 					},
 					{
 						"key": "invoiceUrl",
