@@ -24,8 +24,9 @@
 - [x] 4.1 Dutch and English strings (REQ-RCT-001). Verify: `npm run test:l10n`.
 - [x] 4.2 `docs/features/cancel-and-transfer.md` (ADR-010). Verify: the docs build renders it.
 
-## 5. Shillinq (open)
+## 5. Shillinq
 
-- [ ] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request (REQ-RCT-005), and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Larpinq then shows the part paid from credit on the registration (REQ-RCT-005). Shillinq's half is built (larpinq#1163, shillinq `receivables-object-request-refund-and-credit`) and task 2.3 now dispatches its commands and maps `refunded` / `credited`. Left here: showing the part paid from credit on the next registration (REQ-RCT-005).
+- [x] 5.1 Tell shillinq: listen to `RegistrationRefundRequested` and `RegistrationCreditRequested`, refund or book the credit, apply open credit to the debtor's next request (REQ-RCT-005), and emit a state larpinq can map to `refunded` or `credited` (drafted for Ruben: for-ruben/shillinq-registration-refund-and-credit-events.md). Larpinq then shows the part paid from credit on the registration (REQ-RCT-005). Shillinq's half is built (larpinq#1163, shillinq `receivables-object-request-refund-and-credit`) and task 2.3 now dispatches its commands and maps `refunded` / `credited`. Left here: showing the part paid from credit on the next registration (REQ-RCT-005).
+  - Built 24 Nov (larpinq#1181): `RequestCreditShare` reads shillinq's `credit` settlements on the request (DebtorCreditService applies open credit at create) and the registration stores `paidFromCredit` and `amountOpen` in cents, shown on My registrations and Registrations with the `cents` formatter; a request shillinq settled whole by credit (`settledVia: credit`) marks the registration paid at once and in the daily pass. PHPUnit: `RequestCreditShareTest` (Mila's EUR 85 on EUR 95 shows 85 / 10); vitest `centsAmount.spec.js`.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.
