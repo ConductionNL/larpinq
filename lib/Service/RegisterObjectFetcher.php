@@ -456,7 +456,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @psalm-suppress MixedMethodCall OpenRegister ObjectService resolved dynamically.
 	 * @psalm-suppress MixedAssignment OpenRegister ObjectService resolved dynamically.
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 * @spec openspec/specs/object-service/spec.md
 	 */
 	public function getObjectWithAppAuthority(string $objectType, string $id): array {

@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-players-keep-care-details-that-only-they-and-game-masters-see-req-pce-001
+ * @spec openspec/specs/player-care-details/spec.md#requirement-players-keep-care-details-that-only-they-and-game-masters-see-req-pce-001
  */
 
 declare(strict_types=1);

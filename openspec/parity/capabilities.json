@@ -2333,7 +2333,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: no such fields on the player schema",
 				"change": "players-care-details-and-erasure",
-				"requirement": "openspec/changes/players-care-details-and-erasure/specs/player-care-details :: Players keep care details that only they and game masters see (REQ-PCE-001)"
+				"requirement": "openspec/specs/player-care-details :: Players keep care details that only they and game masters see (REQ-PCE-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped this repository, no hits in larpinq's own data model",
@@ -6826,8 +6826,8 @@
 				"reachedOn": "nothing: see evidence",
 				"change": "players-care-details-and-erasure",
 				"requirement": [
-					"openspec/changes/players-care-details-and-erasure/specs/player-care-details :: Event care records are erased after the event (REQ-PCE-003)",
-					"openspec/changes/players-care-details-and-erasure/specs/player-care-details :: What was erased is recorded (REQ-PCE-004)"
+					"openspec/specs/player-care-details :: Event care records are erased after the event (REQ-PCE-003)",
+					"openspec/specs/player-care-details :: What was erased is recorded (REQ-PCE-004)"
 				]
 			},
 			"provider": "self",

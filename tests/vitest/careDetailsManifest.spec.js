@@ -6,8 +6,8 @@
  * widget on PlayerDetail (REQ-PCE-001) and, on EventDetail, the event's care
  * records with the count of records due for erasure (REQ-PCE-002).
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-players-keep-care-details-that-only-they-and-game-masters-see-req-pce-001
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+ * @spec openspec/specs/player-care-details/spec.md#requirement-players-keep-care-details-that-only-they-and-game-masters-see-req-pce-001
+ * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
 
 import { readFileSync } from 'node:fs'

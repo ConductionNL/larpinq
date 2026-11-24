@@ -9,7 +9,7 @@
  * Anna and Pieter are real larpers made for the run, each with their own
  * request context and no stored session.
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md
+ * @spec openspec/specs/player-care-details/spec.md
  */
 
 import type { APIRequestContext } from '@playwright/test'

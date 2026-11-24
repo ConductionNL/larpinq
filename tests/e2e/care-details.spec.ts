@@ -20,7 +20,7 @@
  *
  * Not run in the build that wrote it: it needs a live instance.
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md
+ * @spec openspec/specs/player-care-details/spec.md
  */
 
 import type { APIRequestContext, Browser, Page } from '@playwright/test'

@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+ * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
 
 declare(strict_types=1);
@@ -36,7 +36,7 @@ use OCP\IAppConfig;
  *
  * @template-implements IEventListener<Event>
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+ * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
 class PlayerCareListener implements IEventListener {
 
@@ -61,7 +61,7 @@ class PlayerCareListener implements IEventListener {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public function handle(Event $event): void {
 		if (($event instanceof \OCA\OpenRegister\Event\ObjectUpdatedEvent) === false) {
@@ -90,7 +90,7 @@ class PlayerCareListener implements IEventListener {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public static function careChanged(array $before, array $after): bool {
 		foreach (EventCareRecordsInterface::FIELDS as $field) {

@@ -18,7 +18,8 @@
 
 ## 3. Erasure
 
-- [ ] 3.1 Retention on `eventCareRecord` from `eventEndDate` plus the event's days; a test run of OpenRegister's destruction job on a fixture past its date (REQ-PCE-003, REQ-PCE-004). Verify: the record appears on a destruction list; after approval it is gone and a certificate exists.
+- [x] 3.1 Retention on `eventCareRecord` from `eventEndDate` plus the event's days; a test run of OpenRegister's destruction job on a fixture past its date (REQ-PCE-003, REQ-PCE-004). Verify: the record appears on a destruction list; after approval it is gone and a certificate exists.
+  - Written, runs in nightly (24 Nov): the retention is declared in `lib/Settings/register.d/players-care-details-and-erasure.json` (`archive` on `eraseAfter`, `vernietigen`); `tests/e2e/care-erasure.spec.ts` runs the destruction job on a fixture past its date, approves the list, and checks the record is gone and a certificate names the list, with a future-dated control record kept. Collected by `tests/e2e/playwright.config.ts`; not run in the sandbox: no instance.
 
 ## 4. Pages
 

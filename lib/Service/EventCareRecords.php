@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+ * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
 
 declare(strict_types=1);
@@ -41,7 +41,7 @@ use Throwable;
  * (REQ-PCE-003). Reads and writes run with the app's authority, so the copy
  * is made whoever accepted the registration.
  *
- * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+ * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
  */
 class EventCareRecords implements EventCareRecordsInterface {
 
@@ -82,7 +82,7 @@ class EventCareRecords implements EventCareRecordsInterface {
 	 *
 	 * @return bool Whether a copy was written.
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public function copyForRegistration(array $registration): bool {
 		$registrationId = (string)($registration['id'] ?? '');
@@ -170,7 +170,7 @@ class EventCareRecords implements EventCareRecordsInterface {
 	 *
 	 * @return int How many copies were written.
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public function refreshForPlayer(string $playerId): int {
 		$written = 0;
@@ -219,7 +219,7 @@ class EventCareRecords implements EventCareRecordsInterface {
 	 *
 	 * @return array<string, mixed>|null
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-event-care-records-are-erased-after-the-event-req-pce-003
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-event-care-records-are-erased-after-the-event-req-pce-003
 	 */
 	public static function recordFor(array $event, array $registration, array $player): ?array {
 		$end = self::eventEnd(event: $event);

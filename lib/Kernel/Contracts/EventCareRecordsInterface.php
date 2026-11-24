@@ -51,7 +51,7 @@ interface EventCareRecordsInterface {
 	 *
 	 * @return int How many copies were written.
 	 *
-	 * @spec openspec/changes/players-care-details-and-erasure/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
+	 * @spec openspec/specs/player-care-details/spec.md#requirement-each-accepted-registration-carries-a-copy-for-the-event-req-pce-002
 	 */
 	public function refreshForPlayer(string $playerId): int;
 }//end interface
