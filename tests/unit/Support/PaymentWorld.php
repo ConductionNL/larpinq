@@ -653,7 +653,6 @@ class PaymentWorld {
 			policy: $this->policy(),
 			builder: $builder,
 			leaf: $this->paymentLeaf(),
-			dispatcher: $this->dispatcher(),
 			logger: new NullLogger(),
 			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher(), logger: new NullLogger())
 		);

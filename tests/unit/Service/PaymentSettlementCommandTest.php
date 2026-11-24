@@ -19,9 +19,13 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Tests\Unit\Service;
 
+use OCA\Larpinq\Event\RegistrationCreditRequested;
+use OCA\Larpinq\Event\RegistrationRefundRequested;
+use OCA\Larpinq\Event\RegistrationSettlementRequested;
 use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Shillinq\Event\PaymentCreditRequestedEvent;
 use OCA\Shillinq\Event\PaymentRefundRequestedEvent;
+use OCA\Shillinq\Event\PaymentSettlementCommandEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventDispatcher;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,6 +38,7 @@ use RuntimeException;
  * shillinq's own typed commands, and fails closed without shillinq.
  *
  * @covers \OCA\Larpinq\Service\PaymentSettlementCommand
+ * @uses   \OCA\Larpinq\Event\RegistrationSettlementRequested
  */
 class PaymentSettlementCommandTest extends TestCase {
 
@@ -54,20 +59,50 @@ class PaymentSettlementCommandTest extends TestCase {
 	}
 
 	/**
+	 * Larpinq's own command for registration r1.
+	 *
+	 * @param string $kind `refund` or `credit`.
+	 * @param string $paymentRequestId The paid request.
+	 *
+	 * @return RegistrationSettlementRequested
+	 */
+	private static function request(string $kind, string $paymentRequestId): RegistrationSettlementRequested {
+		$args = [
+			'registrationId' => 'r1',
+			'paymentRequestId' => $paymentRequestId,
+			'eventId' => 'ev1',
+			'playerId' => 'p1',
+			'debtor' => ['name' => 'Alice'],
+			'amount' => 85.0,
+			'currency' => 'EUR',
+			'subject' => [],
+		];
+		if ($kind === 'credit') {
+			return new RegistrationCreditRequested(...$args);
+		}
+
+		return new RegistrationRefundRequested(...$args);
+	}
+
+	/**
 	 * A refund goes as shillinq's refund command and returns its answered state.
 	 *
 	 * @return void
 	 */
 	public function testARefundIsShillinqsRefundCommand(): void {
 		$sent = null;
-		$this->dispatcher->expects($this->once())->method('dispatchTyped')
+		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped')
 			->willReturnCallback(static function (Event $event) use (&$sent): void {
+				if ($event instanceof RegistrationSettlementRequested) {
+					return;
+				}
+
 				$sent = $event;
 				$event->accept(state: 'refund_requested');
 			});
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'refund', paymentRequestId: 'pr1', correlationId: 'r1', reason: 'Registration cancelled');
+			->send(event: self::request(kind: 'refund', paymentRequestId: 'pr1'), reason: 'Registration cancelled');
 
 		$this->assertSame(expected: 'refund_requested', actual: $state);
 		$this->assertInstanceOf(expected: PaymentRefundRequestedEvent::class, actual: $sent);
@@ -84,14 +119,18 @@ class PaymentSettlementCommandTest extends TestCase {
 	 */
 	public function testACreditIsShillinqsCreditCommand(): void {
 		$sent = null;
-		$this->dispatcher->expects($this->once())->method('dispatchTyped')
+		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped')
 			->willReturnCallback(static function (Event $event) use (&$sent): void {
+				if ($event instanceof RegistrationSettlementRequested) {
+					return;
+				}
+
 				$sent = $event;
 				$event->accept(state: 'credited');
 			});
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'credit', paymentRequestId: 'pr1', correlationId: 'r1', reason: '');
+			->send(event: self::request(kind: 'credit', paymentRequestId: 'pr1'), reason: '');
 
 		$this->assertSame(expected: 'credited', actual: $state);
 		$this->assertInstanceOf(expected: PaymentCreditRequestedEvent::class, actual: $sent);
@@ -104,13 +143,15 @@ class PaymentSettlementCommandTest extends TestCase {
 	 */
 	public function testARefusedCommandReturnsNull(): void {
 		$this->dispatcher->method('dispatchTyped')->willReturnCallback(static function (Event $event): void {
-			$event->refuse(error: 'not settled');
+			if ($event instanceof PaymentSettlementCommandEvent) {
+				$event->refuse(error: 'not settled');
+			}
 		});
 		$this->logger->expects($this->once())->method('warning')
 			->with($this->anything(), $this->callback(callback: static fn (array $context): bool => $context['error'] === 'not settled'));
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'refund', paymentRequestId: 'pr1', correlationId: 'r1', reason: '');
+			->send(event: self::request(kind: 'refund', paymentRequestId: 'pr1'), reason: '');
 
 		$this->assertNull(actual: $state);
 	}
@@ -121,10 +162,10 @@ class PaymentSettlementCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnUnansweredCommandReturnsNull(): void {
-		$this->dispatcher->expects($this->once())->method('dispatchTyped');
+		$this->dispatcher->expects($this->exactly(2))->method('dispatchTyped');
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'credit', paymentRequestId: 'pr1', correlationId: 'r1', reason: '');
+			->send(event: self::request(kind: 'credit', paymentRequestId: 'pr1'), reason: '');
 
 		$this->assertNull(actual: $state);
 	}
@@ -135,17 +176,17 @@ class PaymentSettlementCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutShillinqNothingIsSent(): void {
-		$this->dispatcher->expects($this->never())->method('dispatchTyped');
+		$this->dispatcher->expects($this->once())->method('dispatchTyped')
+			->with($this->isInstanceOf(className: RegistrationRefundRequested::class));
 		$this->logger->expects($this->once())->method('warning');
 
 		$command = new PaymentSettlementCommand(
 			dispatcher: $this->dispatcher,
 			logger: $this->logger,
-			refundClass: 'OCA\\Absent\\RefundCommand',
-			creditClass: 'OCA\\Absent\\CreditCommand'
+			commands: ['refund' => 'OCA\\Absent\\RefundCommand', 'credit' => 'OCA\\Absent\\CreditCommand']
 		);
 
-		$this->assertNull(actual: $command->ask(outcome: 'refund', paymentRequestId: 'pr1', correlationId: 'r1', reason: ''));
+		$this->assertNull(actual: $command->send(event: self::request(kind: 'refund', paymentRequestId: 'pr1'), reason: ''));
 	}
 
 	/**
@@ -154,10 +195,11 @@ class PaymentSettlementCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testWithoutARequestNothingIsSent(): void {
-		$this->dispatcher->expects($this->never())->method('dispatchTyped');
+		$this->dispatcher->expects($this->once())->method('dispatchTyped')
+			->with($this->isInstanceOf(className: RegistrationRefundRequested::class));
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'refund', paymentRequestId: '', correlationId: 'r1', reason: '');
+			->send(event: self::request(kind: 'refund', paymentRequestId: ''), reason: '');
 
 		$this->assertNull(actual: $state);
 	}
@@ -168,11 +210,15 @@ class PaymentSettlementCommandTest extends TestCase {
 	 * @return void
 	 */
 	public function testAThrowingListenerReturnsNull(): void {
-		$this->dispatcher->method('dispatchTyped')->willThrowException(new RuntimeException(message: 'boom'));
+		$this->dispatcher->method('dispatchTyped')->willReturnCallback(static function (Event $event): void {
+			if ($event instanceof PaymentSettlementCommandEvent) {
+				throw new RuntimeException(message: 'boom');
+			}
+		});
 		$this->logger->expects($this->once())->method('error');
 
 		$state = (new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger))
-			->ask(outcome: 'refund', paymentRequestId: 'pr1', correlationId: 'r1', reason: '');
+			->send(event: self::request(kind: 'refund', paymentRequestId: 'pr1'), reason: '');
 
 		$this->assertNull(actual: $state);
 	}

@@ -29,6 +29,9 @@ use OCA\Larpinq\Service\PaymentRequestBuilder;
 use OCA\Larpinq\Service\PaymentSettlementCommand;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCA\Larpinq\Service\RegistrationSettlement;
+use OCA\Shillinq\Event\PaymentCreditRequestedEvent;
+use OCA\Shillinq\Event\PaymentRefundRequestedEvent;
+use OCA\Shillinq\Event\PaymentSettlementCommandEvent;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IGroupManager;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,6 +47,7 @@ use RuntimeException;
  * @uses   \OCA\Larpinq\Event\RegistrationSettlementRequested
  * @uses   \OCA\Larpinq\Event\RegistrationRefundRequested
  * @uses   \OCA\Larpinq\Event\RegistrationCreditRequested
+ * @uses   \OCA\Larpinq\Service\PaymentSettlementCommand
  */
 class RegistrationSettlementTest extends TestCase {
 
@@ -61,9 +65,6 @@ class RegistrationSettlementTest extends TestCase {
 
 	/** @var LoggerInterface&MockObject */
 	private LoggerInterface $logger;
-
-	/** @var PaymentSettlementCommand&MockObject */
-	private PaymentSettlementCommand $command;
 
 	/**
 	 * The settlement.
@@ -83,7 +84,6 @@ class RegistrationSettlementTest extends TestCase {
 		$this->leaf = $this->createMock(originalClassName: PaymentLeaf::class);
 		$this->dispatcher = $this->createMock(originalClassName: IEventDispatcher::class);
 		$this->logger = $this->createMock(originalClassName: LoggerInterface::class);
-		$this->command = $this->createMock(originalClassName: PaymentSettlementCommand::class);
 
 		$this->builder->method('now')->willReturn(new DateTimeImmutable(datetime: '2026-03-04T05:06:07+00:00'));
 		$this->builder->method('debtor')->willReturn(['name' => 'Alice']);
@@ -96,9 +96,34 @@ class RegistrationSettlementTest extends TestCase {
 			policy: new CancellationPolicy(groups: $this->createMock(originalClassName: IGroupManager::class)),
 			builder: $this->builder,
 			leaf: $this->leaf,
-			dispatcher: $this->dispatcher,
 			logger: $this->logger,
-			command: $this->command
+			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger, commands: [])
+		);
+	}
+
+	/**
+	 * The settlement with shillinq installed, answering every command with this state.
+	 *
+	 * @param string $state What shillinq answers.
+	 * @param array<int, object> $sent Collects every dispatched event.
+	 *
+	 * @return RegistrationSettlement
+	 */
+	private function withShillinq(string $state, array &$sent): RegistrationSettlement {
+		$this->dispatcher->method('dispatchTyped')->willReturnCallback(static function (object $event) use ($state, &$sent): void {
+			$sent[] = $event;
+			if ($event instanceof PaymentSettlementCommandEvent) {
+				$event->accept(state: $state);
+			}
+		});
+
+		return new RegistrationSettlement(
+			fetcher: $this->fetcher,
+			policy: new CancellationPolicy(groups: $this->createMock(originalClassName: IGroupManager::class)),
+			builder: $this->builder,
+			leaf: $this->leaf,
+			logger: $this->logger,
+			command: new PaymentSettlementCommand(dispatcher: $this->dispatcher, logger: $this->logger)
 		);
 	}
 
@@ -332,16 +357,21 @@ class RegistrationSettlementTest extends TestCase {
 	public function testACreditShillinqBookedShowsCredited(): void {
 		$this->eventWithPolicy(paidCancellation: 'credit');
 		$this->leaf->method('requests')->willReturn([]);
-		$this->command->expects($this->once())->method('ask')
-			->with('credit', 'pr1', 'r1', 'Registration cancelled: illness')
-			->willReturn('credited');
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'credited', sent: $sent);
 		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
 			'registration',
 			['settlement' => 'credited', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
 			'r1'
 		);
 
-		$this->settlement->afterWrite(new: self::cancelledPaid(fields: ['cancelReason' => 'illness']), old: ['status' => 'accepted']);
+		$settlement->afterWrite(new: self::cancelledPaid(fields: ['cancelReason' => 'illness']), old: ['status' => 'accepted']);
+
+		$this->assertCount(expectedCount: 2, haystack: $sent);
+		$this->assertInstanceOf(expected: RegistrationCreditRequested::class, actual: $sent[0]);
+		$this->assertInstanceOf(expected: PaymentCreditRequestedEvent::class, actual: $sent[1]);
+		$this->assertSame(expected: 'Registration cancelled: illness', actual: $sent[1]->getReason());
+		$this->assertSame(expected: 'r1', actual: $sent[1]->getCorrelationId());
 	}
 
 	/**
@@ -352,16 +382,18 @@ class RegistrationSettlementTest extends TestCase {
 	public function testARefundShillinqTookStaysRequested(): void {
 		$this->eventWithPolicy(paidCancellation: 'refund');
 		$this->leaf->method('requests')->willReturn([]);
-		$this->command->expects($this->once())->method('ask')
-			->with('refund', 'pr1', 'r1', 'Registration cancelled')
-			->willReturn('refund_requested');
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'refund_requested', sent: $sent);
 		$this->fetcher->expects($this->once())->method('saveObjectWithAppAuthority')->with(
 			'registration',
 			['settlement' => 'refund-requested', 'settlementRequestedAt' => '2026-03-04T05:06:07+00:00'],
 			'r1'
 		);
 
-		$this->settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+		$settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+
+		$this->assertInstanceOf(expected: PaymentRefundRequestedEvent::class, actual: $sent[1]);
+		$this->assertSame(expected: 'Registration cancelled', actual: $sent[1]->getReason());
 	}
 
 	/**
@@ -371,8 +403,11 @@ class RegistrationSettlementTest extends TestCase {
 	 */
 	public function testNothingBackAsksShillinqForNothing(): void {
 		$this->eventWithPolicy(paidCancellation: 'none');
-		$this->command->expects($this->never())->method('ask');
+		$sent = [];
+		$settlement = $this->withShillinq(state: 'credited', sent: $sent);
 
-		$this->settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+		$settlement->afterWrite(new: self::cancelledPaid(), old: ['status' => 'accepted']);
+
+		$this->assertSame(expected: [], actual: $sent);
 	}
 }

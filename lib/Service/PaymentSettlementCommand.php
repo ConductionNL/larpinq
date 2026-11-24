@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
+use OCA\Larpinq\Event\RegistrationSettlementRequested;
 use OCP\EventDispatcher\IEventDispatcher;
 use Psr\Log\LoggerInterface;
 use Throwable;
@@ -63,48 +64,42 @@ class PaymentSettlementCommand {
 	/**
 	 * Constructor.
 	 *
-	 * @param IEventDispatcher $dispatcher Sends the command.
+	 * @param IEventDispatcher $dispatcher Sends the commands.
 	 * @param LoggerInterface $logger The logger.
-	 * @param string $refundClass The refund command class, looked up by name.
-	 * @param string $creditClass The credit command class, looked up by name.
+	 * @param array<string, string> $commands The payments app's command class per kind, looked up by name.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		private readonly IEventDispatcher $dispatcher,
 		private readonly LoggerInterface $logger,
-		private readonly string $refundClass = self::REFUND_EVENT,
-		private readonly string $creditClass = self::CREDIT_EVENT,
+		private readonly array $commands = [
+			CancellationPolicy::REFUND => self::REFUND_EVENT,
+			CancellationPolicy::CREDIT => self::CREDIT_EVENT,
+		],
 	) {
 	}//end __construct()
 
 	/**
-	 * Ask for a refund or a credit of one settled payment request.
+	 * Send larpinq's own refund or credit command, then hand it to the payments app.
 	 *
-	 * @param string $outcome `refund` or `credit`.
-	 * @param string $paymentRequestId The settled request.
-	 * @param string $correlationId What the money was for (the registration).
+	 * @param RegistrationSettlementRequested $event Larpinq's command, for its own listeners.
 	 * @param string $reason Why the money goes back.
 	 *
 	 * @return string|null The request's state as the payments app answers it
 	 *                     (`refund_requested` or `credited`), or null when the
 	 *                     app is absent or refused the command.
 	 *
-	 * @psalm-suppress MixedMethodCall The payments app's event class is an optional dependency.
-	 * @psalm-suppress MixedAssignment The payments app's event class is an optional dependency.
-	 *
 	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
 	 */
-	public function ask(string $outcome, string $paymentRequestId, string $correlationId, string $reason): ?string {
-		$class = $this->refundClass;
-		if ($outcome === CancellationPolicy::CREDIT) {
-			$class = $this->creditClass;
-		}
+	public function send(RegistrationSettlementRequested $event, string $reason): ?string {
+		$this->dispatcher->dispatchTyped($event);
 
-		if ($paymentRequestId === '' || class_exists($class) === false) {
+		$class = (string)($this->commands[$event->getKind()] ?? '');
+		if ($event->getPaymentRequestId() === '' || $class === '' || class_exists($class) === false) {
 			$this->logger->warning(
 				'Larpinq: the {outcome} of registration {id} was not handed to the payments app: it is not installed or the request is unknown.',
-				['outcome' => $outcome, 'id' => $correlationId]
+				['outcome' => $event->getKind(), 'id' => $event->getRegistrationId()]
 			);
 			return null;
 		}
@@ -112,35 +107,34 @@ class PaymentSettlementCommand {
 		try {
 			$command = new $class(
 				sourceApp: self::SOURCE_APP,
-				paymentRequestId: $paymentRequestId,
+				paymentRequestId: $event->getPaymentRequestId(),
 				reason: $reason,
-				correlationId: $correlationId,
+				correlationId: $event->getRegistrationId(),
 			);
 			$this->dispatcher->dispatchTyped($command);
 		} catch (Throwable $e) {
 			$this->logger->error(
 				'Larpinq: the {outcome} of registration {id} could not be sent to the payments app.',
-				['outcome' => $outcome, 'id' => $correlationId, 'exception' => $e]
+				['outcome' => $event->getKind(), 'id' => $event->getRegistrationId(), 'exception' => $e]
 			);
 			return null;
 		}
 
-		return $this->answer(command: $command, outcome: $outcome, correlationId: $correlationId);
-	}//end ask()
+		return $this->answer(command: $command, event: $event);
+	}//end send()
 
 	/**
 	 * The state the payments app answered, or null when it did not take the command.
 	 *
 	 * @param object $command The dispatched command.
-	 * @param string $outcome `refund` or `credit`.
-	 * @param string $correlationId The registration.
+	 * @param RegistrationSettlementRequested $event Larpinq's command it answers.
 	 *
 	 * @return string|null The state.
 	 *
 	 * @psalm-suppress MixedMethodCall The payments app's event class is an optional dependency.
 	 * @psalm-suppress MixedAssignment The payments app's event class is an optional dependency.
 	 */
-	private function answer(object $command, string $outcome, string $correlationId): ?string {
+	private function answer(object $command, RegistrationSettlementRequested $event): ?string {
 		$result = null;
 		if (method_exists($command, 'isHandled') === true && $command->isHandled() === true && method_exists($command, 'getResult') === true) {
 			$result = $command->getResult();
@@ -157,7 +151,7 @@ class PaymentSettlementCommand {
 
 		$this->logger->warning(
 			'Larpinq: the payments app did not take the {outcome} of registration {id}: {error}',
-			['outcome' => $outcome, 'id' => $correlationId, 'error' => $error]
+			['outcome' => $event->getKind(), 'id' => $event->getRegistrationId(), 'error' => $error]
 		);
 		return null;
 	}//end answer()

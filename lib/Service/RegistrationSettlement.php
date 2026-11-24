@@ -24,7 +24,6 @@ use DateTimeInterface;
 use OCA\Larpinq\Event\RegistrationCreditRequested;
 use OCA\Larpinq\Event\RegistrationRefundRequested;
 use OCA\Larpinq\Kernel\Contracts\RegistrationSettlementInterface;
-use OCP\EventDispatcher\IEventDispatcher;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -66,9 +65,8 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 * @param CancellationPolicy $policy What a paid cancellation gets.
 	 * @param PaymentRequestBuilder $builder Amount, currency, debtor and the clock.
 	 * @param PaymentLeaf $leaf The paid request as shillinq holds it.
-	 * @param IEventDispatcher $dispatcher Sends the request to larpinq's own listeners.
 	 * @param LoggerInterface $logger The logger.
-	 * @param PaymentSettlementCommand $command Hands the refund or credit to shillinq.
+	 * @param PaymentSettlementCommand $command Sends the refund or credit, to larpinq's listeners and to shillinq.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
@@ -77,7 +75,6 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		private readonly CancellationPolicy $policy,
 		private readonly PaymentRequestBuilder $builder,
 		private readonly PaymentLeaf $leaf,
-		private readonly IEventDispatcher $dispatcher,
 		private readonly LoggerInterface $logger,
 		private readonly PaymentSettlementCommand $command,
 	) {
@@ -117,7 +114,6 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		$outcome = $this->policy->paidOutcome(event: $event, choice: (string)($new['settlementChoice'] ?? ''));
 		$fields = ['settlement' => CancellationPolicy::NONE];
 		if ($outcome !== CancellationPolicy::NONE) {
-			$this->dispatcher->dispatchTyped($this->command(registration: $new, outcome: $outcome));
 			$fields = [
 				'settlement' => $this->handOff(registration: $new, outcome: $outcome),
 				'settlementRequestedAt' => $this->builder->now()->format(DateTimeInterface::ATOM),
@@ -128,7 +124,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	}//end afterWrite()
 
 	/**
-	 * Hand the refund or credit to shillinq and say what the registration shows.
+	 * Send the refund or credit and say what the registration shows.
 	 *
 	 * Shillinq answers a credit as booked at once (`credited`) and a refund as
 	 * waiting for finance (`refund_requested`; its object event later reads
@@ -149,12 +145,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 			$reason .= ': ' . $cancelReason;
 		}
 
-		$state = $this->command->ask(
-			outcome: $outcome,
-			paymentRequestId: (string)($registration['paymentRequestId'] ?? ''),
-			correlationId: (string)($registration['id'] ?? ''),
-			reason: $reason
-		);
+		$state = $this->command->send(event: $this->request(registration: $registration, outcome: $outcome), reason: $reason);
 		if ($state === self::CREDITED || $state === self::REFUNDED) {
 			return $state;
 		}
@@ -170,7 +161,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 	 *
 	 * @return RegistrationRefundRequested|RegistrationCreditRequested The command.
 	 */
-	private function command(array $registration, string $outcome): RegistrationRefundRequested|RegistrationCreditRequested {
+	private function request(array $registration, string $outcome): RegistrationRefundRequested|RegistrationCreditRequested {
 		$id = (string)($registration['id'] ?? '');
 		$requestId = (string)($registration['paymentRequestId'] ?? '');
 		$args = [
@@ -188,7 +179,7 @@ class RegistrationSettlement implements RegistrationSettlementInterface {
 		}
 
 		return new RegistrationRefundRequested(...$args);
-	}//end command()
+	}//end request()
 
 	/**
 	 * The amount of the paid request as shillinq holds it, else the registration's price lines.
