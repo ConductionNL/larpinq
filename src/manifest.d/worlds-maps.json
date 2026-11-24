@@ -47,6 +47,38 @@
 						}
 					},
 					{
+						"id": "map-view",
+						"type": "map",
+						"title": "Map",
+						"icon": "MapOutline",
+						"_note": "worlds-maps REQ-WMP-002: the map object's own picture with its pins in pixels. The image layer takes url, width and height from the record (@object.<path>, nextcloud-vue map-image-from-record); a file property gives its download URL. Pins come from larping_map_pin filtered on this map; OpenRegister's read rules hide game-master pins from players. A pin opens its lore page.",
+						"content": {
+							"height": "560px",
+							"ariaLabel": "Map",
+							"layers": [
+								{
+									"type": "image",
+									"url": "@object.image",
+									"width": "@object.width",
+									"height": "@object.height"
+								}
+							],
+							"markers": {
+								"xField": "x",
+								"yField": "y",
+								"popupField": "label",
+								"dataSource": {
+									"register": "larpinq",
+									"schema": "larping_map_pin",
+									"filter": {
+										"map": "@objectId"
+									}
+								},
+								"detailLink": "/index.php/apps/larpinq/lore/{lorePage}"
+							}
+						}
+					},
+					{
 						"id": "map-pins",
 						"type": "object-list",
 						"title": "Pins",
@@ -92,10 +124,18 @@
 						"gridHeight": 4
 					},
 					{
+						"id": "3",
+						"widgetId": "map-view",
+						"gridX": 0,
+						"gridY": 4,
+						"gridWidth": 12,
+						"gridHeight": 8
+					},
+					{
 						"id": "2",
 						"widgetId": "map-pins",
 						"gridX": 0,
-						"gridY": 4,
+						"gridY": 12,
 						"gridWidth": 12,
 						"gridHeight": 6
 					}
