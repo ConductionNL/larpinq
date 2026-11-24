@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  */
 
 declare(strict_types=1);
@@ -29,7 +29,7 @@ use RuntimeException;
  * @category Service
  * @package  OCA\Larpinq\Service
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+ * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
  */
 class EventMessageRefusedException extends RuntimeException {
 }//end class

@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -96,7 +96,7 @@ class EventMessageService {
 	 *
 	 * @return array{statuses: list<string>, checkedIn: bool, paymentOpen: bool, ticketRoles: list<string>}
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+	 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 	 */
 	public function normaliseAudience(array $raw): array {
 		return $this->audience->normalise(raw: $raw);
@@ -112,7 +112,7 @@ class EventMessageService {
 	 *
 	 * @return array{recipients: list<array{name: string, email: string}>, noAddress: list<array{name: string}>}
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	public function recipients(string $eventId, array $audience): array {
 		$audience = $this->normaliseAudience(raw: $audience);
@@ -146,7 +146,7 @@ class EventMessageService {
 	 *
 	 * @return array{count: int, names: list<string>, noAddressCount: int, noAddressNames: list<string>}
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+	 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 	 */
 	public function preview(string $eventId, array $audience): array {
 		$resolved = $this->recipients(eventId: $eventId, audience: $audience);
@@ -169,7 +169,7 @@ class EventMessageService {
 	 *
 	 * @return array<string, mixed> The saved message.
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+	 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 	 */
 	public function createDraft(string $eventId, array $input, string $uid): array {
 		return $this->fetcher->saveObject(
@@ -197,7 +197,7 @@ class EventMessageService {
 	 *
 	 * @throws EventMessageRefusedException When the message is not a draft.
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+	 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 	 */
 	public function queue(array $message, array $event, string $uid): array {
 		if (($message['state'] ?? '') !== 'draft') {
@@ -248,7 +248,7 @@ class EventMessageService {
 	 *
 	 * @return array{sent: int, failed: int, done: bool} What this batch did.
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+	 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 	 */
 	public function sendBatch(array $argument): array {
 		$eventId = (string)($argument['eventId'] ?? '');
@@ -341,7 +341,7 @@ class EventMessageService {
 	 *
 	 * @return string The body to send.
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+	 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 	 */
 	public function fillPlaceholders(string $text, string $eventName, string $eventDate): string {
 		$date = $eventDate;

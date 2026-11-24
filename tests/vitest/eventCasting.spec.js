@@ -7,7 +7,7 @@
  * casting deadline, and turning a player's ranking into preference writes.
  * Only fetch is faked.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+ * @spec openspec/specs/event-casting/spec.md
  */
 
 import { afterEach, describe, expect, it } from 'vitest'

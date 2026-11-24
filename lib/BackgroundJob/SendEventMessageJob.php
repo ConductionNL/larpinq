@@ -10,7 +10,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -53,7 +53,7 @@ class SendEventMessageJob extends QueuedJob {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+	 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 	 */
 	protected function run($argument): void {
 		if (is_array($argument) === false) {

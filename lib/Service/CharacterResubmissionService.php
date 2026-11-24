@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 
 declare(strict_types=1);
@@ -31,7 +31,7 @@ use Throwable;
  * changes nothing but the approval state. The register's lifecycle matches the
  * move to its "resubmit" transition, which tells the game masters.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+ * @spec openspec/specs/character-management/spec.md
  */
 class CharacterResubmissionService {
 
@@ -54,7 +54,7 @@ class CharacterResubmissionService {
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes register objects.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md
+	 * @spec openspec/specs/character-management/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -74,7 +74,7 @@ class CharacterResubmissionService {
 	 *                                      caller is neither its owner nor a game master, 409 when
 	 *                                      it is not rejected.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	 * @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
 	 */
 	public function resubmit(string $characterId, string $uid, bool $isGameMaster): array {
 		try {

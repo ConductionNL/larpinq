@@ -7,7 +7,7 @@
  * the Reject and Submit again actions on the character page, and the reason
  * in the Characters list.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+ * @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
  */
 
 import fs from 'fs'

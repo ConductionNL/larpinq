@@ -25,7 +25,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use InvalidArgumentException;
 /**
  * Pairs players with characters to minimise the total rank.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 class CastingSolver {
 
@@ -63,7 +63,7 @@ class CastingSolver {
 	 *
 	 * @throws InvalidArgumentException When there are more than MAX_SIZE players or characters.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+	 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 	 */
 	public function solve(array $players, array $characters, array $ranks): array {
 		$players    = array_values(array_unique($players));

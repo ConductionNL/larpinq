@@ -1059,7 +1059,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page (/settings/:id), World data widget",
 				"change": "openspec/changes/archive/setting-management",
-				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/setting-management :: The world page shows its description (REQ-SMD-001)"
+				"requirement": "openspec/specs/setting-management :: The world page shows its description (REQ-SMD-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1133,8 +1133,8 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "SettingDetail page 'Events in this world' list, sorted by start date",
 				"change": "openspec/changes/archive/setting-management",
-				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/setting-management :: A world keeps a timeline of its history (REQ-SMD-002)",
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"requirement": "openspec/specs/setting-management :: A world keeps a timeline of its history (REQ-SMD-002)",
+				"plan": "openspec/changes/archive/2026-11-24-capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -1363,9 +1363,9 @@
 				"requirement": [
 					"openspec/specs/character-management :: Character Types and Approval Workflow",
 					"openspec/specs/notifications :: Character submission and approval notifications",
-					"openspec/changes/capability-rows-missing-requirements/specs/character-management :: A game master rejects a submitted character with a reason (REQ-CTA-001)"
+					"openspec/specs/character-management :: A game master rejects a submitted character with a reason (REQ-CTA-001)"
 				],
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"plan": "openspec/changes/archive/2026-11-24-capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2149,7 +2149,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page, Player data widget",
 				"change": "openspec/changes/archive/2026-03-21-events-players",
-				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/events-players :: A player is linked to their Nextcloud user account (REQ-EPL-001)"
+				"requirement": "openspec/specs/events-players :: A player is linked to their Nextcloud user account (REQ-EPL-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -2184,7 +2184,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "PlayerDetail page, Characters played widget",
 				"change": "openspec/changes/archive/2026-03-21-events-players",
-				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/events-players :: The player page lists the player's characters (REQ-EPL-002)"
+				"requirement": "openspec/specs/events-players :: The player page lists the player's characters (REQ-EPL-002)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -3476,9 +3476,9 @@
 				"change": "openspec/changes/archive/skill-requirement-enforcement",
 				"requirement": [
 					"openspec/specs/skill-requirement-enforcement :: GM override MUST be explicit and audited",
-					"openspec/changes/capability-rows-missing-requirements/specs/skill-requirement-enforcement :: A game master records an override on the character page (REQ-SRE-001)"
+					"openspec/specs/skill-requirement-enforcement :: A game master records an override on the character page (REQ-SRE-001)"
 				],
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"plan": "openspec/changes/archive/2026-11-24-capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read",
@@ -4205,7 +4205,7 @@
 				"evidence": "grep -rniE \"crew|npc\" lib src --include=*.php --include=*.vue --include=*.js: no hits; character.type is a free-text field on the character schema with no crew/NPC role assignment surface tied to an event",
 				"owner": "ConductionNL/larpinq",
 				"change": "events-casting-and-crew-roles",
-				"requirement": "openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Volunteers fill crew and NPC roles (REQ-ECC-004)"
+				"requirement": "openspec/specs/event-casting :: Volunteers fill crew and NPC roles (REQ-ECC-004)"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4219,7 +4219,7 @@
 				"kanka": "source read at tag 3.15: no crew/volunteer model; organisation member roles are in-fiction (app/Models/OrganisationMember.php)",
 				"pretix": "source read at tag v2026.7.0: looked in src/pretix/base/models/organizer.py:362 Team (backend staff permissions only) and src/pretix/base/models/items.py; nothing assigns crew or NPC roles to volunteers for an event beyond selling a separate crew ticket"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-events-casting-and-crew-roles (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrEvenement"
@@ -4454,9 +4454,9 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/registration-payments-through-shillinq",
+				"change": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
 				"reachedOn": "Registration page (/registrations/:id): Payment link and Reference; Actions, Request payment for game masters",
-				"requirement": "openspec/changes/registration-payments-through-shillinq/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
+				"requirement": "openspec/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
@@ -4470,7 +4470,7 @@
 				"kanka": "source read at tag 3.15: payments in routes/settings.php:93-112 are Kanka subscriptions for the user, not event fees",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/payment.py provider framework with in-tree providers src/pretix/plugins/stripe, src/pretix/plugins/paypal2 and src/pretix/plugins/banktransfer, driven by src/pretix/presale/checkoutflow.py:1274 PaymentStep"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-payments-through-shillinq (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"
@@ -4490,11 +4490,11 @@
 				"state": "built",
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/registration-payments-through-shillinq",
+				"change": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
 				"reachedOn": "Registrations (/registrations): Payment column and filter; event page Paid and Payment open counts",
 				"requirement": [
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)",
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Organisers see who paid (REQ-RPS-005)"
+					"openspec/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)",
+					"openspec/specs/event-registration :: Organisers see who paid (REQ-RPS-005)"
 				]
 			},
 			"provider": "self",
@@ -4509,7 +4509,7 @@
 				"kanka": "source read at tag 3.15: no participant payment records",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/orders.py:156-157 order status pending/paid and :1714 OrderPayment per payment, listed and filtered in src/pretix/control/views/orders.py:415 OrderList"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-payments-through-shillinq (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmeldingen"
@@ -4642,10 +4642,10 @@
 				"state": "specified",
 				"evidence": "grep -rniE \"invoice\" lib src --include=*.php --include=*.vue --include=*.js: no hits",
 				"owner": "ConductionNL/larpinq",
-				"change": "openspec/changes/registration-payments-through-shillinq",
-				"plan": "openspec/changes/registration-payments-through-shillinq",
+				"change": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
+				"plan": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
 				"requirement": [
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Invoices and receipts come from shillinq (REQ-RPS-006)"
+					"openspec/specs/event-registration :: Invoices and receipts come from shillinq (REQ-RPS-006)"
 				],
 				"note": "Plan: registration-payments-through-shillinq task 6.1 (larpinq side), after shillinq changes/receivables-object-request-settlement and changes/sales-invoice-document."
 			},
@@ -4661,7 +4661,7 @@
 				"kanka": "source read at tag 3.15: billing history invoices are Kanka's own subscription invoices (routes/settings.php:111-112)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/invoices.py:68 Invoice rendered by src/pretix/base/invoicing/pdf.py and sent by email or e-invoice transmission (src/pretix/base/invoicing/email.py, peppol.py)"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-payments-through-shillinq (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmelding"
@@ -4753,7 +4753,7 @@
 				"change": "openspec/changes/archive/2026-06-14-event-runsheet-export",
 				"requirement": "openspec/specs/pdf-export :: Event Run-Sheet Generation via DocuDesk",
 				"plan": [
-					"openspec/changes/capability-rows-missing-requirements",
+					"openspec/changes/archive/2026-11-24-capability-rows-missing-requirements",
 					"openspec/changes/larpinq-runsheet-scoped-cast-query"
 				]
 			},
@@ -4986,8 +4986,8 @@
 				"owner": "ConductionNL/larpinq",
 				"change": "communication-mail-participants",
 				"requirement": [
-					"openspec/changes/communication-mail-participants/specs/event-messages :: Game masters write a message to an event's participants (REQ-CMP-001)",
-					"openspec/changes/communication-mail-participants/specs/event-messages :: Each recipient gets their own mail (REQ-CMP-003)"
+					"openspec/specs/event-messages :: Game masters write a message to an event's participants (REQ-CMP-001)",
+					"openspec/specs/event-messages :: Each recipient gets their own mail (REQ-CMP-003)"
 				]
 			},
 			"provider": "self",
@@ -5002,7 +5002,7 @@
 				"kanka": "source read at tag 3.15: outgoing mail limited to account and subscription mails (app/Mail/*); no mail to members",
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/sendmail/views.py:243 OrderSendView emails everyone who ordered for an event, filtered by product, status or check-in, with history at :524"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/communication-mail-participants (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-communication-mail-participants (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrEvenementInchecken"
@@ -6507,7 +6507,7 @@
 				"reachedOn": "Event page: Registration options list and Choices tab; registration page Tickets tab, Options",
 				"change": "openspec/changes/archive/2026-10-01-registration-ticket-types-and-options",
 				"requirement": [
-					"openspec/changes/capability-rows-missing-requirements/specs/event-registration :: A player chooses the event's options on the registration (REQ-RTO-007)",
+					"openspec/specs/event-registration :: A player chooses the event's options on the registration (REQ-RTO-007)",
 					"openspec/specs/event-registration :: Organisers see what was chosen (REQ-RTO-006)"
 				]
 			},
@@ -6551,9 +6551,9 @@
 				"change": "openspec/changes/archive/2026-03-21-character-management",
 				"requirement": [
 					"openspec/specs/character-management :: Currency System",
-					"openspec/changes/capability-rows-missing-requirements/specs/rpg-system :: Characters buy items with in-game money (REQ-RPG-001)"
+					"openspec/specs/rpg-system :: Characters buy items with in-game money (REQ-RPG-001)"
 				],
-				"plan": "openspec/changes/capability-rows-missing-requirements"
+				"plan": "openspec/changes/archive/2026-11-24-capability-rows-missing-requirements"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -6907,7 +6907,7 @@
 				"requirement": [
 					"openspec/specs/event-registration :: Game masters approve registrations (REQ-RIC-004)",
 					"openspec/specs/event-registration :: Accepted registrations are the participants (REQ-RIC-005)",
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
+					"openspec/specs/event-registration :: An accepted registration gets a payment request (REQ-RPS-001)"
 				]
 			},
 			"provider": "self",
@@ -6948,8 +6948,8 @@
 				"evidence": "lib/Settings/register.d/registration-payments-through-shillinq.json (event.paymentRequired, payBy, paymentCode; registration.paymentState, paymentRequestId, paymentLink, paymentReference, payBy, paymentReminderAt, invoiceRequested, cancelReason; payment-reminder notification rule), lib/Service/RegistrationPaymentService.php + lib/Service/PaymentRequestBuilder.php + lib/Service/PaymentLeaf.php (a payment request per accepted priced registration through shillinq's shillinq-payment-requests leaf when a game master accepts, else to-request; amount = own lines in currency units), lib/Listener/PaymentRequestListener.php (shillinq PaymentRequest captured -> paid), lib/Service/PaymentFollowUp.php + lib/BackgroundJob/RegistrationPaymentJob.php (daily: leaf reconcile, reminder 3 days before, expiry a day after), lib/Controller/RegistrationPaymentsController.php (POST /api/registrations/{id}/payment-request), src/manifest.d/registration-intake-and-capacity.json + EventDetail; tests/unit/Service/RegistrationPaymentServiceTest.php (payload validated against shillinq's PaymentRequest schema and the registration schema with Opis), tests/unit/Listener/PaymentRequestListenerTest.php, tests/unit/BackgroundJob/RegistrationPaymentJobTest.php, tests/unit/Controller/RegistrationPaymentsControllerTest.php",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "Notification and email to the player three days before Pay by (registration payment-reminder rule)",
-				"change": "openspec/changes/registration-payments-through-shillinq",
-				"requirement": "openspec/changes/registration-payments-through-shillinq/specs/event-registration :: Players are reminded before the pay-by date (REQ-RPS-003)"
+				"change": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
+				"requirement": "openspec/specs/event-registration :: Players are reminded before the pay-by date (REQ-RPS-003)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence; the money, the link and the capture are shillinq's",
@@ -6965,7 +6965,7 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/settings.py:2672 mail_days_order_expire_warning sends a reminder a set number of days before an unpaid order expires; 2026.7 also mails on incomplete bank transfers"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-payments-through-shillinq (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": [
@@ -6989,11 +6989,11 @@
 				"evidence": "there is no registration or order object in lib/Settings/larpinq_register.json (ten schemas: character, player, ability, skill, item, condition, effect, event, setting, xpAward); sign-up goes to the Nextcloud Forms leaf (lib/Settings/register.d/event-signup-to-forms-leaf.json) and payment is not modelled",
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "nothing: see evidence",
-				"change": "openspec/changes/registration-payments-through-shillinq",
-				"plan": "openspec/changes/registration-payments-through-shillinq",
+				"change": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
+				"plan": "openspec/changes/archive/2026-11-24-registration-payments-through-shillinq",
 				"requirement": [
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: A game master uploads a bank statement to match transfers (REQ-RPS-007)",
-					"openspec/changes/registration-payments-through-shillinq/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)"
+					"openspec/specs/event-registration :: A game master uploads a bank statement to match transfers (REQ-RPS-007)",
+					"openspec/specs/event-registration :: The payment state follows shillinq (REQ-RPS-002)"
 				],
 				"note": "Plan: registration-payments-through-shillinq task 6.2 (larpinq side), after shillinq changes/receivables-object-request-settlement; import through shillinq specs/shillinq-bank-statement-wizard."
 			},
@@ -7011,7 +7011,7 @@
 				"pretix": "source read at tag v2026.7.0: src/pretix/plugins/banktransfer/views.py:68,424 imports CSV, MT940 and SEPA CAMT statements (src/pretix/plugins/banktransfer/camtimport.py) and matches them to orders"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/registration-payments-through-shillinq (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-registration-payments-through-shillinq (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrAanmeldingen"
@@ -7356,8 +7356,8 @@
 				"reachedOn": "nothing: see evidence",
 				"change": "events-casting-and-crew-roles",
 				"requirement": [
-					"openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Players rank characters open for casting (REQ-ECC-001)",
-					"openspec/changes/events-casting-and-crew-roles/specs/event-casting :: Larpinq proposes the best overall casting (REQ-ECC-002)"
+					"openspec/specs/event-casting :: Players rank characters open for casting (REQ-ECC-001)",
+					"openspec/specs/event-casting :: Larpinq proposes the best overall casting (REQ-ECC-002)"
 				]
 			},
 			"provider": "self",
@@ -7374,7 +7374,7 @@
 				"pretix": "source read at tag v2026.7.0: no character model in src/pretix/base/models/; no ranking or assignment solver anywhere in src/pretix/base/services/"
 			},
 			"addedOn": "2026-09-26",
-			"note": "Specified 2026-09-27 in openspec/changes/events-casting-and-crew-roles (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-24-events-casting-and-crew-roles (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrPortaal"
@@ -7657,7 +7657,7 @@
 				"owner": "ConductionNL/larpinq",
 				"reachedOn": "/events/:id sidebar, Deck tab, when the Deck app is enabled",
 				"change": "openspec/changes/archive/2026-09-29-leaf-integrations",
-				"requirement": "openspec/changes/capability-rows-missing-requirements/specs/leaf-integrations :: An event's organising milestones are Deck cards (REQ-LFI-001)"
+				"requirement": "openspec/specs/leaf-integrations :: An event's organising milestones are Deck cards (REQ-LFI-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: the logic is in this repository at the path in built.evidence",
@@ -7764,23 +7764,23 @@
 			"pretix": "no",
 			"built": {
 				"state": "specified",
-				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees, getCharacterSheet) proposed in openspec/changes/hermiq-ai-tooling/ are NOT built: its tasks.md is entirely unchecked ([ ]) and lib/Mcp/LarpinqScannableServices.php does not exist (find lib -iname '*Mcp*': only the register.d json).",
+				"evidence": "lib/Settings/register.d/larpinq-mcp-adoption.json declares x-openregister-mcp search/get/create tools on 9 schemas (character, player, setting, skill, item, condition, event, xpAward, attendance); openspec/changes/archive/2026-11-24-larpinq-mcp-adoption/proposal.md states OpenRegister derives MCP tools from this dialect with no hand-written provider code. The curated, non-CRUD tools (awardXpToAttendees, getCharacterSheet) proposed in openspec/changes/hermiq-ai-tooling/ are NOT built: its tasks.md is entirely unchecked ([ ]) and lib/Mcp/LarpinqScannableServices.php does not exist (find lib -iname '*Mcp*': only the register.d json).",
 				"owner": "ConductionNL/openregister",
 				"reachedOn": "nothing confirmable from this repo: whether OpenRegister actually derives and exposes MCP tools from the x-openregister-mcp dialect cannot be verified by reading larpinq's own code",
-				"change": "openspec/changes/larpinq-mcp-adoption",
+				"change": "openspec/changes/archive/2026-11-24-larpinq-mcp-adoption",
 				"plan": [
-					"openspec/changes/larpinq-mcp-adoption",
+					"openspec/changes/archive/2026-11-24-larpinq-mcp-adoption",
 					"openspec/changes/hermiq-ai-tooling"
 				],
 				"requirement": [
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-001 — Curated read-only MCP dialect on 6 reference/lookup schemas",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-002 — `character` exposes search, get, and a bounded create",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-003 — `xpAward` exposes search, get, and a bounded create",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-004 — `attendance` exposes search, get, and a bounded update",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-005 — Every declared search filter names a real schema property",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-006 — No excluded schema, and no undeclared verb, is exposed",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-007 — MCP dialect is declared via a register fragment, not the monolith",
-					"openspec/changes/larpinq-mcp-adoption/specs/larpinq-mcp-adoption :: REQ-008 — MCP tools are derived without app-level PHP",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-001 — Curated read-only MCP dialect on 6 reference/lookup schemas",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-002 — `character` exposes search, get, and a bounded create",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-003 — `xpAward` exposes search, get, and a bounded create",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-004 — `attendance` exposes search, get, and a bounded update",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-005 — Every declared search filter names a real schema property",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-006 — No excluded schema, and no undeclared verb, is exposed",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-007 — MCP dialect is declared via a register fragment, not the monolith",
+					"openspec/specs/larpinq-mcp-adoption :: REQ-008 — MCP tools are derived without app-level PHP",
 					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-001 — A curated event-scoped XP award tool exists",
 					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-002 — XP awards and sheet-affecting writes require a game-master approval gate",
 					"openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling :: REQ-003 — A curated calculated-character-sheet read tool exists",

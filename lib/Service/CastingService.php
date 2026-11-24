@@ -23,8 +23,8 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Proposes and confirms the casting of an event.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 class CastingService {
 
@@ -77,7 +77,7 @@ class CastingService {
 	 *
 	 * @throws CastingRefusedException When the event has more than 500 players or characters in casting.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+	 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 	 */
 	public function propose(string $eventId): array {
 		$characters    = $this->openCharacters(eventId: $eventId);
@@ -122,7 +122,7 @@ class CastingService {
 	 *     refused: list<array{registration: string, character: string, reason: string}>
 	 * } The pairs written, and the pairs refused with the reason.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+	 * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
 	 */
 	public function confirm(string $eventId, array $pairs): array {
 		$characters    = $this->openCharacters(eventId: $eventId);

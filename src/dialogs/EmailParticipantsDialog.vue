@@ -169,7 +169,7 @@ export default {
 		 * The event this dialog writes to.
 		 *
 		 * @return {string} The event UUID.
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+		 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 		 */
 		id() {
 			const fromProp = this.eventId.startsWith('@') ? '' : this.eventId
@@ -180,7 +180,7 @@ export default {
 		 * The audience as the endpoints take it.
 		 *
 		 * @return {object} The audience.
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
+		 * @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001
 		 */
 		audience() {
 			return {
@@ -195,7 +195,7 @@ export default {
 		 * Sending needs a subject, a body and a preview with at least one recipient.
 		 *
 		 * @return {boolean}
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+		 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 		 */
 		canSend() {
 			return !this.busy
@@ -205,7 +205,7 @@ export default {
 				&& this.preview.count > 0
 		},
 
-		/** @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001 */
+		/** @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001 */
 		statusOptions() {
 			return [
 				{ value: 'accepted', label: t('larpinq', 'Accepted') },
@@ -214,7 +214,7 @@ export default {
 			]
 		},
 
-		/** @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001 */
+		/** @spec openspec/specs/event-messages/spec.md#requirement-game-masters-write-a-message-to-an-events-participants-req-cmp-001 */
 		roleOptions() {
 			return [
 				{ value: 'player', label: t('larpinq', 'Player') },
@@ -230,7 +230,7 @@ export default {
 		/**
 		 * A changed audience needs a new preview before it can be sent.
 		 *
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+		 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 		 */
 		onAudienceChange() {
 			this.preview = null
@@ -241,7 +241,7 @@ export default {
 		 * Ask how many people the message reaches.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
+		 * @spec openspec/specs/event-messages/spec.md#requirement-the-recipients-are-shown-before-sending-req-cmp-002
 		 */
 		async loadPreview() {
 			this.busy = true
@@ -261,7 +261,7 @@ export default {
 		 * Save and send the message after the confirmation.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
+		 * @spec openspec/specs/event-messages/spec.md#requirement-each-recipient-gets-their-own-mail-req-cmp-003
 		 */
 		async send() {
 			this.busy = true

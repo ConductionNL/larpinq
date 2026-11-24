@@ -23,7 +23,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 
 declare(strict_types=1);
@@ -38,7 +38,7 @@ use Throwable;
 /**
  * The write rule on casting preferences.
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  */
 class CastingPreferenceGuard {
 
@@ -67,7 +67,7 @@ class CastingPreferenceGuard {
 	 *
 	 * @return array<string, mixed>|null The errors payload, or null.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+	 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 	 */
 	public function check(array $candidate, string $uid, DateTimeImmutable $now): ?array {
 		if ($uid === '' || $this->isGameMaster(uid: $uid) === true) {
@@ -134,7 +134,7 @@ class CastingPreferenceGuard {
 	 *
 	 * @return bool True when ranking has closed.
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+	 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 	 */
 	public function deadlinePassed(array $event, DateTimeImmutable $now): bool {
 		$deadline = $event['castingDeadline'] ?? null;

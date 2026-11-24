@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+ * @spec openspec/specs/rpg-system/spec.md
  */
 
 declare(strict_types=1);
@@ -35,7 +35,7 @@ use OCP\IRequest;
  * @category Controller
  * @package  OCA\Larpinq\Controller
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+ * @spec openspec/specs/rpg-system/spec.md
  */
 class CharacterPurchasesController extends Controller {
 
@@ -46,7 +46,7 @@ class CharacterPurchasesController extends Controller {
 	 * @param PurchaseServiceInterface $purchases    The purchase service.
 	 * @param CallerAccess             $callerAccess Who is calling and whether they are a game master.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function __construct(
 		IRequest $request,
@@ -64,7 +64,7 @@ class CharacterPurchasesController extends Controller {
 	 *
 	 * @return JSONResponse The saved character, or the refusal.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	#[NoAdminRequired]
 	public function buy(string $id, string $itemId = ''): JSONResponse {
@@ -100,7 +100,7 @@ class CharacterPurchasesController extends Controller {
 	 *
 	 * @return bool
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function mayBuyFor(array $character, string $uid): bool {
 		$owner = (string)($character['ownerUid'] ?? '');

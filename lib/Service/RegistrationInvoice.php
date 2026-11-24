@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 
 declare(strict_types=1);
@@ -34,7 +34,7 @@ use OCP\IURLGenerator;
  * @category Service
  * @package  OCA\Larpinq\Service
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 class RegistrationInvoice {
 
@@ -67,7 +67,7 @@ class RegistrationInvoice {
 	 *
 	 * @return array<string, string> The fields, or an empty array.
 	 *
-	 * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+	 * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
 	 */
 	public function fields(array $registration, array $request): array {
 		$invoiceId = trim((string)($request['invoiceReference'] ?? ''));

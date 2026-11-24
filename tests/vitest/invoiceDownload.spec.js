@@ -6,7 +6,7 @@
  * REQ-RPS-006): My registrations words the link "Download invoice", and the
  * registration page offers the download only once the invoice is there.
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+ * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
  */
 import fs from 'fs'
 import path from 'path'

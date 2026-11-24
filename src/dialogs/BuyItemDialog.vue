@@ -115,7 +115,7 @@ export default {
 		 *
 		 * @return {string} The id.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		id() {
 			return firstId(this.characterId, this.$route?.params?.id)
@@ -125,7 +125,7 @@ export default {
 		 * The character's name.
 		 *
 		 * @return {string} The name.
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		characterName() {
 			return String(this.character?.name ?? '')
@@ -136,7 +136,7 @@ export default {
 		 *
 		 * @return {{gold: number, silver: number, copper: number}} The purse.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		purse() {
 			return purseOf(this.character)
@@ -147,7 +147,7 @@ export default {
 		 *
 		 * @return {Array<{id: string, label: string, price: object}>} The options.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		options() {
 			return this.items.map((item) => ({
@@ -161,7 +161,7 @@ export default {
 		 *
 		 * @return {boolean} True when it can pay.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		affordable() {
 			return this.selected !== null && canPay(this.purse, this.selected.price)
@@ -171,7 +171,7 @@ export default {
 		 * Whether Buy may be pressed.
 		 *
 		 * @return {boolean} True when an affordable item is chosen and nothing is posting.
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		buyable() {
 			return this.status === 'ready' && this.affordable && !this.busy
@@ -183,7 +183,7 @@ export default {
 	 *
 	 * @return {Promise<void>}
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 	 */
 	async mounted() {
 		const options = await fetchPurchaseOptions(this.id)
@@ -205,7 +205,7 @@ export default {
 		 * @param {{gold: number, silver: number, copper: number}} money The amount.
 		 * @return {string} For example "2 gold, 5 copper", or "no money".
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		moneyText(money) {
 			const words = {
@@ -223,7 +223,7 @@ export default {
 		 * @param {string} message The server's English reason.
 		 * @return {string} The sentence to show.
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		refusalText(message) {
 			const known = {
@@ -241,7 +241,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+		 * @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
 		 */
 		async buy() {
 			if (!this.buyable) {

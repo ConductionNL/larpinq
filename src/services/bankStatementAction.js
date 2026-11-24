@@ -9,7 +9,7 @@
  * settles their requests. This only opens shillinq's import page; the lines
  * that matched nothing are listed there.
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -22,7 +22,7 @@ export const SHILLINQ_BANK_IMPORT_PATH = '/apps/shillinq/configuratie/bank-impor
  *
  * @return {string}
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
  */
 export function bankStatementImportUrl() {
 	return generateUrl(SHILLINQ_BANK_IMPORT_PATH)
@@ -33,7 +33,7 @@ export function bankStatementImportUrl() {
  *
  * @param {object} [location] Where to go; the window's location by default.
  *
- * @spec openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+ * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
  */
 export function openBankStatementImportAction(location = window.location) {
 	location.assign(bankStatementImportUrl())

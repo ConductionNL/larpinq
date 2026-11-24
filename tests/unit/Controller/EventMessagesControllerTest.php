@@ -15,7 +15,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/communication-mail-participants/specs/event-messages/spec.md
+ * @spec openspec/specs/event-messages/spec.md
  */
 
 declare(strict_types=1);

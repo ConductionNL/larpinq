@@ -8,7 +8,7 @@
  * save, and the transition tells the owner. This module posts it and passes
  * the refusal on.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+ * @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -25,7 +25,7 @@ export const WAITING = 'no'
  * @param {string} reason Why it is rejected.
  * @return {Promise<{ok: boolean, message: string}>} The outcome; `message` is the server's refusal.
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+ * @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
  */
 export async function rejectCharacter(characterId, reason) {
 	const response = await fetch(

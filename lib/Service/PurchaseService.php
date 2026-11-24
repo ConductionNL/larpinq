@@ -13,7 +13,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+ * @spec openspec/specs/rpg-system/spec.md
  */
 
 declare(strict_types=1);
@@ -33,7 +33,7 @@ use Throwable;
  * @category Service
  * @package  OCA\Larpinq\Service
  *
- * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+ * @spec openspec/specs/rpg-system/spec.md
  */
 class PurchaseService implements PurchaseServiceInterface {
 
@@ -47,7 +47,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @param RegisterObjectFetcher $fetcher Reads and writes register objects as the caller.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
@@ -63,7 +63,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @throws PurchaseRefusedException 404 when there is no such character.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function character(string $characterId): array {
 		return $this->read(objectType: 'character', id: $characterId, missing: 'Character not found');
@@ -81,7 +81,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @throws PurchaseRefusedException 404 for an unknown item, 409 when the purchase is not possible.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function buy(array $character, string $itemId): array {
 		$item  = $this->read(objectType: 'item', id: $itemId, missing: 'Item not found');
@@ -122,7 +122,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @return array<string,int>|null The price per coin.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	public function price(array $item): ?array {
 		$raw = $item['price'] ?? null;
@@ -145,7 +145,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @return array<string,int>|null The amounts, or null when one is not a non-negative integer.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private static function coinAmounts(array $raw): ?array {
 		$price = [];
@@ -171,7 +171,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @throws PurchaseRefusedException 409 when any coin falls short.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function pay(array $character, array $price): array {
 		foreach (self::COINS as $coin) {
@@ -197,7 +197,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @throws PurchaseRefusedException 404 when it cannot be read.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function read(string $objectType, string $id, string $missing): array {
 		try {
@@ -214,7 +214,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @return list<string> The ids.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function ids(mixed $value): array {
 		if (is_array($value) === false) {
@@ -239,7 +239,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @return string|null The id, or null when it has none.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private static function entryId(mixed $entry): ?string {
 		if (is_array($entry) === true) {
@@ -261,7 +261,7 @@ class PurchaseService implements PurchaseServiceInterface {
 	 *
 	 * @return string The id.
 	 *
-	 * @spec openspec/changes/capability-rows-missing-requirements/specs/rpg-system/spec.md
+	 * @spec openspec/specs/rpg-system/spec.md
 	 */
 	private function idOf(array $object, string $fallback): string {
 		$id = $object['id'] ?? ($object['@self']['id'] ?? $fallback);

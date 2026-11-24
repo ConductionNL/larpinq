@@ -132,7 +132,7 @@ test.afterAll(async () => {
 })
 
 test.describe.serial('payment of an accepted registration', () => {
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#a-club-pays-for-its-member
+	// @e2e openspec/specs/event-registration/spec.md#a-club-pays-for-its-member
 	test('a player asks for an invoice before the registration is accepted', async () => {
 		ids.annas = await make('larping_registration', {
 			event: ids.event,
@@ -148,7 +148,7 @@ test.describe.serial('payment of an accepted registration', () => {
 		expect(row.paymentState ?? null).toBeNull()
 	})
 
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#anna-gets-her-payment-link
+	// @e2e openspec/specs/event-registration/spec.md#anna-gets-her-payment-link
 	test('accepting asks shillinq for the payment, or leaves it to request', async () => {
 		await patchRegistration(ids.annas, { status: 'accepted' })
 
@@ -178,7 +178,7 @@ test.describe.serial('payment of an accepted registration', () => {
 		expect(answer.paymentReference).toBe('WC26-0001')
 	})
 
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#who-still-owes
+	// @e2e openspec/specs/event-registration/spec.md#who-still-owes
 	test('the registrations of the event filter on their payment state', async () => {
 		const state = (await registration(ids.annas)).paymentState
 		const res = await admin.get(
@@ -191,7 +191,7 @@ test.describe.serial('payment of an accepted registration', () => {
 		expect(rows.map((one: { id: string }) => one.id)).toContain(ids.annas)
 	})
 
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#a-bank-transfer-is-matched
+	// @e2e openspec/specs/event-registration/spec.md#a-bank-transfer-is-matched
 	test('a captured request marks the registration paid', async () => {
 		const row = await registration(ids.annas)
 		if (row.paymentState === 'open') {
@@ -214,7 +214,7 @@ test.describe.serial('payment of an accepted registration', () => {
 			.toBe('paid')
 	})
 
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#anna-forgot-to-pay
+	// @e2e openspec/specs/event-registration/spec.md#anna-forgot-to-pay
 	test('the reminder moment notifies the player', async () => {
 		ids.reminded = await make('larping_registration', {
 			event: ids.event,
@@ -242,7 +242,7 @@ test.describe.serial('payment of an accepted registration', () => {
 			.toContain('WC26-')
 	})
 
-	// @e2e openspec/changes/registration-payments-through-shillinq/specs/event-registration/spec.md#the-place-goes-to-pieter
+	// @e2e openspec/specs/event-registration/spec.md#the-place-goes-to-pieter
 	test('an unpaid registration that expires gives its place to the waiting list', async () => {
 		const first = await make('larping_registration', {
 			event: ids.fullEvent,

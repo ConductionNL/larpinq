@@ -17,8 +17,8 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ use OCP\IRequest;
  *
  * @psalm-suppress UnusedClass Instantiated by Nextcloud routing (appinfo/routes.php).
  *
- * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+ * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
  */
 class CastingController extends Controller {
 
@@ -73,7 +73,7 @@ class CastingController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
+	 * @spec openspec/specs/event-casting/spec.md#requirement-larpinq-proposes-the-best-overall-casting-req-ecc-002
 	 */
 	#[NoAdminRequired]
 	public function proposal(string $id): JSONResponse {
@@ -99,7 +99,7 @@ class CastingController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
+	 * @spec openspec/specs/event-casting/spec.md#requirement-game-masters-confirm-the-casting-req-ecc-003
 	 */
 	#[NoAdminRequired]
 	public function confirm(string $id): JSONResponse {

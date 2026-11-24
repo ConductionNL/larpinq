@@ -9,7 +9,7 @@
  through the OpenRegister objects API; larpinq refuses a ranking after the
  deadline or on someone else's registration.
 
- @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+ @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
  @visual exclude Sidebar-tab section (not a routed page); covered by tests/vitest/eventCastingView.spec.js and the planned tests/e2e/event-casting.spec.ts.
 -->
 <template>
@@ -132,7 +132,7 @@ export default {
 		 *
 		 * @return {Array<object>} The options.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		rankOptions() {
 			const ranks = Array.from({ length: MAX_RANK }, (_, i) => ({
@@ -147,7 +147,7 @@ export default {
 		 *
 		 * @return {boolean} True when ranking has closed.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+		 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 		 */
 		closed() {
 			return rankingClosed(this.view.event)
@@ -158,7 +158,7 @@ export default {
 		 *
 		 * @return {boolean} True when the ranking can be saved.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		valid() {
 			return rankingIsValid(this.ranks)
@@ -183,7 +183,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+		 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 		 */
 		async load() {
 			this.loading = true
@@ -205,7 +205,7 @@ export default {
 		 * @param {number} rank The rank, 0 for none.
 		 * @return {object} The option.
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		optionOf(rank) {
 			return (
@@ -221,7 +221,7 @@ export default {
 		 * @param {object|null} option The chosen option.
 		 * @return {void}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md
+		 * @spec openspec/specs/event-casting/spec.md
 		 */
 		rankChanged(characterId, option) {
 			this.ranks = { ...this.ranks, [characterId]: Number(option?.id ?? 0) }
@@ -233,7 +233,7 @@ export default {
 		 *
 		 * @return {Promise<void>}
 		 *
-		 * @spec openspec/changes/events-casting-and-crew-roles/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
+		 * @spec openspec/specs/event-casting/spec.md#requirement-players-rank-characters-open-for-casting-req-ecc-001
 		 */
 		async save() {
 			if (!this.valid || this.closed) {
