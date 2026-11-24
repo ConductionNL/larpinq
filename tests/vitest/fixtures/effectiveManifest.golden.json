@@ -297,7 +297,7 @@
 	"pages": [
 		[
 			"Store",
-			"8b55ff18530046aeb9f2b869462c607d7cd68b19ff00cac366573fba25400cdd"
+			"adeb367f348605bbcea4951d9f1d988a063189bd0e3c75d80e3c7484c8ff3a5a"
 		],
 		[
 			"Dashboard",
@@ -540,5 +540,5 @@
 			"782f2e5da60d4629a5a8725f0bde07d6734a255238c3ece5712174c9900a955c"
 		]
 	],
-	"rest": "d6f6fd2641f3c3d968dc87fe7c7dfd4906e1082aa84843cb7396441c41f38b11"
+	"rest": "ceac0fca9c5b9fa56ebabd84f12986d66f1af507145099e76e7c13fa7e0ce4f1"
 }
