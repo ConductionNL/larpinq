@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Sjekket ut av",
         "Care details": "Helseopplysninger",
         "Due for erasure": "Skal slettes",
-        "No care records yet.": "Ingen helseopplysninger ennå."
+        "No care records yet.": "Ingen helseopplysninger ennå.",
+        "Paid from credit": "Betalt med tilgodehavende",
+        "Still to pay": "Gjenstår å betale",
+        "Paid from the player's credit in shillinq, in cents": "Betalt med spillerens tilgodehavende i shillinq, i cent",
+        "Still open after the credit, in cents": "Fortsatt åpent etter tilgodehavendet, i cent"
     },
     "nplurals=2; plural=(n != 1);"
 )

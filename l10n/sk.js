@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Odchod zaregistroval",
         "Care details": "Zdravotné údaje",
         "Due for erasure": "Na vymazanie",
-        "No care records yet.": "Zatiaľ žiadne zdravotné údaje."
+        "No care records yet.": "Zatiaľ žiadne zdravotné údaje.",
+        "Paid from credit": "Zaplatené z kreditu",
+        "Still to pay": "Zostáva zaplatiť",
+        "Paid from the player's credit in shillinq, in cents": "Zaplatené z kreditu hráča v shillinq, v centoch",
+        "Still open after the credit, in cents": "Stále otvorené po kredite, v centoch"
     },
     "nplurals=2; plural=(n != 1);"
 )

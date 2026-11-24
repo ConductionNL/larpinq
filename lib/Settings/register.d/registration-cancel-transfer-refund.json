@@ -204,6 +204,28 @@
 								"gamemasters"
 							]
 						}
+					},
+					"paidFromCredit": {
+						"type": "integer",
+						"minimum": 0,
+						"title": "Paid from credit",
+						"description": "Paid from the player's credit in shillinq, in cents",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
+					},
+					"amountOpen": {
+						"type": "integer",
+						"minimum": 0,
+						"title": "Still to pay",
+						"description": "Still open after the credit, in cents",
+						"authorization": {
+							"update": [
+								"gamemasters"
+							]
+						}
 					}
 				},
 				"authorization": {

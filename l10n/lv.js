@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Aiziešanu reģistrēja",
         "Care details": "Veselības dati",
         "Due for erasure": "Jādzēš",
-        "No care records yet.": "Vēl nav veselības datu."
+        "No care records yet.": "Vēl nav veselības datu.",
+        "Paid from credit": "Samaksāts no kredīta",
+        "Still to pay": "Vēl jāmaksā",
+        "Paid from the player's credit in shillinq, in cents": "Samaksāts no spēlētāja kredīta shillinq, centos",
+        "Still open after the credit, in cents": "Vēl atvērts pēc kredīta, centos"
     },
     "nplurals=2; plural=(n != 1);"
 )

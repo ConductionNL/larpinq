@@ -1198,7 +1198,11 @@
         "Checked Out By": "Uitgecheckt door",
         "Care details": "Zorggegevens",
         "Due for erasure": "Te wissen",
-        "No care records yet.": "Nog geen zorggegevens."
+        "No care records yet.": "Nog geen zorggegevens.",
+        "Paid from credit": "Betaald met tegoed",
+        "Still to pay": "Nog te betalen",
+        "Paid from the player's credit in shillinq, in cents": "Betaald met het tegoed van de speler in shillinq, in centen",
+        "Still open after the credit, in cents": "Nog open na het tegoed, in centen"
     },
     "plurals": {},
     "pluralForm": "nplurals=2; plural=(n != 1);"

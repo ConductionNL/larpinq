@@ -1109,7 +1109,11 @@
         "Checked Out By": "Sortida registrada per",
         "Care details": "Dades de salut",
         "Due for erasure": "Pendents d'esborrar",
-        "No care records yet.": "Encara no hi ha dades de salut."
+        "No care records yet.": "Encara no hi ha dades de salut.",
+        "Paid from credit": "Pagat amb crèdit",
+        "Still to pay": "Pendent de pagar",
+        "Paid from the player's credit in shillinq, in cents": "Pagat amb el crèdit del jugador a shillinq, en cèntims",
+        "Still open after the credit, in cents": "Pendent després del crèdit, en cèntims"
     },
     "plurals": {}
 }

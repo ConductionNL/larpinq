@@ -1109,7 +1109,11 @@
         "Checked Out By": "Salida registrada por",
         "Care details": "Datos de salud",
         "Due for erasure": "Pendientes de borrar",
-        "No care records yet.": "Aún no hay datos de salud."
+        "No care records yet.": "Aún no hay datos de salud.",
+        "Paid from credit": "Pagado con saldo",
+        "Still to pay": "Pendiente de pago",
+        "Paid from the player's credit in shillinq, in cents": "Pagado con el saldo del jugador en shillinq, en céntimos",
+        "Still open after the credit, in cents": "Pendiente tras el saldo, en céntimos"
     },
     "plurals": {}
 }

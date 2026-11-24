@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Lähdön kirjaaja",
         "Care details": "Terveystiedot",
         "Due for erasure": "Poistettavana",
-        "No care records yet.": "Ei vielä terveystietoja."
+        "No care records yet.": "Ei vielä terveystietoja.",
+        "Paid from credit": "Maksettu hyvityksellä",
+        "Still to pay": "Maksettavaa jäljellä",
+        "Paid from the player's credit in shillinq, in cents": "Maksettu pelaajan hyvityksellä shillinqissä, sentteinä",
+        "Still open after the credit, in cents": "Avoinna hyvityksen jälkeen, sentteinä"
     },
     "nplurals=2; plural=(n != 1);"
 )

@@ -96,14 +96,18 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 * @param PaymentLeaf $leaf Shillinq's payment requests leaf.
 	 * @param LoggerInterface $logger The logger.
 	 * @param RegistrationInvoice $invoice The invoice shillinq issued on request.
+	 * @param RequestCreditShare $credit The part shillinq paid from the player's credit.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $fetcher,
 		private readonly PaymentLeaf $leaf,
 		private readonly LoggerInterface $logger,
 		private readonly RegistrationInvoice $invoice,
+		private readonly RequestCreditShare $credit=new RequestCreditShare(),
 	) {
 	}//end __construct()
 
@@ -116,6 +120,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @spec openspec/specs/event-registration/spec.md
 	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-paid-cancellation-is-refunded-or-credited-through-shillinq-req-rct-003
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	public function requestChanged(array $request): void {
 		$requestId = (string)($request['id'] ?? '');
@@ -123,9 +128,8 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 			return;
 		}
 
-		$captured = $this->isCaptured(request: $request);
-		$hasInvoice = trim((string)($request['invoiceReference'] ?? '')) !== '';
-		if ($requestId === '' || ($captured === false && $hasInvoice === false)) {
+		$paid = $this->isPaid(request: $request);
+		if ($requestId === '' || ($paid === false && $this->hasNews(request: $request) === false)) {
 			return;
 		}
 
@@ -134,17 +138,37 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 			return;
 		}
 
-		if ($captured === true && (string)($rows[0]['paymentState'] ?? '') !== RegistrationPaymentService::PAID) {
+		if ($paid === true && (string)($rows[0]['paymentState'] ?? '') !== RegistrationPaymentService::PAID) {
 			$this->markPaid(registration: $rows[0], request: $request);
 			return;
 		}
 
-		// An invoice shillinq issued later than the request (REQ-RPS-006) lands once.
-		$invoice = $this->invoice->fields(registration: $rows[0], request: $request);
-		if ($invoice !== []) {
-			$this->save(registration: $rows[0], fields: $invoice);
+		// An invoice shillinq issued later than the request (REQ-RPS-006), and
+		// the part paid from credit (REQ-RCT-005), land once.
+		$fields = $this->invoice->fields(registration: $rows[0], request: $request);
+		$fields += $this->credit->fields(registration: $rows[0], request: $request);
+		if ($fields !== []) {
+			$this->save(registration: $rows[0], fields: $fields);
 		}
 	}//end requestChanged()
+
+	/**
+	 * Whether an unpaid request carries something the registration shows:
+	 * an invoice, or a part paid from credit.
+	 *
+	 * @param array<string, mixed> $request The payment request.
+	 *
+	 * @return bool True when the registration may need updating.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 */
+	private function hasNews(array $request): bool {
+		if (trim((string)($request['invoiceReference'] ?? '')) !== '') {
+			return true;
+		}
+
+		return $this->credit->fields(registration: [], request: $request) !== [];
+	}//end hasNews()
 
 	/**
 	 * Shillinq refunded or credited a request: the registration it paid shows it once.
@@ -205,7 +229,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 */
 	private function followUp(array $registration, DateTimeImmutable $now): string {
 		$request = $this->requestOf(registration: $registration);
-		if ($request !== null && $this->isCaptured(request: $request) === true) {
+		if ($request !== null && $this->isPaid(request: $request) === true) {
 			$this->markPaid(registration: $registration, request: $request);
 			return 'paid';
 		}
@@ -262,6 +286,7 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 	 *
 	 * @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
 	 * @spec openspec/specs/event-registration/spec.md#requirement-invoices-and-receipts-come-from-shillinq-req-rps-006
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
 	private function markPaid(array $registration, array $request): void {
 		$fields = ['paymentState' => RegistrationPaymentService::PAID];
@@ -276,20 +301,28 @@ class PaymentFollowUp implements PaymentFollowUpInterface {
 		}
 
 		$fields += $this->invoice->fields(registration: $registration, request: $request);
+		$fields += $this->credit->fields(registration: $registration, request: $request);
 
 		$this->save(registration: $registration, fields: $fields);
 	}//end markPaid()
 
 	/**
-	 * Whether shillinq reports the money as received.
+	 * Whether shillinq reports the money as received, or settled the whole
+	 * request from the player's credit (REQ-RCT-005).
 	 *
 	 * @param array<string, mixed> $request The request.
 	 *
-	 * @return bool True when captured.
+	 * @return bool True when paid.
+	 *
+	 * @spec openspec/changes/registration-cancel-transfer-refund/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
 	 */
-	private function isCaptured(array $request): bool {
-		return in_array((string)($request['state'] ?? ''), self::CAPTURED, true) === true;
-	}//end isCaptured()
+	private function isPaid(array $request): bool {
+		if (in_array((string)($request['state'] ?? ''), self::CAPTURED, true) === true) {
+			return true;
+		}
+
+		return $this->credit->coversAll(request: $request);
+	}//end isPaid()
 
 	/**
 	 * A stored moment, or null when it is not one.

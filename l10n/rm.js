@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Partenza annunziada da",
         "Care details": "Datas da sanadad",
         "Due for erasure": "Da stizzar",
-        "No care records yet.": "Anc naginas datas da sanadad."
+        "No care records yet.": "Anc naginas datas da sanadad.",
+        "Paid from credit": "Pajà cun il credit",
+        "Still to pay": "Anc da pajar",
+        "Paid from the player's credit in shillinq, in cents": "Pajà cun il credit dal giugader en shillinq, en centims",
+        "Still open after the credit, in cents": "Anc avert suenter il credit, en centims"
     },
     "nplurals=2; plural=(n != 1);"
 )

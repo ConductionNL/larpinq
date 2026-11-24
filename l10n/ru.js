@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Уход отметил",
         "Care details": "Медицинские данные",
         "Due for erasure": "К удалению",
-        "No care records yet.": "Медицинских данных пока нет."
+        "No care records yet.": "Медицинских данных пока нет.",
+        "Paid from credit": "Оплачено из кредита",
+        "Still to pay": "Осталось оплатить",
+        "Paid from the player's credit in shillinq, in cents": "Оплачено из кредита игрока в shillinq, в центах",
+        "Still open after the credit, in cents": "Ещё открыто после кредита, в центах"
     },
     "nplurals=2; plural=(n != 1);"
 )

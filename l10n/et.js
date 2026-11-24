@@ -1110,7 +1110,11 @@ OC.L10N.register(
         "Checked Out By": "Lahkumise registreerija",
         "Care details": "Terviseandmed",
         "Due for erasure": "Kustutamisele kuuluvad",
-        "No care records yet.": "Terviseandmeid veel pole."
+        "No care records yet.": "Terviseandmeid veel pole.",
+        "Paid from credit": "Makstud ettemaksust",
+        "Still to pay": "Veel maksta",
+        "Paid from the player's credit in shillinq, in cents": "Makstud mängija ettemaksust shillinqis, sentides",
+        "Still open after the credit, in cents": "Pärast ettemaksu veel avatud, sentides"
     },
     "nplurals=2; plural=(n != 1);"
 )

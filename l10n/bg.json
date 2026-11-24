@@ -1109,7 +1109,11 @@
         "Checked Out By": "Тръгването е отбелязано от",
         "Care details": "Здравни данни",
         "Due for erasure": "За изтриване",
-        "No care records yet.": "Все още няма здравни данни."
+        "No care records yet.": "Все още няма здравни данни.",
+        "Paid from credit": "Платено с кредит",
+        "Still to pay": "Остава за плащане",
+        "Paid from the player's credit in shillinq, in cents": "Платено с кредита на играча в shillinq, в центове",
+        "Still open after the credit, in cents": "Все още отворено след кредита, в центове"
     },
     "plurals": {}
 }
