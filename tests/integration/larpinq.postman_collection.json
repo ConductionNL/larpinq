@@ -24,7 +24,13 @@
 		{ "key": "effectId", "value": "" },
 		{ "key": "eventId", "value": "" },
 		{ "key": "playerId", "value": "" },
-		{ "key": "setupPlayerId", "value": "" }
+		{ "key": "setupPlayerId", "value": "" },
+		{ "key": "attendanceSchema", "value": "larping_attendance" },
+		{ "key": "mcpSession", "value": "" },
+		{ "key": "mcpCharacterCreate", "value": "" },
+		{ "key": "mcpAttendanceUpdate", "value": "" },
+		{ "key": "mcpCharId", "value": "" },
+		{ "key": "mcpAttendanceId", "value": "" }
 	],
 	"auth": { "type": "noauth" },
 	"item": [
@@ -347,8 +353,473 @@
 			]
 		},
 		{
+			"name": "5. MCP dialect (larpinq-mcp-adoption)",
+			"description": "Live half of larpinq-mcp-adoption Task 1 and Task 3 (REQ-001, REQ-007, REQ-008). OpenRegister derives the larpinq MCP tools from the register.d/larpinq-mcp-adoption.json fragment: 9 schemas, search and get on each, plus character.create, xpAward.create and attendance.update. The static shape of the fragment is locked by tests/unit/Settings/McpAdoptionFragmentTest.php; this folder checks what the running OpenRegister makes of it. Tool ids are {appId}.{schemaSlug}.{verb}, so they are found in tools/list by suffix rather than hard-coded. The non-gamemaster refusal of xpAward.create and attendance.update needs a second, non-admin account the suite does not seed; it stays with OpenRegister's own REQ-DERIVED-005 tests.",
+			"item": [
+				{
+					"name": "MCP initialize (capture Mcp-Session-Id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('initialize answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const sid = pm.response.headers.get('Mcp-Session-Id');",
+									"pm.test('initialize hands out a session id', () => pm.expect(sid).to.be.a('string').and.not.empty);",
+									"pm.collectionVariables.set('mcpSession', sid);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2025-03-26\",\n    \"capabilities\": {},\n    \"clientInfo\": {\n      \"name\": \"larpinq-newman\",\n      \"version\": \"1\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP tools/list: the 21 derived larpinq tools",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/list answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const tools = (pm.response.json().result || {}).tools || [];",
+									"const names = tools.map((t) => t.name);",
+									"const derived = names.filter((n) => /^larpinq\\.[^.]+\\.(search|get|create|update|delete)$/.test(n));",
+									"pm.test('exactly 21 derived larpinq tools (9 x search/get + 3 writes)', () => pm.expect(derived, derived.join(', ')).to.have.lengthOf(21));",
+									"pm.test('no derived larpinq tool deletes', () => pm.expect(derived.filter((n) => n.endsWith('.delete'))).to.be.empty);",
+									"pm.test('the internal primitives ability and effect have no tools', () => pm.expect(derived.filter((n) => /\\.(ability|effect)\\./.test(n))).to.be.empty);",
+									"const writes = derived.filter((n) => /\\.(create|update)$/.test(n)).sort();",
+									"pm.test('the only writes are character.create, xpAward.create and attendance.update', () => {",
+									"  pm.expect(writes).to.have.lengthOf(3);",
+									"  pm.expect(writes.some((n) => /\\.character\\.create$/.test(n))).to.equal(true);",
+									"  pm.expect(writes.some((n) => /\\.xpAward\\.create$/.test(n))).to.equal(true);",
+									"  pm.expect(writes.some((n) => /attendance\\.update$/.test(n))).to.equal(true);",
+									"});",
+									"pm.collectionVariables.set('mcpCharacterCreate', writes.find((n) => /\\.character\\.create$/.test(n)) || '');",
+									"pm.collectionVariables.set('mcpAttendanceUpdate', writes.find((n) => /attendance\\.update$/.test(n)) || '');"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/list\",\n  \"params\": {}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP character.create lands unapproved",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not an error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"pm.test('the tool call succeeded', () => pm.expect(env.result.isError).to.equal(false));",
+									"const obj = JSON.parse(env.result.content[0].text);",
+									"const data = obj.object || obj;",
+									"const id = obj.id || obj.uuid || (obj['@self'] && obj['@self'].id);",
+									"pm.test('the created character has an id', () => pm.expect(id).to.be.a('string').and.not.empty);",
+									"pm.test('an agent-created character waits for approval (approved = no)', () => pm.expect(data.approved).to.equal('no'));",
+									"pm.collectionVariables.set('mcpCharId', id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpCharacterCreate}}\",\n    \"arguments\": {\n      \"name\": \"NEWMAN mcp character\",\n      \"ocName\": \"{{setupPlayerId}}\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				},
+				{
+					"name": "Seed attendance for the MCP update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('attendance seeded (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));",
+									"const b = pm.response.json();",
+									"pm.collectionVariables.set('mcpAttendanceId', b.id || (b['@self'] && b['@self'].id));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": \"{{eventId}}\",\n  \"character\": \"{{mcpCharId}}\",\n  \"status\": \"registered\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{attendanceSchema}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{attendanceSchema}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "MCP attendance.update keeps the server stamps",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('tools/call answers 200', () => pm.expect(pm.response.code).to.equal(200));",
+									"const env = pm.response.json();",
+									"pm.test('a JSON-RPC result, not an error', () => pm.expect(env.error, JSON.stringify(env.error)).to.be.undefined);",
+									"pm.test('the tool call succeeded', () => pm.expect(env.result.isError).to.equal(false));",
+									"const obj = JSON.parse(env.result.content[0].text);",
+									"const data = obj.object || obj;",
+									"const id = obj.id || obj.uuid || (obj['@self'] && obj['@self'].id);",
+									"pm.test('the status changed', () => pm.expect(data.status).to.equal('checked-in'));",
+									"pm.test('checkedInBy is not taken from the call', () => pm.expect(data.checkedInBy).to.not.equal('newman-forged'));",
+									"pm.test('checkedInAt is not taken from the call', () => pm.expect(String(data.checkedInAt || '')).to.not.match(/^2000-01-01/));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Mcp-Session-Id",
+								"value": "{{mcpSession}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": {{$timestamp}},\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"{{mcpAttendanceUpdate}}\",\n    \"arguments\": {\n      \"id\": \"{{mcpAttendanceId}}\",\n      \"status\": \"checked-in\",\n      \"checkedInAt\": \"2000-01-01T00:00:00+00:00\",\n      \"checkedInBy\": \"newman-forged\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/mcp",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"mcp"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
 			"name": "9. Teardown",
 			"item": [
+				{
+					"name": "Delete mcp attendance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('mcp attendance deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{attendanceSchema}}/{{mcpAttendanceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{attendanceSchema}}",
+								"{{mcpAttendanceId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete mcp character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('mcp character deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{adminUser}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{adminPass}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "OCS-APIRequest",
+								"value": "true"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/index.php/apps/openregister/api/objects/{{register}}/{{charSchema}}/{{mcpCharId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"index.php",
+								"apps",
+								"openregister",
+								"api",
+								"objects",
+								"{{register}}",
+								"{{charSchema}}",
+								"{{mcpCharId}}"
+							]
+						}
+					}
+				},
 				{
 					"name": "Delete character",
 					"event": [ { "listen": "test", "script": { "type": "text/javascript", "exec": [ "pm.test('character deleted (2xx)', () => pm.expect(pm.response.code).to.be.oneOf([200, 204]));" ] } } ],

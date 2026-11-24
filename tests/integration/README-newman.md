@@ -12,6 +12,7 @@ in Newman**; Playwright drives the UI only.
 | 2. Domain objects | OR objects for `item`, `skill`, `condition`, `effect`, `event`, `player` | create each + list items | — | — |
 | 3. Character PDF compute | `GET /characters/{id}/download/{template}` (`CharactersController::downloadPdf`) | — (needs a real DocuDesk template) | 400 non-UUID template, 4xx (404/424) unresolved-UUID — never 500 | 401 anonymous |
 | 4. Settings | `GET /api/settings`, `POST /api/settings` | 200 + contract shape (`openRegisters`, `availableRegisters[]`) | — | 401 no-auth (GET + POST) |
+| 5. MCP dialect | OpenRegister `/api/mcp` JSON-RPC (`initialize`, `tools/list`, `tools/call`) over the tools derived from `register.d/larpinq-mcp-adoption.json` | 21 derived tools, no delete, no ability/effect tools; `character.create` lands with `approved` = `no` | `attendance.update` ignores a forged `checkedInAt`/`checkedInBy` | non-gamemaster refusal needs a second account the suite does not seed; OpenRegister REQ-DERIVED-005 covers it |
 | 9. Teardown | deletes every seeded object | idempotent cleanup | — | — |
 
 The collection is **self-contained and idempotent**: setup requests create the
