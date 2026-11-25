@@ -48,7 +48,7 @@
  *                            from the character's skills/items/conditions/events.
  */
 
-import type { APIRequestContext } from '@playwright/test'
+import type { APIRequestContext, APIResponse } from '@playwright/test'
 
 import { request } from '@playwright/test'
 import { LARPINQ_SETTINGS_API, OR_OBJECTS_API } from '../_base-url.ts'
@@ -140,6 +140,56 @@ const AUTH = {
 
 const HEADERS = { 'OCS-APIRequest': 'true', 'Content-Type': 'application/json' }
 
+/**
+ * Create an object, starting any state field in its initial state.
+ *
+ * OpenRegister refuses a create that sets a state field past its initial
+ * state ("A new object starts in \"pending\"; \"accepted\" cannot be set when
+ * it is created."). A fixture that needs an accepted registration, an
+ * active member or an approved character gets it the way the app does:
+ * created in the initial state, then moved with an update. Any other answer
+ * is returned as it is.
+ *
+ * @param api The caller.
+ * @param url The collection URL.
+ * @param data The object as the fixture wants it.
+ * @param headers The request headers.
+ * @return The create response, or the update response after a move.
+ */
+export async function postInInitialState(
+	api: APIRequestContext,
+	url: string,
+	data: Record<string, unknown>,
+	headers: Record<string, string> = HEADERS,
+): Promise<APIResponse> {
+	const initial: Record<string, unknown> = { ...data }
+	const moves: Record<string, unknown> = {}
+	for (let attempt = 0; attempt < 4; attempt++) {
+		const res = await api.post(url, { headers, data: initial })
+		if (res.status() !== 422) {
+			if (!res.ok() || Object.keys(moves).length === 0) {
+				return res
+			}
+			const created = await res.json()
+			const id = created?.['@self']?.id || created?.id
+			return api.patch(`${url}/${id}`, { headers, data: moves })
+		}
+		const detail = String((await res.json().catch(() => ({})))?.detail ?? '')
+		const refused = /"([^"]+)" cannot be set when it is created/.exec(detail)
+		const keys = refused
+			? Object.keys(initial).filter((key) => initial[key] === refused[1])
+			: []
+		if (keys.length === 0) {
+			return res
+		}
+		for (const key of keys) {
+			moves[key] = initial[key]
+			delete initial[key]
+		}
+	}
+	return api.post(url, { headers, data: initial })
+}
+
 /** Build an authenticated APIRequestContext against the OpenRegister REST API. */
 export async function newApi(): Promise<APIRequestContext> {
 	return request.newContext({ httpCredentials: AUTH })
@@ -211,7 +261,7 @@ export async function createObject(
 	) {
 		payload.name = payload.title
 	}
-	const res = await api.post(url, { headers: HEADERS, data: payload })
+	const res = await postInInitialState(api, url, payload)
 	if (!res.ok()) {
 		throw new Error(
 			`create ${type} failed: HTTP ${res.status()} ${await res.text()}`,

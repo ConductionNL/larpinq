@@ -26,6 +26,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL, OR_OBJECTS_API } from './_base-url.ts'
+import { postInInitialState } from './workflows/fixtures.ts'
 
 const RUN = `rct${Date.now().toString(36)}`
 const BASE = '/apps/larpinq'
@@ -83,7 +84,7 @@ async function pageAs(browser: Browser, user: User): Promise<Page> {
  * @return The new id.
  */
 async function create(schema: string, data: Record<string, unknown>): Promise<string> {
-	const res = await admin.post(`${OBJECTS}/${schema}`, { headers: JSON_HEADERS, data })
+	const res = await postInInitialState(admin, `${OBJECTS}/${schema}`, data, JSON_HEADERS)
 	expect(res.ok(), await res.text()).toBe(true)
 	const json = await res.json()
 	const id = String(json?.id ?? json?.['@self']?.id)
