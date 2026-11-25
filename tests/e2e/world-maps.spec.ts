@@ -15,10 +15,9 @@
  *
  * The rules under test live in lib/Settings/register.d/worlds-maps.json.
  *
- * The clickable map itself (REQ-WMP-002, tasks.md 2.2) is not built yet: a
- * `type: "map"` page cannot take its image and size from the routed map
- * object. Its test is `test.fixme` until that page lands; the map detail page
- * with its pin list is tested in the meantime.
+ * The clickable map itself (REQ-WMP-002, tasks.md 2.2) is the map widget on
+ * the map's detail page: its picture, width and height come from the map
+ * object (nextcloud-vue map-image-from-record), its pins from larping_map_pin.
  *
  * @spec openspec/changes/worlds-maps/specs/world-maps/spec.md
  */
@@ -270,18 +269,18 @@ test.describe('world maps', () => {
 	})
 
 	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#anna-finds-the-city
-	// tasks.md 2.2: the `type: "map"` page with the image layer is not built yet.
-	test.fixme('a player clicks the city pin on the map and opens its lore page', async ({ browser }) => {
+	// tasks.md 2.2: the map detail page draws the map's own picture (nextcloud-vue
+	// map-image-from-record) with the pins Anna may see; a pin opens its lore page.
+	test('a player clicks the city pin on the map and opens its lore page', async ({ browser }) => {
 		const page = await annaPage(browser)
-		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}`)
-		await page.getByRole('button', { name: 'Aldmoor city' }).click()
-		await expect(page.getByText('Aldmoor city')).toBeVisible()
-		await expect(page.getByText('Ash grove')).toHaveCount(0)
-		await page.getByRole('link', { name: 'The city of Aldmoor' }).click()
-		await expect(page).toHaveURL(new RegExp(`/lore/${ids.lore}`))
-		await expect(
-			page.getByRole('heading', { name: 'The city of Aldmoor' }),
-		).toBeVisible()
+		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
+		const map = page.locator('.leaflet-container').first()
+		await expect(map.locator('img.leaflet-image-layer')).toBeVisible()
+		const pins = map.locator('.leaflet-overlay-pane path.leaflet-interactive, .leaflet-marker-pane .leaflet-marker-icon')
+		await expect(pins, 'the game masters\' Ash grove is not on Anna\'s map').toHaveCount(1)
+		const [lore] = await Promise.all([page.waitForEvent('popup'), pins.first().click()])
+		await expect(lore).toHaveURL(new RegExp(`/lore/${ids.lore}`))
+		await expect(lore.getByRole('heading', { name: 'The city of Aldmoor' })).toBeVisible()
 		await page.context().close()
 	})
 })

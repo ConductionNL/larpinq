@@ -7,6 +7,9 @@
  * REQ-WMP-002).
  */
 
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import en from '../../l10n/en.json'
 import nl from '../../l10n/nl.json'
@@ -14,6 +17,10 @@ import mock from '../../lib/Settings/larpinq_mock_register.json'
 import register from '../../lib/Settings/register.d/worlds-maps.json'
 import fragment from '../../src/manifest.d/worlds-maps.json'
 import manifest from '../../src/manifest.json'
+
+// icons.js imports .vue files, which this node environment cannot load, so it
+// is read as source text.
+const ICONS = fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/icons.js'), 'utf8')
 
 const page = (id) => manifest.pages.find((p) => p.id === id)
 const fragmentPage = (id) => fragment.pages.find((p) => p.id === id)
@@ -97,14 +104,39 @@ describe('the map page (REQ-WMP-002)', () => {
 		}
 	})
 
-	it('places each widget once, the pins below the map data', () => {
+	it('places each widget once: the map data, the map under it, the pins below the map', () => {
 		const [data] = cells(detail, 'map-data')
+		const [view] = cells(detail, 'map-view')
 		const [pins] = cells(detail, 'map-pins')
 		expect(cells(detail, 'map-data')).toHaveLength(1)
+		expect(cells(detail, 'map-view')).toHaveLength(1)
 		expect(cells(detail, 'map-pins')).toHaveLength(1)
-		expect(pins.gridY).toBe(data.gridY + data.gridHeight)
-		expect(data.gridWidth).toBe(12)
-		expect(pins.gridWidth).toBe(12)
+		expect(view.gridY).toBe(data.gridY + data.gridHeight)
+		expect(pins.gridY).toBe(view.gridY + view.gridHeight)
+		for (const cell of [data, view, pins]) {
+			expect(cell.gridWidth).toBe(12)
+		}
+	})
+
+	// tasks.md 2.2: the map's own picture from the record, pins in pixels, a pin opens its lore page.
+	it('draws the map object\'s picture with its pins (REQ-WMP-002)', () => {
+		const view = widget(detail, 'map-view')
+		expect(view.type).toBe('map')
+		expect(view.content.layers).toEqual([
+			{ type: 'image', url: '@object.image', width: '@object.width', height: '@object.height' },
+		])
+		const map = schemaBySlug('larping_world_map').properties
+		for (const field of ['image', 'width', 'height']) {
+			expect(Object.keys(map)).toContain(field)
+		}
+		const markers = view.content.markers
+		expect(markers.dataSource).toEqual({ register: 'larpinq', schema: 'larping_map_pin', filter: { map: '@objectId' } })
+		expect([markers.xField, markers.yField, markers.popupField]).toEqual(['x', 'y', 'label'])
+		const pin = Object.keys(schemaBySlug('larping_map_pin').properties)
+		for (const field of ['x', 'y', 'label', 'lorePage']) {
+			expect(pin).toContain(field)
+		}
+		expect(markers.detailLink).toBe('/index.php/apps/larpinq/lore/{lorePage}')
 	})
 
 	it('only lays out widgets the page declares', () => {
@@ -218,5 +250,15 @@ describe('the maps pages in the catalogues', () => {
 		expect(en.translations[title]).toBe(title)
 		expect(nl.translations[title]).toBeTruthy()
 		expect(nl.translations[title]).not.toBe(title)
+	})
+})
+
+describe('the maps pages icons (REQ-WMP-002)', () => {
+	it('registers every widget icon of the map pages, so none falls back to the default', () => {
+		const icons = new Set(fragment.pages.flatMap((p) => (p.config?.widgets ?? []).map((w) => w.icon).filter(Boolean)))
+		expect(icons.size).toBeGreaterThan(0)
+		for (const icon of icons) {
+			expect(ICONS).toMatch(new RegExp(`^\\t${icon},$`, 'm'))
+		}
 	})
 })

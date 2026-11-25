@@ -60,7 +60,9 @@ import Lightbulb from 'vue-material-design-icons/Lightbulb.vue'
 import LinkVariant from 'vue-material-design-icons/LinkVariant.vue'
 import MagicStaff from 'vue-material-design-icons/MagicStaff.vue'
 import MapMarker from 'vue-material-design-icons/MapMarker.vue'
+import MapMarkerOutline from 'vue-material-design-icons/MapMarkerOutline.vue'
 import MapMarkerPath from 'vue-material-design-icons/MapMarkerPath.vue'
+import MapOutline from 'vue-material-design-icons/MapOutline.vue'
 import MedicalBag from 'vue-material-design-icons/MedicalBag.vue'
 import MessageReplyTextOutline from 'vue-material-design-icons/MessageReplyTextOutline.vue'
 import Package from 'vue-material-design-icons/Package.vue'
@@ -136,7 +138,9 @@ export default {
 	LinkVariant,
 	MagicStaff,
 	MapMarker,
+	MapMarkerOutline,
 	MapMarkerPath,
+	MapOutline,
 	MedicalBag,
 	MessageReplyTextOutline,
 	Package,
