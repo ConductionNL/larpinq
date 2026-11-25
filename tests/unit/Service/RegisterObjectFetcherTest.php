@@ -692,4 +692,30 @@ class RegisterObjectFetcherTest extends TestCase {
 		self::assertSame(expected: ['name' => 'Winter Court 2026', 'capacity' => 5, 'players' => ['a', 'b']], actual: $objects->saved[0]);
 		self::assertSame(expected: ['name' => 'Karel'], actual: $objects->saved[1]);
 	}//end testAnAppAuthorityUpdateKeepsTheFieldsItDoesNotName()
+
+	/**
+	 * An update with RBAC on merges the given fields over the object as the
+	 * signed-in user reads it, without its `@self` and `id`, and saves through
+	 * the RBAC save path: a casting write names only `ocName` and `castingEvent`.
+	 *
+	 * @spec openspec/specs/event-casting/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateKeepsTheFieldsItDoesNotName(): void {
+		$uuid = '00000000-0000-4000-8000-000000000002';
+		$fetcher = $this->createPartialMock(originalClassName: RegisterObjectFetcher::class, methods: ['getObject', 'saveObject']);
+		$fetcher->expects($this->once())
+			->method('getObject')
+			->with('character', $uuid)
+			->willReturn(['@self' => ['id' => $uuid], 'id' => $uuid, 'name' => 'The Heir', 'castingEvent' => 'event-1']);
+		$fetcher->expects($this->once())
+			->method('saveObject')
+			->with('character', ['name' => 'The Heir', 'castingEvent' => null, 'ocName' => 'player-anna'], $uuid)
+			->willReturnArgument(argumentIndex: 1);
+
+		$saved = $fetcher->updateObject(objectType: 'character', data: ['ocName' => 'player-anna', 'castingEvent' => null], uuid: $uuid);
+
+		self::assertSame(expected: 'player-anna', actual: $saved['ocName']);
+	}//end testAnUpdateKeepsTheFieldsItDoesNotName()
 }//end class

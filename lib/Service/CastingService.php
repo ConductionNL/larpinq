@@ -194,10 +194,12 @@ class CastingService {
 	 * @param string               $registrationId The registration id.
 	 *
 	 * @return string|null The reason the write was refused, or null when both were written.
+	 *
+	 * @spec openspec/specs/event-casting/spec.md
 	 */
 	private function write(array $registration, string $characterId, string $registrationId): ?string {
 		try {
-			$this->fetcher->saveObject(
+			$this->fetcher->updateObject(
 				objectType: 'character',
 				data: ['ocName' => (string)$registration['player'], 'castingEvent' => null],
 				uuid: $characterId
@@ -208,7 +210,7 @@ class CastingService {
 		}
 
 		try {
-			$this->fetcher->saveObject(objectType: 'registration', data: ['character' => $characterId], uuid: $registrationId);
+			$this->fetcher->updateObject(objectType: 'registration', data: ['character' => $characterId], uuid: $registrationId);
 		} catch (\Throwable $e) {
 			$this->logger->warning('[CastingService] The registration could not take the character: ' . $e->getMessage());
 			return 'registration-not-written';
