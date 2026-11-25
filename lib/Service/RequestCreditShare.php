@@ -124,6 +124,6 @@ class RequestCreditShare {
 			return 0;
 		}
 
-		return max(0, (int)round((float)$value * 100));
+		return max(0, (int)round((float)$value * 100.0));
 	}//end cents()
 }//end class
