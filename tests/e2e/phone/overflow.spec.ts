@@ -12,9 +12,8 @@
  *
  *   npx playwright test --project phone
  *
- * Pages named by the change that larpinq does not have yet (My registrations,
- * the Cast page, lore pages) are listed as `test.fixme` so the report shows
- * them until those changes land.
+ * The Check-in roster and the Stats sheet are tabs of the object sidebar,
+ * which a phone shows closed: the suite opens it first.
  *
  * @spec openspec/changes/admin-phone-friendly-pages
  */
@@ -22,7 +21,7 @@
 import type { APIRequestContext, Page } from '@playwright/test'
 
 import { expect, test } from '@playwright/test'
-import { dismissSupportDialog } from '../_nav.ts'
+import { dismissSupportDialog, openSidebarTab } from '../_nav.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -30,11 +29,19 @@ import {
 	FixtureLedger,
 	fixtureName,
 	newApi,
+	OR_BASE,
 	resolveSchemaIds,
 } from '../workflows/fixtures.ts'
 
 /** Smallest tap target on the Check-in tab, in CSS pixels (REQ-APF-002). */
 const MIN_TAP = 44
+
+/** Headers for OpenRegister object calls by schema slug. */
+const JSON_HEADERS = {
+	Accept: 'application/json',
+	'Content-Type': 'application/json',
+	'OCS-APIRequest': 'true',
+}
 
 /** Where the screenshots for the docs land. */
 const SHOTS = 'docs/static/screenshots/phone'
@@ -88,15 +95,46 @@ test.beforeAll(async () => {
 	api = await newApi()
 	await resolveSchemaIds(api)
 	const player = await make('player', { name: fixtureName('Anna') })
-	ids.event = await make('event', { name: fixtureName('Winter Court 2026') })
+	ids.event = await make('event', {
+		name: fixtureName('Winter Court 2026'),
+		capacity: 5,
+		approvalRequired: false,
+	})
 	ids.mirela = await make('character', {
 		name: fixtureName('Mirela the Wanderer'),
 		ocName: player,
+		status: 'active',
 		events: [ids.event],
 	})
+	// An accepted registration puts Mirela on the Check-in roster.
+	const res = await api.post(`${OR_BASE}/larpinq/larping_registration`, {
+		headers: JSON_HEADERS,
+		data: { event: ids.event, player, character: ids.mirela },
+	})
+	expect(res.status(), await res.text()).toBeLessThan(300)
+	const registration = await res.json()
+	expect(registration.status).toBe('accepted')
+	ids.registration = String(registration.id)
 })
 
 test.afterAll(async () => {
+	const attendance = await api.get(
+		`${OR_BASE}/larpinq/larping_attendance?event=${ids.event}`,
+		{ headers: JSON_HEADERS },
+	)
+	const rows = attendance.ok() ? ((await attendance.json()).results ?? []) : []
+	for (const row of rows) {
+		await api
+			.delete(`${OR_BASE}/larpinq/larping_attendance/${row.id}`, { headers: JSON_HEADERS })
+			.catch(() => undefined)
+	}
+	if (ids.registration) {
+		await api
+			.delete(`${OR_BASE}/larpinq/larping_registration/${ids.registration}`, {
+				headers: JSON_HEADERS,
+			})
+			.catch(() => undefined)
+	}
 	await cleanupLedger(api, ledger)
 	await api.dispose()
 })
@@ -106,6 +144,9 @@ test.describe('Event-day pages at phone width (REQ-APF-001)', () => {
 		['dashboard', '/'],
 		['events-index', '/events'],
 		['characters-index', '/characters'],
+		['my-registrations', '/my-registrations'],
+		['cast', '/cast'],
+		['lore', '/lore'],
 	]) {
 		test(`${name} does not scroll sideways`, async ({ page }) => {
 			await page.goto(`${BASE}${path}`)
@@ -120,24 +161,15 @@ test.describe('Event-day pages at phone width (REQ-APF-001)', () => {
 		await page.goto(`${BASE}/characters/${ids.mirela}`)
 		await settle(page)
 		await expectNoSidewaysScroll(page, 'character-detail')
-		await page.getByRole('tab', { name: 'Stats' }).click()
-		await page
-			.getByTestId('character-stat-sheet')
-			.waitFor({ state: 'visible', timeout: 30_000 })
+		await openSidebarTab(page, 'Stats')
+		// A character without abilities renders an empty sheet, so wait for
+		// it to finish loading rather than for it to have a size.
+		const sheet = page.getByTestId('character-stat-sheet')
+		await sheet.waitFor({ state: 'attached', timeout: 30_000 })
+		await expect(sheet.getByText('Loading stats')).toHaveCount(0, { timeout: 30_000 })
 		await expectNoSidewaysScroll(page, 'character-stats')
 	})
 
-	test.fixme('My registrations does not scroll sideways', async () => {
-		// The page arrives with the players' self-service changes.
-	})
-
-	test.fixme('the Cast page does not scroll sideways', async () => {
-		// The page arrives with the casting change.
-	})
-
-	test.fixme('lore pages do not scroll sideways', async () => {
-		// Lore pages arrive with the lore change.
-	})
 })
 
 test.describe('Check-in works one-handed (REQ-APF-002)', () => {
@@ -146,7 +178,7 @@ test.describe('Check-in works one-handed (REQ-APF-002)', () => {
 	}) => {
 		await page.goto(`${BASE}/events/${ids.event}`)
 		await settle(page)
-		await page.getByRole('tab', { name: 'Check-in' }).click()
+		await openSidebarTab(page, 'Check-in')
 		await page
 			.getByTestId('event-roster')
 			.waitFor({ state: 'visible', timeout: 30_000 })
