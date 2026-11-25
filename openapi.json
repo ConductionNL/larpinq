@@ -2,7 +2,7 @@
     "openapi": "3.0.3",
     "info": {
         "title": "Larpinq",
-        "version": "0.3.15-unstable.20261124181406",
+        "version": "0.3.16-unstable.20261125084810",
         "description": "The JSON API of Larpinq, the live action role-play app for Nextcloud: character sheets and builds, events with registrations, check-in and XP awards, worlds, settings and the setup wizard. The characters, events and other objects themselves are stored in OpenRegister and read and written through its API; this document covers the endpoints Larpinq adds on top.\n\nEvery path is served under `/api/v1/`, the version this document describes. The unversioned `/api/` paths keep working, are deprecated, and name their `/api/v1/` successor in a `Link` header next to a `Deprecation` header. Errors are RFC 9457 problem details (`application/problem+json`), and every response carries an `API-Version` header. Paths that implement an external standard keep the formats of that standard and are not described here.",
         "contact": {
             "name": "Conduction B.V.",
