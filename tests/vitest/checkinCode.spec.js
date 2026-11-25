@@ -6,7 +6,7 @@
  * check-in code, drawing it as a QR code, checking in by code and the line
  * the scan panel shows for each answer (events-qr-checkin).
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 import QRCode from 'qrcode'

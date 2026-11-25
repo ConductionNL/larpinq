@@ -1165,14 +1165,14 @@
 			"kanka": "yes",
 			"pretix": "no",
 			"built": {
-				"state": "specified",
-				"evidence": "grep -rniE '\\\\bmap\\\\b' lib src: only hits are event.location geocoded through the Nextcloud Maps app via lib/Settings/register.d/event-location-to-maps-leaf.json (a single address string per event, not an uploadable annotated map), plus unrelated PHP array-map/Db-mapper hits",
+				"state": "built",
+				"evidence": "lib/Settings/register.d/worlds-maps.json (larping_world_map: setting, title, image, width, height, visibility; larping_map_pin: map, label, x, y, kind, lorePage, visibility; OpenRegister read rules keep game-master maps and pins from players), src/manifest.d/worlds-maps.json (Maps index, map page with the map widget and its Pins list, Maps of this world on the world page); tests/unit/Settings/WorldsMapsFragmentTest.php, tests/e2e/world-maps.spec.ts",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: only per-event location-to-Maps integration exists, not a world map with pins",
-				"change": "worlds-maps",
+				"reachedOn": "Maps (/maps) and a map's page (/maps/:id/details): the map picture with clickable pins and the Pins list; Worlds, Maps of this world",
+				"change": "openspec/changes/archive/2026-11-25-worlds-maps",
 				"requirement": [
-					"openspec/changes/worlds-maps/specs/world-maps :: Game masters upload maps and place pins (REQ-WMP-001)",
-					"openspec/changes/worlds-maps/specs/world-maps :: The map shows its pins (REQ-WMP-002)"
+					"openspec/specs/world-maps :: Game masters upload maps and place pins (REQ-WMP-001)",
+					"openspec/specs/world-maps :: The map shows its pins (REQ-WMP-002)"
 				]
 			},
 			"provider": "self",
@@ -1187,7 +1187,7 @@
 				"kanka": "source read at tag 3.15: routes/campaigns/entities.php:328-331 maps with layers, groups and markers; markers link to entities (60-72 entity map markers)",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/models/seating.py:82 SeatingPlan is a venue seat map and src/pretix/base/models/event.py:663 geo_lat/geo_lon a real-world pin; no in-game map with pinned locations"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/worlds-maps (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-25-worlds-maps (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrLore"
@@ -4163,14 +4163,15 @@
 			"kanka": "no",
 			"pretix": "yes",
 			"built": {
-				"state": "specified",
-				"evidence": "grep -rniE \"qr.?code\" lib src --include=*.php --include=*.vue --include=*.js: no hits; there is no ticket concept at all (see reg-tickets)",
+				"state": "built",
+				"evidence": "lib/Service/CheckinCode.php (random base32 code per accepted registration), lib/Repair/GiveAcceptedRegistrationsACheckinCode.php, lib/Service/CheckinByCode.php (check in once, only for its event, answer names player and character), lib/Controller/EventsController.php::checkinByCode, src/components/RegistrationQrCode.vue (QR on My registrations, print styles), src/views/EventRoster.vue (scan panel: camera when supported, code field always); tests/unit/Service/CheckinByCodeTest.php, tests/vitest/eventRosterScan.spec.js, tests/e2e/qr-checkin.spec.ts",
 				"owner": "ConductionNL/larpinq",
-				"change": "events-qr-checkin",
+				"change": "openspec/changes/archive/2026-11-25-events-qr-checkin",
 				"requirement": [
-					"openspec/changes/events-qr-checkin/specs/event-checkin-roster :: The player sees the code as a QR code (REQ-EQC-002)",
-					"openspec/changes/events-qr-checkin/specs/event-checkin-roster :: Stewards check in by scanning or typing a code (REQ-EQC-003)"
-				]
+					"openspec/specs/event-checkin-roster :: The player sees the code as a QR code (REQ-EQC-002)",
+					"openspec/specs/event-checkin-roster :: Stewards check in by scanning or typing a code (REQ-EQC-003)"
+				],
+				"reachedOn": "My registrations (QR code per accepted registration); event page, Check-in tab, Scan"
 			},
 			"provider": "self",
 			"providerHow": "read: grepped, no hits",
@@ -4184,7 +4185,7 @@
 				"kanka": "source read at tag 3.15: no tickets or QR code handling in app/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/base/pdf.py:883 renders the ticket secret as a QR code on tickets, and src/pretix/plugins/webcheckin/static/pretixplugins/webcheckin/components/app.vue:376 takes scanned codes into src/pretix/api/views/checkin.py:457 _redeem_process"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/events-qr-checkin (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-25-events-qr-checkin (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrEvenementInchecken"
@@ -6276,12 +6277,12 @@
 			"kanka": "partial",
 			"pretix": "yes",
 			"built": {
-				"state": "specified",
-				"evidence": "grep -rniE 'mobile|pwa|manifest.webmanifest' lib/ src/: no hits; larpinq is a standard Nextcloud web app (nc-vue components), with no dedicated mobile app or installable PWA manifest of its own",
+				"state": "built",
+				"evidence": "Container-query phone styles in larpinq's registered components (src/views/EventRoster.vue: stacked roster rows via CnDataTable stackOnPhone, 44 pixel actions, full-width scan field), tests/e2e/phone/overflow.spec.ts (phone project, 360 by 740: no sideways scroll on the event-day pages, check-in actions on screen and at least 44 by 44), tests/vitest/eventRosterPhoneLayout.spec.js; still a web app, no installable app of its own",
 				"owner": "ConductionNL/larpinq",
-				"reachedOn": "nothing: no dedicated mobile delivery",
-				"change": "admin-phone-friendly-pages",
-				"requirement": "openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages :: Event-day pages fit a phone (REQ-APF-001)"
+				"reachedOn": "Event-day pages on a phone: Check-in tab, character Stats, My registrations, Cast, Lore, Dashboard, Events",
+				"change": "openspec/changes/archive/2026-11-25-admin-phone-friendly-pages",
+				"requirement": "openspec/specs/phone-friendly-pages :: Event-day pages fit a phone (REQ-APF-001)"
 			},
 			"provider": "self",
 			"providerHow": "read: absence confirmed by grep",
@@ -6295,7 +6296,7 @@
 				"kanka": "source read at tag 3.15: responsive Tailwind web views; no native app or PWA manifest in public/",
 				"pretix": "source read at tag v2026.7.0: src/pretix/presale/templates/pretixpresale/base.html:21 responsive viewport shop and the in-browser check-in (src/pretix/plugins/webcheckin) work on a phone; the native pretixSCAN/pretixPOS apps are separate first-party repos, noted not counted"
 			},
-			"note": "Specified 2026-09-27 in openspec/changes/admin-phone-friendly-pages (OpenSpec pass).",
+			"note": "Specified 2026-09-27 in openspec/changes/archive/2026-11-25-admin-phone-friendly-pages (OpenSpec pass).",
 			"screen": {
 				"canvas": "design-system",
 				"board": "LrTelefoon"

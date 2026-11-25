@@ -8,7 +8,7 @@
  * and the code text is 16 pixels so a phone does not zoom in
  * (admin-phone-friendly-pages, REQ-APF-002).
  *
- * @spec openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages/spec.md
+ * @spec openspec/specs/phone-friendly-pages/spec.md
  */
 
 import { readFileSync } from 'node:fs'

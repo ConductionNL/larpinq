@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use Throwable;
  * events. A registration that is not accepted checks nobody in, and a second
  * use reports when and by whom the first was.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
 class CheckinByCode implements CheckinByCodeInterface {
 
@@ -73,7 +73,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */
@@ -95,7 +95,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>}|null The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	private function refusal(array|null $registration, string $eventId): array|null {
 		if ($registration === null || self::text(row: $registration, key: 'event') !== $eventId) {
@@ -117,7 +117,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	private function admit(array $registration, string $actingUid): array {
 		$eventId     = self::text(row: $registration, key: 'event');
@@ -160,7 +160,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array<string, mixed> The answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function checkedInAnswer(array $registration): array {
 		return [
@@ -179,7 +179,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return string The name, or '' when neither is known.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function participantName(array $registration): string {
 		$name = $this->displayName(uid: self::text(row: $registration, key: 'playerUid'));
@@ -309,7 +309,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return string The name.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function recordName(string $objectType, string $id): string {
 		if ($id === '') {

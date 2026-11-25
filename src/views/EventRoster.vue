@@ -477,7 +477,7 @@ export default {
 		 * browser reads QR codes; the code field is there either way.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
 		 */
 		async toggleScan() {
 			if (this.scanOpen) {
@@ -495,7 +495,7 @@ export default {
 		 * steward refuses it.
 		 *
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
 		 */
 		async startCamera() {
 			const scope = typeof window === 'undefined' ? globalThis : window
@@ -531,7 +531,7 @@ export default {
 		 *
 		 * @param {object} detector The BarcodeDetector.
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
 		 */
 		async detectFrame(detector) {
 			const video = this.$refs.scanVideo
@@ -553,7 +553,7 @@ export default {
 		 * Stop the camera and its frame reading.
 		 *
 		 * @return {void}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
 		 */
 		stopCamera() {
 			clearInterval(this.detectTimer)
@@ -570,7 +570,7 @@ export default {
 		 *
 		 * @param {string} raw What was scanned or typed.
 		 * @return {Promise<void>}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
 		 */
 		async submitCode(raw) {
 			const code = normaliseCode(raw)
@@ -596,7 +596,7 @@ export default {
 		 *
 		 * @param {{text: string, ok: boolean}} message The answer.
 		 * @return {void}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
 		 */
 		showResult(message) {
 			clearTimeout(this.resultTimer)
@@ -731,7 +731,7 @@ export default {
 	 * and the code text is 16 pixels so the phone does not zoom in while the
 	 * steward types (REQ-APF-002).
 	 *
-	 * @spec openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages/spec.md
+	 * @spec openspec/specs/phone-friendly-pages/spec.md
 	 */
 	.event-roster__scan {
 		align-items: stretch;

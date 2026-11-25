@@ -16,7 +16,7 @@
  * @license   EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link      https://larpingapp.com
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
  *
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  * SPDX-License-Identifier: EUPL-1.2
@@ -37,7 +37,7 @@ use Throwable;
 /**
  * Repair step: a check-in code for each accepted registration that has none.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
  */
 class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 
@@ -65,7 +65,7 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 	 *
 	 * @return string
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#1.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#1.1
 	 */
 	public function getName(): string {
 		return 'Give accepted Larpinq registrations a check-in code';
@@ -78,7 +78,7 @@ class GiveAcceptedRegistrationsACheckinCode implements IRepairStep {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#1.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#1.1
 	 */
 	public function run(IOutput $output): void {
 		try {

@@ -588,7 +588,7 @@ class RegisterObjectFetcherTest extends TestCase {
 	 * scope, where the filter is allowed and the value is not masked; without
 	 * that service it is a plain read with the app's authority.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
 	 *
 	 * @return void
 	 */

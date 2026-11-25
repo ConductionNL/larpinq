@@ -15,7 +15,7 @@
  * The Check-in roster and the Stats sheet are tabs of the object sidebar,
  * which a phone shows closed: the suite opens it first.
  *
- * @spec openspec/changes/admin-phone-friendly-pages
+ * @spec openspec/changes/archive/2026-11-25-admin-phone-friendly-pages
  */
 
 import type { APIRequestContext, Page } from '@playwright/test'

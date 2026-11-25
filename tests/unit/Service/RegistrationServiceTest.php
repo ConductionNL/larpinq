@@ -420,7 +420,7 @@ class RegistrationServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
 	 */
 	public function testAnAcceptedRegistrationGetsACheckinCode(): void {
 		$this->event(capacity: 1, approval: true);
@@ -448,7 +448,7 @@ class RegistrationServiceTest extends TestCase {
 	 *
 	 * @return void
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
 	 */
 	public function testAnAutomaticallyAcceptedSignUpGetsItsOwnCode(): void {
 		$first = $this->registration(id: $this->signUp(player: self::ANNA, uid: 'anna')['id']);

@@ -7,7 +7,7 @@
  * quiet zone, with the player's name for the print (events-qr-checkin,
  * REQ-EQC-002).
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
