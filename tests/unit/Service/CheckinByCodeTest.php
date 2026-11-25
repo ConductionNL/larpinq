@@ -129,6 +129,8 @@ class CheckinByCodeTest extends TestCase {
 	/**
 	 * A registration a game master entered for a player without an account
 	 * has no playerUid: the answer names the player record.
+	 *
+	 * @return void
 	 */
 	public function testARegistrationWithoutAnAccountIsNamedByItsPlayerRecord(): void {
 		$this->anna();
@@ -139,8 +141,11 @@ class CheckinByCodeTest extends TestCase {
 
 		[$status, $answer] = $this->service()->checkIn(eventId: self::EVENT, code: self::CODE, actingUid: 'gm');
 
-		$this->assertSame(200, $status);
-		$this->assertSame(['status' => 'checked-in', 'name' => 'Anna de Vries (player record)', 'character' => 'Mirela the Wanderer'], $answer);
+		$this->assertSame(expected: 200, actual: $status);
+		$this->assertSame(
+			expected: ['status' => 'checked-in', 'name' => 'Anna de Vries (player record)', 'character' => 'Mirela the Wanderer'],
+			actual: $answer
+		);
 	}//end testARegistrationWithoutAnAccountIsNamedByItsPlayerRecord()
 
 	public function testASecondUseSaysWhenAndByWhom(): void {

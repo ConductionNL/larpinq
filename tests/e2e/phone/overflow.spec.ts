@@ -89,7 +89,16 @@ async function make(type: string, body: object): Promise<string> {
  * @return {Promise<void>}
  */
 async function settle(page: Page): Promise<void> {
-	await page.waitForLoadState('networkidle').catch(() => {})
+	// Never `networkidle`: Nextcloud's notification poll keeps the network
+	// busy (ADR-074 rule 4). Wait for the app's content and its spinners.
+	await page.waitForLoadState('domcontentloaded')
+	await page
+		.locator('#app-content-vue, #app-content, main')
+		.first()
+		.waitFor({ state: 'visible', timeout: 30_000 })
+	await expect(page.locator('.loading-icon, .icon-loading')).toHaveCount(0, {
+		timeout: 30_000,
+	})
 	await dismissSupportDialog(page)
 }
 
