@@ -27,6 +27,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL, OR_OBJECTS_API } from './_base-url.ts'
+import { scrollToWidget } from './_nav.ts'
 import { signedInPage } from './_sign-in.ts'
 import { postInInitialState } from './workflows/fixtures.ts'
 
@@ -182,12 +183,12 @@ test.describe('players-care-details-and-erasure pages', () => {
 	 */
 	test('a game master finds Anna in the Care details list of the event', async ({ page }) => {
 		await page.goto(`${BASE}/events/${eventId}`, { waitUntil: 'domcontentloaded' })
-		const list = page.locator('[data-widget-id="event-care"]').or(page.getByRole('region', { name: 'Care details' })).first()
+		const list = await scrollToWidget(page, 'Care details')
 		await expect(list).toBeVisible({ timeout: 30_000 })
 		await expect(list).toContainText(ALLERGY, { timeout: 30_000 })
 		await expect(list).toContainText(CONTACT)
 
-		const due = page.locator('[data-widget-id="event-stats-care-due"]').or(page.getByRole('region', { name: 'Due for erasure' })).first()
+		const due = await scrollToWidget(page, 'Due for erasure')
 		await expect(due).toBeVisible()
 		await expect(due).toContainText('0')
 	})

@@ -98,7 +98,7 @@ test.beforeAll(async () => {
 		expect(made.ok(), await made.text()).toBe(true)
 	}
 
-	const deadline = new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().slice(0, 10)
+	const deadline = new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString()
 	eventId = ledger.track('event', await createObject(admin, 'event', { name: fixtureName('Winter Court'), castingDeadline: deadline }))
 	for (const [key, name] of Object.entries(CHARACTER_NAMES)) {
 		characters[key] = ledger.track(

@@ -169,7 +169,7 @@ test.describe('events a player attended', () => {
 		await openSidebarTab(page, 'Events attended')
 		await expect(page.getByTestId('player-attendance-count')).toContainText('2')
 		await expect(page.getByTestId('player-attendance-row')).toHaveCount(2)
-		await context.close()
+		await page.context().close()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#karel-looks-at-anna
