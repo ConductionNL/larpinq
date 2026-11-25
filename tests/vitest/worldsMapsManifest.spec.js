@@ -7,6 +7,9 @@
  * REQ-WMP-002).
  */
 
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import en from '../../l10n/en.json'
 import nl from '../../l10n/nl.json'
@@ -14,6 +17,10 @@ import mock from '../../lib/Settings/larpinq_mock_register.json'
 import register from '../../lib/Settings/register.d/worlds-maps.json'
 import fragment from '../../src/manifest.d/worlds-maps.json'
 import manifest from '../../src/manifest.json'
+
+// icons.js imports .vue files, which this node environment cannot load, so it
+// is read as source text.
+const ICONS = fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../src/icons.js'), 'utf8')
 
 const page = (id) => manifest.pages.find((p) => p.id === id)
 const fragmentPage = (id) => fragment.pages.find((p) => p.id === id)
@@ -243,5 +250,15 @@ describe('the maps pages in the catalogues', () => {
 		expect(en.translations[title]).toBe(title)
 		expect(nl.translations[title]).toBeTruthy()
 		expect(nl.translations[title]).not.toBe(title)
+	})
+})
+
+describe('the maps pages icons (REQ-WMP-002)', () => {
+	it('registers every widget icon of the map pages, so none falls back to the default', () => {
+		const icons = new Set(fragment.pages.flatMap((p) => (p.config?.widgets ?? []).map((w) => w.icon).filter(Boolean)))
+		expect(icons.size).toBeGreaterThan(0)
+		for (const icon of icons) {
+			expect(ICONS).toMatch(new RegExp(`^\\t${icon},$`, 'm'))
+		}
 	})
 })
