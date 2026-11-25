@@ -26,6 +26,8 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL, OR_OBJECTS_API } from './_base-url.ts'
+import { openSidebarTab } from './_nav.ts'
+import { signedInPage } from './_sign-in.ts'
 import { postInInitialState } from './workflows/fixtures.ts'
 
 const RUN = `rct${Date.now().toString(36)}`
@@ -68,12 +70,7 @@ function apiAs(user: User): Promise<APIRequestContext> {
  * @return The page.
  */
 async function pageAs(browser: Browser, user: User): Promise<Page> {
-	const context = await browser.newContext({
-		baseURL: BASE_URL,
-		storageState: { cookies: [], origins: [] },
-		httpCredentials: { username: user.username, password: user.password, send: 'always' },
-	})
-	return context.newPage()
+	return signedInPage(browser, user.username, user.password)
 }
 
 /**
@@ -113,7 +110,7 @@ async function registration(id: string): Promise<Record<string, unknown>> {
  */
 async function openChanges(page: Page, id: string) {
 	await page.goto(`${BASE}/registrations/${id}`, { waitUntil: 'domcontentloaded' })
-	await page.getByRole('tab', { name: 'Cancel or hand over' }).or(page.getByText('Cancel or hand over', { exact: true })).first().click({ timeout: 30_000 })
+	await openSidebarTab(page, 'Cancel or hand over')
 	const panel = page.getByTestId('registration-changes')
 	await expect(panel).toBeVisible({ timeout: 30_000 })
 	return panel

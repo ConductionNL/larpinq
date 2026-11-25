@@ -18,6 +18,7 @@ import type { APIRequestContext } from '@playwright/test'
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from '../_base-url.ts'
 import { openSidebarTab } from '../_nav.ts'
+import { signedInPage } from '../_sign-in.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -163,15 +164,12 @@ test.describe('events a player attended', () => {
 			ids.harrow,
 		])
 
-		const context = await browser.newContext({
-			httpCredentials: { username: users.anna.uid, password: users.anna.pass },
-		})
-		const page = await context.newPage()
+		const page = await signedInPage(browser, users.anna.uid, users.anna.pass)
 		await page.goto(`${BASE_URL}/index.php/apps/larpinq/players/${ids.anna}`)
 		await openSidebarTab(page, 'Events attended')
 		await expect(page.getByTestId('player-attendance-count')).toContainText('2')
 		await expect(page.getByTestId('player-attendance-row')).toHaveCount(2)
-		await context.close()
+		await page.context().close()
 	})
 
 	// @e2e openspec/specs/events-players/spec.md#karel-looks-at-anna
