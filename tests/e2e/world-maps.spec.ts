@@ -26,6 +26,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from './_base-url.ts'
+import { scrollToWidget } from './_nav.ts'
 import { signedInPage } from './_sign-in.ts'
 import {
 	BASE,
@@ -122,8 +123,11 @@ test.beforeAll(async () => {
 		form: { userid: annaUid, password: annaPass, 'groups[]': 'larpers' },
 	})
 	expect(user.ok(), await user.text()).toBe(true)
+	// An empty storage state: the project's admin session cookies would
+	// otherwise win over the basic credentials, and Anna would read as admin.
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
 	worldId = ledger.track(
@@ -210,8 +214,9 @@ test.describe('world maps', () => {
 
 		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
 		await expect(page.getByText('The valley of Aldmoor').first()).toBeVisible()
-		await expect(page.getByText('Aldmoor city')).toBeVisible()
-		await expect(page.getByText('Ash grove')).toBeVisible()
+		const pins = await scrollToWidget(page, 'Pins')
+		await expect(pins.getByText('Aldmoor city')).toBeVisible()
+		await expect(pins.getByText('Ash grove')).toBeVisible()
 	})
 
 	// @e2e openspec/specs/world-maps/spec.md#the-dangerous-grove
@@ -232,7 +237,8 @@ test.describe('world maps', () => {
 	test('a player does not see the hidden pin on the map page', async ({ browser }) => {
 		const page = await annaPage(browser)
 		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
-		await expect(page.getByText('Aldmoor city')).toBeVisible()
+		const pins = await scrollToWidget(page, 'Pins')
+		await expect(pins.getByText('Aldmoor city')).toBeVisible()
 		await expect(page.getByText('Ash grove')).toHaveCount(0)
 		await page.context().close()
 	})
