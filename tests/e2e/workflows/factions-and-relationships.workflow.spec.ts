@@ -107,15 +107,23 @@ test.beforeAll(async () => {
 		'setting',
 		await createObject(admin, 'setting', { name: fixtureName('Aldmoor') }),
 	)
-	const character = async (name: string, owner: string): Promise<string> =>
-		ledger.track(
+	// A character's ownerUid is derived from its player's account (@ref.player.userUid),
+	// so each owner gets a player record and the character points at it.
+	const playerOf: Record<string, string> = {}
+	const character = async (name: string, owner: string): Promise<string> => {
+		playerOf[owner] ??= ledger.track(
+			'player',
+			await createObject(admin, 'player', { name: fixtureName(owner), userUid: owner }),
+		)
+		return ledger.track(
 			'character',
 			await createObject(admin, 'character', {
 				name: fixtureName(name),
 				setting: worldId,
-				ownerUid: owner,
+				ocName: playerOf[owner],
 			}),
 		)
+	}
 	ids.tomas = await character('Tomas', uid('tom'))
 	ids.venn = await character('Lady Venn', uid('vera'))
 	ids.mirela = await character('Mirela the Wanderer', uid('vera'))
