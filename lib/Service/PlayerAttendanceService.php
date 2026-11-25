@@ -29,7 +29,8 @@ use OCA\Larpinq\Kernel\Contracts\PlayerAttendanceServiceInterface;
  * row 30), so this service reads it with the app's authority, one character
  * at a time. The caller MUST have decided first that the signed-in user may
  * see this player's history (a game master, or the player themself through
- * CharacterConnectionGuard::owns). The characters and events are read as
+ * CharacterConnectionGuard::owns). The player's characters are read with the
+ * app's authority too, scoped by the player reference; the events are read as
  * the signed-in user.
  *
  * @spec openspec/specs/events-players/spec.md
@@ -73,11 +74,16 @@ class PlayerAttendanceService implements PlayerAttendanceServiceInterface {
 	 * @spec openspec/specs/events-players/spec.md
 	 */
 	public function history(string $playerId): array {
+		if ($playerId === '') {
+			return ['count' => 0, 'events' => []];
+		}
+
 		$rows = [];
-		$characters = $this->objectFetcher->getObjects(
+
+		$characters = $this->objectFetcher->getObjectsWithAppAuthority(
 			objectType: 'character',
-			limit: self::LIMIT,
-			filters: $this->characterFilter(playerId: $playerId)
+			filters: ['ocName' => $playerId],
+			limit: self::LIMIT
 		);
 		foreach ($characters as $character) {
 			$characterId = $this->idOf(value: ($character['id'] ?? null));
@@ -104,35 +110,6 @@ class PlayerAttendanceService implements PlayerAttendanceServiceInterface {
 
 		return ['count' => count($events), 'events' => $rows];
 	}//end history()
-
-	/**
-	 * Which characters are the player's: those whose `ownerUid` is the player's account.
-	 *
-	 * OpenRegister refuses a player an `ocName` filter on characters (the read rule
-	 * depends on the row), while the player's own rows by `ownerUid` are readable to
-	 * them. `ownerUid` is materialised from the player's `userUid`, read here as the
-	 * signed-in user. A player without an account, or one that cannot be read, falls
-	 * back to `ocName`, which a game master may filter on.
-	 *
-	 * @param string $playerId The player UUID.
-	 *
-	 * @return array<string, string> The equality filter on characters.
-	 *
-	 * @spec openspec/specs/events-players/spec.md
-	 */
-	private function characterFilter(string $playerId): array {
-		try {
-			$userUid = (string)($this->objectFetcher->getObject(objectType: 'player', id: $playerId)['userUid'] ?? '');
-		} catch (\Throwable $e) {
-			$userUid = '';
-		}
-
-		if ($userUid !== '') {
-			return ['ownerUid' => $userUid];
-		}
-
-		return ['ocName' => $playerId];
-	}//end characterFilter()
 
 	/**
 	 * One line of the history.
