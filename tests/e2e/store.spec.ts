@@ -157,4 +157,19 @@ test.describe('admin-configuration-store', () => {
 		const installed = await admin.get(`${OR_OBJECTS_API}/larpinq/skill?setting=${worldIds.south}&_limit=500`, { headers: OCS })
 		expect(((await installed.json())?.results ?? []).length).toBe(28)
 	})
+
+	/**
+	 * @e2e store::the-list-shows-what-fits-the-active-world
+	 */
+	test.fixme('the list narrows to the bundles that fit the active world', async ({ page }) => {
+		await admin.put(`${BASE_URL}/index.php${BASE}/api/preferences/active-world`, { data: { value: worldIds.south } })
+		try {
+			await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
+			await expect(page.getByTestId('store-fits-target')).toHaveText(`Past bij: ${WORLDS.south}`, { timeout: 30_000 })
+			await page.getByTestId('store-fits-target-clear').click()
+			await expect(page.getByTestId('store-active-filters')).toHaveCount(0)
+		} finally {
+			await admin.put(`${BASE_URL}/index.php${BASE}/api/preferences/active-world`, { data: { value: '' } })
+		}
+	})
 })

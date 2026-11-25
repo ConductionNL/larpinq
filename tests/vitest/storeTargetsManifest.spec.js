@@ -41,6 +41,12 @@ describe('the Marketplace install target (REQ-ACS-003)', () => {
 		}
 	})
 
+	it('narrows the list to the bundles that fit the active world ("Past bij")', () => {
+		// The same optional token the world-scoped index pages filter on, so the
+		// Marketplace and the lists agree on which world is active.
+		expect(store.config.activeTarget).toBe('@workspace.activeWorld?')
+	})
+
 	it('names the picker in English and Dutch', () => {
 		expect(store.config.targetLabel).toBe('Install into world')
 		expect(l10n('en')['Install into world']).toBe('Install into world')

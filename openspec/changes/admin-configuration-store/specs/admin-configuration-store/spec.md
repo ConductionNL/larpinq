@@ -50,3 +50,11 @@ Installing a bundle SHALL ask which world it goes into, defaulting to the active
 - WHEN the administrator installs "Fantasy basisregels (vaardighedenboom)" and chooses De Zuiderlanden
 - THEN its 28 skills belong to De Zuiderlanden only
 - AND the card reads "Geïnstalleerd in De Zuiderlanden"
+
+#### Scenario: The list shows what fits the active world
+
+- GIVEN the active world is De Zuiderlanden
+- AND "Thema Nevelkust" is installed in Nevelkust only
+- WHEN the administrator opens the Marketplace
+- THEN the filter reads "Past bij: De Zuiderlanden" and "Thema Nevelkust" is not listed
+- AND clearing the filter lists every bundle again
