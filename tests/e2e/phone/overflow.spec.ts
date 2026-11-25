@@ -36,6 +36,27 @@ import {
 /** Smallest tap target on the Check-in tab, in CSS pixels (REQ-APF-002). */
 const MIN_TAP = 44
 
+/**
+ * Overflow inside nextcloud-vue components that the sideways-scroll check
+ * does not catch, reported upstream (REQ-APF-001, task 1.4). Each test that
+ * shows it carries the issue as an annotation.
+ */
+const UPSTREAM = {
+	sidebarTabs: 'https://github.com/ConductionNL/nextcloud-vue/issues/2355',
+	dashboardColumns: 'https://github.com/ConductionNL/nextcloud-vue/issues/2356',
+	filterLabel: 'https://github.com/ConductionNL/nextcloud-vue/issues/2357',
+}
+
+/**
+ * Mark the running test with a known upstream overflow.
+ *
+ * @param {string} url The issue.
+ * @return {void}
+ */
+function knownUpstream(url: string): void {
+	test.info().annotations.push({ type: 'issue', description: url })
+}
+
 /** Headers for OpenRegister object calls by schema slug. */
 const JSON_HEADERS = {
 	Accept: 'application/json',
@@ -140,15 +161,18 @@ test.afterAll(async () => {
 })
 
 test.describe('Event-day pages at phone width (REQ-APF-001)', () => {
-	for (const [name, path] of [
-		['dashboard', '/'],
-		['events-index', '/events'],
-		['characters-index', '/characters'],
-		['my-registrations', '/my-registrations'],
-		['cast', '/cast'],
-		['lore', '/lore'],
+	for (const [name, path, issue] of [
+		['dashboard', '/', UPSTREAM.dashboardColumns],
+		['events-index', '/events', UPSTREAM.filterLabel],
+		['characters-index', '/characters', UPSTREAM.filterLabel],
+		['my-registrations', '/my-registrations', ''],
+		['cast', '/cast', ''],
+		['lore', '/lore', ''],
 	]) {
 		test(`${name} does not scroll sideways`, async ({ page }) => {
+			if (issue !== '') {
+				knownUpstream(issue)
+			}
 			await page.goto(`${BASE}${path}`)
 			await settle(page)
 			await expectNoSidewaysScroll(page, name)
@@ -158,6 +182,7 @@ test.describe('Event-day pages at phone width (REQ-APF-001)', () => {
 	test('the character page with its Stats tab does not scroll sideways', async ({
 		page,
 	}) => {
+		knownUpstream(UPSTREAM.sidebarTabs)
 		await page.goto(`${BASE}/characters/${ids.mirela}`)
 		await settle(page)
 		await expectNoSidewaysScroll(page, 'character-detail')
@@ -175,6 +200,7 @@ test.describe('Check-in works one-handed (REQ-APF-002)', () => {
 	test('the Check-in tab fits and its actions are at least 44 by 44', async ({
 		page,
 	}) => {
+		knownUpstream(UPSTREAM.sidebarTabs)
 		await page.goto(`${BASE}/events/${ids.event}`)
 		await settle(page)
 		await openSidebarTab(page, 'Check-in')
