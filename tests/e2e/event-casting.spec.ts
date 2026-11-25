@@ -24,6 +24,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from './_base-url.ts'
+import { openSidebarTab } from './_nav.ts'
 import { signedInPage } from './_sign-in.ts'
 import {
 	BASE,
@@ -32,6 +33,7 @@ import {
 	FixtureLedger,
 	fixtureName,
 	newApi,
+	postInInitialState,
 	resolveSchemaIds,
 	RUN_ID,
 } from './workflows/fixtures.ts'
@@ -58,6 +60,7 @@ const CHARACTER_NAMES = { chancellor: 'The Chancellor', spy: 'The Spy', heir: 'T
 let admin: APIRequestContext
 const ledger = new FixtureLedger()
 const registrations: Partial<Record<Player, string>> = {}
+const playerRecords: Partial<Record<Player, string>> = {}
 const characters: Record<string, string> = {}
 const extra: string[] = []
 let eventId = ''
@@ -90,12 +93,14 @@ test.describe.configure({ mode: 'serial' })
 test.beforeAll(async () => {
 	admin = await newApi()
 	await resolveSchemaIds(admin)
+	await admin.post(`${BASE_URL}/ocs/v2.php/cloud/groups`, { headers: OCS, form: { groupid: 'larpers' } })
 	for (const p of Object.keys(players) as Player[]) {
 		const made = await admin.post(`${BASE_URL}/ocs/v2.php/cloud/users`, {
 			headers: OCS,
-			form: { userid: uid(p), password: password(p), displayName: players[p] },
+			form: { userid: uid(p), password: password(p), displayName: players[p], 'groups[]': 'larpers' },
 		})
 		expect(made.ok(), await made.text()).toBe(true)
+		playerRecords[p] = ledger.track('player', await createObject(admin, 'player', { name: fixtureName(players[p]), userUid: uid(p) }))
 	}
 
 	const deadline = new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString()
@@ -103,15 +108,17 @@ test.beforeAll(async () => {
 	for (const [key, name] of Object.entries(CHARACTER_NAMES)) {
 		characters[key] = ledger.track(
 			'character',
-			await createObject(admin, 'character', { name: fixtureName(name), ocName: 'Open for casting', castingEvent: eventId }),
+			await createObject(admin, 'character', { name: fixtureName(name), castingEvent: eventId, approved: 'approved' }),
 		)
 	}
 
 	for (const p of Object.keys(players) as Player[]) {
-		const id = await idOf(await admin.post(REGISTRATIONS, {
-			headers: OCS,
-			data: { event: eventId, player: players[p], playerUid: uid(p), status: 'accepted' },
-		}))
+		const id = await idOf(await postInInitialState(
+			admin,
+			REGISTRATIONS,
+			{ event: eventId, player: playerRecords[p], playerUid: uid(p), status: 'accepted' },
+			{ ...OCS, 'Content-Type': 'application/json' },
+		))
 		registrations[p] = id
 		extra.push(`${REGISTRATIONS}/${id}`)
 	}
@@ -147,6 +154,7 @@ test.describe('events-casting-and-crew-roles', () => {
 			const page = await pageAs(browser, p)
 			try {
 				await page.goto(`${BASE}/registrations/${registrations[p]}`, { waitUntil: 'domcontentloaded' })
+				await openSidebarTab(page, 'Casting')
 				const casting = page.getByTestId('registration-casting')
 				await expect(casting).toBeVisible({ timeout: 30_000 })
 				await expect(page.getByTestId('registration-casting-closed')).toHaveCount(0)
@@ -188,7 +196,7 @@ test.describe('events-casting-and-crew-roles', () => {
 	 */
 	test('the game master confirms the proposal and Anna owns The Heir', async ({ page }) => {
 		await page.goto(`${BASE}/events/${eventId}`, { waitUntil: 'domcontentloaded' })
-		await page.getByRole('tab', { name: 'Casting' }).or(page.getByRole('button', { name: 'Casting', exact: true })).first().click()
+		await openSidebarTab(page, 'Casting')
 
 		const proposal = page.getByTestId('event-casting-proposal')
 		await expect(proposal).toBeVisible({ timeout: 30_000 })
@@ -204,7 +212,7 @@ test.describe('events-casting-and-crew-roles', () => {
 		await expect(page.getByTestId('event-casting-refused')).toHaveCount(0)
 
 		const heir = await (await admin.get(`${CHARACTERS}/${characters.heir}`, { headers: OCS })).json()
-		expect(heir.ocName, 'The Heir is cast to Anna').toBe(players.anna)
+		expect(heir.ocName, 'The Heir is cast to Anna').toBe(playerRecords.anna)
 		const registration = await (await admin.get(`${REGISTRATIONS}/${registrations.anna}`, { headers: OCS })).json()
 		expect(registration.character, "Anna's registration names The Heir").toBe(characters.heir)
 	})
