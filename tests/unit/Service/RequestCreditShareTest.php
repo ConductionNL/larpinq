@@ -72,6 +72,26 @@ class RequestCreditShareTest extends TestCase {
 	}//end testTheShareCountsOnlyCreditUpToTheAmount()
 
 	/**
+	 * Decimal amounts round to the nearest cent; a negative amount counts as zero.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md#requirement-a-credit-pays-towards-the-players-next-registration-req-rct-005
+	 *
+	 * @return void
+	 */
+	public function testDecimalAmountsRoundToTheNearestCent(): void {
+		$share = new RequestCreditShare();
+		$request = [
+			'amount' => '12.345',
+			'settlements' => [
+				['method' => 'credit', 'amount' => '0.10'],
+				['method' => 'credit', 'amount' => 4.995],
+				['method' => 'credit', 'amount' => -20],
+			],
+		];
+		$this->assertSame(expected: ['paidFromCredit' => 510, 'amountOpen' => 725], actual: $share->fields(registration: [], request: $request));
+	}//end testDecimalAmountsRoundToTheNearestCent()
+
+	/**
 	 * No credit, unreadable settlements, or numbers already shown: nothing to write.
 	 *
 	 * @return void
