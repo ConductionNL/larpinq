@@ -106,3 +106,10 @@ describe('EventRoster phone layout', () => {
 		expect(container).toBeGreaterThan(source.indexOf('.event-roster__scan-form {'))
 	})
 })
+
+describe('EventRoster roster rows on a phone (REQ-APF-002)', () => {
+	it('asks CnDataTable to stack its rows on a phone', () => {
+		const table = source.slice(source.indexOf('<CnDataTable'), source.indexOf('>', source.indexOf('<CnDataTable')))
+		expect(table).toMatch(/:stackOnPhone="true"/)
+	})
+})

@@ -169,7 +169,6 @@ test.describe('Event-day pages at phone width (REQ-APF-001)', () => {
 		await expect(sheet.getByText('Loading stats')).toHaveCount(0, { timeout: 30_000 })
 		await expectNoSidewaysScroll(page, 'character-stats')
 	})
-
 })
 
 test.describe('Check-in works one-handed (REQ-APF-002)', () => {
@@ -197,6 +196,12 @@ test.describe('Check-in works one-handed (REQ-APF-002)', () => {
 			expect(box, 'the action is on screen').not.toBeNull()
 			expect(box!.width).toBeGreaterThanOrEqual(MIN_TAP)
 			expect(box!.height).toBeGreaterThanOrEqual(MIN_TAP)
+			// Stacked rows: the action is reachable without scrolling the
+			// roster sideways.
+			expect(
+				box!.x + box!.width,
+				'the action sits inside the phone screen',
+			).toBeLessThanOrEqual(page.viewportSize()!.width)
 		}
 	})
 })

@@ -72,7 +72,12 @@ class CheckinByCodeTest extends TestCase {
 				static fn (array $row): bool => $row['event'] === $filters['event'] && $row['character'] === $filters['character']
 			))
 		);
-		$this->fetcher->method('getObject')->willReturn(['id' => self::MIRELA, 'name' => 'Mirela the Wanderer']);
+		$this->fetcher->method('getObject')->willReturnCallback(
+			static fn (string $objectType, string $id): array => match ($objectType) {
+				'player' => ['id' => $id, 'name' => 'Anna de Vries (player record)'],
+				default => ['id' => self::MIRELA, 'name' => 'Mirela the Wanderer'],
+			}
+		);
 
 		$this->roster = $this->createMock(EventRosterService::class);
 	}//end setUp()
@@ -120,6 +125,23 @@ class CheckinByCodeTest extends TestCase {
 		$this->assertSame(200, $status);
 		$this->assertSame(['status' => 'checked-in', 'name' => 'Anna de Vries', 'character' => 'Mirela the Wanderer'], $answer);
 	}//end testAnnaIsCheckedInWithHerNameAndCharacter()
+
+	/**
+	 * A registration a game master entered for a player without an account
+	 * has no playerUid: the answer names the player record.
+	 */
+	public function testARegistrationWithoutAnAccountIsNamedByItsPlayerRecord(): void {
+		$this->anna();
+		unset($this->registrations[0]['playerUid']);
+		$this->registrations[0]['player'] = '55555555-5555-4555-8555-555555555555';
+		$this->roster->expects($this->once())->method('recordAttendance')
+			->willReturn(['status' => 'checked-in']);
+
+		[$status, $answer] = $this->service()->checkIn(eventId: self::EVENT, code: self::CODE, actingUid: 'gm');
+
+		$this->assertSame(200, $status);
+		$this->assertSame(['status' => 'checked-in', 'name' => 'Anna de Vries (player record)', 'character' => 'Mirela the Wanderer'], $answer);
+	}//end testARegistrationWithoutAnAccountIsNamedByItsPlayerRecord()
 
 	public function testASecondUseSaysWhenAndByWhom(): void {
 		$this->anna();

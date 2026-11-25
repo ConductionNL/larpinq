@@ -84,10 +84,13 @@
 				</p>
 			</div>
 		</div>
+		<!-- stackOnPhone: below 600 pixels each participant is a stacked row
+		     with its check-in actions on screen (REQ-APF-002). -->
 		<CnDataTable
 			:columns="columns"
 			:rows="participants"
 			:loading="loading"
+			:stackOnPhone="true"
 			:emptyText="
 				t('larpinq', 'No confirmed participants for this event yet.')
 			"

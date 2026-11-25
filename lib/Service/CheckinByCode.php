@@ -159,14 +159,36 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 * @param array<string, mixed> $registration The registration.
 	 *
 	 * @return array<string, mixed> The answer.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
 	 */
 	private function checkedInAnswer(array $registration): array {
 		return [
 			'status' => self::CHECKED_IN,
-			'name' => $this->displayName(uid: self::text(row: $registration, key: 'playerUid')),
-			'character' => $this->characterName(characterId: self::text(row: $registration, key: 'character')),
+			'name' => $this->participantName(registration: $registration),
+			'character' => $this->recordName(objectType: 'character', id: self::text(row: $registration, key: 'character')),
 		];
 	}//end checkedInAnswer()
+
+	/**
+	 * The participant's name: the display name of the registration's account,
+	 * else the name of its player record. A registration a game master entered
+	 * for a player without an account has no playerUid.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return string The name, or '' when neither is known.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+	 */
+	private function participantName(array $registration): string {
+		$name = $this->displayName(uid: self::text(row: $registration, key: 'playerUid'));
+		if ($name !== '') {
+			return $name;
+		}
+
+		return $this->recordName(objectType: 'player', id: self::text(row: $registration, key: 'player'));
+	}//end participantName()
 
 	/**
 	 * The answer for a character that was already checked in.
@@ -280,19 +302,26 @@ class CheckinByCode implements CheckinByCodeInterface {
 	}//end displayName()
 
 	/**
-	 * A character's name, or '' when it cannot be read.
+	 * A character's or player's name, or '' when it cannot be read.
 	 *
-	 * @param string $characterId The character.
+	 * @param string $objectType 'character' or 'player'.
+	 * @param string $id         The object.
 	 *
 	 * @return string The name.
+	 *
+	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
 	 */
-	private function characterName(string $characterId): string {
+	private function recordName(string $objectType, string $id): string {
+		if ($id === '') {
+			return '';
+		}
+
 		try {
-			$character = $this->fetcher->getObject(objectType: 'character', id: $characterId);
+			$record = $this->fetcher->getObject(objectType: $objectType, id: $id);
 		} catch (Throwable $e) {
 			return '';
 		}
 
-		return (string)($character['name'] ?? '');
-	}//end characterName()
+		return (string)($record['name'] ?? '');
+	}//end recordName()
 }//end class
