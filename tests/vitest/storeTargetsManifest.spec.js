@@ -55,8 +55,9 @@ describe('the Marketplace install target (REQ-ACS-003)', () => {
 
 	it('depends on the nextcloud-vue release whose cards say where an item is installed', () => {
 		// "Geïnstalleerd in {world}" per card: CnStorePage reads the engine's
-		// `installed` answer (openregister store-installed-in) from 2.226.0 on.
+		// `installed` answer (openregister store-installed-in) from 2.226.0 on, and
+		// narrows to the active world (`activeTarget`, "Past bij") from 2.231.0 on.
 		const floor = pkg.dependencies['@conduction/nextcloud-vue'].replace(/^[\^~]/, '').split('.').map(Number)
-		expect(floor[0] > 2 || (floor[0] === 2 && floor[1] >= 226)).toBe(true)
+		expect(floor[0] > 2 || (floor[0] === 2 && floor[1] >= 231)).toBe(true)
 	})
 })
