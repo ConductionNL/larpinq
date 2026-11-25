@@ -51,9 +51,9 @@ class PlayerAttendanceServiceTest extends TestCase {
 		$this->fetcher->expects(self::never())->method('getObjects');
 		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
 			static function (string $objectType, array $filters, ?int $limit = null) use ($characters, $attendance): array {
-				self::assertSame(500, $limit);
+				self::assertSame(expected: 500, actual: $limit);
 				if ($objectType === 'character') {
-					self::assertSame(['ocName' => 'player-1'], $filters);
+					self::assertSame(expected: ['ocName' => 'player-1'], actual: $filters);
 					return $characters;
 				}
 
@@ -133,7 +133,7 @@ class PlayerAttendanceServiceTest extends TestCase {
 			['char-a' => [['id' => 'att-1', 'event' => 'ev-1'], ['id' => 'att-2', 'event' => 'ev-1'], ['id' => 'att-3', 'event' => 'ev-gone']]],
 			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']]
 		);
-		$this->fetcher->expects(self::exactly(2))->method('getObject');
+		$this->fetcher->expects(self::exactly(count: 2))->method('getObject');
 
 		$history = $service->history(playerId: 'player-1');
 
@@ -165,11 +165,11 @@ class PlayerAttendanceServiceTest extends TestCase {
 	 * @return void
 	 */
 	public function testAnEmptyPlayerIdReadsNothing(): void {
-		$fetcher = $this->createMock(RegisterObjectFetcher::class);
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
 		$fetcher->expects(self::never())->method('getObjectsWithAppAuthority');
 		$fetcher->expects(self::never())->method('getObjects');
 
-		self::assertSame(['count' => 0, 'events' => []], (new PlayerAttendanceService(objectFetcher: $fetcher))->history(playerId: ''));
+		self::assertSame(expected: ['count' => 0, 'events' => []], actual: (new PlayerAttendanceService(objectFetcher: $fetcher))->history(playerId: ''));
 
 	}//end testAnEmptyPlayerIdReadsNothing()
 
