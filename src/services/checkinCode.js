@@ -7,7 +7,7 @@
  * read that names it in `_reveal`), drawing it as a QR code, and checking a
  * participant in by a scanned or typed code (events-qr-checkin).
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 import { generateUrl } from '@nextcloud/router'
@@ -29,7 +29,7 @@ const CODE_PATTERN = /^[A-Z2-7]{26}$/
  * @param {string} raw What was scanned or typed.
  * @return {string} The code, or ''.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-stewards-check-in-by-scanning-or-typing-a-code-req-eqc-003
  */
 export function normaliseCode(raw) {
 	const code = String(raw ?? '')
@@ -44,7 +44,7 @@ export function normaliseCode(raw) {
  * @param {string} registrationId The registration UUID.
  * @return {Promise<string>} The code, or '' when there is none or it cannot be read.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
  */
 export async function fetchCheckinCode(registrationId) {
 	if (!registrationId) {
@@ -80,7 +80,7 @@ async function readRevealed(registrationId) {
  * @param {string} code The check-in code.
  * @return {{size: number, path: string}|null} The drawing, or null for no code.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
  */
 export function qrDrawing(code) {
 	const valid = normaliseCode(code)
@@ -121,7 +121,7 @@ function rowPath(modules, row) {
  *   `{status: 'already', at, by}`, or `{status}` with 'not-accepted',
  *   'unknown', 'refused', 'busy' or 'failed'.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
 export async function checkInByCode(eventId, code) {
 	const valid = normaliseCode(code)
@@ -244,7 +244,7 @@ const RESULT_MESSAGES = {
  * @param {object} result The answer of checkInByCode().
  * @return {{text: string, ok: boolean}} The message.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
 export function resultMessage(t, result) {
 	const message = RESULT_MESSAGES[result?.status] ?? RESULT_MESSAGES.failed

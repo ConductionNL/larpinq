@@ -16,7 +16,7 @@
   character columns, with the player's name; the app navigation and the
   header are left out of the print.
 
-  @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+  @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
 -->
 <template>
 	<figure v-if="drawing" class="registration-qr" data-testid="registration-qr">
@@ -80,7 +80,7 @@ export default {
 		 * The registration's id, when it is accepted; '' otherwise.
 		 *
 		 * @return {string}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
 		 */
 		acceptedId() {
 			if (this.row?.status !== 'accepted') {
@@ -93,7 +93,7 @@ export default {
 		 * The QR drawing of the code, or null while there is none.
 		 *
 		 * @return {{size: number, path: string}|null}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
 		 */
 		drawing() {
 			return qrDrawing(this.code)
@@ -103,7 +103,7 @@ export default {
 		 * The SVG view box: the code plus its quiet zone.
 		 *
 		 * @return {string}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
 		 */
 		viewBox() {
 			const side = (this.drawing?.size ?? 0) + 2 * MARGIN
@@ -114,7 +114,7 @@ export default {
 		 * The name printed with the code: the signed-in player's.
 		 *
 		 * @return {string}
-		 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
+		 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-the-player-sees-the-code-as-a-qr-code-req-eqc-002
 		 */
 		playerName() {
 			const user = getCurrentUser()

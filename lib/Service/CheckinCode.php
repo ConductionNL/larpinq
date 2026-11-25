@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
  */
 
 declare(strict_types=1);
@@ -28,7 +28,7 @@ namespace OCA\Larpinq\Service;
  * Makes and reads check-in codes: 26 characters of base32 (A-Z, 2-7) from 16
  * random bytes, so a code cannot be guessed.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
  */
 final class CheckinCode {
 
@@ -51,7 +51,7 @@ final class CheckinCode {
 	 *
 	 * @return string 26 characters of base32.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#1.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#1.1
 	 */
 	public static function generate(): string {
 		return self::encode(bytes: random_bytes(16));
@@ -64,7 +64,7 @@ final class CheckinCode {
 	 *
 	 * @return string The code.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#1.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#1.1
 	 */
 	public static function encode(string $bytes): string {
 		$bits = '';
@@ -87,7 +87,7 @@ final class CheckinCode {
 	 *
 	 * @return string The normalised code, or '' when it cannot be one.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	public static function normalise(string $code): string {
 		$code = strtoupper(str_replace([' ', '-'], '', trim($code)));

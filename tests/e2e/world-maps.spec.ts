@@ -19,7 +19,7 @@
  * the map's detail page: its picture, width and height come from the map
  * object (nextcloud-vue map-image-from-record), its pins from larping_map_pin.
  *
- * @spec openspec/changes/worlds-maps/specs/world-maps/spec.md
+ * @spec openspec/specs/world-maps/spec.md
  */
 
 import type { APIRequestContext, Browser, Page } from '@playwright/test'
@@ -215,7 +215,7 @@ test.afterAll(async () => {
 })
 
 test.describe('world maps', () => {
-	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#a-game-master-maps-the-valley
+	// @e2e openspec/specs/world-maps/spec.md#a-game-master-maps-the-valley
 	test('a game master maps the valley', async ({ page }) => {
 		expect(await listed(admin, MAPS, { setting: worldId }, 'title')).toEqual([
 			"The smugglers' tunnels",
@@ -236,7 +236,7 @@ test.describe('world maps', () => {
 		await expect(page.getByText('Ash grove')).toBeVisible()
 	})
 
-	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#the-dangerous-grove
+	// @e2e openspec/specs/world-maps/spec.md#the-dangerous-grove
 	test('a player gets no game-master map or pin through the API', async () => {
 		expect(await listed(anna, MAPS, { setting: worldId }, 'title')).toEqual([
 			'The valley of Aldmoor',
@@ -250,7 +250,7 @@ test.describe('world maps', () => {
 		expect(tunnels.ok()).toBe(false)
 	})
 
-	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#the-dangerous-grove
+	// @e2e openspec/specs/world-maps/spec.md#the-dangerous-grove
 	test('a player does not see the hidden pin on the map page', async ({ browser }) => {
 		const page = await annaPage(browser)
 		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
@@ -259,7 +259,7 @@ test.describe('world maps', () => {
 		await page.context().close()
 	})
 
-	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#anna-finds-the-city
+	// @e2e openspec/specs/world-maps/spec.md#anna-finds-the-city
 	test('a player reaches the lore page of a pin she may see', async () => {
 		const pin = await (await anna.get(`${PINS}/${ids.city}`, { headers: OCS })).json()
 		expect(pin.label).toBe('Aldmoor city')
@@ -268,7 +268,7 @@ test.describe('world maps', () => {
 		expect((await lore.json()).title).toBe('The city of Aldmoor')
 	})
 
-	// @e2e openspec/changes/worlds-maps/specs/world-maps/spec.md#anna-finds-the-city
+	// @e2e openspec/specs/world-maps/spec.md#anna-finds-the-city
 	// tasks.md 2.2: the map detail page draws the map's own picture (nextcloud-vue
 	// map-image-from-record) with the pins Anna may see; a pin opens its lore page.
 	test('a player clicks the city pin on the map and opens its lore page', async ({ browser }) => {

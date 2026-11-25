@@ -10,7 +10,7 @@
  * server has to look the registration up inside OpenRegister's trusted reveal
  * scope. This spec is what shows that lookup works on a real instance.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 import type { APIRequestContext } from '@playwright/test'

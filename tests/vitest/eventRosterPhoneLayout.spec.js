@@ -8,7 +8,7 @@
  * and the code text is 16 pixels so a phone does not zoom in
  * (admin-phone-friendly-pages, REQ-APF-002).
  *
- * @spec openspec/changes/admin-phone-friendly-pages/specs/phone-friendly-pages/spec.md
+ * @spec openspec/specs/phone-friendly-pages/spec.md
  */
 
 import { readFileSync } from 'node:fs'
@@ -104,5 +104,12 @@ describe('EventRoster phone layout', () => {
 	it('places the phone query after the base scan rules so it wins', () => {
 		const container = source.indexOf('@container (max-width: 600px)')
 		expect(container).toBeGreaterThan(source.indexOf('.event-roster__scan-form {'))
+	})
+})
+
+describe('EventRoster roster rows on a phone (REQ-APF-002)', () => {
+	it('asks CnDataTable to stack its rows on a phone', () => {
+		const table = source.slice(source.indexOf('<CnDataTable'), source.indexOf('>', source.indexOf('<CnDataTable')))
+		expect(table).toMatch(/:stackOnPhone="true"/)
 	})
 })

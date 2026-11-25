@@ -32,4 +32,6 @@ On a phone the scan panel spans the width and its buttons are large enough to pr
 
 ## Screenshot
 
-A screenshot of the scan panel is still to be taken on a live instance.
+The scan panel on the event's **Check-in** tab, after a steward checked Anna in with her code:
+
+![The scan panel on the Check-in tab answering "Checked in: Anna de Vries, Mirela the Wanderer"](/screenshots/qr-checkin-scan-panel.png)

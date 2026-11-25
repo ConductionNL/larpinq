@@ -5,7 +5,7 @@ description: Start a new OpenSpec change for larpinq
 Start an OpenSpec change named from the arguments (kebab-case, named by what it does): $ARGUMENTS
 
 1. Read `openspec/config.yaml` for the project context and rules, check `openspec/specs/` for the capability you are changing, and check `openspec/changes/` so the name is not taken.
-2. Create `openspec/changes/<change-name>/` with the files the existing changes have (compare `openspec/changes/worlds-maps/`):
+2. Create `openspec/changes/<change-name>/` with the files the existing changes have (compare `openspec/changes/archive/2026-11-25-worlds-maps/`):
    - `proposal.md`: summary and motivation.
    - `design.md`: only when there are design decisions to record.
    - `tasks.md`: numbered checkbox tasks, each with how to verify it.

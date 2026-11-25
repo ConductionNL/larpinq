@@ -322,7 +322,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 * @throws InvalidArgumentException If no scoping filter is given.
 	 * @throws Exception If OpenRegister is not available or type is not configured.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
 	 */
 	public function getObjectsByRevealedValue(string $objectType, array $filters, ?int $limit = null): array {
 		$read = fn (): array => $this->getObjectsWithAppAuthority(objectType: $objectType, filters: $filters, limit: $limit);

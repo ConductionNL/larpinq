@@ -46,7 +46,7 @@ interface CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	public function checkIn(string $eventId, string $code, string $actingUid): array;
 }//end interface

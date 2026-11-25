@@ -221,7 +221,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 *
 	 * @return array<string, mixed> `status`, and `checkinCode` when accepted.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
 	 */
 	private function placement(array $event, array $registration): array {
 		$outcome = $this->placeOutcome(event: $event, registration: $registration, excludeId: '');
@@ -240,7 +240,7 @@ class RegistrationService implements RegistrationServiceInterface {
 	 *
 	 * @return array<string, string> `['checkinCode' => ...]`, or nothing.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-every-accepted-registration-has-a-check-in-code-req-eqc-001
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */

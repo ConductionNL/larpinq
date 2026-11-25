@@ -17,7 +17,7 @@
  *
  * @link https://larpingapp.com
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 declare(strict_types=1);
@@ -37,7 +37,7 @@ use Throwable;
  * events. A registration that is not accepted checks nobody in, and a second
  * use reports when and by whom the first was.
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+ * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
  */
 class CheckinByCode implements CheckinByCodeInterface {
 
@@ -73,7 +73,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 *
 	 * @SuppressWarnings(PHPMD.StaticAccess) CheckinCode is a pure helper.
 	 */
@@ -95,7 +95,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>}|null The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	private function refusal(array|null $registration, string $eventId): array|null {
 		if ($registration === null || self::text(row: $registration, key: 'event') !== $eventId) {
@@ -117,7 +117,7 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 *
 	 * @return array{0: int, 1: array<string, mixed>} The HTTP status and the answer.
 	 *
-	 * @spec openspec/changes/events-qr-checkin/tasks.md#2.1
+	 * @spec openspec/changes/archive/2026-11-25-events-qr-checkin/tasks.md#2.1
 	 */
 	private function admit(array $registration, string $actingUid): array {
 		$eventId     = self::text(row: $registration, key: 'event');
@@ -159,14 +159,36 @@ class CheckinByCode implements CheckinByCodeInterface {
 	 * @param array<string, mixed> $registration The registration.
 	 *
 	 * @return array<string, mixed> The answer.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
 	private function checkedInAnswer(array $registration): array {
 		return [
 			'status' => self::CHECKED_IN,
-			'name' => $this->displayName(uid: self::text(row: $registration, key: 'playerUid')),
-			'character' => $this->characterName(characterId: self::text(row: $registration, key: 'character')),
+			'name' => $this->participantName(registration: $registration),
+			'character' => $this->recordName(objectType: 'character', id: self::text(row: $registration, key: 'character')),
 		];
 	}//end checkedInAnswer()
+
+	/**
+	 * The participant's name: the display name of the registration's account,
+	 * else the name of its player record. A registration a game master entered
+	 * for a player without an account has no playerUid.
+	 *
+	 * @param array<string, mixed> $registration The registration.
+	 *
+	 * @return string The name, or '' when neither is known.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function participantName(array $registration): string {
+		$name = $this->displayName(uid: self::text(row: $registration, key: 'playerUid'));
+		if ($name !== '') {
+			return $name;
+		}
+
+		return $this->recordName(objectType: 'player', id: self::text(row: $registration, key: 'player'));
+	}//end participantName()
 
 	/**
 	 * The answer for a character that was already checked in.
@@ -280,19 +302,26 @@ class CheckinByCode implements CheckinByCodeInterface {
 	}//end displayName()
 
 	/**
-	 * A character's name, or '' when it cannot be read.
+	 * A character's or player's name, or '' when it cannot be read.
 	 *
-	 * @param string $characterId The character.
+	 * @param string $objectType 'character' or 'player'.
+	 * @param string $id         The object.
 	 *
 	 * @return string The name.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md
 	 */
-	private function characterName(string $characterId): string {
+	private function recordName(string $objectType, string $id): string {
+		if ($id === '') {
+			return '';
+		}
+
 		try {
-			$character = $this->fetcher->getObject(objectType: 'character', id: $characterId);
+			$record = $this->fetcher->getObject(objectType: $objectType, id: $id);
 		} catch (Throwable $e) {
 			return '';
 		}
 
-		return (string)($character['name'] ?? '');
-	}//end characterName()
+		return (string)($record['name'] ?? '');
+	}//end recordName()
 }//end class

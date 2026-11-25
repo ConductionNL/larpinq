@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EUPL-1.2
  * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  *
- * @spec openspec/changes/worlds-maps/specs
+ * @spec openspec/changes/archive/2026-11-25-worlds-maps/specs
  */
 
 declare(strict_types=1);

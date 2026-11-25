@@ -8,7 +8,7 @@
  * seconds, and the camera seeing the same code again does not resend it
  * (events-qr-checkin, REQ-EQC-003 / REQ-EQC-004).
  *
- * @spec openspec/changes/events-qr-checkin/specs/event-checkin-roster/spec.md
+ * @spec openspec/specs/event-checkin-roster/spec.md
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
