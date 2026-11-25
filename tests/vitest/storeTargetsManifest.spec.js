@@ -41,6 +41,12 @@ describe('the Marketplace install target (REQ-ACS-003)', () => {
 		}
 	})
 
+	it('narrows the list to the bundles that fit the active world ("Past bij")', () => {
+		// The same optional token the world-scoped index pages filter on, so the
+		// Marketplace and the lists agree on which world is active.
+		expect(store.config.activeTarget).toBe('@workspace.activeWorld?')
+	})
+
 	it('names the picker in English and Dutch', () => {
 		expect(store.config.targetLabel).toBe('Install into world')
 		expect(l10n('en')['Install into world']).toBe('Install into world')
@@ -49,8 +55,9 @@ describe('the Marketplace install target (REQ-ACS-003)', () => {
 
 	it('depends on the nextcloud-vue release whose cards say where an item is installed', () => {
 		// "Geïnstalleerd in {world}" per card: CnStorePage reads the engine's
-		// `installed` answer (openregister store-installed-in) from 2.226.0 on.
+		// `installed` answer (openregister store-installed-in) from 2.226.0 on, and
+		// narrows to the active world (`activeTarget`, "Past bij") from 2.231.0 on.
 		const floor = pkg.dependencies['@conduction/nextcloud-vue'].replace(/^[\^~]/, '').split('.').map(Number)
-		expect(floor[0] > 2 || (floor[0] === 2 && floor[1] >= 226)).toBe(true)
+		expect(floor[0] > 2 || (floor[0] === 2 && floor[1] >= 231)).toBe(true)
 	})
 })
