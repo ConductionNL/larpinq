@@ -78,8 +78,8 @@ class CastingServiceTest extends TestCase {
 				return $this->rows[$objectType] ?? [];
 			}
 		);
-		$this->fetcher->method('saveObject')->willReturnCallback(
-			function (string $objectType, array $data, ?string $uuid = null): array {
+		$this->fetcher->method('updateObject')->willReturnCallback(
+			function (string $objectType, array $data, string $uuid): array {
 				$this->saves[] = ['type' => $objectType, 'data' => $data, 'uuid' => $uuid];
 				return $data;
 			}
@@ -178,7 +178,7 @@ class CastingServiceTest extends TestCase {
 	public function testARefusedWriteIsReportedAndTheRegistrationLeftAlone(): void {
 		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
 		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(fn (string $objectType): array => $this->rows[$objectType] ?? []);
-		$this->fetcher->expects(self::once())->method('saveObject')->willThrowException(new \RuntimeException('unique holder'));
+		$this->fetcher->expects(self::once())->method('updateObject')->willThrowException(new \RuntimeException('unique holder'));
 
 		$result = $this->service()->confirm(self::EVENT, [['registration' => 'r-anna', 'character' => 'heir']]);
 
