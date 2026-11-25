@@ -36,6 +36,15 @@
 // using plural strings in such a language needs its real rule declared in the
 // JSON, which this script will then honour.
 //
+// en carries only what differs from its key (REQ-PLB-006; ADR-124 speed budget):
+// English source strings ARE the keys, and `t()` already returns the key when
+// a catalogue has no entry, so `"Save": "Save"` costs bytes on every page and
+// changes nothing. l10n/en.js keeps the entries whose English text differs
+// from its key (`"All worlds": "All settings"`); l10n/en.json stays complete,
+// because PHP and the extraction and parity checks read the full key set from
+// it. Every other locale is written whole: an untranslated entry there is a
+// translator's to fill, and dropping it would hide that.
+//
 // Usage:
 //   node scripts/build-l10n-js.js            (npm run l10n:build)
 //   node scripts/build-l10n-js.js --check    exit 1 if any .js is stale
@@ -74,15 +83,37 @@ function appId() {
 	return match[1].trim()
 }
 
+/** The locale whose browser catalogue omits entries equal to their key. */
+const SOURCE_LOCALE = 'en'
+
+/**
+ * The entries the browser catalogue of a locale carries: for the source locale
+ * only those whose text differs from the key, for every other locale all.
+ *
+ * @spec openspec/specs/platform-baseline/spec.md
+ * @param {string} locale - the locale name
+ * @param {object} translations - the catalogue's translations
+ * @return {object} the translations to register in the browser
+ */
+function browserEntries(locale, translations) {
+	if (locale !== SOURCE_LOCALE) {
+		return translations
+	}
+	return Object.fromEntries(
+		Object.entries(translations).filter(([key, value]) => key !== value),
+	)
+}
+
 /**
  * Render one catalogue as the `OC.L10N.register` call the browser expects.
  *
  * @param {string} id - the app id to register under
  * @param {object} doc - the parsed catalogue: translations and an optional pluralForm
+ * @param {string} locale - the locale name
  * @return {string} the .js file body
  */
-function renderJs(id, doc) {
-	const translations = doc.translations
+function renderJs(id, doc, locale) {
+	const translations = browserEntries(locale, doc.translations)
 	const body = Object.keys(translations)
 		.map(
 			(key) =>
@@ -178,8 +209,8 @@ function readIfPresent(file) {
 function syncLocale(locale, run) {
 	const doc = readCatalogue(locale)
 	const jsFile = path.join(L10N_DIR, `${locale}.js`)
-	const rendered = renderJs(run.id, doc)
-	const keys = Object.keys(doc.translations).length
+	const rendered = renderJs(run.id, doc, locale)
+	const keys = Object.keys(browserEntries(locale, doc.translations)).length
 
 	if (readIfPresent(jsFile) === rendered) {
 		console.log(`  ✓ l10n/${locale}.js up to date (${keys} keys)`)

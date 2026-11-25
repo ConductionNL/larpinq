@@ -96,6 +96,25 @@ const CASES = {
 	'info.xml without an id': {
 		files: { ...L10N, 'appinfo/info.xml': '<info></info>' },
 	},
+	'en keeps only what differs from its key': {
+		files: {
+			'appinfo/info.xml': '<id>larpinq</id>',
+			'l10n/en.json': json({
+				translations: { Save: 'Save', 'All worlds': 'All settings' },
+			}),
+			'l10n/en_GB.json': json({ translations: { Save: 'Save' } }),
+			'l10n/nl.json': json({ translations: { Save: 'Save' } }),
+		},
+	},
+	'--check accepts an en.js without identity entries': {
+		args: ['--check'],
+		files: {
+			'appinfo/info.xml': '<id>larpinq</id>',
+			'l10n/en.json': json({ translations: { Save: 'Save' } }),
+			'l10n/en.js':
+				'OC.L10N.register(\n    "larpinq",\n    {\n\n    },\n    "nplurals=2; plural=(n != 1);"\n)\n',
+		},
+	},
 	'two ids, the first wins': {
 		files: { ...L10N, 'appinfo/info.xml': '<id>first</id><id>second</id>' },
 	},
