@@ -571,6 +571,7 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	 *
 	 * @spec openspec/specs/event-casting/spec.md
 	 */
+	#[\Override]
 	public function updateObject(string $objectType, array $data, string $uuid): array {
 		$stored = $this->getObject(objectType: $objectType, id: $uuid);
 		unset($stored['@self'], $stored['id']);
