@@ -24,6 +24,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from './_base-url.ts'
+import { signedInPage } from './_sign-in.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -81,12 +82,7 @@ async function idOf(res: Awaited<ReturnType<APIRequestContext['post']>>): Promis
  * @return The page.
  */
 async function pageAs(browser: Browser, p: Player): Promise<Page> {
-	const context = await browser.newContext({
-		baseURL: BASE_URL,
-		storageState: { cookies: [], origins: [] },
-		httpCredentials: { username: uid(p), password: password(p), send: 'always' },
-	})
-	return context.newPage()
+	return signedInPage(browser, uid(p), password(p))
 }
 
 test.describe.configure({ mode: 'serial' })

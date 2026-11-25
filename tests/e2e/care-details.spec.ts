@@ -27,6 +27,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL, OR_OBJECTS_API } from './_base-url.ts'
+import { signedInPage } from './_sign-in.ts'
 import { postInInitialState } from './workflows/fixtures.ts'
 
 const RUN = `care${Date.now().toString(36)}`
@@ -69,12 +70,7 @@ function apiAs(user: User): Promise<APIRequestContext> {
  * @return The page.
  */
 async function pageAs(browser: Browser, user: User): Promise<Page> {
-	const context = await browser.newContext({
-		baseURL: BASE_URL,
-		storageState: { cookies: [], origins: [] },
-		httpCredentials: { username: user.username, password: user.password, send: 'always' },
-	})
-	return context.newPage()
+	return signedInPage(browser, user.username, user.password)
 }
 
 /**

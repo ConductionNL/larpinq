@@ -26,6 +26,7 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from './_base-url.ts'
+import { signedInPage } from './_sign-in.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -106,30 +107,7 @@ async function listed(
  * @return {Promise<Page>} A page logged in as Anna.
  */
 async function annaPage(browser: Browser): Promise<Page> {
-	const context = await browser.newContext({
-		baseURL: BASE_URL,
-		storageState: { cookies: [], origins: [] },
-	})
-	const page = await context.newPage()
-	await page.goto(`${BASE_URL}/index.php/login`)
-	const user = page
-		.locator('input#user, input[name="user"], input[autocomplete="username"]')
-		.first()
-	const password = page
-		.locator(
-			'input#password, input[name="password"], input[autocomplete="current-password"]',
-		)
-		.first()
-	await user.waitFor({ state: 'visible', timeout: 30_000 })
-	const submit = page.locator('button[type="submit"]').first()
-	await expect(submit).toBeEnabled({ timeout: 30_000 })
-	await user.fill(annaUid)
-	await password.fill(annaPass)
-	await submit.click()
-	await page.waitForURL((url) => /\/login(\?|$|\/)/.test(url.pathname) === false, {
-		timeout: 60_000,
-	})
-	return page
+	return signedInPage(browser, annaUid, annaPass)
 }
 
 test.beforeAll(async () => {
