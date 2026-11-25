@@ -20,8 +20,8 @@
 ## 4. Strings and docs
 
 - [x] 4.1 Dutch and English strings (REQ-EQC-003). Verify: `npm run test:l10n`.
-- [ ] 4.2 `docs/features/qr-checkin.md` with a screenshot of the scan panel (ADR-010). Verify: the docs build renders it.
-  - Written 21 Nov and listed in `docs/features/README.md`; the screenshot of the scan panel is still to be taken on a live instance.
+- [x] 4.2 `docs/features/qr-checkin.md` with a screenshot of the scan panel (ADR-010). Verify: the docs build renders it.
+  - Written 21 Nov and listed in `docs/features/README.md`. Screenshot taken 25 Nov on a sandbox instance (Nextcloud 34, MariaDB). Taking it found a defect: a registration without an account answered "Checked in: , Mirela"; the answer now names the player record.
 - [x] 4.3 Add `qrcode` to `package.json` with its licence noted. Verify: `npm ci` and `npm run build` pass; the dependency-integrity gates pass.
 
 Quality reminders (not tracked as tasks): `composer check:strict` once before push.

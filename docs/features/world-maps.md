@@ -31,6 +31,8 @@ OpenRegister applies these rules to every way of reading: the lists, the map pag
 
 Only game masters upload, change and delete maps and pins.
 
-## Not yet available
+## The map page
 
-The map as a picture with clickable pins comes with a later release. Until then a map shows its details and its pin list.
+Open a map to see it as a picture with its pins on it. Zoom in and out, and click a pin to see its label and open the lore page it links to. Below the picture the **Pins** list shows the same pins as a table.
+
+![The map page of "The valley of Aldmoor" with four pins on the map picture](/screenshots/world-map.png)
