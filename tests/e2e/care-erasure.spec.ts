@@ -32,6 +32,7 @@ import type { APIRequestContext } from '@playwright/test'
 import { expect, request, test } from '@playwright/test'
 import { runBackgroundJobs } from './_background-jobs.ts'
 import { BASE_URL, OR_OBJECTS_API } from './_base-url.ts'
+import { postInInitialState } from './workflows/fixtures.ts'
 
 const RUN = `erase${Date.now().toString(36)}`
 const OCS = { 'OCS-APIRequest': 'true', Accept: 'application/json' }
@@ -56,7 +57,7 @@ let listId = ''
  * @return The new id.
  */
 async function create(schema: string, data: Record<string, unknown>): Promise<string> {
-	const res = await admin.post(`${OBJECTS}/${schema}`, { headers: JSON_HEADERS, data })
+	const res = await postInInitialState(admin, `${OBJECTS}/${schema}`, data, JSON_HEADERS)
 	expect(res.ok(), await res.text()).toBe(true)
 	const json = await res.json()
 	const id = String(json?.id ?? json?.['@self']?.id)

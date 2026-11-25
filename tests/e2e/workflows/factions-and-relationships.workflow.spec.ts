@@ -24,6 +24,7 @@ import {
 	FixtureLedger,
 	fixtureName,
 	newApi,
+	postInInitialState,
 	resolveSchemaIds,
 	RUN_ID,
 } from './fixtures.ts'
@@ -58,7 +59,7 @@ async function post(
 	url: string,
 	data: Record<string, unknown>,
 ) {
-	return api.post(url, { headers: { 'OCS-APIRequest': 'true' }, data })
+	return postInInitialState(api, url, data, { 'OCS-APIRequest': 'true' })
 }
 
 /**
