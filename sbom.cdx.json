@@ -1163,8 +1163,8 @@
       "type": "library",
       "name": "nextcloud-vue",
       "group": "@conduction",
-      "version": "2.222.0",
-      "bom-ref": "larpinq@0.1.20|@conduction/nextcloud-vue@2.222.0",
+      "version": "2.228.1",
+      "bom-ref": "larpinq@0.1.20|@conduction/nextcloud-vue@2.228.1",
       "licenses": [
         {
           "license": {
@@ -1172,15 +1172,15 @@
           }
         }
       ],
-      "purl": "pkg:npm/%40conduction/nextcloud-vue@2.222.0",
+      "purl": "pkg:npm/%40conduction/nextcloud-vue@2.228.1",
       "externalReferences": [
         {
-          "url": "https://registry.npmjs.org/@conduction/nextcloud-vue/-/nextcloud-vue-2.222.0.tgz",
+          "url": "https://registry.npmjs.org/@conduction/nextcloud-vue/-/nextcloud-vue-2.228.1.tgz",
           "type": "distribution",
           "hashes": [
             {
               "alg": "SHA-512",
-              "content": "ca1b2788a346bacbc898ac8e4ea3e77df4159161beb45898b8a843ce362b28d71e91580e7da07d61041f57871ee28c32c9be6274b89b1e3bf31dbf5938955f90"
+              "content": "c58ec9cd8639f74a50392bf851a97a7096e8dd79785389bb1d491734be6886eeee1fe6c6a3339d506080198e4f7ccf4cac191bc2f5087ef5e24c8905141ae8e2"
             }
           ],
           "comment": "as detected from npm-ls property \"resolved\" and property \"integrity\""

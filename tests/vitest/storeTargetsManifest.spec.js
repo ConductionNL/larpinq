@@ -13,6 +13,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import register from '../../lib/Settings/larpinq_register.json'
+import pkg from '../../package.json'
 import manifest from '../../src/manifest.json'
 
 const store = manifest.pages.find((p) => p.id === 'Store')
@@ -44,5 +45,12 @@ describe('the Marketplace install target (REQ-ACS-003)', () => {
 		expect(store.config.targetLabel).toBe('Install into world')
 		expect(l10n('en')['Install into world']).toBe('Install into world')
 		expect(l10n('nl')['Install into world']).toBe('Installeren in wereld')
+	})
+
+	it('depends on the nextcloud-vue release whose cards say where an item is installed', () => {
+		// "Geïnstalleerd in {world}" per card: CnStorePage reads the engine's
+		// `installed` answer (openregister store-installed-in) from 2.226.0 on.
+		const floor = pkg.dependencies['@conduction/nextcloud-vue'].replace(/^[\^~]/, '').split('.').map(Number)
+		expect(floor[0] > 2 || (floor[0] === 2 && floor[1] >= 226)).toBe(true)
 	})
 })
