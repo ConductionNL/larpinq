@@ -131,7 +131,7 @@ test.describe('award XP to a whole event', () => {
 		page,
 	}) => {
 		await page.goto(`${BASE_URL}/index.php${BASE}/events/${eventId}`)
-		await page.getByRole('button', { name: 'Actions' }).click()
+		await page.getByTestId('cn-detail-page-actions').getByRole('button', { name: 'Actions' }).click()
 		await page.getByText('Award XP').click()
 		const dialog = page.getByTestId('xp-award-dialog')
 		const tick = (key: string) =>
@@ -140,10 +140,8 @@ test.describe('award XP to a whole event', () => {
 		await expect(tick('bertram')).toBeChecked()
 		await expect(tick('harrow')).not.toBeChecked()
 
-		await dialog
-			.getByTestId('xp-award-default-amount')
-			.locator('input')
-			.fill('5')
+		// NcTextField puts the testid on the <input> itself.
+		await dialog.getByLabel('XP for everyone ticked').fill('5')
 		await dialog.getByTestId('xp-award-save').click()
 		await expect(dialog.getByTestId('xp-award-result')).toContainText('2')
 		await expect(tick('mirela')).not.toBeChecked()

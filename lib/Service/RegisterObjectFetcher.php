@@ -553,6 +553,33 @@ class RegisterObjectFetcher implements RegisterObjectFetcherInterface {
 	}//end saveObject()
 
 	/**
+	 * Change some fields of an existing object, with RBAC on.
+	 *
+	 * OpenRegister replaces an object with what it is given, so a partial
+	 * payload would drop, and fail validation on, every field it leaves out
+	 * (a casting write of `ocName` failed on the character's required `name`).
+	 * The fields are merged over the object as the signed-in user reads it, so
+	 * the write carries no field the user could not see.
+	 *
+	 * @param string              $objectType The object type (e.g. 'character').
+	 * @param array<string,mixed> $data       Only the fields that change.
+	 * @param string              $uuid       The UUID to update.
+	 *
+	 * @return array<string,mixed> The persisted object as an array.
+	 *
+	 * @throws Exception If the object cannot be read or the write is refused.
+	 *
+	 * @spec openspec/specs/event-casting/spec.md
+	 */
+	#[\Override]
+	public function updateObject(string $objectType, array $data, string $uuid): array {
+		$stored = $this->getObject(objectType: $objectType, id: $uuid);
+		unset($stored['@self'], $stored['id']);
+
+		return $this->saveObject(objectType: $objectType, data: array_merge($stored, $data), uuid: $uuid);
+	}//end updateObject()
+
+	/**
 	 * Create or update an object with the app's own authority (RBAC off).
 	 *
 	 * For writes larpinq makes on a user's behalf that the user's own rights do

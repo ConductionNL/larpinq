@@ -26,6 +26,8 @@ import type { APIRequestContext, Browser, Page } from '@playwright/test'
 
 import { expect, request, test } from '@playwright/test'
 import { BASE_URL } from './_base-url.ts'
+import { scrollToWidget } from './_nav.ts'
+import { signedInPage } from './_sign-in.ts'
 import {
 	BASE,
 	cleanupLedger,
@@ -106,30 +108,7 @@ async function listed(
  * @return {Promise<Page>} A page logged in as Anna.
  */
 async function annaPage(browser: Browser): Promise<Page> {
-	const context = await browser.newContext({
-		baseURL: BASE_URL,
-		storageState: { cookies: [], origins: [] },
-	})
-	const page = await context.newPage()
-	await page.goto(`${BASE_URL}/index.php/login`)
-	const user = page
-		.locator('input#user, input[name="user"], input[autocomplete="username"]')
-		.first()
-	const password = page
-		.locator(
-			'input#password, input[name="password"], input[autocomplete="current-password"]',
-		)
-		.first()
-	await user.waitFor({ state: 'visible', timeout: 30_000 })
-	const submit = page.locator('button[type="submit"]').first()
-	await expect(submit).toBeEnabled({ timeout: 30_000 })
-	await user.fill(annaUid)
-	await password.fill(annaPass)
-	await submit.click()
-	await page.waitForURL((url) => /\/login(\?|$|\/)/.test(url.pathname) === false, {
-		timeout: 60_000,
-	})
-	return page
+	return signedInPage(browser, annaUid, annaPass)
 }
 
 test.beforeAll(async () => {
@@ -144,8 +123,11 @@ test.beforeAll(async () => {
 		form: { userid: annaUid, password: annaPass, 'groups[]': 'larpers' },
 	})
 	expect(user.ok(), await user.text()).toBe(true)
+	// An empty storage state: the project's admin session cookies would
+	// otherwise win over the basic credentials, and Anna would read as admin.
 	anna = await request.newContext({
-		httpCredentials: { username: annaUid, password: annaPass },
+		storageState: { cookies: [], origins: [] },
+		httpCredentials: { username: annaUid, password: annaPass, send: 'always' },
 	})
 
 	worldId = ledger.track(
@@ -232,8 +214,9 @@ test.describe('world maps', () => {
 
 		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
 		await expect(page.getByText('The valley of Aldmoor').first()).toBeVisible()
-		await expect(page.getByText('Aldmoor city')).toBeVisible()
-		await expect(page.getByText('Ash grove')).toBeVisible()
+		const pins = await scrollToWidget(page, 'Pins')
+		await expect(pins.getByText('Aldmoor city')).toBeVisible()
+		await expect(pins.getByText('Ash grove')).toBeVisible()
 	})
 
 	// @e2e openspec/specs/world-maps/spec.md#the-dangerous-grove
@@ -254,7 +237,8 @@ test.describe('world maps', () => {
 	test('a player does not see the hidden pin on the map page', async ({ browser }) => {
 		const page = await annaPage(browser)
 		await page.goto(`${BASE_URL}/index.php${BASE}/maps/${ids.valley}/details`)
-		await expect(page.getByText('Aldmoor city')).toBeVisible()
+		const pins = await scrollToWidget(page, 'Pins')
+		await expect(pins.getByText('Aldmoor city')).toBeVisible()
 		await expect(page.getByText('Ash grove')).toHaveCount(0)
 		await page.context().close()
 	})

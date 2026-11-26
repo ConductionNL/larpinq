@@ -43,40 +43,27 @@ class PlayerAttendanceServiceTest extends TestCase {
 	 * @param list<array<string, mixed>>               $characters The player's characters
 	 * @param array<string, list<array<string, mixed>>> $attendance Checked-in records per character id
 	 * @param array<string, array<string, mixed>>      $events     Events by id; a missing id throws
-	 * @param array<string, mixed>                     $player     The player object read as the user
 	 *
 	 * @return PlayerAttendanceService
 	 */
-	private function service(array $characters, array $attendance, array $events, array $player = ['userUid' => 'anna']): PlayerAttendanceService {
-		$filter = ['ownerUid' => 'anna'];
-		if (($player['userUid'] ?? '') === '') {
-			$filter = ['ocName' => 'player-1'];
-		}
-
+	private function service(array $characters, array $attendance, array $events): PlayerAttendanceService {
 		$this->fetcher = $this->createMock(RegisterObjectFetcher::class);
-		$this->fetcher->method('getObjects')->willReturnCallback(
-			static function (string $objectType, ?int $limit = null, ?int $offset = null, ?array $filters = []) use ($characters, $filter): array {
-				self::assertSame('character', $objectType);
-				self::assertSame(500, $limit);
-				self::assertSame($filter, $filters);
-				return $characters;
-			}
-		);
+		$this->fetcher->expects(self::never())->method('getObjects');
 		$this->fetcher->method('getObjectsWithAppAuthority')->willReturnCallback(
-			static function (string $objectType, array $filters, ?int $limit = null) use ($attendance): array {
+			static function (string $objectType, array $filters, ?int $limit = null) use ($characters, $attendance): array {
+				self::assertSame(expected: 500, actual: $limit);
+				if ($objectType === 'character') {
+					self::assertSame(expected: ['ocName' => 'player-1'], actual: $filters);
+					return $characters;
+				}
+
 				self::assertSame('attendance', $objectType);
 				self::assertSame('checked-in', $filters['status']);
-				self::assertSame(500, $limit);
 				return ($attendance[$filters['character']] ?? []);
 			}
 		);
 		$this->fetcher->method('getObject')->willReturnCallback(
-			static function (string $objectType, string $id) use ($events, $player): array {
-				if ($objectType === 'player') {
-					self::assertSame('player-1', $id);
-					return $player;
-				}
-
+			static function (string $objectType, string $id) use ($events): array {
 				self::assertSame('event', $objectType);
 				if (isset($events[$id]) === false) {
 					throw new RuntimeException('not found');
@@ -146,7 +133,7 @@ class PlayerAttendanceServiceTest extends TestCase {
 			['char-a' => [['id' => 'att-1', 'event' => 'ev-1'], ['id' => 'att-2', 'event' => 'ev-1'], ['id' => 'att-3', 'event' => 'ev-gone']]],
 			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']]
 		);
-		$this->fetcher->expects(self::exactly(3))->method('getObject');
+		$this->fetcher->expects(self::exactly(count: 2))->method('getObject');
 
 		$history = $service->history(playerId: 'player-1');
 
@@ -155,21 +142,36 @@ class PlayerAttendanceServiceTest extends TestCase {
 	}//end testEachEventIsReadOnce()
 
 	/**
-	 * A player without an account has its characters read by `ocName`, as a game master may.
+	 * A player's characters are read by the player reference with the app's
+	 * authority, also for a player without an account: OpenRegister refuses a
+	 * player a filter on `ownerUid` or `ocName`, whose read rule depends on the row.
 	 *
 	 * @return void
 	 */
-	public function testAPlayerWithoutAnAccountIsReadByOcName(): void {
+	public function testCharactersAreReadByThePlayerReferenceWithTheAppsAuthority(): void {
 		$service = $this->service(
 			[['id' => 'char-a', 'name' => 'Aldric']],
 			['char-a' => [['id' => 'att-1', 'event' => 'ev-1']]],
-			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']],
-			['name' => 'Anna']
+			['ev-1' => ['name' => 'Moot', 'startDate' => '2026-01-01']]
 		);
 
 		self::assertSame(['att-1'], array_column($service->history(playerId: 'player-1')['events'], 'id'));
 
-	}//end testAPlayerWithoutAnAccountIsReadByOcName()
+	}//end testCharactersAreReadByThePlayerReferenceWithTheAppsAuthority()
+
+	/**
+	 * An empty player id reads nothing, so no read with the app's authority goes unscoped.
+	 *
+	 * @return void
+	 */
+	public function testAnEmptyPlayerIdReadsNothing(): void {
+		$fetcher = $this->createMock(originalClassName: RegisterObjectFetcher::class);
+		$fetcher->expects(self::never())->method('getObjectsWithAppAuthority');
+		$fetcher->expects(self::never())->method('getObjects');
+
+		self::assertSame(expected: ['count' => 0, 'events' => []], actual: (new PlayerAttendanceService(objectFetcher: $fetcher))->history(playerId: ''));
+
+	}//end testAnEmptyPlayerIdReadsNothing()
 
 	/**
 	 * An unreadable event still lists the record, without a name or date.
@@ -198,7 +200,6 @@ class PlayerAttendanceServiceTest extends TestCase {
 	 */
 	public function testACharacterWithoutAnIdIsSkipped(): void {
 		$service = $this->service([['name' => 'Nameless'], ['id' => 42, 'name' => 'Numbered']], [], []);
-		$this->fetcher->expects(self::never())->method('getObjectsWithAppAuthority');
 
 		self::assertSame(['count' => 0, 'events' => []], $service->history(playerId: 'player-1'));
 

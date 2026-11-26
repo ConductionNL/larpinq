@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 
 /**
  * Shared larpinq sidebar-navigation helper.
@@ -237,4 +237,33 @@ export async function openSidebar(page: Page): Promise<void> {
 export async function openSidebarTab(page: Page, tab: string): Promise<void> {
 	await openSidebar(page)
 	await page.getByTestId('cn-object-sidebar').getByRole('tab', { name: tab }).click()
+}
+
+/**
+ * Scroll a detail page until the widget with this title is mounted, and return it.
+ *
+ * A detail page mounts the widgets below the fold only when they scroll into
+ * view, so a widget low on the grid (Care details, Due for erasure) is not in
+ * the DOM after `goto`, and a plain `toBeVisible` on it times out as "element(s)
+ * not found". Each step scrolls every scrollable element down a screen.
+ *
+ * @param {Page} page The page, on a detail route.
+ * @param {string} title The widget's title, which names its region.
+ * @return {Promise<Locator>} The widget's region.
+ */
+export async function scrollToWidget(page: Page, title: string): Promise<Locator> {
+	const region = page.getByRole('region', { name: title, exact: true })
+	await expect(page.locator('[id^="cn-widget-wrapper-title-"]').first()).toBeVisible({ timeout: 30_000 })
+	for (let step = 0; step < 30 && (await region.count()) === 0; step++) {
+		await page.evaluate(() => {
+			document.querySelectorAll<HTMLElement>('*').forEach((element) => {
+				if (element.scrollHeight > element.clientHeight + 50) {
+					element.scrollTop += element.clientHeight
+				}
+			})
+		})
+		await page.waitForTimeout(300)
+	}
+	await region.scrollIntoViewIfNeeded()
+	return region
 }
