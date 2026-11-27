@@ -10,7 +10,8 @@ import AdminSettings from './views/settings/Settings.vue'
 // Library CSS. This entry is a separate bundle from main.js, so the import in
 // main.js does not reach the admin page: without this line CnAdminSettingsShell
 // renders unstyled on /settings/admin/larpinq.
-import '@conduction/nextcloud-vue/css/index.css'
+// The library stylesheet is linked by templates/settings/admin.php
+// (css/nextcloud-vue.css, copied by LibraryStylesheetCopy).
 
 // The library's own catalogue (version card, shell chrome). main.js registers
 // it for the app pages; this entry is a separate bundle.

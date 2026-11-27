@@ -22,7 +22,8 @@ import { applyImportGate, canImport } from './services/campaignPortability.js'
 // resolves names from that registry, so every icon the manifest uses must be
 // listed there — otherwise it falls back to the help-circle placeholder.
 // Library CSS — must be explicit import (webpack tree-shakes side-effect imports from aliased packages)
-import '@conduction/nextcloud-vue/css/index.css'
+// The library stylesheet is linked by templates/index.php (css/nextcloud-vue.css,
+// copied by LibraryStylesheetCopy), not inserted from this bundle as text.
 // gridstack v12 CSS. The manifest declares a `type: "dashboard"` page, whose
 // widgets nc-vue lays out with gridstack. Without this stylesheet every
 // dashboard item renders 0 px wide — v12 sizes items with

@@ -8,6 +8,7 @@
 use OCP\Util;
 
 $appId = OCA\Larpinq\AppInfo\Application::APP_ID;
+Util::addStyle($appId, 'nextcloud-vue');
 Util::addScript($appId, $appId . '-settings');
 Util::addStyle($appId, 'main');
 

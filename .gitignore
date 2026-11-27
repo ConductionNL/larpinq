@@ -64,3 +64,5 @@ playwright-report/
 # are gate FIXTURES, not artefacts, and must stay tracked.
 /*.log
 /changed.tsv
+# nextcloud-vue stylesheet, copied by webpack.config.js (LibraryStylesheetCopy)
+/css/nextcloud-vue.css
