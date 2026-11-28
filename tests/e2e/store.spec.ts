@@ -13,7 +13,9 @@
  * needs the target picker of nextcloud-vue CnStorePage (task 1.1), the
  * `target` of OpenRegister's install endpoint (task 1.2) and `config.targets`
  * on the Store page (task 1.3); browsing a published bundle needs a registry
- * seeded with "Fantasy basisregels (vaardighedenboom)" on the test instance.
+ * seeded with "Fantasy basisregels (vaardighedenboom)" on the test instance,
+ * and a partly refused install needs a seeded bundle that carries a skill set
+ * beside a schema the instance refuses.
  *
  * Not run in the build that wrote it: it needs a live instance.
  *
@@ -31,6 +33,8 @@ const OCS = { 'OCS-APIRequest': 'true', Accept: 'application/json' }
 const JSON_HEADERS = { ...OCS, 'Content-Type': 'application/json' }
 const ADMIN = { username: process.env.NC_ADMIN_USER ?? 'admin', password: process.env.NC_ADMIN_PASS ?? 'admin' }
 const BUNDLE = 'Fantasy basisregels (vaardighedenboom)'
+const PARTIAL_BUNDLE = process.env.STORE_PARTIAL_BUNDLE ?? 'Vaardigheden met een geweigerd schema'
+const REFUSED_SCHEMA = process.env.STORE_REFUSED_SCHEMA ?? 'refused_schema'
 const WORLDS = { south: `${RUN} De Zuiderlanden`, coast: `${RUN} Nevelkust` }
 
 const sem = { username: `${RUN}-sem`, password: `Sem-${RUN}-pw!1` }
@@ -156,6 +160,22 @@ test.describe('admin-configuration-store', () => {
 		expect(((await skills.json())?.results ?? []).length, 'nothing lands in Nevelkust').toBe(0)
 		const installed = await admin.get(`${OR_OBJECTS_API}/larpinq/skill?setting=${worldIds.south}&_limit=500`, { headers: OCS })
 		expect(((await installed.json())?.results ?? []).length).toBe(28)
+	})
+
+	/**
+	 * @e2e store::part-of-a-bundle-is-refused
+	 */
+	test.fixme('a partly refused install keeps the skills and names the refused part', async ({ page }) => {
+		await page.goto(`${BASE}/store`, { waitUntil: 'domcontentloaded' })
+		const card = page.locator('[data-testid^="store-card"]').filter({ hasText: PARTIAL_BUNDLE }).first()
+		await card.getByRole('button', { name: /^Install/ }).click()
+		await page.getByRole('combobox', { name: /world/i }).click()
+		await page.getByRole('option', { name: WORLDS.south }).click()
+		await page.getByRole('button', { name: /^Install/ }).last().click()
+		await expect(page.getByText(/Some parts were not installed|Sommige onderdelen zijn niet geïnstalleerd/)).toContainText(REFUSED_SCHEMA, { timeout: 60_000 })
+
+		const installed = await admin.get(`${OR_OBJECTS_API}/larpinq/skill?setting=${worldIds.south}&_limit=500`, { headers: OCS })
+		expect(((await installed.json())?.results ?? []).length, 'the skills are installed').toBeGreaterThan(0)
 	})
 
 	/**
