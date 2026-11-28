@@ -1,0 +1,310 @@
+{
+  "$comment": "ADR-037 register fragment (players-care-details-and-erasure). Merges five encrypted care fields onto `player`, readable and editable only by game masters and by the player's own account (REQ-PCE-001), and `careRetentionDays` onto `event`. Declares `eventCareRecord`, the copy of a player's care details for one event that EventCareRecords makes when a registration is accepted (REQ-PCE-002), readable by game masters only. Its `archive` block sends each copy to OpenRegister's destruction lists from its `eraseAfter` date, the event's end plus the event's days, so destruction runs through OpenRegister's approval and certificate (REQ-PCE-003, REQ-PCE-004). Does NOT edit larpinq_register.json.",
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_event_care_record"
+        ]
+      }
+    },
+    "schemas": {
+      "player": {
+        "properties": {
+          "allergies": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Allergies",
+            "description": "Allergies the organisers need to know about, such as hazelnuts",
+            "x-openregister-encrypted": true,
+            "authorization": {
+              "read": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ],
+              "update": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "medicalNotes": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Medical notes",
+            "description": "Medical information first aid should know",
+            "x-openregister-encrypted": true,
+            "authorization": {
+              "read": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ],
+              "update": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "dietaryNeeds": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Dietary needs",
+            "description": "What the player can and cannot eat",
+            "x-openregister-encrypted": true,
+            "authorization": {
+              "read": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ],
+              "update": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "emergencyContactName": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Emergency contact",
+            "description": "Who to call in an emergency",
+            "x-openregister-encrypted": true,
+            "authorization": {
+              "read": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ],
+              "update": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ]
+            }
+          },
+          "emergencyContactPhone": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Emergency contact phone",
+            "description": "The emergency contact's phone number",
+            "x-openregister-encrypted": true,
+            "authorization": {
+              "read": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ],
+              "update": [
+                {
+                  "group": "gamemasters"
+                },
+                {
+                  "group": "larpers",
+                  "match": {
+                    "userUid": "$userId"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "event": {
+        "properties": {
+          "careRetentionDays": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3650,
+            "default": 30,
+            "title": "Keep care details (days)",
+            "description": "How many days after the event its copies of players' care details are kept before they are destroyed"
+          }
+        }
+      },
+      "eventCareRecord": {
+        "slug": "larping_event_care_record",
+        "title": "Event care record",
+        "icon": "MedicalBag",
+        "version": "1.0.0",
+        "summary": "A player's care details, copied for one event",
+        "description": "The care details of one player for one event: allergies, medical notes, dietary needs and an emergency contact, copied when the registration is accepted and kept up to date until the event starts. Destroyed through OpenRegister's destruction lists after the event.",
+        "type": "object",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "archive": {
+          "enabled": true,
+          "defaultNominatie": "vernietigen",
+          "afleidingswijze": "eigenschap",
+          "bronEigenschap": "eraseAfter",
+          "defaultBewaartermijn": "P0D"
+        },
+        "required": [
+          "event",
+          "registration",
+          "player",
+          "eventEndDate",
+          "eraseAfter"
+        ],
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_event",
+            "title": "Event",
+            "description": "The event this copy is for"
+          },
+          "registration": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "larping_registration",
+            "title": "Registration",
+            "description": "The accepted registration the copy was made for"
+          },
+          "player": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "player",
+            "title": "Player",
+            "description": "Whose care details these are"
+          },
+          "allergies": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Allergies",
+            "description": "Allergies the organisers need to know about, such as hazelnuts",
+            "x-openregister-encrypted": true
+          },
+          "medicalNotes": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Medical notes",
+            "description": "Medical information first aid should know",
+            "x-openregister-encrypted": true
+          },
+          "dietaryNeeds": {
+            "type": "string",
+            "maxLength": 2000,
+            "title": "Dietary needs",
+            "description": "What the player can and cannot eat",
+            "x-openregister-encrypted": true
+          },
+          "emergencyContactName": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Emergency contact",
+            "description": "Who to call in an emergency",
+            "x-openregister-encrypted": true
+          },
+          "emergencyContactPhone": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Emergency contact phone",
+            "description": "The emergency contact's phone number",
+            "x-openregister-encrypted": true
+          },
+          "eventEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Event ends",
+            "description": "When the event ends, copied from the event"
+          },
+          "eraseAfter": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Erase after",
+            "description": "From this moment the copy is due for destruction: the end of the event plus the event's care retention days"
+          }
+        },
+        "authorization": {
+          "create": [
+            {
+              "group": "gamemasters"
+            }
+          ],
+          "read": [
+            {
+              "group": "gamemasters"
+            }
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            }
+          ],
+          "delete": [
+            {
+              "group": "gamemasters"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+	"pages": [
+		{
+			"id": "CharacterFields",
+			"route": "/character-fields",
+			"type": "index",
+			"title": "Character fields",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_character_field",
+				"allowExport": true,
+				"showMassImport": false,
+				"columns": [
+					{ "key": "label", "label": "Label" },
+					{ "key": "fieldType", "label": "Field type" },
+					{ "key": "visibility", "label": "Visible to" },
+					{ "key": "setting", "label": "World" },
+					{ "key": "order", "label": "Order" }
+				],
+				"documentationUrl": "https://larpinq.conduction.nl"
+			}
+		},
+		{
+			"id": "CharacterFieldDetail",
+			"route": "/character-fields/:id",
+			"type": "detail",
+			"title": "Character field",
+			"config": {
+				"register": "larpinq",
+				"schema": "larping_character_field",
+				"documentationUrl": "https://larpinq.conduction.nl",
+				"widgets": [
+					{
+						"id": "character-field-data",
+						"type": "data",
+						"title": "Character field",
+						"icon": "FormTextbox",
+						"content": { "columns": 2 }
+					}
+				],
+				"layout": [
+					{
+						"id": "1",
+						"widgetId": "character-field-data",
+						"gridX": 0,
+						"gridY": 0,
+						"gridWidth": 12,
+						"gridHeight": 5
+					}
+				]
+			}
+		}
+	],
+	"menu": [
+		{
+			"id": "CharacterFields",
+			"label": "Character fields",
+			"icon": "FormTextbox",
+			"route": "CharacterFields",
+			"order": 31
+		}
+	]
+}

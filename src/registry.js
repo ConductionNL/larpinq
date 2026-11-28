@@ -22,27 +22,214 @@
  * SPDX-FileCopyrightText: 2026 Conduction B.V.
  */
 
+import LanguageSwitch from './components/LanguageSwitch.vue'
+import WorldSwitcher from './components/WorldSwitcher.vue'
+import WorldSwitcherActions from './components/WorldSwitcherActions.vue'
+import ApplyBuildDialog from './dialogs/ApplyBuildDialog.vue'
+import BuyItemDialog from './dialogs/BuyItemDialog.vue'
+import CharacterPdfDownloadDialog from './dialogs/CharacterPdfDownloadDialog.vue'
+import CopyWorldDialog from './dialogs/CopyWorldDialog.vue'
+import EmailParticipantsDialog from './dialogs/EmailParticipantsDialog.vue'
+import OverrideRequirementDialog from './dialogs/OverrideRequirementDialog.vue'
+import RejectCharacterDialog from './dialogs/RejectCharacterDialog.vue'
+import RunsheetDownloadDialog from './dialogs/RunsheetDownloadDialog.vue'
+import XpAwardDialog from './dialogs/XpAwardDialog.vue'
+import BuildReport from './views/BuildReport.vue'
+import CharacterCustomFields from './views/CharacterCustomFields.vue'
+import CharacterStatSheet from './views/CharacterStatSheet.vue'
+import EventCasting from './views/EventCasting.vue'
+import EventChoiceCounts from './views/EventChoiceCounts.vue'
+import EventFeedback from './views/EventFeedback.vue'
 import EventRoster from './views/EventRoster.vue'
 import FlowDetailSidebar from './views/flows/FlowDetailSidebar.vue'
+import LoreArticle from './views/LoreArticle.vue'
 import ObjectDetail from './views/ObjectDetail.vue'
-import GameSettingsSection from './views/settings/Settings.vue'
+import PlayerAttendanceHistory from './views/PlayerAttendanceHistory.vue'
+import RegistrationCasting from './views/RegistrationCasting.vue'
+import RegistrationChanges from './views/RegistrationChanges.vue'
+import RegistrationChoices from './views/RegistrationChoices.vue'
+import Rulebook from './views/Rulebook.vue'
 import SkillTree from './views/SkillTree.vue'
+import StaffInviteLanding from './views/StaffInviteLanding.vue'
+import StaffPage from './views/StaffPage.vue'
+import { openBankStatementImportAction } from './services/bankStatementAction.js'
+import {
+	exportCampaignAction,
+	importCampaignAction,
+} from './services/campaignActions.js'
+import { bulkEditCharactersAction } from './services/characterBulkEditAction.js'
+import { markPlayersReviewedAction } from './services/playerReviewAction.js'
 
 export default {
+	// The active-world switcher (events-world-scope-and-upcoming): the header of
+	// the world-scoped index pages (it draws the page title it replaces) and
+	// the dashboard's actions. It writes the page workspace the lists'
+	// `@workspace.activeWorld?` filter reads.
+	// @spec openspec/specs/setting-management/spec.md
+	WorldSwitcher: {
+		kind: 'header',
+		component: WorldSwitcher,
+	},
+	WorldSwitcherActions: {
+		kind: 'actions',
+		component: WorldSwitcherActions,
+	},
+	// The language switch on the phone pages (platform-baseline-on-nextcloud,
+	// REQ-PLB-007): the actions of the player's own character list, the page a
+	// player opens on a phone. It saves the user's Nextcloud language.
+	// @spec openspec/specs/platform-baseline/spec.md#requirement-req-plb-007-a-player-switches-the-language-on-the-phone-pages
+	LanguageSwitch: {
+		kind: 'actions',
+		component: LanguageSwitch,
+	},
+	// CharacterDetail "Download as PDF" header action (open-modal): a template
+	// picker a declarative api-call cannot express, since the download opens
+	// in a new tab with the chosen template in the URL.
+	// @spec openspec/specs/pdf-export/spec.md
+	CharacterPdfDownloadDialog: {
+		kind: 'modal',
+		component: CharacterPdfDownloadDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Buy item" header action: the priced items of the
+	// character's world, bought with its in-game money in one server write.
+	// @spec openspec/specs/rpg-system/spec.md#requirement-characters-buy-items-with-in-game-money-req-rpg-001
+	BuyItemDialog: {
+		kind: 'modal',
+		component: BuyItemDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Override a requirement" header action, game masters
+	// only: a skill and a reason, written with its requirementOverrides[]
+	// entry in one save so the server check and the audit trail apply.
+	// @spec openspec/specs/skill-requirement-enforcement/spec.md#requirement-a-game-master-records-an-override-on-the-character-page-req-sre-001
+	OverrideRequirementDialog: {
+		kind: 'modal',
+		component: OverrideRequirementDialog,
+		propsSchema: {},
+	},
+	// CharacterDetail "Reject" header action, game masters only: the
+	// approval lifecycle's reject transition with its required reason.
+	// @spec openspec/specs/character-management/spec.md#requirement-a-game-master-rejects-a-submitted-character-with-a-reason-req-cta-001
+	RejectCharacterDialog: {
+		kind: 'modal',
+		component: RejectCharacterDialog,
+		propsSchema: {},
+	},
+	CopyWorldDialog: {
+		kind: 'modal',
+		component: CopyWorldDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Download run sheet" header action, game masters only: a
+	// template picker, then the run sheet opens in a new tab.
+	// @spec openspec/specs/pdf-export/spec.md
+	RunsheetDownloadDialog: {
+		kind: 'modal',
+		component: RunsheetDownloadDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Award XP" header action (events-xp-batch-award), game
+	// masters only: the whole event's awards in one save.
+	// @spec openspec/specs/event-xp-awards/spec.md
+	XpAwardDialog: {
+		kind: 'modal',
+		component: XpAwardDialog,
+		propsSchema: {},
+	},
+	// EventDetail "Email participants" header action
+	// (communication-mail-participants), game masters only: write, preview
+	// the recipients and send one mail each.
+	// @spec openspec/specs/event-messages/spec.md
+	EmailParticipantsDialog: {
+		kind: 'modal',
+		component: EmailParticipantsDialog,
+		propsSchema: {},
+	},
+	// BuildDetail "Apply to character" header action (characters-multiple-builds).
+	// @spec openspec/specs/character-builds/spec.md
+	ApplyBuildDialog: {
+		kind: 'modal',
+		component: ApplyBuildDialog,
+		propsSchema: {},
+	},
+
 	// --- Flows (ADR-110 Decision 4). Only the SIDEBAR is an app component;
 	//     the list and the canvas are the shared `index` / `flow` manifest
 	//     page types. CnFlowSidebar has to mount in the NC app sidebar for
 	//     the canvas to keep full width. ---
 	FlowDetailSidebar: { kind: 'page', component: FlowDetailSidebar },
 
-	GameSettingsSection: { kind: 'section', component: GameSettingsSection },
 	ObjectDetail: { kind: 'section', component: ObjectDetail },
 	// Event check-in roster — a sidebar-tab section on the event detail page
 	// (event-checkin-roster). Not a kind:"widget" (no custom-widget-ratchet
 	// entry); it renders inside the CnObjectSidebar tab strip.
 	EventRoster: { kind: 'section', component: EventRoster },
+	// Feedback tab on the event page (events-post-event-survey), game masters only.
+	// @spec openspec/changes/events-post-event-survey/specs/event-feedback/spec.md
+	EventFeedback: { kind: 'section', component: EventFeedback },
+	CharacterStatSheet: { kind: 'section', component: CharacterStatSheet },
+	// Events attended tab on the player page. @spec openspec/specs/events-players/spec.md
+	PlayerAttendanceHistory: { kind: 'section', component: PlayerAttendanceHistory },
+	// Tickets tab on the registration page and Choices tab on the event page
+	// (registration-ticket-types-and-options). @spec openspec/specs/event-registration/spec.md
+	RegistrationChoices: { kind: 'section', component: RegistrationChoices },
+	// Cancel or hand over tab on the registration page
+	// (registration-cancel-transfer-refund). @spec openspec/specs/event-registration/spec.md
+	RegistrationChanges: { kind: 'section', component: RegistrationChanges },
+	EventChoiceCounts: { kind: 'section', component: EventChoiceCounts },
+	// Casting tab on the event page and on the registration page
+	// (events-casting-and-crew-roles).
+	// @spec openspec/specs/event-casting/spec.md
+	EventCasting: { kind: 'section', component: EventCasting },
+	RegistrationCasting: { kind: 'section', component: RegistrationCasting },
+	CharacterCustomFields: { kind: 'section', component: CharacterCustomFields },
+	// Check tab on the build page. @spec openspec/specs/character-builds/spec.md
+	BuildReport: { kind: 'section', component: BuildReport },
 	// Skill-tree visualization — a read-only type:"custom" page
 	// (skill-tree-visualization). Resolved by CnPageRenderer as the page body
 	// component for the SkillTree manifest page.
 	SkillTree: { kind: 'page', component: SkillTree },
+	// The rules of one world as a printable book (rules-rulebook-and-spell-lists D3).
+	Rulebook: { kind: 'page', component: Rulebook },
+	// Lore read page (worlds-lore-pages): CnWikiPage plus the fetch it leaves
+	// to its host. @spec openspec/specs/world-lore/spec.md
+	LoreArticle: { kind: 'page', component: LoreArticle },
+	// The Staff page and the page a staff invite link opens
+	// (admin-staff-roles-and-invites): members come from Nextcloud groups, not
+	// register objects, so no typed page can list them.
+	// @spec openspec/changes/admin-staff-roles-and-invites/specs/staff-roles/spec.md
+	StaffPage: { kind: 'page', component: StaffPage },
+	StaffInviteLanding: { kind: 'page', component: StaffInviteLanding },
+
+	// Worlds page header actions (admin-import-export): the whole campaign as
+	// one workbook out of, and back into, the larpinq register.
+	// @spec openspec/specs/data-portability/spec.md
+	larpinqExportCampaign: { kind: 'handler', handler: exportCampaignAction },
+	larpinqImportCampaign: { kind: 'handler', handler: importCampaignAction },
+
+	// Characters index bulk action "Edit selected" (characters-status-and-bulk-edit).
+	// A handler, not open-modal: CnIndexPage only emits a bulk open-modal to
+	// its host, which no host here listens to.
+	// @spec openspec/specs/character-management/spec.md
+	larpinqBulkEditCharacters: {
+		kind: 'handler',
+		handler: bulkEditCharactersAction,
+	},
+
+	// New players bulk action "Mark reviewed" (players-self-signup).
+	// @spec openspec/specs/portal-contribution/spec.md
+	larpinqMarkPlayersReviewed: {
+		kind: 'handler',
+		handler: markPlayersReviewedAction,
+	},
+
+	// Registrations header action "Upload and match a bank statement"
+	// (registration-payments-through-shillinq REQ-RPS-007): opens shillinq's
+	// bank statement import, which matches transfers by their reference.
+	// @spec openspec/specs/event-registration/spec.md#requirement-a-game-master-uploads-a-bank-statement-to-match-transfers-req-rps-007
+	larpinqOpenBankStatementImport: {
+		kind: 'handler',
+		handler: openBankStatementImportAction,
+	},
 }

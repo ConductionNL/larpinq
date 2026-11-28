@@ -20,6 +20,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/event-checkin-roster/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -28,6 +31,8 @@ namespace OCA\Larpinq\Service;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OCA\OpenRegister\Mcp\Attribute\McpTool;
+use OCP\IUserSession;
 
 /**
  * Resolves event casts, attendance records and run-sheet context.
@@ -45,11 +50,13 @@ class EventRosterService {
 	 * Constructor for EventRosterService.
 	 *
 	 * @param RegisterObjectFetcher $objectFetcher The register object fetcher.
+	 * @param IUserSession|null     $userSession   The invoking principal, recorded as awardedBy on an agent award.
 	 *
 	 * @psalm-suppress PossiblyUnusedMethod Instantiated via Nextcloud dependency injection.
 	 */
 	public function __construct(
 		private readonly RegisterObjectFetcher $objectFetcher,
+		private readonly ?IUserSession $userSession = null,
 	) {
 	}//end __construct()
 
@@ -88,27 +95,12 @@ class EventRosterService {
 	 */
 	public function buildRoster(string $eventId): array {
 		[$attendance, $attendanceAvailable] = $this->loadAttendance(eventId: $eventId);
+		$characters = $this->castCharacters(eventId: $eventId, event: $this->getEvent(eventId: $eventId));
+		$lookup = new CastLookup(players: $this->indexPlayers(characters: $characters), attendance: $attendance);
 
-		$players = $this->indexPlayers();
 		$participants = [];
-
-		foreach ($this->fetchCharacters() as $character) {
-			if ($this->attendsEvent(character: $character, eventId: $eventId) === false) {
-				continue;
-			}
-
-			$characterId = (string)($character['id'] ?? '');
-			$record = $attendance[$characterId] ?? [];
-
-			$participants[] = [
-				'character' => $characterId,
-				'name' => (string)($character['name'] ?? ''),
-				'type' => (string)($character['type'] ?? ''),
-				'playerName' => $this->resolvePlayerName(character: $character, players: $players),
-				'status' => (string)($record['status'] ?? 'registered'),
-				'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
-				'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
-			];
+		foreach ($characters as $character) {
+			$participants[] = $this->buildRosterEntry(character: $character, lookup: $lookup);
 		}
 
 		$this->sortByName(rows: $participants);
@@ -132,55 +124,123 @@ class EventRosterService {
 	 * @return array<string,mixed> The render context.
 	 *
 	 * @spec openspec/specs/pdf-export/spec.md
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
 	public function buildRunsheetContext(array $event, string $eventId): array {
-		$players = $this->indexPlayers();
-
-		// Attendance is additive: when the schema is absent the cast list is
-		// unchanged (each entry's attendanceStatus stays empty).
-		[$attendance] = $this->loadAttendance(eventId: $eventId);
-
-		$cast = [];
-		$uniqueItems = [];
-		foreach ($this->fetchCharacters() as $character) {
-			if ($this->attendsEvent(character: $character, eventId: $eventId) === false) {
-				continue;
-			}
-
-			$cast[] = $this->buildCastEntry(
-				character: $character,
-				players: $players,
-				attendance: $attendance
-			);
-
-			$this->collectItems(character: $character, uniqueItems: $uniqueItems);
-		}
-
+		$characters = $this->castCharacters(eventId: $eventId, event: $event);
+		$lookup = $this->runsheetLookup(eventId: $eventId, characters: $characters);
+		$cast = array_map(fn (array $character): array => $this->buildCastEntry(character: $character, lookup: $lookup), $characters);
 		$this->sortByName(rows: $cast);
 
 		return [
-			'event' => [
-				'name' => (string)($event['name'] ?? ''),
-				'description' => (string)($event['description'] ?? ''),
-				'startDate' => (string)($event['startDate'] ?? ''),
-				'endDate' => (string)($event['endDate'] ?? ''),
-				'location' => (string)($event['location'] ?? ''),
-				'effects' => ($event['effects'] ?? []),
-				'castCount' => count($cast),
-			],
+			'event' => $this->runsheetEvent(event: $event, castCount: count($cast)),
 			'cast' => $cast,
 			'castCount' => count($cast),
-			'uniqueItemsInPlay' => array_keys($uniqueItems),
+			'uniqueItemsInPlay' => $this->uniqueItemIds(characters: $characters),
 			'template' => [],
 		];
 	}//end buildRunsheetContext()
 
 	/**
+	 * The players, then the attendance of the event, for the run-sheet.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param list<array<string,mixed>> $characters The event's cast.
+	 *
+	 * @return CastLookup The players and attendance.
+	 */
+	private function runsheetLookup(string $eventId, array $characters): CastLookup {
+		$players = $this->indexPlayers(characters: $characters);
+
+		// Attendance is additive: when the schema is absent the cast list is
+		// unchanged (each entry's attendanceStatus stays empty).
+		[$attendance] = $this->loadAttendance(eventId: $eventId);
+
+		return new CastLookup(players: $players, attendance: $attendance);
+	}//end runsheetLookup()
+
+	/**
+	 * The event header of the run-sheet.
+	 *
+	 * @param array<string,mixed> $event The event object.
+	 * @param int $castCount The number of cast entries.
+	 *
+	 * @return array<string,mixed> The header.
+	 */
+	private function runsheetEvent(array $event, int $castCount): array {
+		return [
+			'name' => (string)($event['name'] ?? ''),
+			'description' => (string)($event['description'] ?? ''),
+			'startDate' => (string)($event['startDate'] ?? ''),
+			'endDate' => (string)($event['endDate'] ?? ''),
+			'location' => (string)($event['location'] ?? ''),
+			'effects' => ($event['effects'] ?? []),
+			'castCount' => $castCount,
+		];
+	}//end runsheetEvent()
+
+	/**
+	 * The characters cast in an event: those whose `events` array holds the
+	 * event, in register order, then those the event's `players` names (an
+	 * accepted registration adds its character there), the same two sources
+	 * isParticipant() accepts.
+	 *
+	 * OpenRegister narrows the first read to characters whose `events` array
+	 * holds the event; the membership check here stays as the final word, so
+	 * a filter that over-matches never adds a character to the cast.
+	 *
+	 * @param string                   $eventId The event UUID.
+	 * @param array<string,mixed>|null $event   The event, or null when it cannot be read.
+	 *
+	 * @return list<array<string,mixed>> The cast characters.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
+	 * @spec openspec/specs/event-checkin-roster/spec.md
+	 */
+	private function castCharacters(string $eventId, ?array $event): array {
+		$cast = [];
+		foreach ($this->fetchCharacters(eventId: $eventId) as $character) {
+			if ($this->attendsEvent(character: $character, eventId: $eventId) === true) {
+				$cast[(string)($character['id'] ?? '')] = $character;
+			}
+		}
+
+		$listed = array_diff(array_map('strval', (array)($event['players'] ?? [])), array_keys($cast));
+		$cast += array_column($this->objectFetcher->getObjectsById(objectType: 'character', ids: $listed), null, 'id');
+
+		return array_values($cast);
+	}//end castCharacters()
+
+	/**
+	 * One check-in roster row for a character.
+	 *
+	 * @param array<string,mixed> $character The character object.
+	 * @param CastLookup $lookup The event's players and attendance.
+	 *
+	 * @return array<string,mixed> The roster row.
+	 */
+	private function buildRosterEntry(array $character, CastLookup $lookup): array {
+		$record = $lookup->attendanceOf(character: $character);
+
+		return [
+			'character' => (string)($character['id'] ?? ''),
+			'name' => (string)($character['name'] ?? ''),
+			'type' => (string)($character['type'] ?? ''),
+			'playerName' => $this->resolvePlayerName(character: $character, players: $lookup->players),
+			'status' => (string)($record['status'] ?? 'registered'),
+			'checkedInAt' => (string)($record['checkedInAt'] ?? ''),
+			'checkedInBy' => (string)($record['checkedInBy'] ?? ''),
+			'checkedOutAt' => (string)($record['checkedOutAt'] ?? ''),
+			'checkedOutBy' => (string)($record['checkedOutBy'] ?? ''),
+		];
+	}//end buildRosterEntry()
+
+	/**
 	 * Persist an attendance record for a participant.
 	 *
-	 * Provenance is server-stamped here — `checkedInAt` comes from the server
-	 * clock and `checkedInBy` from the caller-supplied acting uid, never from a
-	 * request body. An existing record for the same (event, character) pair is
+	 * Provenance is server-stamped here — `checkedInAt` / `checkedOutAt` come
+	 * from the server clock and `checkedInBy` / `checkedOutBy` from the
+	 * caller-supplied acting uid, never from a request body. An existing record for the same (event, character) pair is
 	 * updated in place rather than duplicated.
 	 *
 	 * @param string $eventId The event UUID.
@@ -199,31 +259,91 @@ class EventRosterService {
 		string $status,
 		string $actingUid,
 	): ?array {
-		// Server-stamped provenance — any client-supplied checkedInAt/checkedInBy
-		// is discarded by the caller (never read) and re-derived here.
-		$payload = [
-			'event' => $eventId,
-			'character' => $characterId,
-			'status' => $status,
-			'checkedInAt' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM),
-			'checkedInBy' => $actingUid,
-		];
-
 		try {
 			[$existing, $available] = $this->loadAttendance(eventId: $eventId);
 			if ($available === false) {
 				return null;
 			}
 
+			$prior = $existing[$characterId] ?? [];
+
 			return $this->objectFetcher->saveObject(
 				objectType: 'attendance',
-				data: $payload,
-				uuid: $this->existingRecordId(existing: $existing, characterId: $characterId)
+				data: (new AttendanceTransition())->payload(
+					ids: ['event' => $eventId, 'character' => $characterId],
+					status: $status,
+					stamp: ['uid' => $actingUid, 'at' => (new DateTimeImmutable())->format(DateTimeInterface::ATOM)],
+					prior: $prior
+				),
+				uuid: (new AttendanceTransition())->recordId(prior: $prior)
 			);
 		} catch (\Exception $exception) {
 			return null;
 		}
 	}//end recordAttendance()
+
+	/**
+	 * Whether a status may be recorded over a participant's current one; see
+	 * (new AttendanceTransition())->allows().
+	 *
+	 * When attendance storage is unavailable this answers true, so the write
+	 * reaches recordAttendance() and degrades there.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param string $characterId The character UUID.
+	 * @param string $status The status asked for (already validated).
+	 *
+	 * @return bool Whether the change is allowed.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-game-master-checks-a-participant-out-req-eco-001
+	 */
+	public function allowsStatusChange(string $eventId, string $characterId, string $status): bool {
+		[$existing, $available] = $this->loadAttendance(eventId: $eventId);
+
+		return $available === false || (new AttendanceTransition())->allows(prior: ($existing[$characterId] ?? []), status: $status);
+	}//end allowsStatusChange()
+
+	/**
+	 * Award XP to every character checked in at an event (hermiq-ai-tooling REQ-001).
+	 *
+	 * The recipients are decided here, never by the caller: one award per
+	 * attendance row of the event whose status is `checked-in`, and none for a
+	 * registered or no-show row. Each award is written through OpenRegister with
+	 * the caller's rights, so the `gamemasters` create rule on `xpAward` stays
+	 * the enforcement point; `awardedAt` and `awardedBy` are stamped here and
+	 * `awardedVia` marks the award as made through an agent tool. The writes are
+	 * not one transaction, so the answer lists every character with `created`
+	 * or `failed`, and a retry shows the game master who already has an award.
+	 *
+	 * @param string $eventId The event UUID.
+	 * @param int    $amount  The XP each checked-in character receives, at least 1.
+	 * @param string $reason  Why the XP is awarded, shown on every award.
+	 *
+	 * @return array<string, mixed> `{event, amount, reason, results}`, a result per checked-in character.
+	 *
+	 * @throws \InvalidArgumentException When the amount is not positive, the event cannot be read, or nobody is checked in.
+	 *
+	 * @spec openspec/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists
+	 */
+	#[McpTool(
+		name: 'awardXpToAttendees',
+		description: 'Award the same XP, with a reason, to every character checked in at one event. '
+			. 'The server looks up who checked in. Needs a game master\'s approval.',
+		readOnlyHint: false,
+		destructiveHint: false,
+		idempotentHint: false,
+		scope: 'create',
+	)]
+	public function awardXpToAttendees(string $eventId, int $amount, string $reason): array {
+		return (new AttendeeXpAward(objectFetcher: $this->objectFetcher, roster: $this))->award(
+			eventId: $eventId,
+			grant: [
+				'amount' => $amount,
+				'reason' => $reason,
+				'awardedBy' => (string)$this->userSession?->getUser()?->getUID(),
+			]
+		);
+	}//end awardXpToAttendees()
 
 	/**
 	 * Whether a character is a confirmed participant of an event.
@@ -256,39 +376,21 @@ class EventRosterService {
 	}//end isParticipant()
 
 	/**
-	 * The UUID of an existing attendance record for a character, if any.
-	 *
-	 * @param array<string,array<string,mixed>> $existing Records indexed by character id.
-	 * @param string $characterId The character UUID.
-	 *
-	 * @return string|null The record UUID, or null to create a new one.
-	 */
-	private function existingRecordId(array $existing, string $characterId): ?string {
-		$prior = $existing[$characterId] ?? null;
-		if (is_array($prior) === true && isset($prior['id']) === true) {
-			return (string)$prior['id'];
-		}
-
-		return null;
-	}//end existingRecordId()
-
-	/**
 	 * Build one run-sheet cast entry for a character.
 	 *
 	 * @param array<string,mixed> $character The character object.
-	 * @param array<string,array<string,mixed>> $players Players indexed by id.
-	 * @param array<string,array<string,mixed>> $attendance Attendance indexed by character id.
+	 * @param CastLookup $lookup The event's players and attendance.
 	 *
 	 * @return array<string,mixed> The cast entry.
 	 */
-	private function buildCastEntry(array $character, array $players, array $attendance): array {
-		$record = $attendance[(string)($character['id'] ?? '')] ?? [];
+	private function buildCastEntry(array $character, CastLookup $lookup): array {
+		$record = $lookup->attendanceOf(character: $character);
 
 		return [
 			'name' => (string)($character['name'] ?? ''),
 			'type' => (string)($character['type'] ?? ''),
 			'approved' => (string)($character['approved'] ?? ''),
-			'playerName' => $this->resolvePlayerName(character: $character, players: $players),
+			'playerName' => $this->resolvePlayerName(character: $character, players: $lookup->players),
 			'stats' => ($character['stats'] ?? []),
 			'conditions' => ($character['conditions'] ?? []),
 			'items' => ($character['items'] ?? []),
@@ -299,23 +401,27 @@ class EventRosterService {
 	}//end buildCastEntry()
 
 	/**
-	 * Accumulate a character's item references into the unique-items set.
+	 * The ids of every item the cast carries, first seen first.
 	 *
-	 * @param array<string,mixed> $character The character object.
-	 * @param array<string,bool> $uniqueItems The accumulating set, keyed by item id.
+	 * @param list<array<string,mixed>> $characters The cast characters, in register order.
 	 *
-	 * @return void
+	 * @return list<int|string> The item ids.
 	 */
-	private function collectItems(array $character, array &$uniqueItems): void {
-		$items = $character['items'] ?? [];
-		if (is_array($items) === false) {
-			return;
+	private function uniqueItemIds(array $characters): array {
+		$uniqueItems = [];
+		foreach ($characters as $character) {
+			$items = $character['items'] ?? [];
+			if (is_array($items) === false) {
+				continue;
+			}
+
+			foreach ($items as $itemId) {
+				$uniqueItems[(string)$itemId] = true;
+			}
 		}
 
-		foreach ($items as $itemId) {
-			$uniqueItems[(string)$itemId] = true;
-		}
-	}//end collectItems()
+		return array_keys($uniqueItems);
+	}//end uniqueItemIds()
 
 	/**
 	 * Whether a character's `events[]` references the given event.
@@ -333,15 +439,22 @@ class EventRosterService {
 	}//end attendsEvent()
 
 	/**
-	 * Fetch all characters, tolerating OpenRegister absence.
+	 * Fetch the characters cast in an event, tolerating OpenRegister absence.
 	 *
-	 * Non-array rows are filtered out here so callers never re-check.
+	 * `events` is an array property, which OpenRegister's search matches by
+	 * containment, so only characters holding the event are read instead of
+	 * the whole register. Non-array rows are filtered out here so callers
+	 * never re-check.
+	 *
+	 * @param string $eventId The event UUID.
 	 *
 	 * @return array<int,array<string,mixed>> The character objects.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
-	private function fetchCharacters(): array {
+	private function fetchCharacters(string $eventId): array {
 		try {
-			$characters = $this->objectFetcher->getObjects('character');
+			$characters = $this->objectFetcher->getObjects(objectType: 'character', filters: ['events' => $eventId]);
 		} catch (\Exception $exception) {
 			return [];
 		}
@@ -350,26 +463,54 @@ class EventRosterService {
 	}//end fetchCharacters()
 
 	/**
-	 * Index players by their id for cast player-name resolution.
+	 * Index the cast's players by id for player-name resolution.
+	 *
+	 * Only the players the cast names (`player`, else `ocName`) are read, one
+	 * by one, instead of every player in the register. A reference that is not
+	 * a uuid (a legacy free-text name), a missing player or one of another
+	 * type is skipped: the cast entry then shows the stored text, as before.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
 	 *
 	 * @return array<string,array<string,mixed>> Players indexed by id.
+	 *
+	 * @spec openspec/specs/pdf-export/spec.md#requirement-runsheet-cast-query-must-be-scoped-to-the-target-event
 	 */
-	private function indexPlayers(): array {
+	private function indexPlayers(array $characters): array {
 		$indexed = [];
-		try {
-			$players = $this->objectFetcher->getObjects('player');
-		} catch (\Exception $exception) {
-			return $indexed;
-		}
+		foreach ($this->castPlayerIds(characters: $characters) as $playerId) {
+			try {
+				$player = $this->objectFetcher->getObjectOfType(objectType: 'player', id: $playerId);
+			} catch (\Exception $exception) {
+				continue;
+			}
 
-		foreach ($players as $player) {
-			if (is_array($player) === true && isset($player['id']) === true) {
-				$indexed[(string)$player['id']] = $player;
+			if (isset($player['id']) === true) {
+				$indexed[$playerId] = $player;
 			}
 		}
 
 		return $indexed;
 	}//end indexPlayers()
+
+	/**
+	 * The distinct player references of a cast, as `resolvePlayerName()` reads them.
+	 *
+	 * @param list<array<string,mixed>> $characters The cast.
+	 *
+	 * @return list<string> The player ids, first seen first.
+	 */
+	private function castPlayerIds(array $characters): array {
+		$ids = [];
+		foreach ($characters as $character) {
+			$playerId = (string)($character['player'] ?? ($character['ocName'] ?? ''));
+			if ($playerId !== '') {
+				$ids[$playerId] = true;
+			}
+		}
+
+		return array_map('strval', array_keys($ids));
+	}//end castPlayerIds()
 
 	/**
 	 * Load the attendance records for an event, indexed by character id.
@@ -394,6 +535,17 @@ class EventRosterService {
 			return [[], false];
 		}
 
+		return [$this->indexByCharacter(records: $records), true];
+	}//end loadAttendance()
+
+	/**
+	 * Index attendance records by their character id; a later record wins.
+	 *
+	 * @param array<int,mixed> $records The attendance records.
+	 *
+	 * @return array<string,array<string,mixed>> The records by character id.
+	 */
+	private function indexByCharacter(array $records): array {
 		$byCharacter = [];
 		foreach ($records as $record) {
 			if (is_array($record) === false) {
@@ -406,8 +558,8 @@ class EventRosterService {
 			}
 		}
 
-		return [$byCharacter, true];
-	}//end loadAttendance()
+		return $byCharacter;
+	}//end indexByCharacter()
 
 	/**
 	 * Resolve a character's player display name.

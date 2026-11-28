@@ -1,0 +1,544 @@
+{
+	"keys": [
+		"$schema",
+		"dependencies",
+		"menu",
+		"observability",
+		"pages",
+		"setup",
+		"store",
+		"version",
+		"walkthrough"
+	],
+	"menu": [
+		{
+			"id": "Dashboard",
+			"label": "Dashboard",
+			"icon": "ViewDashboardOutline",
+			"route": "Dashboard",
+			"order": 10
+		},
+		{
+			"id": "CharactersGroup",
+			"label": "Characters",
+			"icon": "BriefcaseAccountOutline",
+			"order": 20,
+			"open": true,
+			"children": [
+				{
+					"id": "Characters",
+					"label": "Characters",
+					"icon": "BriefcaseAccountOutline",
+					"route": "Characters",
+					"order": 20
+				},
+				{
+					"id": "Players",
+					"label": "Players",
+					"icon": "AccountGroupOutline",
+					"route": "Players",
+					"order": 30
+				},
+				{
+					"id": "NewPlayers",
+					"label": "New players",
+					"icon": "AccountPlusOutline",
+					"route": "NewPlayers",
+					"order": 35
+				},
+				{
+					"id": "Plots",
+					"label": "Plots",
+					"icon": "BookOpenVariantOutline",
+					"route": "Plots",
+					"order": 30
+				},
+				{
+					"id": "Factions",
+					"label": "Factions",
+					"icon": "ShieldAccountOutline",
+					"route": "Factions",
+					"order": 31
+				}
+			]
+		},
+		{
+			"id": "MechanicsGroup",
+			"label": "Mechanics",
+			"icon": "FlashOutline",
+			"order": 40,
+			"open": true,
+			"children": [
+				{
+					"id": "Abilities",
+					"label": "Abilities",
+					"icon": "FlashOutline",
+					"route": "Abilities",
+					"order": 40
+				},
+				{
+					"id": "Skills",
+					"label": "Skills",
+					"icon": "ToolboxOutline",
+					"route": "Skills",
+					"order": 50
+				},
+				{
+					"id": "SkillTree",
+					"label": "Skill tree",
+					"icon": "ToolboxOutline",
+					"route": "SkillTree",
+					"order": 55
+				},
+				{
+					"id": "Conditions",
+					"label": "Conditions",
+					"icon": "EmoticonSickOutline",
+					"route": "Conditions",
+					"order": 70
+				},
+				{
+					"id": "Effects",
+					"label": "Effects",
+					"icon": "MagicStaff",
+					"route": "Effects",
+					"order": 80
+				},
+				{
+					"id": "SkillLists",
+					"label": "Skill lists",
+					"icon": "MagicStaff",
+					"route": "SkillLists",
+					"order": 57
+				}
+			]
+		},
+		{
+			"id": "WorldGroup",
+			"label": "World",
+			"icon": "Sword",
+			"order": 60,
+			"open": true,
+			"children": [
+				{
+					"id": "Items",
+					"label": "Items",
+					"icon": "Sword",
+					"route": "Items",
+					"order": 60
+				},
+				{
+					"id": "Events",
+					"label": "Events",
+					"icon": "CalendarMonthOutline",
+					"route": "Events",
+					"order": 90
+				},
+				{
+					"id": "XpAwards",
+					"label": "XP Awards",
+					"icon": "StarPlusOutline",
+					"route": "XpAwards",
+					"order": 95
+				},
+				{
+					"id": "Lore",
+					"label": "Lore",
+					"icon": "BookOpenVariantOutline",
+					"route": "Lore",
+					"order": 50
+				},
+				{
+					"id": "Rulebook",
+					"label": "Rulebook",
+					"icon": "BookOpenVariantOutline",
+					"route": "Rulebook",
+					"order": 55
+				},
+				{
+					"id": "MyRegistrations",
+					"label": "My registrations",
+					"icon": "ClipboardList",
+					"route": "MyRegistrations",
+					"order": 93
+				},
+				{
+					"id": "Registrations",
+					"label": "Registrations",
+					"icon": "ClipboardCheckOutline",
+					"route": "Registrations",
+					"order": 92
+				},
+				{
+					"id": "CharacterFields",
+					"label": "Character fields",
+					"icon": "FormTextbox",
+					"route": "CharacterFields",
+					"order": 31
+				}
+			]
+		},
+		{
+			"id": "Settings",
+			"label": "Worlds",
+			"icon": "Earth",
+			"route": "Settings",
+			"order": 25
+		},
+		{
+			"id": "Documentation",
+			"label": "Documentation",
+			"icon": "BookOpenVariantOutline",
+			"href": "https://larpinq.conduction.nl",
+			"section": "footer",
+			"order": 90
+		},
+		{
+			"id": "StoreMenu",
+			"label": "Marketplace",
+			"icon": "StoreOutline",
+			"route": "Store",
+			"section": "footer",
+			"order": 92
+		},
+		{
+			"id": "ReportsMenu",
+			"label": "Reports",
+			"icon": "ChartBoxOutline",
+			"route": "Reports",
+			"section": "settings",
+			"order": 95
+		},
+		{
+			"id": "FeaturesRoadmapMenu",
+			"label": "Features & roadmap",
+			"icon": "MapMarkerPath",
+			"route": "FeaturesRoadmap",
+			"section": "footer",
+			"order": 100
+		},
+		{
+			"id": "FlowsMenu",
+			"label": "Flows",
+			"icon": "Sitemap",
+			"route": "Flows",
+			"section": "settings",
+			"order": 96
+		},
+		{
+			"id": "StaffMenu",
+			"label": "Staff",
+			"icon": "AccountGroupOutline",
+			"route": "Staff",
+			"section": "settings",
+			"order": 94
+		},
+		{
+			"id": "MyCharacters",
+			"label": "My character sheet",
+			"icon": "CardAccountDetailsOutline",
+			"route": "MyCharacters",
+			"order": 15
+		},
+		{
+			"id": "Cast",
+			"label": "Cast",
+			"icon": "DramaMasks",
+			"route": "Cast",
+			"order": 25
+		},
+		{
+			"id": "Help",
+			"label": "Help",
+			"icon": "HelpCircleOutline",
+			"route": "Help",
+			"order": 90
+		},
+		{
+			"id": "HelpDesk",
+			"label": "Help desk",
+			"icon": "FaceAgent",
+			"route": "Help",
+			"query": {
+				"_lens": "desk"
+			},
+			"order": 91,
+			"count": "auto"
+		},
+		{
+			"id": "TicketTypes",
+			"label": "Ticket types",
+			"icon": "TicketOutline",
+			"route": "TicketTypes",
+			"order": 94
+		},
+		{
+			"id": "RegistrationOptions",
+			"label": "Registration options",
+			"icon": "SilverwareForkKnife",
+			"route": "RegistrationOptions",
+			"order": 95
+		},
+		{
+			"id": "AccessCodes",
+			"label": "Access codes",
+			"icon": "KeyVariant",
+			"route": "AccessCodes",
+			"order": 96
+		},
+		{
+			"id": "Maps",
+			"label": "Maps",
+			"icon": "MapOutline",
+			"route": "Maps",
+			"order": 34
+		}
+	],
+	"pages": [
+		[
+			"Store",
+			"fa92e1f596ef157e255a7e707e0240c53a23e310577d934ba656732667ad89d2"
+		],
+		[
+			"Dashboard",
+			"6225f2a9244a944671c02c53c3e1862f953dac86460d05972914aee6688d1ee0"
+		],
+		[
+			"Characters",
+			"3416cb1701497cf47b157c9e60bc7dfb0f9f9ca5a4bd4b7130a43aa703b91a36"
+		],
+		[
+			"CharacterDetail",
+			"304c4fb5543071b115e10dc9b82fb74bf34a2b4734e6fac69265355b4dce7325"
+		],
+		[
+			"Players",
+			"71b31d063d03941bf31b4b14d509fe9536bc01af73c2af67c59b64197d6eae0b"
+		],
+		[
+			"PlayerDetail",
+			"f885c4eb258c76a5aa0fda599a46097c4fc49daedd396642602b7b054d7ae571"
+		],
+		[
+			"Abilities",
+			"c334049bb10334f549d07c4846cb827ea46c0d3879acf47d641bb7fd4ceec392"
+		],
+		[
+			"AbilityDetail",
+			"dff8c64f42bb69d24844b9ae61aa76ffef96e80770a0151c7c5994a732c34d4a"
+		],
+		[
+			"Skills",
+			"b1b686e5866ec27c55ae69a5605ca9954312660c1338eb37e524186cdf9afbbb"
+		],
+		[
+			"SkillTree",
+			"5a663a2c14518b31abc7d4b5cdc278b69e4c39febb49cb4d0070e8a6180e504b"
+		],
+		[
+			"SkillDetail",
+			"6ef9cf77ada58d5f19037e8f5559503282447000c7e0c09d5aef930febc03381"
+		],
+		[
+			"Items",
+			"221da49f33af286e1565c8d10461810e9e1615536eb44b9099e599b1c391a005"
+		],
+		[
+			"ItemDetail",
+			"02f1199c09a1b601549e3bc7860436b5fe0e5f96297adb02951bb78f67cad5c7"
+		],
+		[
+			"Conditions",
+			"cc9236318d325a73963186a64f0a69680dd044afebe9d4207569c03c99179ca1"
+		],
+		[
+			"ConditionDetail",
+			"afbb7bbeb310c89fd24a2ff74e5736a467a4f092d17c5aaff77ad3c6590a75f1"
+		],
+		[
+			"Effects",
+			"7c3d43c09cc49cbad6e20422ca54249d9502ebb0cf961f47342e4f2dd217e193"
+		],
+		[
+			"EffectDetail",
+			"de17863f593e37cae43e26fc8abb1d730859d751e3884b8c4946eb814963f771"
+		],
+		[
+			"Events",
+			"1f72b008b20b4913306bd728b959c2c3b657c021de101a45494ead361446d2d0"
+		],
+		[
+			"EventDetail",
+			"a1e7eb9d3ad19c9156e19f077c83c9a62dc829922f8f5f6f52642ff28fcc37ae"
+		],
+		[
+			"Settings",
+			"cbccf2956ac015b1c6b4ffb5f8a7763807ec32fe91eabec8aabdd8cf7069e330"
+		],
+		[
+			"SettingDetail",
+			"0d6615799f89fda21e27bb8bfa1ed314407b4b801984988f9936782883a0189f"
+		],
+		[
+			"XpAwards",
+			"fdef0100cd1261e5dbc38cfa14109c51e36a12d41b2d4e65afde762b9f38d2c5"
+		],
+		[
+			"XpAwardDetail",
+			"9f6f97ba543ef9cb04d9a7671f2403c441be377bb63c24894256ea558db32279"
+		],
+		[
+			"Reports",
+			"9f417aa405a05d7517cb4dee7f4349ef3fbdb0e83568eabc550a386a065be46d"
+		],
+		[
+			"CharacterRosterReport",
+			"50318095e86a61db9b6dd51df7850c5a186e784b24e641d0b4ef66ce6b9ae250"
+		],
+		[
+			"ProgressionReport",
+			"2190633f00c0bfeb1b78a0ae4a16d876cf0819b89dcb5bdf8412d14cba35a80c"
+		],
+		[
+			"WorldContentReport",
+			"a8969b4b0b3683aded19d01282c020c4c58e93a1da390697208bdf7dcbb107cb"
+		],
+		[
+			"FeaturesRoadmap",
+			"ac30080ac1d160b0f6902f5939e7a82f8b301c970f1e3e1ffc1862f5ff766742"
+		],
+		[
+			"Flows",
+			"9ae5ee97b0501f6d1c33c2e754d08422be346ed17d3d0466c7deec89550d4108"
+		],
+		[
+			"FlowDetail",
+			"bb3dc4a080270f99df2c5d33a8d33a82478723f31a807d2a5bfa83fb8092ecaf"
+		],
+		[
+			"Staff",
+			"70fee7612033d8709a453da371f535f193e4451e260896b1414e1367a967d6bf"
+		],
+		[
+			"StaffInvite",
+			"f33b6ad2c78dd104750ba6cc42d44df1b7ab5a2eedba8700da2d97ea4a8bc9b3"
+		],
+		[
+			"CharacterFields",
+			"16204efedd0ad714bdf89ef8d68a33d8ca08848c2430047148642030e84f0955"
+		],
+		[
+			"CharacterFieldDetail",
+			"145bb7072581e24da7a854b92f0936b9b91f37f4f1fcb5e471a172adb17df49b"
+		],
+		[
+			"Factions",
+			"68f87d121d5f9ecb1eeeddeac0e09716e4e25968d0a1a3b6899e4e1fc37a5f64"
+		],
+		[
+			"FactionDetail",
+			"7cb99156cda0ae3c386841f7e3df41dea8d706490f53c5ebe0c07dc4231c0cf6"
+		],
+		[
+			"FactionMemberDetail",
+			"2be8fccb02c46b2d93183ec02aa7ddc66fcc74bbedd58dfafa7d78ea34f24b35"
+		],
+		[
+			"BuildDetail",
+			"f35bd93e3175fc64d261b0ec466bbbdf81fdbdf7f6d935b37bdce5c5cd903f61"
+		],
+		[
+			"MyCharacters",
+			"02728355ee3970074cd803476b4a7f8ea74e3666de9192a1c3a7d69df4b95cc1"
+		],
+		[
+			"Cast",
+			"6745bf532039bb93dbd5db713037c8bb2cbfbfe5f392abdb3dc5f61c0a324e13"
+		],
+		[
+			"Plots",
+			"85123fe586ba8f113c7e609e973b285e52888d5a00b6393cd50876b06023a9a5"
+		],
+		[
+			"PlotDetail",
+			"b2eca87cf2914db942cf7ba87670358cf9b30b5b1b017b8c5111c4869d31643a"
+		],
+		[
+			"Help",
+			"5cde439724c316732fbfa04ab36f1a5c3761e004cf9538e108d603e7ad6974be"
+		],
+		[
+			"HelpQuestionDetail",
+			"95a2a5dfffcd35d29283f588ec4ede61232569b9b08df55506561a8b4a16e2cc"
+		],
+		[
+			"NewPlayers",
+			"6db432de346558630b0c1bd02075cdfb4a7c46e377ed89f2f9d1d9faf111da0f"
+		],
+		[
+			"Registrations",
+			"67518a37dd76cf81de15afc726196bb88cbd84554835a65ae8f320378cd553ef"
+		],
+		[
+			"MyRegistrations",
+			"58025e0112f6955386f2e7e8a881fe51bb19180300b61b03cbe67f9db3e49007"
+		],
+		[
+			"RegistrationDetail",
+			"554c12fe151fe5faa9e8fa6c6a9356c9e1ef7b7b6284eaacb82bb3d7c1890382"
+		],
+		[
+			"TicketTypes",
+			"100d7a13f7a61fbb6b2e47def167ce6e1deccd7b5a90714475c993ee5e7a84e4"
+		],
+		[
+			"TicketTypeDetail",
+			"d0101cf913e39dda5e9c357d483d621e903ffc952d7f0f5a7a8057f39c5928a7"
+		],
+		[
+			"RegistrationOptions",
+			"d31a47330c68ee228fd824515042950d40e00398929b0a146a72ea5333404e36"
+		],
+		[
+			"RegistrationOptionDetail",
+			"a6728ac126ababa4b0d70ed10e726c8686a1f4ad3ad41b4e268ca9afc947e519"
+		],
+		[
+			"AccessCodes",
+			"5b9f0bb26d3a6829cedf84b997b3165f44cfbfc3372973d9ee1f2a62eb00f44c"
+		],
+		[
+			"AccessCodeDetail",
+			"e8c4b0fe1df0b1d886df0e903d5fdb6397003ad5988513b63465b0f1a8dab555"
+		],
+		[
+			"SkillLists",
+			"88521983c1c5d0765e5e80a08cb2b0e0931374b4f0093d17a552879a62e24a14"
+		],
+		[
+			"SkillListDetail",
+			"31db53ebb89f27f979a963e53d4f8ba6089b63ca880c48d58649d715e57e224e"
+		],
+		[
+			"Rulebook",
+			"ef41efd3c49cf916894bcfa7675d4b5dd66b985da4917b63115a1152735a0447"
+		],
+		[
+			"Lore",
+			"70dafdb469f97e3beb3eec8d572994b49c5820775657a7ac2116821920a6c000"
+		],
+		[
+			"LoreArticle",
+			"b3cec2de3c472afbe1e6a6c04a67724ff15906a037b80785bfeb66b264f2222d"
+		],
+		[
+			"Maps",
+			"687d2d4b093aca881a827f3e2c667b4fbc814e0479d10da0bf07ccf0ffbfb350"
+		],
+		[
+			"MapDetail",
+			"383a46544a43803fcc4c46715e12ea06144294ce76874013517afc261c24dedc"
+		]
+	],
+	"rest": "ceac0fca9c5b9fa56ebabd84f12986d66f1af507145099e76e7c13fa7e0ce4f1"
+}

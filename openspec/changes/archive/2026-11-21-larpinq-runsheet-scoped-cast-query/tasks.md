@@ -1,0 +1,36 @@
+# Tasks — larpinq-runsheet-scoped-cast-query
+
+## 1. Preconditions
+
+- [x] 1.1 Confirm at HEAD that `EventsController::buildRunsheetContext()` (`lib/Controller/EventsController.php:163-235`) still calls `getObjects('character')` and `getObjects('player')` with no filters, and that `RegisterObjectFetcher::getObjects()` (`lib/Service/RegisterObjectFetcher.php:329-357`) forwards a `filters` array to the OpenRegister mapper's `findAll()`
+- [x] 1.2 Read the OpenRegister `ObjectService`/mapper `findAll()` filter contract (openregister repo) to confirm whether it supports array-field "contains" matching (e.g. `events` containing a given UUID) or only scalar-equality filters; record the finding here before writing task 2
+  - Finding: the code now lives in `lib/Service/EventRosterService.php` (`buildRunsheetContext()`, `buildRoster()`, `castCharacters()`, `indexPlayers()`), still unfiltered at HEAD. OpenRegister's MagicMapper search builds a JSON containment condition for a filter on an `array` property (`MagicSearchHandler::buildArrayPropertyConditionSql()` / `jsonArrayCondition()`), and `character.events` is `type: array`, so `['events' => $eventId]` is matched in the database. Task 2.2 (pagination) is therefore not needed.
+
+## 2. Scope the character query
+
+- [x] 2.1 If array-contains filtering is supported: change `buildRunsheetContext()` line 167 to `$this->objectFetcher->getObjects('character', filters: ['events' => $eventId])`
+- [x] 2.2 (not needed, see 1.2) If NOT supported: implement a paginated scan (`limit`/`offset` loop) through the `character` register that stops once no more pages remain, and note in a code comment why a full unfiltered `findAll()` was replaced with pagination (avoids loading the whole register into one PHP array at once, still bounded per page)
+- [x] 2.3 Preserve the existing `is_array($events) === false` guard and `in_array($eventId, array_map('strval', $events), true)` membership check as the final correctness check even when the OR-side filter pre-narrows the set (defense in depth against a filter that under- or over-matches)
+
+## 3. Scope the player lookup
+
+- [x] 3.1 Change `indexPlayers()` (`lib/Controller/EventsController.php:242-258`) to accept the already-filtered cast's player-id set and fetch only those players (by id, or via an `id`-in-list filter) instead of `getObjects('player')` unfiltered
+  - Done: each distinct `player`/`ocName` reference of the cast is read with `getObjectOfType('player', id)`. A legacy free-text reference, a missing player or another type is skipped and the stored text stays the name, as before.
+- [x] 3.2 Update `buildRunsheetContext()`'s call order so player ids are known before `indexPlayers()` runs (resolve cast first, collect distinct `player`/`ocName` ids, then look up only those)
+
+## 4. Tests
+
+- [x] 4.1 Extend `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` (or add a PHPUnit test on `EventsController`) asserting the runsheet still returns the correct cast for an event when the register contains characters NOT linked to that event (regression guard against the new filter over- or under-matching)
+  - Done by the PHPUnit alternative the task names: `EventRosterScopedQueryTest::testACharacterOfAnotherEventStaysOutOfTheCast` (passes, 17 Nov live pass). An e2e assertion on the cast needs a DocuDesk instance, because the run-sheet route answers 424 before it builds the cast without one.
+  - E2E too: `tests/e2e/spec-coverage/event-runsheet-export.spec.ts` "the cast holds this event's characters and no other event's" seeds an event, a character on it and one on another event, and reads the event's roster, built from the same scoped query (not yet run on an instance).
+- [x] 4.2 Add a PHPUnit test (or extend an existing `EventsController` test) that asserts `RegisterObjectFetcher::getObjects()` is called with a scoping filter/limit rather than no arguments, via a mock/spy on `objectFetcher`
+- [x] 4.3 `@spec` annotations on the changed methods pointing at this change (gate-16)
+
+## 5. Quality
+
+- [x] 5.1 `composer check:strict` green
+  - Run 17 Nov on this branch merged with development: lint, phpcs (0 errors) and test:all (1243 tests, OK) pass; phpmd, psalm (8) and phpstan (1) report findings only in files this change does not touch (Application, StaffInvitesController, the listeners, CharacterStatsController, the MCP and form stubs), so they are inherited from development and stay open here.
+  - 21 Nov, development after #1130, #1132 and #1134 (OpenRegister main beside the app): lint, phpcs (0 errors), psalm (no errors), phpstan (no errors) and test:all (1405 tests, OK) pass. phpmd keeps 9 findings: coupling in StaffInvitesController, CharacterRequirementListener, HelpMessageListener, RegistrationListener, RegisterObjectFetcher and StaffInviteService; class complexity in EventFeedbackService, RegistrationService and StaffInviteService. Each needs a collaborator extracted.
+  - 21 Nov, branch `cloud/b-larpinq-phpmd-collaborators`: the 9 phpmd findings are gone. Collaborators extracted: `StaffInviteState`, `StaffTeam` and `StaffInviteLink` (StaffInviteService, StaffInvitesController), `RegisterCallOptions` (RegisterObjectFetcher), `FeedbackParticipants` (EventFeedbackService), `EventCapacityLock` and `RegistrationPlaces::playersAfter()` (RegistrationService); the listeners read the event shape through `PreWriteEvent`. lint, phpcs (0 errors), phpmd (none), psalm (no errors), phpstan (no errors) and test:all (1424 tests, OK) pass.
+- [x] 5.2 Hydra gates green on the diff
+  - 17 Nov: green after pointing the e2e spec's `@spec` anchor at `#4-tests` (gate-46 found `#4-verification`, a heading this file does not have).

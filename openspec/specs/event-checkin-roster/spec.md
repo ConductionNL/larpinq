@@ -39,7 +39,10 @@ Recording or updating a participant's attendance MUST be restricted to the
 MUST be set to the acting user's uid — neither MUST be accepted from the client
 request body. Write authorization MUST be OR-delegated via schema-level RBAC on
 the `larping_attendance` schema (ADR-022); the app MUST NOT implement a parallel
-attendance-write auth path.
+attendance-write auth path. Reading attendance through the OpenRegister objects
+API MUST be restricted to the `gamemasters` group and the record's owner: the
+schema grants `read` to game masters only, never to every signed-in user and
+never to anonymous visitors (DECISIONS row 30).
 
 #### Scenario: a non-GM is refused check-in
 
@@ -95,8 +98,9 @@ from the confirmed participant link, not a second sign-up store.
 
 - **GIVEN** an authenticated non-GM player viewing an event detail page
 - **WHEN** the roster renders
-- **THEN** each participant's attendance status MUST be visible
+- **THEN** the confirmed participants MUST be listed
 - **AND** no check-in control MUST be offered to the player
+- **AND** attendance statuses MUST only show where OpenRegister lets the player read the record
 - `@e2e exclude` pending implementation — read-only roster e2e authored alongside the apply-phase page
 
 ### Requirement: Attendance MUST ground XP-award eligibility and MAY enrich the run-sheet
@@ -134,3 +138,80 @@ throw and break the event page.
 - **AND** the event detail page MUST render without error
 - `@e2e exclude` pending implementation — degradation e2e authored alongside the apply-phase page
 
+### Requirement: A game master checks a participant out (REQ-ECO-001)
+
+The attendance status SHALL include `checked-out`. A game master SHALL be able to check out a participant who is checked in, and check them in again. The server SHALL stamp `checkedOutAt` and `checkedOutBy`, and SHALL ignore those values in the request, as it does for check-in. Checking out SHALL be refused for a participant who is not checked in.
+
+#### Scenario: A player leaves on Saturday night
+
+- GIVEN Isolde Raaf is checked in for the Wintertocht
+- WHEN game master Anna checks her out at 22:10 on Saturday
+- THEN Isolde's row reads "uitgecheckt za 22:10"
+- AND `checkedOutBy` is Anna's user id
+
+#### Scenario: Checking out someone who never arrived
+
+- GIVEN Grimm has status `registered`
+- WHEN a game master tries to check him out
+- THEN the request is refused as an invalid status change
+
+### Requirement: The roster shows who is on site now (REQ-ECO-002)
+
+The roster SHALL show a count of who is on site now, where on site means checked in and not checked out again, as LrEvenementInchecken draws it. A participant who checks in again after checking out SHALL count as on site.
+
+#### Scenario: The count follows check-outs
+
+- GIVEN 40 participants checked in and 2 of them checked out
+- WHEN a game master opens the check-in tab
+- THEN it shows 38 on site now
+- AND the 2 checked-out participants are listed as checked out
+
+### Requirement: Every accepted registration has a check-in code (REQ-EQC-001)
+
+When a registration is accepted, larpinq SHALL give it a random check-in code
+that cannot be guessed, readable only by game masters and the registration's
+player.
+
+#### Scenario: Anna's registration is accepted
+
+- GIVEN Anna's registration for "Winter Court 2026" is pending
+- WHEN a game master accepts it
+- THEN the registration has a check-in code
+- AND Karel cannot read that code through the API
+
+### Requirement: The player sees the code as a QR code (REQ-EQC-002)
+
+My registrations SHALL show the check-in code of each accepted registration as
+a QR code with the code as text beneath it, and MUST print cleanly.
+
+#### Scenario: Anna prints her code
+
+- GIVEN Anna's registration is accepted
+- WHEN Anna opens My registrations and prints the page
+- THEN the print shows the QR code, the code, her name, her character and the event
+
+### Requirement: Stewards check in by scanning or typing a code (REQ-EQC-003)
+
+The Check-in tab SHALL offer a scan mode that reads a QR code with the camera
+where the browser supports it and always accepts a typed or scanner-entered
+code, and MUST check in the participant the code belongs to and show their
+name and character.
+
+#### Scenario: Anna arrives at the gate
+
+- GIVEN Anna's registration is accepted with a check-in code
+- WHEN a game master enters her code in the scan mode of the Check-in tab
+- THEN "Mirela the Wanderer" is checked in on the roster
+- AND the panel shows "Anna de Vries, Mirela the Wanderer"
+
+### Requirement: A code is checked in once and only for its event (REQ-EQC-004)
+
+A second use of a code SHALL report that the participant is already checked in
+with the time and the steward; a code of another event, an unknown code, or a
+registration that is not accepted MUST check nobody in.
+
+#### Scenario: The same code twice
+
+- GIVEN Anna was checked in at 18:02 by steward Joris
+- WHEN her code is scanned again
+- THEN the panel says she was already checked in at 18:02 by Joris

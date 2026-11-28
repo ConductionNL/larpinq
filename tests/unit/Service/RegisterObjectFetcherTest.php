@@ -8,6 +8,9 @@
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -18,6 +21,7 @@ use Exception;
 use InvalidArgumentException;
 use OCA\Larpinq\Service\RegisterObjectFetcher;
 use OCP\App\IAppManager;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -227,6 +231,26 @@ class RegisterObjectFetcherTest extends TestCase {
 		$this->service->getObject('character', 'https://example.com/api/objects/abc-123');
 
 	}//end testGetObjectRejectsUriFormatId()
+
+	/**
+	 * A read with the app's authority is never unscoped: an empty filter, or an
+	 * empty filter value, is refused before OpenRegister is asked.
+	 *
+	 * @spec openspec/specs/event-xp-awards/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAppAuthorityReadRefusesAnUnscopedFilter(): void {
+		$this->appManager->expects($this->never())->method('getInstalledApps');
+		foreach ([[], ['character' => '']] as $filters) {
+			try {
+				$this->service->getObjectsWithAppAuthority(objectType: 'xpAward', filters: $filters);
+				$this->fail(message: 'An unscoped read with the app\'s authority must be refused');
+			} catch (\InvalidArgumentException $e) {
+				$this->assertStringContainsString(needle: 'scoping filter', haystack: $e->getMessage());
+			}
+		}
+	}
 
 	/**
 	 * Test that getObject rejects non-UUID string IDs.
@@ -474,4 +498,224 @@ class RegisterObjectFetcherTest extends TestCase {
 		self::assertContains(needle: 'character_schema', haystack: $seenKeys);
 
 	}//end testFallsBackToAppConfigWhenResolverAbsent()
+
+	/**
+	 * Wire OpenRegister so find() answers with the given row, and configure
+	 * the item schema.
+	 *
+	 * @param array<string,mixed> $row What the mapper's find() returns.
+	 * @param string $itemSchema The configured item schema id.
+	 *
+	 * @return void
+	 */
+	private function findAnswers(array $row, string $itemSchema = 'schema-item'): void {
+		$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+
+		$mapper = $this->getMockBuilder(className: \stdClass::class)
+			->addMethods(['find'])
+			->getMock();
+		$mapper->method('find')->willReturn($row);
+
+		$objectService = $this->getMockBuilder(className: \stdClass::class)
+			->addMethods(['getMapper'])
+			->getMock();
+		$objectService->method('getMapper')->willReturn($mapper);
+
+		$this->container->method('get')->willReturn($objectService);
+		$this->config->method('getValueString')->willReturnCallback(
+			fn (string $app, string $key, string $default): string => [
+				'item_register' => 'register-1',
+				'item_schema' => $itemSchema,
+			][$key] ?? $default
+		);
+	}//end findAnswers()
+
+	/**
+	 * REQ-UHE-007: an object of the type's own schema is returned as read.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeReturnsAnObjectOfThatSchema(): void {
+		$row = ['id' => '00000000-0000-4000-8000-000000000001', 'name' => 'Crown', '@self' => ['schema' => 'schema-item']];
+		$this->findAnswers(row: $row);
+
+		self::assertSame(expected: $row, actual: $this->service->getObjectOfType(objectType: 'item', id: $row['id']));
+	}//end testGetObjectOfTypeReturnsAnObjectOfThatSchema()
+
+	/**
+	 * A numeric schema id matches the configured id by its text.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeMatchesANumericSchemaId(): void {
+		$row = ['id' => '00000000-0000-4000-8000-000000000003', '@self' => ['schema' => 7]];
+		$this->findAnswers(row: $row, itemSchema: '7');
+
+		self::assertSame(expected: $row, actual: $this->service->getObjectOfType(objectType: 'item', id: $row['id']));
+	}//end testGetObjectOfTypeMatchesANumericSchemaId()
+
+	/**
+	 * REQ-UHE-007: OpenRegister's schema-less retry can answer with an object of
+	 * another schema (a condition asked for as an item); that reads as missing.
+	 *
+	 * @return void
+	 */
+	public function testGetObjectOfTypeRefusesAnObjectOfAnotherSchema(): void {
+		$answers = [
+			'another schema' => ['@self' => ['schema' => 'schema-condition']],
+			'schema as a number' => ['@self' => ['schema' => 7]],
+			'no schema' => ['@self' => []],
+			'no @self' => [],
+			'@self not an array' => ['@self' => 'schema-item'],
+			'schema not scalar' => ['@self' => ['schema' => ['id' => 'schema-item']]],
+		];
+
+		foreach ($answers as $name => $row) {
+			$this->setUp();
+			$this->findAnswers(row: ['id' => '00000000-0000-4000-8000-000000000002'] + $row);
+
+			try {
+				$this->service->getObjectOfType(objectType: 'item', id: '00000000-0000-4000-8000-000000000002');
+				self::fail(message: $name . ': an object of another schema was returned');
+			} catch (DoesNotExistException $e) {
+				self::assertStringContainsString(needle: 'is not in the item schema', haystack: $e->getMessage(), message: $name);
+			}
+		}
+	}//end testGetObjectOfTypeRefusesAnObjectOfAnotherSchema()
+
+	/**
+	 * A read by a reveal-only value runs inside OpenRegister's trusted reveal
+	 * scope, where the filter is allowed and the value is not masked; without
+	 * that service it is a plain read with the app's authority.
+	 *
+	 * @spec openspec/specs/event-checkin-roster/spec.md#requirement-a-code-is-checked-in-once-and-only-for-its-event-req-eqc-004
+	 *
+	 * @return void
+	 */
+	public function testARevealedValueReadRunsInTheTrustedScope(): void {
+		$reveal = new class {
+			public bool $trusted = false;
+
+			public function trustedDuring(callable $operation): mixed {
+				$this->trusted = true;
+				try {
+					return $operation();
+				} finally {
+					$this->trusted = false;
+				}
+			}
+		};
+		$objects = new class($reveal) {
+			public array $seen = [];
+
+			public function __construct(private object $reveal) {
+			}
+
+			public function findAll(array $config, bool $_rbac, bool $_multitenancy): array {
+				$this->seen[] = ['trusted' => $this->reveal->trusted, 'filters' => $config['filters'], 'rbac' => $_rbac];
+				return [['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']];
+			}
+		};
+
+		foreach ([true, false] as $withReveal) {
+			$this->setUp();
+			$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+			$this->config->method('getValueString')->willReturnCallback(
+				fn (string $app, string $key, string $default = ''): string => $key
+			);
+			$this->container->method('get')->willReturnCallback(
+				function (string $id) use ($objects, $reveal, $withReveal): object {
+					if ($id === 'OCA\OpenRegister\Service\ObjectService') {
+						return $objects;
+					}
+
+					if ($id === 'OCA\OpenRegister\Service\Rbac\ExplicitRevealInterface' && $withReveal === true) {
+						return $reveal;
+					}
+
+					throw new \RuntimeException('not bound: ' . $id);
+				}
+			);
+
+			$rows = $this->service->getObjectsByRevealedValue(objectType: 'registration', filters: ['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'], limit: 1);
+
+			self::assertSame(expected: [['checkinCode' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']], actual: $rows);
+		}
+
+		self::assertCount(expectedCount: 2, haystack: $objects->seen);
+		self::assertTrue(condition: $objects->seen[0]['trusted']);
+		self::assertFalse(condition: $objects->seen[0]['rbac']);
+		self::assertSame(expected: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', actual: $objects->seen[0]['filters']['checkinCode']);
+		self::assertFalse(condition: $objects->seen[1]['trusted']);
+		self::assertFalse(condition: $reveal->trusted);
+	}//end testARevealedValueReadRunsInTheTrustedScope()
+
+	/**
+	 * An update with the app's authority merges the given fields over the
+	 * stored object, because OpenRegister replaces an object with what it is
+	 * given; a create is sent as given.
+	 *
+	 * @spec openspec/specs/event-registration/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAnAppAuthorityUpdateKeepsTheFieldsItDoesNotName(): void {
+		$objects = new class {
+			public array $saved = [];
+
+			public function find(string $id, object $options, bool $_rbac, bool $_multitenancy): array {
+				return ['@self' => ['id' => $id], 'id' => $id, 'name' => 'Winter Court 2026', 'capacity' => 5, 'players' => ['a']];
+			}
+
+			public function saveObject(array $object, object $options, bool $_rbac, bool $_multitenancy): array {
+				$this->saved[] = $object;
+				return $object;
+			}
+		};
+		$this->appManager->method('getInstalledApps')->willReturn(['openregister']);
+		$this->config->method('getValueString')->willReturnCallback(
+			fn (string $app, string $key, string $default = ''): string => $key
+		);
+		$this->container->method('get')->willReturnCallback(
+			function (string $id) use ($objects): object {
+				if ($id === 'OCA\\OpenRegister\\Service\\ObjectService') {
+					return $objects;
+				}
+
+				throw new \RuntimeException('not bound: ' . $id);
+			}
+		);
+
+		$this->service->saveObjectWithAppAuthority(objectType: 'event', data: ['players' => ['a', 'b']], uuid: '00000000-0000-4000-8000-000000000001');
+		$this->service->saveObjectWithAppAuthority(objectType: 'player', data: ['name' => 'Karel']);
+
+		self::assertSame(expected: ['name' => 'Winter Court 2026', 'capacity' => 5, 'players' => ['a', 'b']], actual: $objects->saved[0]);
+		self::assertSame(expected: ['name' => 'Karel'], actual: $objects->saved[1]);
+	}//end testAnAppAuthorityUpdateKeepsTheFieldsItDoesNotName()
+
+	/**
+	 * An update with RBAC on merges the given fields over the object as the
+	 * signed-in user reads it, without its `@self` and `id`, and saves through
+	 * the RBAC save path: a casting write names only `ocName` and `castingEvent`.
+	 *
+	 * @spec openspec/specs/event-casting/spec.md
+	 *
+	 * @return void
+	 */
+	public function testAnUpdateKeepsTheFieldsItDoesNotName(): void {
+		$uuid = '00000000-0000-4000-8000-000000000002';
+		$fetcher = $this->createPartialMock(originalClassName: RegisterObjectFetcher::class, methods: ['getObject', 'saveObject']);
+		$fetcher->expects($this->once())
+			->method('getObject')
+			->with('character', $uuid)
+			->willReturn(['@self' => ['id' => $uuid], 'id' => $uuid, 'name' => 'The Heir', 'castingEvent' => 'event-1']);
+		$fetcher->expects($this->once())
+			->method('saveObject')
+			->with('character', ['name' => 'The Heir', 'castingEvent' => null, 'ocName' => 'player-anna'], $uuid)
+			->willReturnArgument(argumentIndex: 1);
+
+		$saved = $fetcher->updateObject(objectType: 'character', data: ['ocName' => 'player-anna', 'castingEvent' => null], uuid: $uuid);
+
+		self::assertSame(expected: 'player-anna', actual: $saved['ocName']);
+	}//end testAnUpdateKeepsTheFieldsItDoesNotName()
 }//end class

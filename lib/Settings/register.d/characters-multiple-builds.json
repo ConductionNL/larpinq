@@ -1,0 +1,182 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_character_build"
+        ]
+      }
+    },
+    "schemas": {
+      "characterBuild": {
+        "slug": "larping_character_build",
+        "title": "Build",
+        "icon": "SourceBranch",
+        "version": "1.0.0",
+        "summary": "An alternative set of skills, items and conditions for one character",
+        "description": "A named build of a character: skills, items and conditions to try against the rules and the XP budget without changing the character sheet. A game master applies the chosen build to the sheet.",
+        "type": "object",
+        "x-schema-org": "schema:CreativeWork",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "character": {
+              "mode": "relatedObject",
+              "schema": "character",
+              "field": "character"
+            }
+          }
+        },
+        "required": [
+          "character",
+          "name"
+        ],
+        "properties": {
+          "character": {
+            "type": "string",
+            "format": "uuid",
+            "$ref": "character",
+            "title": "Character",
+            "description": "The character this build is for"
+          },
+          "setting": {
+            "type": "string",
+            "title": "World",
+            "description": "The character's world, copied from the character when the build is saved",
+            "visible": false,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.character.setting"
+              }
+            },
+            "maxLength": 255
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The name of the build, such as Alchemist path",
+            "maxLength": 255
+          },
+          "purpose": {
+            "type": "string",
+            "title": "Purpose",
+            "description": "Why the build exists: a plan, a test, or a build for another game",
+            "enum": [
+              "plan",
+              "test",
+              "other-game"
+            ],
+            "default": "plan",
+            "x-enum-labels": {
+              "plan": "Plan",
+              "test": "Test",
+              "other-game": "Another game"
+            }
+          },
+          "notes": {
+            "type": "string",
+            "format": "markdown",
+            "title": "Notes",
+            "description": "Notes about the build"
+          },
+          "skills": {
+            "type": "array",
+            "title": "Skills",
+            "description": "The skills the character would have with this build",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "larping_skill",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            }
+          },
+          "items": {
+            "type": "array",
+            "title": "Items",
+            "description": "The items the character would have with this build",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "larping_item",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            }
+          },
+          "conditions": {
+            "type": "array",
+            "title": "Conditions",
+            "description": "The conditions the character would have with this build",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "$ref": "condition",
+            "x-relation-filter": {
+              "setting": "@object.setting"
+            }
+          },
+          "ownerUid": {
+            "type": "string",
+            "title": "Player account",
+            "description": "The Nextcloud account of the character's player, copied from the character when the build is saved",
+            "maxLength": 255,
+            "visible": false,
+            "calculation": {
+              "type": "string",
+              "materialise": true,
+              "expression": {
+                "prop": "@ref.character.ownerUid"
+              }
+            }
+          }
+        },
+        "authorization": {
+          "read": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "ownerUid": "$userId"
+              }
+            }
+          ],
+          "create": [
+            {
+              "group": "gamemasters"
+            },
+            "larpers"
+          ],
+          "update": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "ownerUid": "$userId"
+              }
+            }
+          ],
+          "delete": [
+            {
+              "group": "gamemasters"
+            },
+            {
+              "group": "larpers",
+              "match": {
+                "ownerUid": "$userId"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+# Tasks: hermiq-ai-tooling
+
+## Implementation Tasks
+
+### Task 1: Implement `EventRosterService::awardXpToAttendees()` with the `#[McpTool]` attribute
+- **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-001--a-curated-event-scoped-xp-award-tool-exists`
+- **files**: `lib/Service/EventRosterService.php`
+- **acceptance_criteria**:
+  - GIVEN an event with checked-in, registered, and no-show attendance rows WHEN the method runs THEN exactly one `xpAward` per checked-in character is created with server-stamped `awardedAt`/`awardedBy`, and no award for any other row
+  - GIVEN an event with zero checked-in rows WHEN the method runs THEN it throws/returns an explanatory error and creates nothing
+  - GIVEN the attribute WHEN inspected THEN it declares `scope: 'create'`, `readOnlyHint: false`, `destructiveHint: false`, `idempotentHint: false`
+  - GIVEN a partial failure mid fan-out WHEN the response is inspected THEN it lists per-character created/failed results
+- [x] Implement
+- [x] Test
+
+### Task 2: Expose the calculated character sheet as a read tool
+- **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-003--a-curated-calculated-character-sheet-read-tool-exists`
+- **files**: `lib/Service/CharacterService.php`
+- **acceptance_criteria**:
+  - GIVEN a character with stat-affecting skills/items/conditions WHEN `getCharacterSheet` runs THEN the result matches `calculateCharacter()`'s totals and contains no `slNotesPrivate` key
+  - GIVEN a character the principal cannot read WHEN invoked THEN the result is not-found, identical in shape to a nonexistent id
+  - GIVEN any invocation WHEN it completes THEN no register object was created or modified
+- [x] Implement
+- [x] Test
+
+### Task 3: Add `lib/Mcp/LarpinqScannableServices.php` and register the DI alias
+- **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-004--curated-tools-are-exposed-via-the-scannable-services-opt-in`
+- **files**: `lib/Mcp/LarpinqScannableServices.php`, `lib/AppInfo/Application.php`
+- **acceptance_criteria**:
+  - GIVEN the class WHEN scanned THEN it implements `OCA\OpenRegister\Mcp\IMcpScannableServices`, carries SPDX + `@spec` docblock tags (DocuDesk `DocudeskScannableServices` pattern), and returns exactly `EventRosterService::class` and `CharacterService::class`
+  - GIVEN a dev instance WHEN the tool catalog is listed THEN it is exactly the 21 derived tools plus the 2 curated tools
+- [x] Implement
+- [x] Test
+
+### Task 4: Verify the governance layering end to end
+- **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-002--xp-awards-and-sheet-affecting-writes-require-a-game-master-approval-gate`
+- **files**: `tests/` (integration), dev instance verification notes
+- **acceptance_criteria**:
+  - GIVEN Hermiq's grant editor WHEN the two tools are inspected THEN `awardXpToAttendees` classifies as an approval-required write and `getCharacterSheet` as an ungated read
+  - GIVEN an approved gate for a five-character event WHEN the chat flow "award 5 XP to everyone who attended Saturday's event" completes THEN five awards exist, each attributed `mcp` with the invoking principal
+  - GIVEN a rejected gate WHEN the flow ends THEN zero awards exist
+  - GIVEN a non-gamemaster caller WHEN the fan-out attempts its writes THEN OR's `authorization.create` on `xpAward` rejects them
+- [x] Implement
+- [x] Test
+  - Written, runs in nightly: Newman folder "6. Curated MCP tools (hermiq-ai-tooling)" in `tests/integration/larpinq.postman_collection.json`. It checks the annotations Hermiq classifies by (`awardXpToAttendees` `readOnlyHint` false, a gated write; `getCharacterSheet` `readOnlyHint` true, an ungated read), the 21 + 2 tool catalog, that the approved call awards every checked-in character once with `awardedVia` = `mcp` and `awardedBy` = the caller, that a call which does not go through (0 XP) leaves zero awards, and that the sheet leaves out `slNotesPrivate`. The approve and reject clicks themselves happen in Hermiq, which the nightly stack does not run; a rejected gate never reaches the tool, so the zero-awards check stands in for it. The non-gamemaster refusal needs a second, non-admin account the suite does not seed; `CuratedMcpToolsTest` and OpenRegister's object authorization cover it. Not run in the sandbox: no live instance.
+
+### Task 5: Quality gates and CHANGELOG
+- **spec_ref**: `openspec/changes/hermiq-ai-tooling/specs/hermiq-ai-tooling/spec.md#req-005--agent-created-xp-awards-are-attributable-and-grants-are-default-deny`
+- **files**: `CHANGELOG.md`, touched PHP files
+- **acceptance_criteria**:
+  - GIVEN the touched/new PHP files WHEN `composer check:strict` runs THEN zero new errors or warnings against a self-measured baseline
+  - GIVEN `CHANGELOG.md` WHEN this change is applied THEN a new entry describes the curated tool surface under an "Unreleased" or next-version heading
+- [x] Implement
+- [x] Test
+
+## Build notes
+
+- Task 1: `EventRosterService::awardXpToAttendees()` carries the attribute and delegates to `AttendeeXpAward` (kept out of the roster service so it stays under the phpmd class-complexity limit). Recipients are the event's `checked-in` attendance rows, each once; a non-positive amount, an unreadable event and an event with nobody checked in are refused before anything is written; each award is written with the caller's rights and carries server-stamped `awardedAt`/`awardedBy` and `awardedVia: mcp`; the answer lists `created` or `failed` per character.
+- Task 2: `CharacterService::getCharacterSheet()` delegates to `AgentCharacterSheet`: the calculated character without `slNotesPrivate`, the same not-found answer for an unreadable and a missing character, no write.
+- Task 3: `lib/Mcp/LarpinqScannableServices.php`, aliased as `OCA\OpenRegister\Mcp\IMcpScannableServices::larpinq` when the interface exists. The listing on a dev instance (21 derived + 2) is a live check and stays open under Task 4.
+- REQ-005 attribution: `xpAward` gains the optional `awardedVia` (`ui` | `mcp`); register 1.3.0 to 1.4.0.
+- Task 5: CHANGELOG under Unreleased; phpcs, phpstan, phpmd and psalm clean on the touched files, unit suite with no failures. The OpenRegister MCP attribute and interface are copied unchanged (openregister main 35e2566) into `tests/stubs/openregister/Mcp/` and mapped in `phpstan-bootstrap.php`.
+- Task 4: written as Newman folder 6, runs in nightly (see Task 4 above).
+

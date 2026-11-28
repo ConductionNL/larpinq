@@ -1,0 +1,8 @@
+{
+    "no fragment directory": "{\n    \"data\": {\n        \"components\": {\n            \"schemas\": {\n                \"Character\": {\n                    \"title\": \"Character\"\n                }\n            }\n        },\n        \"x\": \"base\"\n    },\n    \"signature\": \"\"\n}",
+    "empty fragment directory": "{\n    \"data\": {\n        \"components\": {\n            \"schemas\": {\n                \"Character\": {\n                    \"title\": \"Character\"\n                }\n            }\n        },\n        \"x\": \"base\"\n    },\n    \"signature\": \"\"\n}",
+    "fragments merge in name order": "{\n    \"data\": {\n        \"components\": {\n            \"schemas\": {\n                \"Character\": {\n                    \"title\": \"Character\"\n                },\n                \"Event\": {\n                    \"title\": \"Event B\",\n                    \"properties\": {\n                        \"days\": {\n                            \"type\": \"integer\"\n                        }\n                    }\n                }\n            }\n        },\n        \"x\": \"b\"\n    },\n    \"signature\": \"4d49e55f8ab7\"\n}",
+    "a non-json file is ignored": "{\n    \"data\": {\n        \"components\": {\n            \"schemas\": {\n                \"Character\": {\n                    \"title\": \"Character\"\n                }\n            }\n        },\n        \"x\": \"base\",\n        \"y\": 1\n    },\n    \"signature\": \"96507e19e0d7\"\n}",
+    "invalid json is refused": "{\n    \"error\": \"Invalid JSON in register fragment b.json: Syntax error\"\n}",
+    "a json scalar is refused": "{\n    \"error\": \"Invalid JSON in register fragment a.json: No error\"\n}"
+}

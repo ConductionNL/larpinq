@@ -1,0 +1,162 @@
+{
+  "components": {
+    "registers": {
+      "larpinq": {
+        "schemas": [
+          "larping_event_message"
+        ]
+      }
+    },
+    "schemas": {
+      "eventMessage": {
+        "slug": "larping_event_message",
+        "title": "Event message",
+        "icon": "EmailOutline",
+        "version": "1.0.0",
+        "summary": "A message game masters send to the participants of an event",
+        "description": "One message from the game masters to the participants of one event: its subject and plain-text body ({event} and {date} are filled in per mail), the audience it went to, and how many people it reached. Larpinq mails each recipient on their own through the Nextcloud mailer on a queued job. Read and written by game masters only.",
+        "type": "object",
+        "x-schema-org": "schema:Message",
+        "configuration": {
+          "exportable": true,
+          "x-openregister-references": {
+            "event": {
+              "mode": "relatedObject",
+              "schema": "larping_event",
+              "field": "event"
+            }
+          }
+        },
+        "required": [
+          "event",
+          "subject",
+          "body"
+        ],
+        "authorization": {
+          "read": [
+            "gamemasters"
+          ],
+          "create": [
+            "gamemasters"
+          ],
+          "update": [
+            "gamemasters"
+          ],
+          "delete": [
+            "gamemasters"
+          ]
+        },
+        "properties": {
+          "event": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Event",
+            "description": "The event whose participants receive this message.",
+            "$ref": "larping_event"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject",
+            "description": "The subject line of the mail; {event} and {date} are filled in per recipient.",
+            "maxLength": 255
+          },
+          "body": {
+            "type": "string",
+            "title": "Message",
+            "description": "The plain-text body of the mail; {event} and {date} are filled in per recipient."
+          },
+          "audience": {
+            "type": "object",
+            "title": "Audience",
+            "description": "Which participants of the event receive the message.",
+            "properties": {
+              "statuses": {
+                "type": "array",
+                "title": "Registration status",
+                "description": "Only registrations in one of these states; empty means every state.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "accepted",
+                    "waitlisted",
+                    "pending"
+                  ]
+                }
+              },
+              "checkedIn": {
+                "type": "boolean",
+                "title": "Checked in only",
+                "description": "Only participants who have checked in at the event."
+              },
+              "paymentOpen": {
+                "type": "boolean",
+                "title": "Payment open only",
+                "description": "Only participants whose payment is still open."
+              },
+              "ticketRoles": {
+                "type": "array",
+                "title": "Ticket role",
+                "description": "Only participants with a ticket of one of these roles; empty means every role.",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "player",
+                    "crew",
+                    "npc"
+                  ]
+                }
+              }
+            }
+          },
+          "state": {
+            "type": "string",
+            "title": "Status",
+            "description": "Where the message is: a draft, queued for sending, sent, or failed.",
+            "enum": [
+              "draft",
+              "queued",
+              "sent",
+              "failed"
+            ],
+            "default": "draft"
+          },
+          "recipientCount": {
+            "type": "integer",
+            "title": "Recipients",
+            "description": "How many participants matched the audience when the message was sent.",
+            "minimum": 0
+          },
+          "sentCount": {
+            "type": "integer",
+            "title": "Sent",
+            "description": "How many mails the mailer accepted.",
+            "minimum": 0
+          },
+          "failedCount": {
+            "type": "integer",
+            "title": "Failed",
+            "description": "How many mails could not be sent.",
+            "minimum": 0
+          },
+          "noAddressCount": {
+            "type": "integer",
+            "title": "No address",
+            "description": "How many matching participants had no e-mail address and were skipped.",
+            "minimum": 0
+          },
+          "sentBy": {
+            "type": "string",
+            "title": "Sent by",
+            "description": "The user id of the game master who sent the message."
+          },
+          "sentAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Sent at",
+            "description": "When the last mail of the message was handed to the mailer."
+          }
+        }
+      }
+    }
+  }
+}

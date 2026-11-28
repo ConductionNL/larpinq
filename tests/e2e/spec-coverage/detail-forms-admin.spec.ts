@@ -513,11 +513,7 @@ test.describe('character-management — detail & forms', () => {
 		await navTo(page, 'characters')
 		const dialog = await openCreateDialog(page, /Add Character/i)
 		await expect(
-			dialog
-				.locator(
-					'input[placeholder*="in-game name" i], input[placeholder*="name" i]',
-				)
-				.first(),
+			dialog.getByRole('textbox', { name: /Character Name/i }),
 		).toBeVisible()
 		await closeDialog(page)
 	})
@@ -756,7 +752,7 @@ test.describe('game-mechanics — detail & forms', () => {
 		await closeDialog(page)
 	})
 
-	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-legacy-statid
+	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-legacy-stat-id
 	test('effect detail shell renders for legacy stat_id objects', async ({
 		page,
 	}) => {
@@ -764,7 +760,7 @@ test.describe('game-mechanics — detail & forms', () => {
 		await expect(page.locator('.app-content')).toBeVisible()
 	})
 
-	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-statid
+	// @e2e openspec/specs/game-mechanics/spec.md#effect-with-both-abilities-and-stat-id
 	test('effect detail exposes Actions menu', async ({ page }) => {
 		await gotoDetail(page, 'effects', seeded.effect, 'Effect')
 		await expect(
@@ -1021,16 +1017,18 @@ test.describe('admin-settings — panel UI', () => {
 			.first()
 			.waitFor({ state: 'visible', timeout: 30_000 })
 			.catch(() => {})
+		// By role: a bare text match on "Larpinq" also finds the hidden rows
+		// of the notifications panel, which come first in the DOM.
 		await expect(
-			page.getByText(/Administration settings: Larpinq|Larpinq/i).first(),
+			page.getByTestId('cn-admin-settings-header').getByRole('heading', { name: 'Larpinq' }),
 		).toBeVisible({ timeout: 15_000 })
 	}
 
 	// @e2e openspec/specs/admin-settings/spec.md#configure-character-type-for-openregister
 	test('admin panel lists per-type source configuration', async ({ page }) => {
 		await openAdmin(page)
-		await expect(page.getByText(/character/i).first()).toBeVisible()
-		await expect(page.getByText(/skill/i).first()).toBeVisible()
+		await expect(page.getByRole('combobox', { name: 'Characters' })).toBeVisible()
+		await expect(page.getByRole('combobox', { name: 'Skills' })).toBeVisible()
 	})
 
 	// @e2e openspec/specs/admin-settings/spec.md#cascading-dropdown-behavior
@@ -1067,16 +1065,16 @@ test.describe('admin-settings — panel UI', () => {
 	}) => {
 		await openAdmin(page)
 		for (const t of [
-			'character',
-			'player',
-			'ability',
-			'skill',
-			'item',
-			'condition',
-			'effect',
-			'event',
+			'Characters',
+			'Players',
+			'Abilities',
+			'Skills',
+			'Items',
+			'Conditions',
+			'Effects',
+			'Events',
 		]) {
-			await expect(page.getByText(new RegExp(t, 'i')).first()).toBeVisible()
+			await expect(page.getByRole('combobox', { name: t })).toBeVisible()
 		}
 	})
 

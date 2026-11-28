@@ -17,13 +17,16 @@
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-34
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-35
  * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-36
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
 
 namespace OCA\Larpinq\Service;
 
-use OCA\Larpinq\AppInfo\Application;
+use OCA\Larpinq\Support\AppIdentity;
 use OCP\App\IAppManager;
 use RuntimeException;
 
@@ -94,7 +97,7 @@ class ConfigFileLoaderService {
 	 * @spec openspec/changes/retrofit-2026-05-24-annotate-larpingapp/tasks.md#task-35
 	 */
 	public function loadConfigurationFile(): array {
-		$appPath = $this->appManager->getAppPath(Application::APP_ID);
+		$appPath = $this->appManager->getAppPath(AppIdentity::APP_ID);
 		$absoluteFilePath = $appPath . self::REGISTER_FILE;
 
 		if (file_exists($absoluteFilePath) === false) {
@@ -138,37 +141,16 @@ class ConfigFileLoaderService {
 	private function mergeRegisterFragments(array $data, string $appPath): array {
 		$this->fragmentSignature = '';
 
-		$fragmentDir = $appPath . self::FRAGMENT_DIR;
-		if (is_dir($fragmentDir) === false) {
-			return $data;
-		}
-
-		$fragmentFiles = glob($fragmentDir . '/*.json');
-		if ($fragmentFiles === false || empty($fragmentFiles) === true) {
-			return $data;
-		}
-
-		// Deterministic order so the signature is stable across runs.
-		sort($fragmentFiles);
-
 		$signatureParts = [];
-		foreach ($fragmentFiles as $fragmentFile) {
-			$fragmentContent = file_get_contents($fragmentFile);
-			if ($fragmentContent === false) {
+		foreach ($this->fragmentFiles(appPath: $appPath) as $fragmentFile) {
+			$fragment = $this->readFragment(fragmentFile: $fragmentFile);
+			if ($fragment === null) {
 				continue;
 			}
 
-			// @var array<string, mixed>|null $fragment
-			$fragment = json_decode($fragmentContent, true);
-			if (json_last_error() !== JSON_ERROR_NONE || is_array($fragment) === false) {
-				throw new RuntimeException(
-					'Invalid JSON in register fragment ' . basename($fragmentFile) . ': ' . json_last_error_msg()
-				);
-			}
-
-			$data = self::deepMergeConfig(base: $data, overlay: $fragment);
-			$signatureParts[] = basename($fragmentFile) . ':' . md5($fragmentContent);
-		}//end foreach
+			$data = self::deepMergeConfig(base: $data, overlay: $fragment['data']);
+			$signatureParts[] = basename($fragmentFile) . ':' . md5($fragment['content']);
+		}
 
 		if (empty($signatureParts) === false) {
 			$this->fragmentSignature = substr(md5(implode('|', $signatureParts)), 0, 12);
@@ -176,6 +158,55 @@ class ConfigFileLoaderService {
 
 		return $data;
 	}//end mergeRegisterFragments()
+
+	/**
+	 * The register fragment files, in a deterministic order so the signature
+	 * is stable across runs.
+	 *
+	 * @param string $appPath The app's install path.
+	 *
+	 * @return array<int, string> The fragment paths, empty when there are none.
+	 */
+	private function fragmentFiles(string $appPath): array {
+		$fragmentDir = $appPath . self::FRAGMENT_DIR;
+		if (is_dir($fragmentDir) === false) {
+			return [];
+		}
+
+		$fragmentFiles = glob($fragmentDir . '/*.json');
+		if ($fragmentFiles === false) {
+			return [];
+		}
+
+		sort($fragmentFiles);
+		return $fragmentFiles;
+	}//end fragmentFiles()
+
+	/**
+	 * One fragment's decoded data and raw content.
+	 *
+	 * @param string $fragmentFile The fragment path.
+	 *
+	 * @return array{data: array<string, mixed>, content: string}|null The fragment, or null when unreadable.
+	 *
+	 * @throws RuntimeException When the fragment is not a JSON object.
+	 */
+	private function readFragment(string $fragmentFile): ?array {
+		$fragmentContent = file_get_contents($fragmentFile);
+		if ($fragmentContent === false) {
+			return null;
+		}
+
+		// @var array<string, mixed>|null $fragment
+		$fragment = json_decode($fragmentContent, true);
+		if (json_last_error() !== JSON_ERROR_NONE || is_array($fragment) === false) {
+			throw new RuntimeException(
+				'Invalid JSON in register fragment ' . basename($fragmentFile) . ': ' . json_last_error_msg()
+			);
+		}
+
+		return ['data' => $fragment, 'content' => $fragmentContent];
+	}//end readFragment()
 
 	/**
 	 * Recursively deep-merge an overlay array onto a base array (ADR-037).

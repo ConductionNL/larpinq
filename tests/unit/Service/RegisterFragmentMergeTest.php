@@ -8,6 +8,9 @@
  * @author   Ruben Linde <ruben@larpingapp.com>
  * @license  EUPL-1.2 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  * @link     https://larpingapp.com
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -51,12 +54,12 @@ class RegisterFragmentMergeTest extends TestCase {
 		$base = ['components' => ['schemas' => ['Character' => ['type' => 'object']]]];
 		$overlay = ['components' => ['schemas' => ['Quest' => ['type' => 'object']]]];
 
-		$merged = $this->deepMerge($base, $overlay);
+		$merged = $this->deepMerge(base: $base, overlay: $overlay);
 
-		$this->assertArrayHasKey('Character', $merged['components']['schemas']);
-		$this->assertArrayHasKey('Quest', $merged['components']['schemas']);
-		$this->assertSame(['type' => 'object'], $merged['components']['schemas']['Character']);
-		$this->assertSame(['type' => 'object'], $merged['components']['schemas']['Quest']);
+		$this->assertArrayHasKey(key: 'Character', array: $merged['components']['schemas']);
+		$this->assertArrayHasKey(key: 'Quest', array: $merged['components']['schemas']);
+		$this->assertSame(expected: ['type' => 'object'], actual: $merged['components']['schemas']['Character']);
+		$this->assertSame(expected: ['type' => 'object'], actual: $merged['components']['schemas']['Quest']);
 
 	}//end testDisjointSchemasUnionByKey()
 
@@ -69,9 +72,9 @@ class RegisterFragmentMergeTest extends TestCase {
 		$base = ['required' => ['name']];
 		$overlay = ['required' => ['level']];
 
-		$merged = $this->deepMerge($base, $overlay);
+		$merged = $this->deepMerge(base: $base, overlay: $overlay);
 
-		$this->assertSame(['name', 'level'], $merged['required']);
+		$this->assertSame(expected: ['name', 'level'], actual: $merged['required']);
 
 	}//end testListArraysConcatenate()
 
@@ -84,10 +87,10 @@ class RegisterFragmentMergeTest extends TestCase {
 		$base = ['info' => ['version' => '1.0.0', 'title' => 'Larpinq']];
 		$overlay = ['info' => ['version' => '1.1.0']];
 
-		$merged = $this->deepMerge($base, $overlay);
+		$merged = $this->deepMerge(base: $base, overlay: $overlay);
 
-		$this->assertSame('1.1.0', $merged['info']['version']);
-		$this->assertSame('Larpinq', $merged['info']['title']);
+		$this->assertSame(expected: '1.1.0', actual: $merged['info']['version']);
+		$this->assertSame(expected: 'Larpinq', actual: $merged['info']['title']);
 
 	}//end testScalarOverlayOverwrites()
 
@@ -109,11 +112,11 @@ class RegisterFragmentMergeTest extends TestCase {
 			],
 		];
 
-		$merged = $this->deepMerge($base, $overlay);
+		$merged = $this->deepMerge(base: $base, overlay: $overlay);
 
-		$this->assertArrayHasKey('Character', $merged['components']['schemas']);
-		$this->assertArrayHasKey('Item', $merged['components']['schemas']);
-		$this->assertArrayHasKey('/characters', $merged['components']['paths']);
+		$this->assertArrayHasKey(key: 'Character', array: $merged['components']['schemas']);
+		$this->assertArrayHasKey(key: 'Item', array: $merged['components']['schemas']);
+		$this->assertArrayHasKey(key: '/characters', array: $merged['components']['paths']);
 
 	}//end testNestedMergePreservesSiblings()
 
@@ -130,44 +133,46 @@ class RegisterFragmentMergeTest extends TestCase {
 		$monolith = json_decode((string)file_get_contents($baseDir . '/lib/Settings/larpinq_register.json'), true);
 		$fragment = json_decode((string)file_get_contents($baseDir . '/lib/Settings/register.d/event-checkin-roster.json'), true);
 
-		$this->assertIsArray($monolith, 'monolith register JSON must parse');
-		$this->assertIsArray($fragment, 'fragment JSON must parse');
+		$this->assertIsArray(actual: $monolith, message: 'monolith register JSON must parse');
+		$this->assertIsArray(actual: $fragment, message: 'fragment JSON must parse');
 
 		$existingSchemaNames = array_keys($monolith['components']['schemas']);
 
-		$merged = $this->deepMerge($monolith, $fragment);
+		$merged = $this->deepMerge(base: $monolith, overlay: $fragment);
 		$mergedNames = array_keys($merged['components']['schemas']);
 
 		// No existing schema is removed by the merge.
 		foreach ($existingSchemaNames as $name) {
-			$this->assertContains($name, $mergedNames, "existing schema {$name} must survive the merge");
+			$this->assertContains(needle: $name, haystack: $mergedNames, message: "existing schema {$name} must survive the merge");
 		}
 
 		// The attendance schema is added with the namespaced slug.
-		$this->assertArrayHasKey('attendance', $merged['components']['schemas']);
+		$this->assertArrayHasKey(key: 'attendance', array: $merged['components']['schemas']);
 		$attendance = $merged['components']['schemas']['attendance'];
-		$this->assertSame('larping_attendance', $attendance['slug']);
+		$this->assertSame(expected: 'larping_attendance', actual: $attendance['slug']);
 
 		// All five properties are present, each with a non-empty title (gate-28).
 		foreach (['event', 'character', 'status', 'checkedInAt', 'checkedInBy'] as $prop) {
-			$this->assertArrayHasKey($prop, $attendance['properties'], "property {$prop} present");
-			$this->assertNotEmpty($attendance['properties'][$prop]['title'], "property {$prop} has a title");
+			$this->assertArrayHasKey(key: $prop, array: $attendance['properties'], message: "property {$prop} present");
+			$this->assertNotEmpty(actual: $attendance['properties'][$prop]['title'], message: "property {$prop} has a title");
 		}
 
 		// Status is constrained to the three attendance states.
 		$this->assertSame(
-			['registered', 'checked-in', 'no-show'],
-			$attendance['properties']['status']['enum']
+			expected: ['registered', 'checked-in', 'no-show'],
+			actual: $attendance['properties']['status']['enum']
 		);
 
-		// GM-group write RBAC is delegated to OpenRegister on the schema.
-		$this->assertSame(['gamemasters'], $attendance['authorization']['create']);
+		// Write RBAC is delegated to OpenRegister on the schema: game masters,
+		// and stewards at the gate (admin-staff-roles-and-invites D3).
+		$this->assertSame(expected: ['gamemasters', 'larpinq-stewards'], actual: $attendance['authorization']['create']);
+		$this->assertSame(expected: ['gamemasters'], actual: $attendance['authorization']['delete']);
 
 		// A representative existing schema keeps all its properties.
 		$this->assertArrayHasKey(
-			'awardedBy',
-			$merged['components']['schemas']['xpAward']['properties'],
-			'xpAward.awardedBy must survive the merge'
+			key: 'awardedBy',
+			array: $merged['components']['schemas']['xpAward']['properties'],
+			message: 'xpAward.awardedBy must survive the merge'
 		);
 
 	}//end testEventCheckinRosterFragmentAddsAttendanceSchema()

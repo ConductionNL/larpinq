@@ -16,6 +16,9 @@
  * @link      https://larpingapp.com
  *
  * @spec openspec/specs/skill-requirement-enforcement/spec.md
+ *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
  */
 
 declare(strict_types=1);
@@ -39,6 +42,17 @@ namespace OCA\Larpinq\Service;
  */
 class SkillRequirementChecker {
 	/**
+	 * Membership requirement types, in check order: the skill field holding
+	 * the required ids and the context pool they must be in.
+	 *
+	 * @var array<string,array{0:string,1:string}>
+	 */
+	private const MEMBERSHIP_RULES = [
+		'requiredCondition' => ['requiredConditions', 'conditions'],
+		'requiredEffect' => ['requiredEffects', 'effects'],
+	];
+
+	/**
 	 * Constructor for SkillRequirementChecker.
 	 *
 	 * @param IdListNormaliser $idList Relation-shape normaliser.
@@ -53,9 +67,7 @@ class SkillRequirementChecker {
 	/**
 	 * Check every declared requirement of one assigned skill.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param SkillUnderCheck $subject The skill being assigned, and whether a GM override covers it.
 	 * @param array<string,mixed> $context The resolved character context: keys
 	 *                                     `skills` (array<int,string>),
 	 *                                     `allSkills` (array<string,array<string,mixed>>),
@@ -67,210 +79,185 @@ class SkillRequirementChecker {
 	 *
 	 * @spec openspec/specs/skill-requirement-enforcement/spec.md
 	 */
-	public function check(string $skillId, array $skill, bool $overridden, array $context): array {
+	public function check(SkillUnderCheck $subject, array $context): array {
+		$scan = new RequirementScan(subject: $subject, context: $context);
+
 		return array_merge(
-			$this->checkRequiredSkills(
-				skillId: $skillId,
-				skill: $skill,
-				overridden: $overridden,
-				context: $context
-			),
-			$this->checkRequiredStats(
-				skillId: $skillId,
-				skill: $skill,
-				overridden: $overridden,
-				context: $context
-			),
-			$this->checkMembership(
-				skillId: $skillId,
-				type: 'requiredCondition',
-				targets: $this->idList->normalise($skill['requiredConditions'] ?? []),
-				pool: ($context['conditions'] ?? []),
-				overridden: $overridden
-			),
-			$this->checkMembership(
-				skillId: $skillId,
-				type: 'requiredEffect',
-				targets: $this->idList->normalise($skill['requiredEffects'] ?? []),
-				pool: ($context['effects'] ?? []),
-				overridden: $overridden
-			)
+			$this->checkRequiredSkills(scan: $scan),
+			$this->checkRequiredStats(scan: $scan),
+			$this->checkMemberships(scan: $scan)
 		);
 	}//end check()
 
 	/**
 	 * Prerequisite skills: each must be present in the candidate skill list.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredSkills(string $skillId, array $skill, bool $overridden, array $context): array {
-		$skills = $context['skills'] ?? [];
-		$allSkills = $context['allSkills'] ?? [];
-
+	private function checkRequiredSkills(RequirementScan $scan): array {
 		$entries = [];
-		foreach ($this->idList->normalise($skill['requiredSkills'] ?? []) as $reqSkill) {
-			$present = in_array($reqSkill, $skills, true);
-			$resolved = isset($allSkills[$reqSkill]);
-			$targetName = '';
-			if ($resolved === true) {
-				$targetName = (string)($allSkills[$reqSkill]['name'] ?? '');
-			}
-
-			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: 'requiredSkill',
-				target: $reqSkill,
-				targetName: $targetName,
-				status: $this->status(passed: $present, resolved: $resolved, overridden: $overridden)
-			);
+		foreach ($this->idList->normalise($scan->subject->skill['requiredSkills'] ?? []) as $reqSkill) {
+			$entries[] = $this->requiredSkillEntry(scan: $scan, reqSkill: $reqSkill);
 		}
 
 		return $entries;
 	}//end checkRequiredSkills()
 
 	/**
+	 * The entry of one prerequisite skill.
+	 *
+	 * @param RequirementScan $scan     The skill being assigned and its character context.
+	 * @param string          $reqSkill The required skill id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function requiredSkillEntry(RequirementScan $scan, string $reqSkill): array {
+		$target = $scan->context['allSkills'][$reqSkill] ?? null;
+		$present = in_array($reqSkill, $scan->context['skills'] ?? [], true);
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: [
+				'type' => 'requiredSkill',
+				'target' => $reqSkill,
+				'targetName' => (string)($target['name'] ?? ''),
+				'status' => $scan->subject->status(passed: $present, resolved: ($target !== null)),
+			]
+		);
+	}//end requiredSkillEntry()
+
+	/**
 	 * Required ability scores: each named ability must meet requiredScore.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param array<string,mixed> $skill The skill object.
-	 * @param bool $overridden Whether a GM override covers this skill.
-	 * @param array<string,mixed> $context The resolved character context.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
 	 *
 	 * @return array<int,array<string,mixed>> The requirement entries.
 	 */
-	private function checkRequiredStats(string $skillId, array $skill, bool $overridden, array $context): array {
-		$stats = $context['stats'] ?? [];
-		$requiredScore = (int)($skill['requiredScore'] ?? 0);
-
+	private function checkRequiredStats(RequirementScan $scan): array {
 		$entries = [];
-		foreach ($this->idList->normalise($skill['requiredStats'] ?? []) as $reqStat) {
-			$resolved = isset($stats[$reqStat]);
-			$current = 0;
-			$targetName = '';
-			if ($resolved === true) {
-				$current = (int)($stats[$reqStat]['value'] ?? 0);
-				$targetName = (string)($stats[$reqStat]['name'] ?? '');
-			}
-
-			$passed = ($resolved === true && $current >= $requiredScore);
-			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: 'requiredStat',
-				target: $reqStat,
-				targetName: $targetName,
-				status: $this->status(passed: $passed, resolved: $resolved, overridden: $overridden),
-				current: $current,
-				required: $requiredScore
-			);
+		foreach ($this->idList->normalise($scan->subject->skill['requiredStats'] ?? []) as $reqStat) {
+			$entries[] = $this->requiredStatEntry(scan: $scan, reqStat: $reqStat);
 		}
 
 		return $entries;
 	}//end checkRequiredStats()
 
 	/**
-	 * Membership requirements: each target must be present in a given pool.
+	 * The entry of one required ability score.
 	 *
-	 * Shared by requiredConditions (pool = the candidate's conditions) and
-	 * requiredEffects (pool = the effects granted by assigned entities). Both
-	 * are always "resolved" — the target is a plain reference, so the only
-	 * outcome that can differ is present/absent.
+	 * @param RequirementScan $scan    The skill being assigned and its character context.
+	 * @param string          $reqStat The required ability id.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param string $type The requirement type.
-	 * @param array<int,string> $targets The required target ids.
-	 * @param array<int,string> $pool The ids in play on the candidate.
-	 * @param bool $overridden Whether a GM override covers this skill.
-	 *
-	 * @return array<int,array<string,mixed>> The requirement entries.
+	 * @return array<string,string|int> The requirement entry.
 	 */
-	private function checkMembership(
-		string $skillId,
-		string $type,
-		array $targets,
-		array $pool,
-		bool $overridden,
-	): array {
-		$entries = [];
-		foreach ($targets as $target) {
-			$entries[] = $this->entry(
-				skillId: $skillId,
-				type: $type,
-				target: $target,
-				targetName: '',
-				status: $this->status(
-					passed: in_array($target, $pool, true),
-					resolved: true,
-					overridden: $overridden
-				)
-			);
-		}
+	private function requiredStatEntry(RequirementScan $scan, string $reqStat): array {
+		$stat = $scan->context['stats'][$reqStat] ?? null;
 
-		return $entries;
-	}//end checkMembership()
+		return $this->entry(
+			subject: $scan->subject,
+			fields: [
+				'type' => 'requiredStat',
+				'target' => $reqStat,
+				'targetName' => (string)($stat['name'] ?? ''),
+				'status' => $this->statStatus(scan: $scan, stat: $stat),
+				'current' => (int)($stat['value'] ?? 0),
+				'required' => (int)($scan->subject->skill['requiredScore'] ?? 0),
+			]
+		);
+	}//end requiredStatEntry()
 
 	/**
-	 * Build a single requirement-result entry.
+	 * The status of one required ability score: unresolvable when the ability
+	 * is not among the computed stats, passed when its value meets requiredScore.
 	 *
-	 * @param string $skillId The skill being assigned.
-	 * @param string $type The requirement type.
-	 * @param string $target The required target UUID.
-	 * @param string $targetName The required target's human name (may be empty).
-	 * @param string $status One of passed|unmet|overridden|unresolvable.
-	 * @param int $current The current value (stat checks only).
-	 * @param int $required The required value (stat checks only).
-	 *
-	 * @return array<string,mixed> The entry.
-	 */
-	private function entry(
-		string $skillId,
-		string $type,
-		string $target,
-		string $targetName,
-		string $status,
-		int $current = 0,
-		int $required = 0,
-	): array {
-		return [
-			'skill' => $skillId,
-			'type' => $type,
-			'target' => $target,
-			'targetName' => $targetName,
-			'status' => $status,
-			'current' => $current,
-			'required' => $required,
-		];
-	}//end entry()
-
-	/**
-	 * Derive a status from passed/resolved/overridden flags.
-	 *
-	 * An overridden requirement is reported as "overridden" (never "passed"),
-	 * an unresolvable target as "unresolvable", otherwise passed/unmet.
-	 *
-	 * @param bool $passed Whether the requirement is satisfied.
-	 * @param bool $resolved Whether the required target resolves to an object.
-	 * @param bool $overridden Whether a GM override covers this skill.
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 * @param mixed           $stat The computed stat of the required ability, null when absent.
 	 *
 	 * @return string The status.
 	 */
-	private function status(bool $passed, bool $resolved, bool $overridden): string {
-		if ($resolved === false) {
-			return 'unresolvable';
+	private function statStatus(RequirementScan $scan, mixed $stat): string {
+		$requiredScore = (int)($scan->subject->skill['requiredScore'] ?? 0);
+		$passed = ($stat !== null && (int)($stat['value'] ?? 0) >= $requiredScore);
+
+		return $scan->subject->status(passed: $passed, resolved: ($stat !== null));
+	}//end statStatus()
+
+	/**
+	 * Membership requirements: each target must be present in a given pool.
+	 *
+	 * Required conditions are checked against the candidate's conditions, then
+	 * requiredEffects against the effects granted by assigned entities (see
+	 * MEMBERSHIP_RULES). Both are always "resolved": the target is a plain
+	 * reference, so the only outcome that can differ is present/absent.
+	 *
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 *
+	 * @return array<int,array<string,mixed>> The requirement entries.
+	 */
+	private function checkMemberships(RequirementScan $scan): array {
+		$entries = [];
+		foreach (array_keys(self::MEMBERSHIP_RULES) as $type) {
+			$entries = array_merge($entries, $this->membershipEntries(scan: $scan, type: $type));
 		}
 
-		if ($passed === true) {
-			return 'passed';
+		return $entries;
+	}//end checkMemberships()
+
+	/**
+	 * The entries of one membership requirement type.
+	 *
+	 * @param RequirementScan $scan The skill being assigned and its character context.
+	 * @param string          $type The requirement type, a key of MEMBERSHIP_RULES.
+	 *
+	 * @return array<int,array<string,mixed>> The requirement entries.
+	 */
+	private function membershipEntries(RequirementScan $scan, string $type): array {
+		$skillField = self::MEMBERSHIP_RULES[$type][0];
+		$entries = [];
+		foreach ($this->idList->normalise($scan->subject->skill[$skillField] ?? []) as $target) {
+			$entries[] = $this->membershipEntry(scan: $scan, requirement: ['type' => $type, 'target' => $target]);
 		}
 
-		if ($overridden === true) {
-			return 'overridden';
-		}
+		return $entries;
+	}//end membershipEntries()
 
-		return 'unmet';
-	}//end status()
+	/**
+	 * The entry of one membership requirement: its target must be in the pool
+	 * MEMBERSHIP_RULES names for its type. The target is always "resolved".
+	 *
+	 * @param RequirementScan                     $scan        The skill being assigned and its character context.
+	 * @param array{type: string, target: string} $requirement The requirement type and its target id.
+	 *
+	 * @return array<string,string|int> The requirement entry.
+	 */
+	private function membershipEntry(RequirementScan $scan, array $requirement): array {
+		$pool = ($scan->context[self::MEMBERSHIP_RULES[$requirement['type']][1]] ?? []);
+
+		return $this->entry(
+			subject: $scan->subject,
+			fields: $requirement + [
+				'targetName' => '',
+				'status' => $scan->subject->status(
+					passed: in_array($requirement['target'], $pool, true),
+					resolved: true
+				),
+			]
+		);
+	}//end membershipEntries()
+
+	/**
+	 * Build a single requirement-result entry for the skill under check. The
+	 * stat values `current` and `required` default to 0 and come last.
+	 *
+	 * @param SkillUnderCheck          $subject The skill being assigned.
+	 * @param array<string,string|int> $fields  The entry fields after `skill`, in output order: type,
+	 *                                          target, targetName and status, optionally current and required.
+	 *
+	 * @return array<string,string|int> The entry.
+	 */
+	private function entry(SkillUnderCheck $subject, array $fields): array {
+		return ['skill' => $subject->skillId] + $fields + ['current' => 0, 'required' => 0];
+	}//end entry()
 }//end class

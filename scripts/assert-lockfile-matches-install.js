@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 /**
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ */
+/**
  * gate: lockfile-matches-install
  *
  * Fails when the installed node_modules tree disagrees with package-lock.json.

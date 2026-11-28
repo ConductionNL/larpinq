@@ -199,6 +199,8 @@ import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 // @nextcloud/vue v9 ships an `exports` map; the v8 `dist/Components/*.js`
 // deep paths are no longer exported and throw ERR_PACKAGE_PATH_NOT_EXPORTED.
 import NcSelect from '@nextcloud/vue/components/NcSelect'
+import { ocsHeaders } from '../services/requestHeaders.js'
+import { ensureObjectTypes } from '../store/store.js'
 import {
 	buildNodes,
 	computeStateBySkill,
@@ -212,6 +214,39 @@ const STATE_META = {
 	available: { label: 'Available', variant: 'primary' },
 	locked: { label: 'Locked', variant: 'error' },
 	unknown: { label: 'Unknown', variant: 'default' },
+}
+
+/**
+ * The live-updated types that initializeStores() registered: subscribe()
+ * throws on unregistered types (settings not loaded).
+ *
+ * @param {object} store The object store instance.
+ * @return {string[]} The subset of `skill` and `character` to subscribe.
+ */
+function liveTypesOf(store) {
+	return ['skill', 'character'].filter(
+		(type) =>
+			Array.isArray(store.objectTypes)
+			&& store.objectTypes.includes(type),
+	)
+}
+
+/**
+ * The collections the skill tree reads, in the order load() keeps them.
+ */
+const SKILL_TREE_TYPES = ['skill', 'character', 'ability', 'condition', 'effect']
+
+/**
+ * Fetch every skill-tree collection at once (fetchCollection returns [] on
+ * error).
+ *
+ * @param {object} store The object store instance.
+ * @return {Promise<Array>} The collections, in SKILL_TREE_TYPES order.
+ */
+function fetchSkillTreeData(store) {
+	return Promise.all(
+		SKILL_TREE_TYPES.map((type) => store.fetchCollection(type, { _limit: 1000 })),
+	)
 }
 
 export default {
@@ -400,44 +435,61 @@ export default {
 			if (typeof store.subscribe !== 'function' || this.liveActive) {
 				return
 			}
-			// Only subscribe to types that initializeStores() registered —
-			// subscribe() throws on unregistered types (settings not loaded).
-			const types = ['skill', 'character'].filter(
-				(type) =>
-					Array.isArray(store.objectTypes)
-					&& store.objectTypes.includes(type),
-			)
+			const types = liveTypesOf(store)
 			if (types.length === 0) {
 				return
 			}
 			this.liveActive = true
-			const epoch = this.liveEpoch
 			try {
-				const handles = await Promise.all(
-					types.map((type) => store.subscribe(type)),
-				)
-				if (this.liveEpoch !== epoch) {
-					// Released while awaiting (component destroyed) — drop the
-					// now-stale subscriptions instead of leaking them.
-					handles.forEach((handle) => store.unsubscribe(handle))
-					return
-				}
-				this.liveHandles = handles
-				// Bridge: event → plugin refetch → store collection cache →
-				// local copies (which the tree computeds render from).
-				this.liveUnwatch = this.$watch(
-					() => types.map((type) => store.getCollection(type)),
-					() => this.syncFromStore(store),
-				)
+				await this.subscribeLive(store, types)
 			} catch (e) {
-				this.liveActive = false
-				this.liveHandles = []
-				// eslint-disable-next-line no-console
-				console.warn(
-					'[larpinq] skill-tree live subscription failed:',
-					e?.message ?? e,
-				)
+				this.dropFailedLive(e)
 			}
+		},
+
+		/**
+		 * Reset the live state after a failed subscription, and say why.
+		 *
+		 * @param {Error} e What the subscription threw.
+		 * @spec openspec/specs/realtime-updates/spec.md
+		 * @return {void}
+		 */
+		dropFailedLive(e) {
+			this.liveActive = false
+			this.liveHandles = []
+			// eslint-disable-next-line no-console
+			console.warn(
+				'[larpinq] skill-tree live subscription failed:',
+				e?.message ?? e,
+			)
+		},
+
+		/**
+		 * Subscribe the given types and bridge their collections into this
+		 * view's local copies; when the view was released while waiting, drop
+		 * the now-stale subscriptions instead of leaking them.
+		 *
+		 * @param {object} store The object store instance.
+		 * @param {string[]} types The registered types to subscribe.
+		 * @spec openspec/specs/realtime-updates/spec.md
+		 * @return {Promise<void>}
+		 */
+		async subscribeLive(store, types) {
+			const epoch = this.liveEpoch
+			const handles = await Promise.all(
+				types.map((type) => store.subscribe(type)),
+			)
+			if (this.liveEpoch !== epoch) {
+				handles.forEach((handle) => store.unsubscribe(handle))
+				return
+			}
+			this.liveHandles = handles
+			// Bridge: event → plugin refetch → store collection cache →
+			// local copies (which the tree computeds render from).
+			this.liveUnwatch = this.$watch(
+				() => types.map((type) => store.getCollection(type)),
+				() => this.syncFromStore(store),
+			)
 		},
 
 		/**
@@ -492,25 +544,31 @@ export default {
 			this.loading = true
 			try {
 				const store = useObjectStore()
-				const [skills, characters, abilities, conditions, effects] =
-					await Promise.all([
-						store.fetchCollection('skill', { _limit: 1000 }),
-						store.fetchCollection('character', { _limit: 1000 }),
-						store.fetchCollection('ability', { _limit: 1000 }),
-						store.fetchCollection('condition', { _limit: 1000 }),
-						store.fetchCollection('effect', { _limit: 1000 }),
-					])
-				this.skills = Array.isArray(skills) ? skills : []
-				this.characters = Array.isArray(characters) ? characters : []
-				this.abilityNames = indexNames(abilities)
-				this.conditionNames = indexNames(conditions)
-				this.effectNames = indexNames(effects)
+				await ensureObjectTypes(store, [...SKILL_TREE_TYPES])
+				this.applySkillTreeData(await fetchSkillTreeData(store))
 			} catch (error) {
 				// eslint-disable-next-line no-console
 				console.warn('[larpinq] skill-tree data unavailable', error)
 			} finally {
 				this.loading = false
 			}
+		},
+
+		/**
+		 * Keep the fetched collections: the skills and characters as lists,
+		 * the reference data as id → name maps.
+		 *
+		 * @param {Array} collections The collections, in SKILL_TREE_TYPES order.
+		 * @return {void}
+		 * @spec openspec/specs/skill-tree-visualization/spec.md
+		 */
+		applySkillTreeData(collections) {
+			const [skills, characters, abilities, conditions, effects] = collections
+			this.skills = Array.isArray(skills) ? skills : []
+			this.characters = Array.isArray(characters) ? characters : []
+			this.abilityNames = indexNames(abilities)
+			this.conditionNames = indexNames(conditions)
+			this.effectNames = indexNames(effects)
 		},
 
 		/**
@@ -533,12 +591,7 @@ export default {
 						'/apps/larpinq/api/characters/{id}/requirement-report',
 						{ id },
 					),
-					{
-						headers: {
-							requesttoken: OC.requestToken,
-							'OCS-APIREQUEST': 'true',
-						},
-					},
+					{ headers: ocsHeaders() },
 				)
 				if (!response.ok) {
 					throw new Error(`report failed: ${response.status}`)

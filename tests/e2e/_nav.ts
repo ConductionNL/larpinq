@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 
 /**
  * Shared larpinq sidebar-navigation helper.
@@ -65,7 +65,6 @@ const NAV_ID_OF: Record<string, string> = {
 	events: 'Events',
 	'xp-awards': 'XpAwards',
 	settings: 'Settings',
-	'game-settings': 'GameSettings',
 }
 
 export function navIdForSlug(slug: string): string {
@@ -208,4 +207,63 @@ export async function navTo(page: Page, slug: string): Promise<void> {
 	// with no "#". The old pattern waited 15s on a hash that is never produced.
 	await expect(page).toHaveURL(new RegExp(`/${slug}(\\b|/|$|\\?)`))
 	await expect(page.locator('.app-content')).toBeVisible({ timeout: 10_000 })
+}
+
+/**
+ * Open the sidebar of a detail page when it is closed (its open state is
+ * remembered per user, so an earlier spec may have closed it).
+ *
+ * @param {Page} page The page, on a detail route.
+ * @return {Promise<void>}
+ */
+export async function openSidebar(page: Page): Promise<void> {
+	const sidebar = page.getByTestId('cn-object-sidebar')
+	const opener = page.getByRole('button', { name: 'Open sidebar' })
+	// A closed sidebar stays in the DOM, hidden, so wait for either to be visible.
+	await expect(sidebar.or(opener).filter({ visible: true }).first()).toBeVisible({ timeout: 30_000 })
+	if (await opener.isVisible()) {
+		await opener.click()
+	}
+	await expect(sidebar).toBeVisible()
+}
+
+/**
+ * Open a sidebar tab of a detail page, opening the sidebar first.
+ *
+ * @param {Page} page The page, on a detail route.
+ * @param {string} tab The tab's label.
+ * @return {Promise<void>}
+ */
+export async function openSidebarTab(page: Page, tab: string): Promise<void> {
+	await openSidebar(page)
+	await page.getByTestId('cn-object-sidebar').getByRole('tab', { name: tab }).click()
+}
+
+/**
+ * Scroll a detail page until the widget with this title is mounted, and return it.
+ *
+ * A detail page mounts the widgets below the fold only when they scroll into
+ * view, so a widget low on the grid (Care details, Due for erasure) is not in
+ * the DOM after `goto`, and a plain `toBeVisible` on it times out as "element(s)
+ * not found". Each step scrolls every scrollable element down a screen.
+ *
+ * @param {Page} page The page, on a detail route.
+ * @param {string} title The widget's title, which names its region.
+ * @return {Promise<Locator>} The widget's region.
+ */
+export async function scrollToWidget(page: Page, title: string): Promise<Locator> {
+	const region = page.getByRole('region', { name: title, exact: true })
+	await expect(page.locator('[id^="cn-widget-wrapper-title-"]').first()).toBeVisible({ timeout: 30_000 })
+	for (let step = 0; step < 30 && (await region.count()) === 0; step++) {
+		await page.evaluate(() => {
+			document.querySelectorAll<HTMLElement>('*').forEach((element) => {
+				if (element.scrollHeight > element.clientHeight + 50) {
+					element.scrollTop += element.clientHeight
+				}
+			})
+		})
+		await page.waitForTimeout(300)
+	}
+	await region.scrollIntoViewIfNeeded()
+	return region
 }

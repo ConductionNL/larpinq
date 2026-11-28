@@ -2,6 +2,9 @@
 /**
  * l10n translation-PARITY gate.
  *
+ * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
+ * SPDX-License-Identifier: EUPL-1.2
+ *
  * Guards that every REQUIRED locale carries a real translation for every
  * English source key. Without this, a new English string ships and the other
  * languages silently fall back to English with a green pipeline — the app
@@ -30,9 +33,6 @@
  * Exit codes:
  *   0  every required locale is at full parity for every existing source set
  *   1  one or more locales are missing keys, missing files, or empty values
- *
- * SPDX-License-Identifier: EUPL-1.2
- * SPDX-FileCopyrightText: 2026 Conduction B.V. <info@conduction.nl>
  */
 
 'use strict'
@@ -129,6 +129,19 @@ function loadJsonSet(file) {
 	return readJson(file).translations || {}
 }
 
+/**
+ * The English browser catalogue completed from en.json: scripts/build-l10n-js.js
+ * leaves out of en.js every entry equal to its key, so en.js alone no longer
+ * lists every source key. The key set every locale .js must carry is en.json's.
+ *
+ * @spec openspec/specs/platform-baseline/spec.md
+ */
+function loadSourceCatalogue(file) {
+	const jsonFile = path.join(path.dirname(file), 'en.json')
+	const full = fs.existsSync(jsonFile) ? loadJsonSet(jsonFile) : {}
+	return { ...full, ...loadJs(file) }
+}
+
 /** True when a translation value is empty (string) or has an empty plural. */
 function isEmpty(v) {
 	if ((v === null || v === undefined)) {
@@ -148,6 +161,7 @@ const sets = [
 		enFile: path.join(L10N_DIR, 'en.js'),
 		file: (loc) => path.join(L10N_DIR, `${loc}.js`),
 		load: loadJs,
+		loadSource: loadSourceCatalogue,
 	},
 	{
 		kind: 'backend (.json)',
@@ -165,7 +179,7 @@ for (const set of sets) {
 		continue // this app does not ship this translation set
 	}
 	checkedSets++
-	const enKeys = Object.keys(set.load(set.enFile))
+	const enKeys = Object.keys((set.loadSource || set.load)(set.enFile))
 	for (const loc of REQUIRED) {
 		const locFile = set.file(loc)
 		if (!fs.existsSync(locFile)) {
